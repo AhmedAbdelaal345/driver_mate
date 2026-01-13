@@ -13,6 +13,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   final GlobalKey _formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -46,6 +49,7 @@ class LoginPage extends StatelessWidget {
                     horizontal: SizeConfig.width(context) * 0.13,
                   ),
                   child: TextFormFieldWidget(
+                    controller:emailController ,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return AppConstants.pleaseEnterYourEmail;
@@ -68,6 +72,7 @@ class LoginPage extends StatelessWidget {
                     horizontal: SizeConfig.width(context) * 0.13,
                   ),
                   child: TextFormFieldWidget(
+                    controller:passwordController ,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return AppConstants.pleaseEnterYourPassword;

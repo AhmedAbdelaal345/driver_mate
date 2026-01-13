@@ -8,8 +8,15 @@ abstract class AppConstants {
   static const String pleaseLogin = "Please log in the form below.";
   static const String emailAddress = "Email Address";
   static const String enterYourEmail = "Enter your email address";
+  static const String enterYourName = "Enter your name";
+  static const String pleaseEnterYourName = "Please, enter your name";
   static const String enterYourPassword = "Enter your password";
+  static const String reEnterYourPassword = "Enter your new password";
   static const String password = "Password";
+  static const String confirmPassword = "Confirm Password";
+  static const String doesntMatch = "The password doesn't match";
+  static const String fullName = "Full Name";
+  static const String accountToContinue = "Create account to continue";
   static const String pleaseEnterYourEmail = "Please enter your email";
   static const String pleaseEnterYourPassword = "Please enter your password";
   static const String pleaseEnterValidEmail = "Please enter  valid email";
@@ -18,6 +25,7 @@ abstract class AppConstants {
   static const String continueWithGoogle = "Login with Google";
   static const String dontHaveAccount = "Don't have an account? ";
   static const String signup = "Don't have an account? ";
+  
   //------------- Colors -------------
   static const Color white = Color(0xffffffff);
   static const Color veryDarkBlue = Color(0xff1B3C53);
@@ -35,6 +43,7 @@ abstract class AppConstants {
   static const double f11 = 11.0;
   static const double f8 = 8.0;
   static const double f2 = 2.0;
+  static const double f24 = 24.0;
   static const double f25 = 25.0;
   //------------- Asset Paths -------------
   static const String imagesPath = "assets/images/";
@@ -42,6 +51,8 @@ abstract class AppConstants {
   static const String googlePath = "${imagesPath}google.png";
   static const String applePath = "${imagesPath}apple.png";
   static const String loginImagePath = "${imagesPath}login_image.jpg";
+  static const String arrowBackPath = "${imagesPath}arrow_back.svg";
+  static const String facebookPath = "${imagesPath}facebook.svg";
   //widdths and heights
   double get carImageHeight => 371.0;
   //------------- Regex -------------

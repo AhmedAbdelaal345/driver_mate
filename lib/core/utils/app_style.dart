@@ -8,6 +8,12 @@ abstract class AppStyle {
     color: Colors.black,
     fontFamily: AppConstants.fontPoppins,
   );
+   static TextStyle signUpTextStyle24 = const TextStyle(
+    fontSize: AppConstants.f24,
+    fontWeight: FontWeight.w700,
+    color: Colors.black,
+    fontFamily: AppConstants.fontPoppins,
+  );
   static TextStyle hintStyle = const TextStyle(
     fontSize: AppConstants.f11,
     fontWeight: FontWeight.w400,
