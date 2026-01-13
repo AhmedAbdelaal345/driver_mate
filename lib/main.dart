@@ -1,4 +1,5 @@
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/feature/auth/view/register_page.dart';
 import 'package:driver_mate/feature/splach/view/splach_view.dart';
 import 'package:flutter/material.dart';
 void main() {
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
         fontFamily: AppConstants.fontInter,
         
              ),
+             routes: {
+              AppConstants.signupPage: (context) => const RegisterPage(),
+             },
       home: const SplachPage(),
     );
   }
