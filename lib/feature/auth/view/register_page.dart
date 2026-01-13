@@ -131,7 +131,13 @@ class RegisterPage extends StatelessWidget {
               SizedBox(height: SizeConfig.height(context) * 0.07),
               PrimaryElevatedButtonWidget(
                 formKey: _formKey,
-                buttonText: "Sign Up",
+                buttonText: AppConstants.signup,
+                onPressed: () {
+                  final FormState form = _formKey.currentState as FormState;
+                  if (form.validate()) {
+                    // Proceed with registration logic
+                  }
+                },
               ),
               SizedBox(height: SizeConfig.height(context) * 0.054),
               DividerWidget(),

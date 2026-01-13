@@ -1,7 +1,6 @@
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/splach/manager/cubit/splash_cubit.dart';
-import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,9 +24,7 @@ class _SplachPageView extends StatelessWidget {
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashNavigate) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) =>  LoginPage()),
-          );
+          Navigator.of(context).pushNamed(AppConstants.loginPage);
         }
       },
       child: Scaffold(
@@ -49,7 +46,8 @@ class _SplachPageView extends StatelessWidget {
             children: [
               BlocBuilder<SplashCubit, SplashState>(
                 builder: (context, state) {
-                  final isStart = state is SplashAnimationStart || state is SplashNavigate;
+                  final isStart =
+                      state is SplashAnimationStart || state is SplashNavigate;
                   return Positioned(
                     top: SizeConfig.height(context) * 0.1,
                     left: 0,
@@ -78,7 +76,8 @@ class _SplachPageView extends StatelessWidget {
               ),
               BlocBuilder<SplashCubit, SplashState>(
                 builder: (context, state) {
-                  final isStart = state is SplashAnimationStart || state is SplashNavigate;
+                  final isStart =
+                      state is SplashAnimationStart || state is SplashNavigate;
                   return AnimatedPositioned(
                     duration: const Duration(seconds: 2),
                     curve: Curves.easeInOut,

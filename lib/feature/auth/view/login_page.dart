@@ -95,9 +95,16 @@ class LoginPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                         horizontal: SizeConfig.width(context) * 0.18,
                       ),
-                      child: Text(
-                        "Forgot Password?",
+                      child: TextButton(
+                        child: Text(
+                        AppConstants.forgotPassword,
                         style: AppStyle.forgetPasswordStyle,
+                      ),
+                        onPressed: () {
+                          // Navigate to forgot password page
+                          Navigator.pushNamed(
+                              context, AppConstants.forgotPasswordPage);
+                        },
                       ),
                     ),
                   ],
@@ -106,6 +113,12 @@ class LoginPage extends StatelessWidget {
                 PrimaryElevatedButtonWidget(
                   formKey: _formKey,
                   buttonText: AppConstants.loginText,
+                  onPressed: () {
+                    final FormState form = _formKey.currentState as FormState;
+                    if (form.validate()) {
+                      // Process data.
+                    }
+                  },
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.042),
                 DividerWidget(),

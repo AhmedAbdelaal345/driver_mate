@@ -4,9 +4,15 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryElevatedButtonWidget extends StatelessWidget {
-  const PrimaryElevatedButtonWidget({super.key, required this.formKey, required this.buttonText});
-  final GlobalKey formKey;
+  const PrimaryElevatedButtonWidget({
+    super.key,
+     this.formKey,
+    required this.buttonText,
+    required this.onPressed,
+  });
+  final GlobalKey ?formKey;
   final String buttonText;
+  final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -14,12 +20,7 @@ class PrimaryElevatedButtonWidget extends StatelessWidget {
         horizontal: SizeConfig.width(context) * 0.01,
       ),
       child: ElevatedButton(
-        onPressed: () {
-          final FormState form = formKey.currentState as FormState;
-          if (form.validate()) {
-            
-          }
-        },
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppConstants.darkBlue,
           padding: EdgeInsets.symmetric(
