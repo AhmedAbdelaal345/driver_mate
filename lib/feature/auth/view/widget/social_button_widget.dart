@@ -4,33 +4,51 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 
 class SocialButtonWidget extends StatelessWidget {
-  const SocialButtonWidget({super.key,required this.textButton,required this.icon,required this.onPressed});
-final String textButton;
-final ImageIcon icon;
-final void Function()? onPressed;
+  const SocialButtonWidget({
+    super.key,
+    required this.textButton,
+    required this.icon, // This will now accept any Widget (Image, Icon, Svg, etc.)
+    required this.onPressed,
+  });
+
+  final String textButton;
+  final Widget icon; // Changed from ImageIcon to Widget
+  final void Function()? onPressed;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-                padding:  EdgeInsets.symmetric(
-                  horizontal: SizeConfig.width(context) * 0.01,
-                ),
-                child: ElevatedButton(
-                  onPressed: onPressed,
-                  style: ButtonStyle(
-                    shape: WidgetStatePropertyAll(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppConstants.f8),
-                      ),
-                    ),
-                  ),
-                  child:  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ImageIcon(icon.image, size: AppConstants.f25),
-                      Text(AppConstants.continueWithApple, style: AppStyle.socialButtonTextStyle),
-                    ],
-                  ),
-                ),
-              );
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeConfig.width(context) * 0.01,
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom( // Simplified style syntax
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppConstants.f8),
+          ),
+          elevation: 0, // Optional: standard for social buttons
+          backgroundColor: Colors.white, // Optional: usually social buttons are white/light grey
+          side: BorderSide(color: AppConstants.grey), // Optional: adds a border
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // 1. Wrap icon in a SizedBox to control size if needed
+            SizedBox(
+              width: AppConstants.f25,
+              height: AppConstants.f25,
+              child: icon, 
+            ),
+            const SizedBox(width: 10),
+            // 2. Fixed: Use the passed variable textButton
+            Text(
+              textButton, 
+              style: AppStyle.socialButtonTextStyle,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -19,15 +19,32 @@ class ConfirmPasswordPage extends StatelessWidget {
           },
         ),
       ),
-      body: Column(
-        children: [
-          Text(AppConstants.confirmPasswordText, style: AppStyle.hintStyle),
-          SizedBox(height:  0.041 * SizeConfig.height(context)),
-          PrimaryElevatedButtonWidget( buttonText:AppConstants.confirm , onPressed: (){
-            // Implement your confirm password logic here
-            
-          }),
-        ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.width(context) * 0.04,
+        ),
+        child: Column(
+          children: [
+            SizedBox(height: 0.047 * SizeConfig.height(context)),
+            Align(
+              alignment: AlignmentGeometry.centerLeft,
+              child: Text(
+                AppConstants.passwordRest,
+                style: AppStyle.labelStyle.copyWith(fontSize: AppConstants.f20),
+              ),
+            ),
+            SizedBox(height: 0.014 * SizeConfig.height(context)),
+            Text(AppConstants.confirmPasswordText, style: AppStyle.hintStyle),
+            SizedBox(height: 0.041 * SizeConfig.height(context)),
+            PrimaryElevatedButtonWidget(
+              buttonText: AppConstants.confirm,
+              onPressed: () {
+                // Implement your confirm password logic here
+                Navigator.pushNamed(context, AppConstants.setNewPassword);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

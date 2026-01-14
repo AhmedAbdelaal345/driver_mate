@@ -9,33 +9,36 @@ class DividerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.width(context) * 0.31,
-                ),
-                child: Row(
-                  children: [
-                    Divider(
-                      color: AppConstants.grey,
-                      
-                      thickness: AppConstants.f2,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: SizeConfig.width(context) * 0.02,
-                      ),
-                      child: Text(
-                        "OR",
-                        style: AppStyle.orTextStyle,
-                      ),
-                    ),
-                    Divider(
-                      color: AppConstants.grey,
-                      thickness: AppConstants.f2,
-                    ),
-                  ],
-                ),
-                
-              )
-            ;
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeConfig.width(context) * 0.1, // Adjusted for better visibility
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Divider(
+              color: AppConstants.grey,
+              thickness: AppConstants.f2,
+            ),
+          ),
+          
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.width(context) * 0.02,
+            ),
+            child: Text(
+              "OR",
+              style: AppStyle.orTextStyle,
+            ),
+          ),
+          
+          Expanded(
+            child: Divider(
+              color: AppConstants.grey,
+              thickness: AppConstants.f2,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

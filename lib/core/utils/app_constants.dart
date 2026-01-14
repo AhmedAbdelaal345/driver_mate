@@ -39,6 +39,7 @@ abstract class AppConstants {
   static const String confirmPasswordText =
       "Your password has been successfully reset.Click confirm to reset the password. ";
   static const String setNewPasswordText = "Set a new password ";
+  static const String passwordRest = "Password  reset";
   static const String setNewPasswordHintText =
       "Create a new password.Ensure it is differs fromprevious one for security.";
   //------------- Colors -------------
@@ -64,7 +65,7 @@ abstract class AppConstants {
   static const double f25 = 25.0;
   //------------- Asset Paths -------------
   static const String imagesPath = "assets/images/";
-  static const String carPath = "${imagesPath}car.svg";
+  static const String carPath = "${imagesPath}car.png";
   static const String googlePath = "${imagesPath}google.png";
   static const String applePath = "${imagesPath}apple.png";
   static const String loginImagePath = "${imagesPath}login_image.jpg";

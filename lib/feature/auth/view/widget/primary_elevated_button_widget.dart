@@ -15,24 +15,23 @@ class PrimaryElevatedButtonWidget extends StatelessWidget {
   final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: SizeConfig.width(context) * 0.01,
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppConstants.darkBlue,
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.width(context) * 0.3,
-            vertical: SizeConfig.height(context) * 0.02,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppConstants.f8),
-          ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppConstants.darkBlue,
+        minimumSize: Size(
+          double.infinity,
+          SizeConfig.height(context) * 0.07,
         ),
-        child: Text(buttonText, style: AppStyle.buttonTextStyle),
+        // padding: EdgeInsets.symmetric(
+        //   horizontal:double.infinity,
+        //   vertical: SizeConfig.height(context) * 0.02,
+        // ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppConstants.f8),
+        ),
       ),
+      child: Text(buttonText, style: AppStyle.buttonTextStyle),
     );
   }
 }

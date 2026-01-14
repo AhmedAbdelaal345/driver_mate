@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         AppConstants.confirmPasswordPage: (context) =>
             const ConfirmPasswordPage(),
         AppConstants.setNewPassword: (context) => const SetNewPasswordPage(),
-        AppConstants.loginPage: (context) => LoginPage(),
+        AppConstants.loginPage: (context) => const LoginPage(),
       },
       home: const SplachPage(),
     );

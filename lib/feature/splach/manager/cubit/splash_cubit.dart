@@ -9,7 +9,7 @@ class SplashCubit extends Cubit<SplashState> {
   void startAnimation() {
     Future.delayed(const Duration(milliseconds: 500), () {
       emit(SplashAnimationStart());
-      Future.delayed(const Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 4), () {
         emit(SplashNavigate());
       });
     });

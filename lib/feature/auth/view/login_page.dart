@@ -7,15 +7,37 @@ import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_wid
 import 'package:driver_mate/feature/auth/view/widget/social_button_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  final GlobalKey _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late final GlobalKey _formKey;
+
+  late final TextEditingController emailController;
+
+  late final TextEditingController passwordController;
+  @override
+  void initState() {
+    _formKey = GlobalKey<FormState>();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -30,116 +52,143 @@ class LoginPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage(AppConstants.carPath),
+                      image: AssetImage(AppConstants.loginImagePath),
                     ),
                   ),
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.019),
-                Text(
-                  AppConstants.welcomeToDriveMate,
-                  style: AppStyle.welcomeTextStyle,
-                ),
-                SizedBox(height: SizeConfig.height(context) * 0.019),
-                Text(AppConstants.pleaseLogin, style: AppStyle.hintStyle),
-                SizedBox(height: SizeConfig.height(context) * 0.049),
-                Text(AppConstants.emailAddress, style: AppStyle.labelStyle),
-                SizedBox(height: SizeConfig.height(context) * 0.015),
                 Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.width(context) * 0.13,
+                    horizontal: SizeConfig.width(context) * 0.04,
                   ),
-                  child: TextFormFieldWidget(
-                    controller:emailController ,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return AppConstants.pleaseEnterYourEmail;
-                      } else if (RegExp(
-                            AppConstants.emailValidationPattern,
-                          ).hasMatch(value) ==
-                          false) {
-                        return AppConstants.pleaseEnterValidEmail;
-                      }
-                      return null;
-                    },
-                    hintText: AppConstants.enterYourEmail,
-                  ),
-                ),
-                SizedBox(height: SizeConfig.height(context) * 0.025),
-                Text(AppConstants.emailAddress, style: AppStyle.labelStyle),
-                SizedBox(height: SizeConfig.height(context) * 0.015),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.width(context) * 0.13,
-                  ),
-                  child: TextFormFieldWidget(
-                    controller:passwordController ,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return AppConstants.pleaseEnterYourPassword;
-                      } else if (RegExp(
-                            AppConstants.passwordValidationPattern,
-                          ).hasMatch(value) ==
-                          false) {
-                        return AppConstants.pleaseEnterValidPassword;
-                      }
-                      return null;
-                    },
-                    hintText: AppConstants.enterYourPassword,
-                  ),
-                ),
-                SizedBox(height: SizeConfig.height(context) * 0.012),
-                Row(
-                  children: [
-                    Spacer(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: SizeConfig.width(context) * 0.18,
+                  child: Column(
+                    children: [
+                      Text(
+                        AppConstants.welcomeToDriveMate,
+                        style: AppStyle.welcomeTextStyle,
                       ),
-                      child: TextButton(
+                      SizedBox(height: SizeConfig.height(context) * 0.019),
+                      Text(AppConstants.pleaseLogin, style: AppStyle.hintStyle),
+                      SizedBox(height: SizeConfig.height(context) * 0.049),
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
                         child: Text(
-                        AppConstants.forgotPassword,
-                        style: AppStyle.forgetPasswordStyle,
+                          AppConstants.emailAddress,
+                          style: AppStyle.labelStyle,
+                        ),
                       ),
+                      SizedBox(height: SizeConfig.height(context) * 0.015),
+                      TextFormFieldWidget(
+                        controller: emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppConstants.pleaseEnterYourEmail;
+                          } else if (RegExp(
+                                AppConstants.emailValidationPattern,
+                              ).hasMatch(value) ==
+                              false) {
+                            return AppConstants.pleaseEnterValidEmail;
+                          }
+                          return null;
+                        },
+                        hintText: AppConstants.enterYourEmail,
+                      ),
+                      SizedBox(height: SizeConfig.height(context) * 0.025),
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(
+                          AppConstants.password,
+                          style: AppStyle.labelStyle,
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.height(context) * 0.015),
+                      TextFormFieldWidget(
+                        controller: passwordController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppConstants.pleaseEnterYourPassword;
+                          } else if (RegExp(
+                                AppConstants.passwordValidationPattern,
+                              ).hasMatch(value) ==
+                              false) {
+                            return AppConstants.pleaseEnterValidPassword;
+                          }
+                          return null;
+                        },
+                        hintText: AppConstants.enterYourPassword,
+                      ),
+                      SizedBox(height: SizeConfig.height(context) * 0.012),
+                      Row(
+                        children: [
+                          Spacer(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizeConfig.width(context) * 0.04,
+                            ),
+                            child: TextButton(
+                              child: Text(
+                                AppConstants.forgotPassword,
+                                style: AppStyle.forgetPasswordStyle,
+                              ),
+                              onPressed: () {
+                                // Navigate to forgot password page
+                                Navigator.pushNamed(
+                                  context,
+                                  AppConstants.forgotPasswordPage,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: SizeConfig.height(context) * 0.015),
+                      PrimaryElevatedButtonWidget(
+                        formKey: _formKey,
+                        buttonText: AppConstants.loginText,
                         onPressed: () {
-                          // Navigate to forgot password page
-                          Navigator.pushNamed(
-                              context, AppConstants.forgotPasswordPage);
+                          final FormState form =
+                              _formKey.currentState as FormState;
+                          if (form.validate()) {
+                            Fluttertoast.showToast(
+                              msg: 'Login Successful',
+                              gravity: ToastGravity.BOTTOM,
+                              textColor: AppConstants.white,
+                              backgroundColor: AppConstants.blue,
+                            );
+                            // Process data.
+                          }
                         },
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: SizeConfig.height(context) * 0.015),
-                PrimaryElevatedButtonWidget(
-                  formKey: _formKey,
-                  buttonText: AppConstants.loginText,
-                  onPressed: () {
-                    final FormState form = _formKey.currentState as FormState;
-                    if (form.validate()) {
-                      // Process data.
-                    }
-                  },
-                ),
-                SizedBox(height: SizeConfig.height(context) * 0.042),
-                DividerWidget(),
-                SizedBox(height: SizeConfig.height(context) * 0.042),
-                SocialButtonWidget(
-                  textButton: AppConstants.continueWithApple,
-                  icon: ImageIcon(AssetImage(AppConstants.applePath)),
-                  onPressed: () {},
-                ),
-                SizedBox(height: SizeConfig.height(context) * 0.042),
-                SocialButtonWidget(
-                  textButton: AppConstants.continueWithGoogle,
-                  icon: ImageIcon(AssetImage(AppConstants.googlePath)),
-                  onPressed: () {},
-                ),
-                SizedBox(height: SizeConfig.height(context) * 0.015),
-                FooterWidget(
-                  onTap: () {
-                    // Navigate to signup page
-                    Navigator.pushNamed(context, AppConstants.signupPage);
-                  },
+                      SizedBox(height: SizeConfig.height(context) * 0.042),
+                      DividerWidget(),
+                      SizedBox(height: SizeConfig.height(context) * 0.042),
+                      SocialButtonWidget(
+                        textButton: AppConstants.continueWithApple,
+                        icon: ImageIcon(
+                          AssetImage(AppConstants.applePath),
+                          color: Colors.black,
+                        ),
+                        onPressed: () {},
+                      ),
+                      SizedBox(height: SizeConfig.height(context) * 0.042),
+                      SocialButtonWidget(
+                        textButton: AppConstants.continueWithGoogle,
+                        icon: Image.asset(
+                          AppConstants.googlePath,
+                          width: 24, // Adjust size to match your design
+                          height: 24,
+                        ),
+                        onPressed: () {},
+                      ),
+                      SizedBox(height: SizeConfig.height(context) * 0.015),
+                      FooterWidget(
+                        onTap: () {
+                          // Navigate to signup page
+                          Navigator.pushNamed(context, AppConstants.signupPage);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.05),
               ],

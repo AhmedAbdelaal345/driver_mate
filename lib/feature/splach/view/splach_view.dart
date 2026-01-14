@@ -3,6 +3,7 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/splach/manager/cubit/splash_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplachPage extends StatelessWidget {
   const SplachPage({super.key});
@@ -24,7 +25,7 @@ class _SplachPageView extends StatelessWidget {
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashNavigate) {
-          Navigator.of(context).pushNamed(AppConstants.loginPage);
+          Navigator.of(context).pushReplacementNamed(AppConstants.loginPage);
         }
       },
       child: Scaffold(
@@ -42,14 +43,16 @@ class _SplachPageView extends StatelessWidget {
               ],
             ),
           ),
-          child: Stack(
-            children: [
-              BlocBuilder<SplashCubit, SplashState>(
-                builder: (context, state) {
-                  final isStart =
-                      state is SplashAnimationStart || state is SplashNavigate;
-                  return Positioned(
-                    top: SizeConfig.height(context) * 0.1,
+          child: BlocBuilder<SplashCubit, SplashState>(
+            builder: (context, state) {
+              final isStart =
+                  state is SplashAnimationStart || state is SplashNavigate;
+
+              return Stack(
+                children: [
+                  // Text Animation
+                  Positioned(
+                    top: SizeConfig.height(context) * 0.48,
                     left: 0,
                     right: 0,
                     child: Center(
@@ -58,7 +61,7 @@ class _SplachPageView extends StatelessWidget {
                           begin: 0,
                           end: isStart ? AppConstants.driverMate.length : 0,
                         ),
-                        duration: const Duration(seconds: 2),
+                        duration: const Duration(seconds: 3),
                         builder: (context, value, child) {
                           return Text(
                             AppConstants.driverMate.substring(0, value),
@@ -71,28 +74,31 @@ class _SplachPageView extends StatelessWidget {
                         },
                       ),
                     ),
-                  );
-                },
-              ),
-              BlocBuilder<SplashCubit, SplashState>(
-                builder: (context, state) {
-                  final isStart =
-                      state is SplashAnimationStart || state is SplashNavigate;
-                  return AnimatedPositioned(
-                    duration: const Duration(seconds: 2),
-                    curve: Curves.easeInOut,
+                  ),
+                  // Car Animation
+                  AnimatedPositioned(
+                    duration: const Duration(seconds: 3),
+                    curve: Curves.easeOutQuart,
                     bottom: SizeConfig.height(context) * 0.1,
+
+                    // --- KEY CHANGE HERE ---
+                    // Start at -width (off-screen left) and move to 0 (visible)
                     left: isStart ? 0 : -SizeConfig.width(context),
-                    right: isStart ? 0 : SizeConfig.width(context),
+
+                    // We keep right null or fixed so the car doesn't stretch
+                    width: SizeConfig.width(context),
+
+                    // -----------------------
                     child: Image.asset(
                       AppConstants.carPath,
-                      fit: BoxFit.scaleDown,
                       height: SizeConfig.height(context) * 0.18,
+                      // Use BoxFit.contain to ensure the car isn't distorted
+                      fit: BoxFit.contain,
                     ),
-                  );
-                },
-              ),
-            ],
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
