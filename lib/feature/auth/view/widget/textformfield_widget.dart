@@ -20,7 +20,7 @@ class TextFormFieldWidget extends StatefulWidget {
 }
 
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
-  bool isObscure = false;
+  late bool isObscure = widget.isPassword? true : false;
   @override
   Widget build(BuildContext context) {
     return TextFormField(

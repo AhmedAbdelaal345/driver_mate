@@ -23,8 +23,8 @@ abstract class AppConstants {
   static const String accountToContinue = "Create account to continue";
   static const String pleaseEnterYourEmail = "Please enter your email";
   static const String pleaseEnterYourPassword = "Please enter your password";
-  static const String pleaseEnterValidEmail = "Please enter  valid email";
-  static const String pleaseEnterValidPassword = "Please enter  valid password";
+  static const String pleaseEnterValidEmail = "Please enter valid email";
+  static const String pleaseEnterValidPassword = "Please enter valid password";
   static const String continueWithApple = "Login with Apple";
   static const String continueWithGoogle = "Login with Google";
   static const String dontHaveAccount = "Don't have an account? ";
@@ -39,15 +39,16 @@ abstract class AppConstants {
   static const String confirmPasswordText =
       "Your password has been successfully reset.Click confirm to reset the password. ";
   static const String setNewPasswordText = "Set a new password ";
-  static const String passwordRest = "Password  reset";
+  static const String passwordRest = "Password reset";
   static const String setNewPasswordHintText =
-      "Create a new password.Ensure it is differs fromprevious one for security.";
+      "Create a new password.Ensure it is differs from previous one for security.";
   //------------- Colors -------------
   static const Color white = Color(0xffffffff);
   static const Color veryDarkBlue = Color(0xff1B3C53);
   static const Color darkBlue = Color(0xff204560);
   static const Color blue = Color(0xff234C6A);
   static const Color grey = Color(0xffA5A4A4);
+  static const Color red = Color(0xffFF0000);
   //------------- Font Names -------------
   static const String fontPoppins = "Poppins";
   static const String fontInter = "Inter";
@@ -59,6 +60,7 @@ abstract class AppConstants {
   static const double f11 = 11.0;
   static const double f8 = 8.0;
   static const double f2 = 2.0;
+  static const double f1 = 1.0;
   static const double f21 = 21.0;
   static const double f20 = 20.0;
   static const double f24 = 24.0;
@@ -86,4 +88,10 @@ abstract class AppConstants {
   static const String checkPasswordPage = "/check_password_page";
   static const String confirmPasswordPage = "/confirm_password_page";
   static const String setNewPassword = "/set_new_password";
+  //-------------Toast Messages -------------
+  static const String registrationSuccessful = "Registration Successful";
+  static const String loginSuccessful = "Login Successful";
+  static const String passwordResetSuccessful = "Password Reset Successful";
+  static const String pleaseAgreeToTerms =
+      "You must agree to the Terms & Conditions";
 }

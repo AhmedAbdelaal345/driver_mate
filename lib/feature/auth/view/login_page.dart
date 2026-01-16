@@ -1,48 +1,26 @@
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_cubit.dart';
+import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_state.dart';
 import 'package:driver_mate/feature/auth/view/widget/divider_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/footer_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/social_button_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  late final GlobalKey _formKey;
-
-  late final TextEditingController emailController;
-
-  late final TextEditingController passwordController;
-  @override
-  void initState() {
-    _formKey = GlobalKey<FormState>();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
-          key: _formKey,
+          key: AuthCubit.get(context).loginFormKey,
           child: Center(
             child: Column(
               children: [
@@ -79,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: SizeConfig.height(context) * 0.015),
                       TextFormFieldWidget(
-                        controller: emailController,
+                        controller: AuthCubit.get(context).emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return AppConstants.pleaseEnterYourEmail;
@@ -103,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: SizeConfig.height(context) * 0.015),
                       TextFormFieldWidget(
-                        controller: passwordController,
+                        controller: AuthCubit.get(context).passwordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return AppConstants.pleaseEnterYourPassword;
@@ -142,20 +120,56 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       SizedBox(height: SizeConfig.height(context) * 0.015),
-                      PrimaryElevatedButtonWidget(
-                        formKey: _formKey,
-                        buttonText: AppConstants.loginText,
-                        onPressed: () {
-                          final FormState form =
-                              _formKey.currentState as FormState;
-                          if (form.validate()) {
+                      BlocConsumer<AuthCubit, AuthState>(
+                        listener: (context, state) {
+                          // TODO: implement listener
+                          if (state is LoginAuthFailure) {
                             Fluttertoast.showToast(
-                              msg: 'Login Successful',
+                              msg: state.errorMessage,
                               gravity: ToastGravity.BOTTOM,
                               textColor: AppConstants.white,
-                              backgroundColor: AppConstants.blue,
+                              backgroundColor: AppConstants.red,
                             );
-                            // Process data.
+                          } else {
+                            if (state is LoginAuthSuccess) {
+                              Fluttertoast.showToast(
+                                msg: AppConstants.loginSuccessful,
+                                gravity: ToastGravity.BOTTOM,
+                                textColor: AppConstants.white,
+                                backgroundColor: AppConstants.blue,
+                              );
+                              AuthCubit.get(context).clearControllers();
+                              // Process data.
+                              AuthCubit.get(context).resetState();
+                              // AuthCubit.get(context).disposeControllers();
+                            }
+                          }
+                        },
+
+                        builder: (context, state) {
+                          if (state is LoginAuthLoading) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: AppConstants.blue,
+                              ),
+                            );
+                          } else {
+                            return PrimaryElevatedButtonWidget(
+                              formKey: AuthCubit.get(context).loginFormKey,
+                              buttonText: AppConstants.loginText,
+                              onPressed: () {
+                                final form = AuthCubit.get(
+                                  context,
+                                ).loginFormKey.currentState!;
+                                if (form.validate()) {
+                                  AuthCubit.get(context).onLoginPress();
+
+                                  AuthCubit.get(context).clearControllers();
+                                  // Process data.
+                                  AuthCubit.get(context).resetState();
+                                }
+                              },
+                            );
                           }
                         },
                       ),

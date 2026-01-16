@@ -1,47 +1,19 @@
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_cubit.dart';
+import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_state.dart';
 import 'package:driver_mate/feature/auth/view/widget/divider_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/footer_register_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
-
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  late final GlobalKey<FormState> _formKey;
-  late final TextEditingController nameController;
-  late final TextEditingController emailController;
-  late final TextEditingController passwordController;
-  late final TextEditingController confirmPasswordController;
-
-  bool isAgreed = false;
-  @override
-  void initState() {
-    _formKey = GlobalKey<FormState>();
-    nameController = TextEditingController();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    confirmPasswordController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
       body: Form(
-        key: _formKey,
+        key: AuthCubit.get(context).registerFormKey,
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 0.03 * SizeConfig.height(context),
@@ -72,9 +44,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(height: SizeConfig.height(context) * 0.022),
                 Text(AppConstants.fullName, style: AppStyle.labelStyle),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
-            
+
                 TextFormFieldWidget(
-                  controller: nameController,
+                  controller: AuthCubit.get(context).nameController,
                   hintText: AppConstants.enterYourName,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -87,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Text(AppConstants.emailAddress, style: AppStyle.labelStyle),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
                 TextFormFieldWidget(
-                  controller: emailController,
+                  controller: AuthCubit.get(context).emailController,
                   hintText: AppConstants.enterYourEmail,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -105,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Text(AppConstants.password, style: AppStyle.labelStyle),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
                 TextFormFieldWidget(
-                  controller: passwordController,
+                  controller: AuthCubit.get(context).passwordController,
                   hintText: AppConstants.enterYourPassword,
                   isPassword: true,
                   validator: (value) {
@@ -117,41 +89,50 @@ class _RegisterPageState extends State<RegisterPage> {
                         false) {
                       return AppConstants.pleaseEnterValidPassword;
                     }
+                    return null;
                   },
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
                 Text(AppConstants.confirmPassword, style: AppStyle.labelStyle),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
                 TextFormFieldWidget(
-                  controller: confirmPasswordController,
+                  controller: AuthCubit.get(context).confirmPasswordController,
                   hintText: AppConstants.reEnterYourPassword,
                   isPassword: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return AppConstants.pleaseEnterYourName;
-                    } else if (passwordController.text !=
-                        confirmPasswordController.text) {
+                    } else if (AuthCubit.get(context).passwordController.text !=
+                        AuthCubit.get(context).confirmPasswordController.text) {
                       return AppConstants.pleaseEnterValidPassword;
                     }
+                    return null;
                   },
                 ),
                 SizedBox(height: 0.018 * SizeConfig.height(context)),
                 Row(
                   children: [
-                    Checkbox(
-                      value: isAgreed,
-                      onChanged: (value) {
-            setState(() {
-                        isAgreed = value!;
-              
-            });
-                        //we will link it with backend later
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, state) {
+                        return Checkbox(
+                          value: AuthCubit.get(context).isAgreed,
+                          onChanged: (value) {
+                            AuthCubit.get(context).toggleAgree(value!);
+                            //we will link it with backend later
+                          },
+                          checkColor: AppConstants.white,
+                          activeColor: AppConstants.blue,
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              AppConstants.f2,
+                            ),
+                            side: BorderSide(
+                              width: AppConstants.f1 / 5,
+                              color: AppConstants.darkBlue,
+                            ),
+                          ),
+                        );
                       },
-                      checkColor: AppConstants.white,
-                      activeColor: AppConstants.blue,
-                      shape: BeveledRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppConstants.f2),
-                      ),
                     ),
                     Text("Agree with ", style: AppStyle.labelStyle),
                     Text(
@@ -164,13 +145,66 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.07),
-                PrimaryElevatedButtonWidget(
-                  formKey: _formKey,
-                  buttonText: AppConstants.signup,
-                  onPressed: () {
-                    final FormState form = _formKey.currentState as FormState;
-                    if (form.validate()) {
-                      // Proceed with registration logic
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    // TODO: implement listener
+                    if (state is RegisterAuthSuccess) {
+                      Fluttertoast.showToast(
+                        msg: AppConstants.registrationSuccessful,
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: AppConstants.darkBlue.withOpacity(0.7),
+                        textColor: AppConstants.white,
+                        fontSize: AppConstants.f16,
+                      );
+                      AuthCubit.get(context).clearControllers();
+
+                      Navigator.pop(context);
+                    } else if (state is RegisterAuthFailure) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.errorMessage)),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is RegisterAuthLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: AppConstants.blue,
+                        ),
+                      );
+                    } else {
+                      return PrimaryElevatedButtonWidget(
+                        formKey: AuthCubit.get(context).registerFormKey,
+                        buttonText: AppConstants.signup,
+                        onPressed: () {
+                          final FormState form =
+                              AuthCubit.get(
+                                    context,
+                                  ).registerFormKey.currentState
+                                  as FormState;
+                          if (form.validate()) {
+                            // Proceed with registration logic
+
+                            if (!AuthCubit.get(context).isAgreed) {
+                              Fluttertoast.showToast(
+                                msg: AppConstants.pleaseAgreeToTerms,
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: AppConstants.darkBlue
+                                    .withOpacity(0.7),
+                                textColor: AppConstants.white,
+                                fontSize: AppConstants.f16,
+                              );
+                              return;
+                            }
+                            AuthCubit.get(context).onRegisterPress();
+                            AuthCubit.get(context).clearControllers();
+                          }
+                        },
+                      );
                     }
                   },
                 ),
