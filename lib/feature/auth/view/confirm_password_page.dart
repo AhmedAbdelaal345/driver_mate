@@ -1,6 +1,10 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/auth/view/set_new_password.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,7 +17,7 @@ class ConfirmPasswordPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: SvgPicture.asset(AppConstants.arrowBackPath),
+          icon: SvgPicture.asset(AppImagePath.arrowBackPath),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -30,7 +34,7 @@ class ConfirmPasswordPage extends StatelessWidget {
               alignment: AlignmentGeometry.centerLeft,
               child: Text(
                 AppConstants.passwordRest,
-                style: AppStyle.labelStyle.copyWith(fontSize: AppConstants.f20),
+                style: AppStyle.labelStyle.copyWith(fontSize: AppFontSize.f20),
               ),
             ),
             SizedBox(height: 0.014 * SizeConfig.height(context)),
@@ -40,7 +44,7 @@ class ConfirmPasswordPage extends StatelessWidget {
               buttonText: AppConstants.confirm,
               onPressed: () {
                 // Implement your confirm password logic here
-                Navigator.pushNamed(context, AppConstants.setNewPassword);
+                MyNavigation.navigateTo(SetNewPasswordPage());
               },
             ),
           ],

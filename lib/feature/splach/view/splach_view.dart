@@ -1,9 +1,13 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/splach/manager/cubit/splash_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SplachPage extends StatelessWidget {
   const SplachPage({super.key});
@@ -25,7 +29,7 @@ class _SplachPageView extends StatelessWidget {
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashNavigate) {
-          Navigator.of(context).pushReplacementNamed(AppConstants.loginPage);
+          MyNavigation.navigateTo(LoginPage());
         }
       },
       child: Scaffold(
@@ -37,9 +41,9 @@ class _SplachPageView extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                AppConstants.veryDarkBlue,
-                AppConstants.darkBlue,
-                AppConstants.blue,
+                AppColors.veryDarkBlue,
+                AppColors.darkBlue,
+                AppColors.blue,
               ],
             ),
           ),
@@ -66,8 +70,8 @@ class _SplachPageView extends StatelessWidget {
                           return Text(
                             AppConstants.driverMate.substring(0, value),
                             style: TextStyle(
-                              color: AppConstants.white,
-                              fontSize: AppConstants.f32,
+                              color: AppColors.white,
+                              fontSize: AppFontSize.f32,
                               fontWeight: FontWeight.bold,
                             ),
                           );
@@ -90,7 +94,7 @@ class _SplachPageView extends StatelessWidget {
 
                     // -----------------------
                     child: Image.asset(
-                      AppConstants.carPath,
+                      AppImagePath.carPath,
                       height: SizeConfig.height(context) * 0.18,
                       // Use BoxFit.contain to ensure the car isn't distorted
                       fit: BoxFit.contain,

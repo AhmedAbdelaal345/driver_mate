@@ -1,8 +1,13 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_regexp.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
-import 'package:driver_mate/feature/auth/view/widget/textformfield_widget.dart';
+import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -35,20 +40,36 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: SvgPicture.asset(AppConstants.arrowBackPath)),
+      appBar: AppBar(leading: SvgPicture.asset(AppImagePath.arrowBackPath)),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 0.04* SizeConfig.width(context)),
+          padding: EdgeInsets.symmetric(
+            horizontal: 0.04 * SizeConfig.width(context),
+          ),
           child: Form(
             key: formKey,
             child: Column(
               children: [
-                SizedBox(height: 0.044*SizeConfig.height(context),),
-                Align(alignment: AlignmentGeometry.centerLeft,child: Text(AppConstants.setNewPasswordText,style: AppStyle.labelStyle.copyWith(fontSize: AppConstants.f20),)),
+                SizedBox(height: 0.044 * SizeConfig.height(context)),
+                Align(
+                  alignment: AlignmentGeometry.centerLeft,
+                  child: Text(
+                    AppConstants.setNewPasswordText,
+                    style: AppStyle.labelStyle.copyWith(
+                      fontSize: AppFontSize.f20,
+                    ),
+                  ),
+                ),
                 SizedBox(height: 0.01 * MediaQuery.of(context).size.height),
                 Text(AppConstants.setNewPasswordHintText),
                 SizedBox(height: 0.03 * MediaQuery.of(context).size.height),
-                Align(alignment: AlignmentGeometry.centerLeft,child: Text(AppConstants.password, style: AppStyle.labelStyle)),
+                Align(
+                  alignment: AlignmentGeometry.centerLeft,
+                  child: Text(
+                    AppConstants.password,
+                    style: AppStyle.labelStyle,
+                  ),
+                ),
                 SizedBox(height: 0.01 * MediaQuery.of(context).size.height),
                 TextFormFieldWidget(
                   hintText: AppConstants.enterYourPassword,
@@ -57,7 +78,7 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                     if (value == null || value.isEmpty) {
                       return AppConstants.pleaseEnterYourPassword;
                     } else if (RegExp(
-                          AppConstants.passwordValidationPattern,
+                          AppRegExp.passwordValidationPattern,
                         ).hasMatch(value) ==
                         false) {
                       return AppConstants.pleaseEnterValidPassword;
@@ -67,7 +88,13 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                   controller: passwordController,
                 ),
                 SizedBox(height: 0.047 * MediaQuery.of(context).size.height),
-                Align(alignment: AlignmentGeometry.centerLeft,child: Text(AppConstants.confirmPassword, style: AppStyle.labelStyle)),
+                Align(
+                  alignment: AlignmentGeometry.centerLeft,
+                  child: Text(
+                    AppConstants.confirmPassword,
+                    style: AppStyle.labelStyle,
+                  ),
+                ),
                 SizedBox(height: 0.01 * MediaQuery.of(context).size.height),
                 TextFormFieldWidget(
                   hintText: AppConstants.reEnterYourPassword,
@@ -107,7 +134,9 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  SvgPicture.asset(AppConstants.correctMarkPath),
+                                  SvgPicture.asset(
+                                    AppImagePath.correctMarkPath,
+                                  ),
                                   SizedBox(
                                     height: 0.02 * SizeConfig.height(context),
                                   ),
@@ -131,12 +160,9 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                                   ),
                                   PrimaryElevatedButtonWidget(
                                     buttonText: AppConstants.continu,
-                                    onPressed: () => Navigator.popAndPushNamed(
-                                      context,
-                                      AppConstants.loginPage,
-                                    ),
+                                    onPressed: () =>
+                                        MyNavigation.navigateTo(LoginPage()),
                                   ),
-                                
                                 ],
                               ),
                             ),

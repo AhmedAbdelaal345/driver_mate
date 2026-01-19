@@ -1,4 +1,5 @@
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             ? IconButton(
                 icon: Icon(
                   isObscure ? Icons.visibility_off : Icons.visibility,
-                  color: AppConstants.grey,
+                  color: AppColors.grey,
                 ),
                 onPressed: () {
                   setState(() {
@@ -45,12 +46,12 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
 
         hintStyle: AppStyle.hintStyle,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppConstants.f8),
-          borderSide: BorderSide(color: AppConstants.grey),
+          borderRadius: BorderRadius.circular(AppFontSize.f8),
+          borderSide: BorderSide(color: AppColors.grey),
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppConstants.f8),
-          borderSide: BorderSide(color: AppConstants.grey),
+          borderRadius: BorderRadius.circular(AppFontSize.f8),
+          borderSide: BorderSide(color: AppColors.grey),
         ),
       ),
     );

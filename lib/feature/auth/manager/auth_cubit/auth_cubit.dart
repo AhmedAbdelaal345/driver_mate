@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:driver_mate/core/network/api_response.dart';
 import 'package:driver_mate/feature/auth/data/model/auth_model.dart';
 import 'package:driver_mate/feature/auth/data/repo/auth_repo.dart';
 import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_state.dart';
@@ -21,17 +22,16 @@ class AuthCubit extends Cubit<AuthState> {
   bool isAgreed = false;
   void onRegisterPress() async {
     emit(RegisterAuthLoading());
-    Either<String, void> result = authRepo.register(
+    Either<String, String> result = await authRepo.register(
       user: UserModel(
         name: nameController.text,
         email: emailController.text,
         password: passwordController.text,
-        isAgreed: isAgreed,
       ),
     );
     result.fold(
       (String error) => emit(RegisterAuthFailure(error)),
-      (success) => emit(RegisterAuthSuccess()),
+      (success) => emit(RegisterAuthSuccess(message: success)),
     );
   }
 
@@ -48,28 +48,28 @@ class AuthCubit extends Cubit<AuthState> {
     passwordController.dispose();
     confirmPasswordController.dispose();
   }
-  void toggleAgree(bool value) {
-  isAgreed = value;
-  emit(AuthInitial()); // just to trigger UI rebuild
-}
 
+  void toggleAgree(bool value) {
+    isAgreed = value;
+    emit(AuthInitial()); // just to trigger UI rebuild
+  }
 
   void resetState() {
     emit(AuthInitial());
   }
 
-  void onLoginPress() {
+  void onLoginPress() async {
     emit(LoginAuthLoading());
-    Either<String, UserModel> response = authRepo.login(
+    Either<ApiResponse, LoginResponse> response = await authRepo.login(
       email: emailController.text,
       password: passwordController.text,
     );
     response.fold(
       (l) {
-        emit(LoginAuthFailure(l));
+        emit(LoginAuthFailure(l.message.toString()));
       },
       (userModel) {
-        emit(LoginAuthSuccess());
+        emit(LoginAuthSuccess(message: userModel.message.toString()));
       },
     );
   }

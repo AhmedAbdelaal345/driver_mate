@@ -1,13 +1,19 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_regexp.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_cubit.dart';
 import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_state.dart';
+import 'package:driver_mate/feature/auth/view/forgot_password.dart';
+import 'package:driver_mate/feature/auth/view/register_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/divider_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/footer_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/social_button_widget.dart';
-import 'package:driver_mate/feature/auth/view/widget/textformfield_widget.dart';
+import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -30,7 +36,7 @@ class LoginPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage(AppConstants.loginImagePath),
+                      image: AssetImage(AppImagePath.loginImagePath),
                     ),
                   ),
                 ),
@@ -62,7 +68,7 @@ class LoginPage extends StatelessWidget {
                           if (value == null || value.isEmpty) {
                             return AppConstants.pleaseEnterYourEmail;
                           } else if (RegExp(
-                                AppConstants.emailValidationPattern,
+                                AppRegExp.emailValidationPattern,
                               ).hasMatch(value) ==
                               false) {
                             return AppConstants.pleaseEnterValidEmail;
@@ -86,7 +92,7 @@ class LoginPage extends StatelessWidget {
                           if (value == null || value.isEmpty) {
                             return AppConstants.pleaseEnterYourPassword;
                           } else if (RegExp(
-                                AppConstants.passwordValidationPattern,
+                                AppRegExp.passwordValidationPattern,
                               ).hasMatch(value) ==
                               false) {
                             return AppConstants.pleaseEnterValidPassword;
@@ -110,10 +116,7 @@ class LoginPage extends StatelessWidget {
                               ),
                               onPressed: () {
                                 // Navigate to forgot password page
-                                Navigator.pushNamed(
-                                  context,
-                                  AppConstants.forgotPasswordPage,
-                                );
+                                MyNavigation.navigateTo(ForgotPassword());
                               },
                             ),
                           ),
@@ -122,21 +125,21 @@ class LoginPage extends StatelessWidget {
                       SizedBox(height: SizeConfig.height(context) * 0.015),
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
-                          // TODO: implement listener
+                          // implement listener
                           if (state is LoginAuthFailure) {
                             Fluttertoast.showToast(
                               msg: state.errorMessage,
                               gravity: ToastGravity.BOTTOM,
-                              textColor: AppConstants.white,
-                              backgroundColor: AppConstants.red,
+                              textColor: AppColors.white,
+                              backgroundColor: AppColors.red,
                             );
                           } else {
                             if (state is LoginAuthSuccess) {
                               Fluttertoast.showToast(
-                                msg: AppConstants.loginSuccessful,
+                                msg: state.message,
                                 gravity: ToastGravity.BOTTOM,
-                                textColor: AppConstants.white,
-                                backgroundColor: AppConstants.blue,
+                                textColor: AppColors.white,
+                                backgroundColor: AppColors.blue,
                               );
                               AuthCubit.get(context).clearControllers();
                               // Process data.
@@ -150,7 +153,7 @@ class LoginPage extends StatelessWidget {
                           if (state is LoginAuthLoading) {
                             return Center(
                               child: CircularProgressIndicator(
-                                color: AppConstants.blue,
+                                color: AppColors.blue,
                               ),
                             );
                           } else {
@@ -179,7 +182,7 @@ class LoginPage extends StatelessWidget {
                       SocialButtonWidget(
                         textButton: AppConstants.continueWithApple,
                         icon: ImageIcon(
-                          AssetImage(AppConstants.applePath),
+                          AssetImage(AppImagePath.applePath),
                           color: Colors.black,
                         ),
                         onPressed: () {},
@@ -188,7 +191,7 @@ class LoginPage extends StatelessWidget {
                       SocialButtonWidget(
                         textButton: AppConstants.continueWithGoogle,
                         icon: Image.asset(
-                          AppConstants.googlePath,
+                          AppImagePath.googlePath,
                           width: 24, // Adjust size to match your design
                           height: 24,
                         ),
@@ -198,7 +201,7 @@ class LoginPage extends StatelessWidget {
                       FooterWidget(
                         onTap: () {
                           // Navigate to signup page
-                          Navigator.pushNamed(context, AppConstants.signupPage);
+                          MyNavigation.navigateTo(const RegisterPage());
                         },
                       ),
                     ],

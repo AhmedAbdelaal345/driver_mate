@@ -1,15 +1,18 @@
+import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_fonts.dart';
+import 'package:driver_mate/core/utils/app_routes.dart';
 import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_cubit.dart';
-import 'package:driver_mate/feature/auth/view/check_your_password.dart';
 import 'package:driver_mate/feature/auth/view/confirm_password_page.dart';
 import 'package:driver_mate/feature/auth/view/forgot_password.dart';
 import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/auth/view/register_page.dart';
 import 'package:driver_mate/feature/auth/view/set_new_password.dart';
-import 'package:driver_mate/feature/splach/manager/cubit/splash_cubit.dart';
 import 'package:driver_mate/feature/splach/view/splach_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,27 +26,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [BlocProvider(create: (context) => AuthCubit())],
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Driver Mate',
+        title: AppConstants.driverMate,
         theme: ThemeData(
-          fontFamily: AppConstants.fontInter,
+          fontFamily: AppFonts.fontInter,
+          primaryColor: AppColors.darkBlue,
+          
           appBarTheme: const AppBarTheme(
             titleTextStyle: TextStyle(
-              fontSize: AppConstants.f21,
+              fontSize: AppFontSize.f21,
               fontWeight: FontWeight.w600,
-              color: AppConstants.darkBlue,
-              fontFamily: AppConstants.fontPoppins,
+              color: AppColors.darkBlue,
+              fontFamily: AppFonts.fontPoppins,
             ),
           ),
         ),
         routes: {
-          AppConstants.signupPage: (context) => const RegisterPage(),
-          AppConstants.forgotPasswordPage: (context) => const ForgotPassword(),
-          AppConstants.confirmPasswordPage: (context) =>
+          AppRoutes.signupPage: (context) => const RegisterPage(),
+          AppRoutes.forgotPasswordPage: (context) => const ForgotPassword(),
+          AppRoutes.confirmPasswordPage: (context) =>
               const ConfirmPasswordPage(),
-          AppConstants.setNewPassword: (context) => const SetNewPasswordPage(),
-          AppConstants.loginPage: (context) => const LoginPage(),
+          AppRoutes.setNewPassword: (context) => const SetNewPasswordPage(),
+          AppRoutes.loginPage: (context) => const LoginPage(),
         },
         home: const SplachPage(),
       ),

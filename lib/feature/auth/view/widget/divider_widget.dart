@@ -1,4 +1,5 @@
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,8 @@ class DividerWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Divider(
-              color: AppConstants.grey,
-              thickness: AppConstants.f2,
+              color: AppColors.grey,
+              thickness: AppFontSize.f2,
             ),
           ),
           
@@ -33,8 +34,8 @@ class DividerWidget extends StatelessWidget {
           
           Expanded(
             child: Divider(
-              color: AppConstants.grey,
-              thickness: AppConstants.f2,
+              color: AppColors.grey,
+              thickness: AppFontSize.f2,
             ),
           ),
         ],

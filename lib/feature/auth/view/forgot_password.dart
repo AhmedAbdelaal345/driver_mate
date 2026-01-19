@@ -1,9 +1,13 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_regexp.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/check_your_password.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
-import 'package:driver_mate/feature/auth/view/widget/textformfield_widget.dart';
+import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -27,7 +31,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    //implement dispose
     emailController.dispose();
     super.dispose();
   }
@@ -41,7 +45,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             Navigator.pop(context);
           },
           child: SvgPicture.asset(
-            AppConstants.arrowBackPath,
+            AppImagePath.arrowBackPath,
             height: 0.024 * MediaQuery.of(context).size.height,
             width: 0.024 * MediaQuery.of(context).size.width,
           ),
@@ -60,7 +64,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               Text(
                 AppConstants.forgotPassword,
                 style: AppStyle.signUpTextStyle24.copyWith(
-                  fontSize: AppConstants.f20,
+                  fontSize: AppFontSize.f20,
                 ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.001),
@@ -85,7 +89,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   if (value == null || value.isEmpty) {
                     return AppConstants.pleaseEnterYourEmail;
                   } else if (RegExp(
-                        AppConstants.emailValidationPattern,
+                        AppRegExp.emailValidationPattern,
                       ).hasMatch(value) ==
                       false) {
                     return AppConstants.pleaseEnterValidEmail;
@@ -100,12 +104,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   final FormState form = formKey.currentState as FormState;
                   if (form.validate()) {
                     // Implement your forgot password logic here
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            CheckYourEmail(email: emailController.text.trim()),
-                      ),
+                    MyNavigation.navigateTo(
+                      CheckYourEmail(email: emailController.text.trim()),
                     );
                   }
                 },

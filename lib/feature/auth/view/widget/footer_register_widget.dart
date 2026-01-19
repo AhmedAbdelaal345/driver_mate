@@ -1,4 +1,4 @@
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,18 +13,18 @@ class FooterRegisterWidget extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () {},
-          icon: ImageIcon(AssetImage(AppConstants.googlePath), size: 25),
+          icon: ImageIcon(AssetImage(AppImagePath.googlePath), size: 25),
         ),
         SizedBox(width: SizeConfig.width(context) * 0.032),
         IconButton(
           onPressed: () {},
-          icon: ImageIcon(AssetImage(AppConstants.applePath), size: 25),
+          icon: ImageIcon(AssetImage(AppImagePath.applePath), size: 25),
         ),
         SizedBox(width: SizeConfig.width(context) * 0.032),
         IconButton(
           onPressed: () {},
           icon: SvgPicture.asset(
-            AppConstants.facebookPath,
+            AppImagePath.facebookPath,
             height: 25,
             width: 25,
           ),

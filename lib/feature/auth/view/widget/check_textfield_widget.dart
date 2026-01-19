@@ -1,4 +1,5 @@
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,12 +51,12 @@ class CheckTextfieldWidget extends StatelessWidget {
           counterText: "", // Hides the "0/1" character counter
           contentPadding: EdgeInsets.zero, // Helps center text vertically in small boxes
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppConstants.f8),
-            borderSide: BorderSide(color: AppConstants.grey),
+            borderRadius: BorderRadius.circular(AppFontSize.f8),
+            borderSide: BorderSide(color: AppColors.grey),
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppConstants.f8),
-            borderSide: BorderSide(color: AppConstants.grey),
+            borderRadius: BorderRadius.circular(AppFontSize.f8),
+            borderSide: BorderSide(color: AppColors.grey),
           ),
         ),
       ),

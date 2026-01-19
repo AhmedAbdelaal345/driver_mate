@@ -1,4 +1,8 @@
+import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_regexp.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_cubit.dart';
@@ -6,7 +10,7 @@ import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_state.dart';
 import 'package:driver_mate/feature/auth/view/widget/divider_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/footer_register_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
-import 'package:driver_mate/feature/auth/view/widget/textformfield_widget.dart';
+import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,7 +27,7 @@ class RegisterPage extends StatelessWidget {
             Navigator.pop(context);
           },
           child: SvgPicture.asset(
-            AppConstants.arrowBackPath,
+            AppImagePath.arrowBackPath,
             height: SizeConfig.height(context) * 0.024,
             width: SizeConfig.width(context) * 0.024,
           ),
@@ -65,7 +69,7 @@ class RegisterPage extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return AppConstants.pleaseEnterYourEmail;
                     } else if (RegExp(
-                          AppConstants.emailValidationPattern,
+                          AppRegExp.emailValidationPattern,
                         ).hasMatch(value) ==
                         false) {
                       return AppConstants.pleaseEnterValidEmail;
@@ -84,7 +88,7 @@ class RegisterPage extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return AppConstants.pleaseEnterYourName;
                     } else if (RegExp(
-                          AppConstants.passwordValidationPattern,
+                          AppRegExp.passwordValidationPattern,
                         ).hasMatch(value) ==
                         false) {
                       return AppConstants.pleaseEnterValidPassword;
@@ -120,15 +124,13 @@ class RegisterPage extends StatelessWidget {
                             AuthCubit.get(context).toggleAgree(value!);
                             //we will link it with backend later
                           },
-                          checkColor: AppConstants.white,
-                          activeColor: AppConstants.blue,
+                          checkColor: AppColors.white,
+                          activeColor: AppColors.blue,
                           shape: BeveledRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              AppConstants.f2,
-                            ),
+                            borderRadius: BorderRadius.circular(AppFontSize.f2),
                             side: BorderSide(
-                              width: AppConstants.f1 / 5,
-                              color: AppConstants.darkBlue,
+                              width: AppFontSize.f1 / 5,
+                              color: AppColors.darkBlue,
                             ),
                           ),
                         );
@@ -139,7 +141,7 @@ class RegisterPage extends StatelessWidget {
                       "Terms & Conditions",
                       style: AppStyle.labelStyle.copyWith(
                         decoration: TextDecoration.underline,
-                        color: AppConstants.blue,
+                        color: AppColors.blue,
                       ),
                     ),
                   ],
@@ -150,13 +152,13 @@ class RegisterPage extends StatelessWidget {
                     // TODO: implement listener
                     if (state is RegisterAuthSuccess) {
                       Fluttertoast.showToast(
-                        msg: AppConstants.registrationSuccessful,
+                        msg: state.message,
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
                         timeInSecForIosWeb: 1,
-                        backgroundColor: AppConstants.darkBlue.withOpacity(0.7),
-                        textColor: AppConstants.white,
-                        fontSize: AppConstants.f16,
+                        backgroundColor: AppColors.darkBlue.withOpacity(0.7),
+                        textColor: AppColors.white,
+                        fontSize: AppFontSize.f16,
                       );
                       AuthCubit.get(context).clearControllers();
 
@@ -170,9 +172,7 @@ class RegisterPage extends StatelessWidget {
                   builder: (context, state) {
                     if (state is RegisterAuthLoading) {
                       return Center(
-                        child: CircularProgressIndicator(
-                          color: AppConstants.blue,
-                        ),
+                        child: CircularProgressIndicator(color: AppColors.blue),
                       );
                     } else {
                       return PrimaryElevatedButtonWidget(
@@ -193,10 +193,11 @@ class RegisterPage extends StatelessWidget {
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 timeInSecForIosWeb: 1,
-                                backgroundColor: AppConstants.darkBlue
-                                    .withOpacity(0.7),
-                                textColor: AppConstants.white,
-                                fontSize: AppConstants.f16,
+                                backgroundColor: AppColors.darkBlue.withOpacity(
+                                  0.7,
+                                ),
+                                textColor: AppColors.white,
+                                fontSize: AppFontSize.f16,
                               );
                               return;
                             }

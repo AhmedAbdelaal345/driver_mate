@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 abstract class AppConstants {
   //------------- Strings -------------
   static const String driverMate = "Driver Mate";
@@ -42,52 +40,7 @@ abstract class AppConstants {
   static const String passwordRest = "Password reset";
   static const String setNewPasswordHintText =
       "Create a new password.Ensure it is differs from previous one for security.";
-  //------------- Colors -------------
-  static const Color white = Color(0xffffffff);
-  static const Color veryDarkBlue = Color(0xff1B3C53);
-  static const Color darkBlue = Color(0xff204560);
-  static const Color blue = Color(0xff234C6A);
-  static const Color grey = Color(0xffA5A4A4);
-  static const Color red = Color(0xffFF0000);
-  //------------- Font Names -------------
-  static const String fontPoppins = "Poppins";
-  static const String fontInter = "Inter";
-  //------------- Font Sizes -------------
-  static const double f32 = 32.0;
-  static const double f16 = 16.0;
-  static const double f14 = 14.0;
-  static const double f13 = 13.0;
-  static const double f11 = 11.0;
-  static const double f8 = 8.0;
-  static const double f2 = 2.0;
-  static const double f1 = 1.0;
-  static const double f21 = 21.0;
-  static const double f20 = 20.0;
-  static const double f24 = 24.0;
-  static const double f25 = 25.0;
-  //------------- Asset Paths -------------
-  static const String imagesPath = "assets/images/";
-  static const String carPath = "${imagesPath}car.png";
-  static const String googlePath = "${imagesPath}google.png";
-  static const String applePath = "${imagesPath}apple.png";
-  static const String loginImagePath = "${imagesPath}login_image.jpg";
-  static const String arrowBackPath = "${imagesPath}arrow_back.svg";
-  static const String facebookPath = "${imagesPath}facebook.svg";
-  static const String correctMarkPath = "${imagesPath}correct_mark.svg";
-  //widdths and heights
-  double get carImageHeight => 371.0;
-  //------------- Regex -------------
-  static const String emailValidationPattern =
-      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-  static const String passwordValidationPattern =
-      r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$';
-  //------------- Routes -------------
-  static const String signupPage = "/signup_page";
-  static const String loginPage = "/login_page";
-  static const String forgotPasswordPage = "/forgot_password_page";
-  static const String checkPasswordPage = "/check_password_page";
-  static const String confirmPasswordPage = "/confirm_password_page";
-  static const String setNewPassword = "/set_new_password";
+
   //-------------Toast Messages -------------
   static const String registrationSuccessful = "Registration Successful";
   static const String loginSuccessful = "Login Successful";

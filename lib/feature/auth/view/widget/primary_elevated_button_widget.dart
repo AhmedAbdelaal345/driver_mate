@@ -1,4 +1,5 @@
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart' show AppStyle;
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class PrimaryElevatedButtonWidget extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppConstants.darkBlue,
+        backgroundColor: AppColors.darkBlue,
         minimumSize: Size(
           double.infinity,
           SizeConfig.height(context) * 0.07,
@@ -28,7 +29,7 @@ class PrimaryElevatedButtonWidget extends StatelessWidget {
         //   vertical: SizeConfig.height(context) * 0.02,
         // ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppConstants.f8),
+          borderRadius: BorderRadius.circular(AppFontSize.f8),
         ),
       ),
       child: Text(buttonText, style: AppStyle.buttonTextStyle),
