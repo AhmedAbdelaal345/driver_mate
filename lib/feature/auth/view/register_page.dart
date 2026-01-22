@@ -1,3 +1,4 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
@@ -162,10 +163,16 @@ class RegisterPage extends StatelessWidget {
                       );
                       AuthCubit.get(context).clearControllers();
 
-                      Navigator.pop(context);
+                      MyNavigation.navigateBack();
                     } else if (state is RegisterAuthFailure) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.errorMessage)),
+                       Fluttertoast.showToast(
+                        msg: state.errorMessage,
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: AppColors.darkBlue.withOpacity(0.7),
+                        textColor: AppColors.white,
+                        fontSize: AppFontSize.f16,
                       );
                     }
                   },
@@ -202,7 +209,6 @@ class RegisterPage extends StatelessWidget {
                               return;
                             }
                             AuthCubit.get(context).onRegisterPress();
-                            AuthCubit.get(context).clearControllers();
                           }
                         },
                       );

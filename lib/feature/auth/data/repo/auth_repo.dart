@@ -1,3 +1,5 @@
+import 'dart:developer' as consol;
+
 import 'package:dartz/dartz.dart';
 import 'package:driver_mate/core/local/api_keys.dart';
 import 'package:driver_mate/core/network/api_constants.dart';
@@ -22,17 +24,21 @@ class AuthRepo {
       this.user = user;
       ApiResponse response = await apiHelper.postRequest(
         endpoint: ApiConstants.registerEndpoint,
-
+        isForm: false,
         data: {
           ApiKeys.name: user.name,
           ApiKeys.email: user.email,
           ApiKeys.password: user.password,
+          ApiKeys.isAgreed: true,
         },
         isAuthorized: false,
       );
-      if (!response.status) {
+      if (response.status == true) {
+        consol.log(response.message);
         return Right(response.message);
       } else {
+        consol.log(response.message);
+
         return Left(response.message);
       }
     } on Exception catch (e) {

@@ -167,9 +167,7 @@ class LoginPage extends StatelessWidget {
                                 if (form.validate()) {
                                   AuthCubit.get(context).onLoginPress();
 
-                                  AuthCubit.get(context).clearControllers();
                                   // Process data.
-                                  AuthCubit.get(context).resetState();
                                 }
                               },
                             );

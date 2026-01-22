@@ -60,7 +60,8 @@ class ApiResponse {
       case DioExceptionType.receiveTimeout:
         return "Receive timeout in connection with server";
       case DioExceptionType.badResponse:
-        return "Invalid status code: ${error.response?.statusCode}";
+        print("Invalid status code: ${error.response?.statusCode} , message: ${error.response?.data['message'] ?? error.message}");
+        return "Invalid status code: ${error.response?.statusCode} , message: ${error.response?.data['message'] ?? error.message}";
       case DioExceptionType.cancel:
         return "Request cancelled";
       case DioExceptionType.connectionError:
@@ -68,9 +69,6 @@ class ApiResponse {
       case DioExceptionType.badCertificate:
         return "Bad certificate";
       case DioExceptionType.unknown:
-        return "Unexpected error occurred";
-
-      default:
         return "Unexpected error occurred";
     }
   }
