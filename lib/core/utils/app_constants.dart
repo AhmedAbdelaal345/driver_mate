@@ -27,6 +27,10 @@ abstract class AppConstants {
   static const String continueWithGoogle = "Login with Google";
   static const String dontHaveAccount = "Don't have an account? ";
   static const String signup = "Sign Up";
+  static const String startScan = "Start Scan";
+  static const String aiVoice = "AI Voice Diagnosis";
+  static const String maintanence = "Book Maintenance";
+  static const String add = "Add Vehicle";
   static const String updatePassword = "Update password";
   static const String resetByEmail =
       "Please enter your email to reset the password";
@@ -38,6 +42,9 @@ abstract class AppConstants {
       "Your password has been successfully reset.Click confirm to reset the password. ";
   static const String setNewPasswordText = "Set a new password ";
   static const String passwordRest = "Password reset";
+  static const String coursalTitle = "AI Diagnose Your Car";
+  static const String emergencyCall = "Emergency Call";
+  static const String coursalSubtitle = "Voice-based sound analysis";
   static const String setNewPasswordHintText =
       "Create a new password.Ensure it is differs from previous one for security.";
 
@@ -47,4 +54,5 @@ abstract class AppConstants {
   static const String passwordResetSuccessful = "Password Reset Successful";
   static const String pleaseAgreeToTerms =
       "You must agree to the Terms & Conditions";
+  static const String pressBackAgainToExit = "Press again to exit the app";
 }

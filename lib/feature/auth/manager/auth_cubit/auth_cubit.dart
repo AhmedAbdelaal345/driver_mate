@@ -13,12 +13,12 @@ class AuthCubit extends Cubit<AuthState> {
   static AuthCubit get(context) => BlocProvider.of<AuthCubit>(context);
   final GlobalKey<FormState> registerFormKey = GlobalKey();
   final GlobalKey<FormState> loginFormKey = GlobalKey();
-
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  DateTime? lastBackPressed;
   bool isAgreed = false;
   void onRegisterPress() async {
     emit(RegisterAuthLoading());

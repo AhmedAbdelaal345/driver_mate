@@ -9,7 +9,7 @@ import 'package:driver_mate/feature/auth/view/forgot_password.dart';
 import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/auth/view/register_page.dart';
 import 'package:driver_mate/feature/auth/view/set_new_password.dart';
-import 'package:driver_mate/feature/splach/view/splach_view.dart';
+import 'package:driver_mate/feature/splach/view/splach_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';

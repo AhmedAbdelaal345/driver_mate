@@ -8,4 +8,13 @@ abstract class AppImagePath {
   static const String arrowBackPath = "${imagesPath}arrow_back.svg";
   static const String facebookPath = "${imagesPath}facebook.svg";
   static const String correctMarkPath = "${imagesPath}correct_mark.svg";
+  static const String homeIconPath = "assets/icons/home_icon.svg";
+  static const String compassIconPath = "assets/icons/compass_icon.svg";
+  static const String repboteIconPath = "assets/icons/rebot_icon.svg";
+  static const String profileIconPath = "assets/icons/profile_icon.svg";
+  static const String peopleIconPath = "assets/icons/people_icon.svg";
+  static const String micIconPath = "assets/icons/mic.svg";
+  static const String phoneIconPath = "assets/icons/phone.svg";
+  static const String plusIconPath = "assets/icons/plus.svg";
+  static const String repairIconPath = "assets/icons/repair_key.svg";
 }

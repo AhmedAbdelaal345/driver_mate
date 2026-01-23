@@ -10,7 +10,7 @@ abstract class AppStyle {
     color: Colors.black,
     fontFamily: AppFonts.fontPoppins,
   );
-   static TextStyle signUpTextStyle24 = const TextStyle(
+  static TextStyle signUpTextStyle24 = const TextStyle(
     fontSize: AppFontSize.f24,
     fontWeight: FontWeight.w700,
     color: Colors.black,
@@ -57,5 +57,18 @@ abstract class AppStyle {
     fontWeight: FontWeight.w400,
     color: Colors.black,
     fontFamily: AppFonts.fontPoppins,
+  );
+
+  static TextStyle coursalTitleTextStyle = const TextStyle(
+    fontSize: AppFontSize.f18,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+    fontFamily: AppFonts.fontInter,
+  );
+  static TextStyle coursalSubtitleTextStyle = const TextStyle(
+    fontSize: AppFontSize.f14,
+    fontWeight: FontWeight.w400,
+    color: Colors.white,
+    fontFamily: AppFonts.fontInter,
   );
 }
