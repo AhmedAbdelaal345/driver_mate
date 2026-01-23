@@ -8,7 +8,13 @@ abstract class AppColors {
   static const Color darkBlue = Color(0xff204560);
   static const Color blue = Color(0xff234C6A);
   static const Color grey = Color.fromRGBO(165, 164, 164, 1);
+  static const Color textGrey = Color(0xff4B5563);
   static const Color iconGrey = Color(0xff9CA3AF);
   static const Color red = Color(0xffFF0000);
   static const Color black = Color(0xff111827);
+  static const Color smoothGreen = Color(0xffDCFCE7);
+  static const Color smoothYellow = Color(0xffFEF9C3);
+  static const Color green = Color(0xff16A34A);
+  static const Color yellow = Color(0xffCA8A04);
+  static const Color boarderWhiteColor = Color(0xffE5E7EB);
 }

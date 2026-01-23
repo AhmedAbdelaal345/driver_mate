@@ -38,8 +38,7 @@ dependencies:
   flutter_svg: ^2.2.3
   fluttertoast: ^9.0.0
   get: ^4.7.3
-  carousel_slider: ^4.2.1
-
+  carousel_slider: ^5.1.1
 dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:
@@ -70,7 +69,7 @@ flutter:
   # example:
   assets:
     - assets/images/
-    - assets/images/car.png # Ensure this exact file is here
+    - assets/icons/ # Ensure this exact file is here
 
   fonts:
     - family: Inter
@@ -81,7 +80,7 @@ flutter:
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Black.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
+        # - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,

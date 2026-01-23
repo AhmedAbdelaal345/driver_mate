@@ -9,6 +9,7 @@ import 'package:driver_mate/feature/auth/view/forgot_password.dart';
 import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/auth/view/register_page.dart';
 import 'package:driver_mate/feature/auth/view/set_new_password.dart';
+import 'package:driver_mate/feature/home/view/wrapper_page.dart';
 import 'package:driver_mate/feature/splach/view/splach_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.setNewPassword: (context) => const SetNewPasswordPage(),
           AppRoutes.loginPage: (context) => const LoginPage(),
         },
-        home: const SplachPage(),
+        home: const WrapperPage(),
       ),
     );
   }

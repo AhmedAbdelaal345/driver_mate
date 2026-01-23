@@ -31,71 +31,76 @@ class _WrapperPageState extends State<WrapperPage> {
     return Scaffold(
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
         backgroundColor: AppColors.white,
         selectedItemColor: AppColors.cyanColor,
         unselectedItemColor: AppColors.iconGrey,
-        selectedFontSize: AppFontSize.f29,
-        unselectedFontSize: AppFontSize.f25,
+        selectedFontSize: AppFontSize.f18,
+        unselectedFontSize: AppFontSize.f14,
         showUnselectedLabels: true,
         items: [
           BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _currentIndex = 0;
-                });
-              },
-              icon: SvgPicture.asset(
-                AppImagePath.compassIconPath,
-                fit: BoxFit.scaleDown,
+            icon: SvgPicture.asset(AppImagePath.compassIconPath, height: 24),
+            activeIcon: SvgPicture.asset(
+              AppImagePath.compassIconPath,
+              colorFilter: ColorFilter.mode(
+                AppColors.cyanColor,
+                BlendMode.srcIn,
               ),
+              height: 26,
             ),
             label: 'Explore',
           ),
           BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _currentIndex = 1;
-                });
-              },
-              icon: SvgPicture.asset(
-                AppImagePath.repboteIconPath,
-                fit: BoxFit.scaleDown,
+            icon: SvgPicture.asset(AppImagePath.repboteIconPath, height: 24),
+            activeIcon: SvgPicture.asset(
+              AppImagePath.repboteIconPath,
+              colorFilter: ColorFilter.mode(
+                AppColors.cyanColor,
+                BlendMode.srcIn,
               ),
+              height: 26,
             ),
             label: 'AI Assistant',
           ),
           BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _currentIndex = 2;
-                });
-              },
-              icon: SvgPicture.asset(AppImagePath.homeIconPath),
+            icon: SvgPicture.asset(AppImagePath.homeIconPath, height: 24),
+            activeIcon: SvgPicture.asset(
+              AppImagePath.homeIconPath,
+              colorFilter: ColorFilter.mode(
+                AppColors.cyanColor,
+                BlendMode.srcIn,
+              ),
+              height: 26,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _currentIndex = 3;
-                });
-              },
-              icon: SvgPicture.asset(AppImagePath.peopleIconPath),
+            icon: SvgPicture.asset(AppImagePath.peopleIconPath, height: 24),
+            activeIcon: SvgPicture.asset(
+              AppImagePath.peopleIconPath,
+              colorFilter: ColorFilter.mode(
+                AppColors.cyanColor,
+                BlendMode.srcIn,
+              ),
+              height: 26,
             ),
             label: 'Community',
           ),
           BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _currentIndex = 4;
-                });
-              },
-              icon: SvgPicture.asset(AppImagePath.profileIconPath),
+            icon: SvgPicture.asset(AppImagePath.profileIconPath, height: 24),
+            activeIcon: SvgPicture.asset(
+              AppImagePath.profileIconPath,
+              colorFilter: ColorFilter.mode(
+                AppColors.cyanColor,
+                BlendMode.srcIn,
+              ),
+              height: 26,
             ),
             label: 'Profile',
           ),

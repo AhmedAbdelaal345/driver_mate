@@ -17,6 +17,12 @@ abstract class AppConstants {
   static const String doesntMatch = "The password doesn't match";
   static const String fullName = "Full Name";
   static const String continu = "Continue";
+  static const String attention = "Attention";
+  static const String vechicleStatus = "Vehicle Status";
+  static const String engineHealth = "Engine Health";
+  static const String latestCarNews = "Latest Car News";
+  static const String recommendedService = "Recommended Service";
+  static const String batteryHealth = "Battery Health";
   static const String forgotPassword = "Forgot Password";
   static const String accountToContinue = "Create account to continue";
   static const String pleaseEnterYourEmail = "Please enter your email";
@@ -29,9 +35,12 @@ abstract class AppConstants {
   static const String signup = "Sign Up";
   static const String startScan = "Start Scan";
   static const String aiVoice = "AI Voice Diagnosis";
+  static const String good = "Good";
   static const String maintanence = "Book Maintenance";
   static const String add = "Add Vehicle";
   static const String updatePassword = "Update password";
+  static const String electricVehicles =
+      "Electric vehicles reach new efficiency milestone";
   static const String resetByEmail =
       "Please enter your email to reset the password";
   static const String pleaseEnterTheCode = "Please enter the code";
