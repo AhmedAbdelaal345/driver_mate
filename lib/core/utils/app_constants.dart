@@ -2,6 +2,9 @@ abstract class AppConstants {
   //------------- Strings -------------
   static const String driverMate = "Driver Mate";
   static const String loginText = "Login";
+  static const String explore = "Explore";
+  static const String viewAll = "View All";
+  static const String viewDetails = "View Details";
   static const String welcomeToDriveMate = "Welcome to DriveMate";
   static const String pleaseLogin = "Please log in the form below.";
   static const String emailAddress = "Email Address";
@@ -12,7 +15,9 @@ abstract class AppConstants {
   static const String enterYourPassword = "Enter your password";
   static const String reEnterYourPassword = "Enter your new password";
   static const String password = "Password";
+  static const String maintanenceNearService = "Maintenance Near You";
   static const String confirm = "Confirm";
+  static const String featuredCars = "Featured Cars";
   static const String confirmPassword = "Confirm Password";
   static const String doesntMatch = "The password doesn't match";
   static const String fullName = "Full Name";
@@ -39,6 +44,8 @@ abstract class AppConstants {
   static const String maintanence = "Book Maintenance";
   static const String add = "Add Vehicle";
   static const String updatePassword = "Update password";
+  static const String recommendedBannerText =
+      "Recommended for you based on your car & usages";
   static const String electricVehicles =
       "Electric vehicles reach new efficiency milestone";
   static const String resetByEmail =

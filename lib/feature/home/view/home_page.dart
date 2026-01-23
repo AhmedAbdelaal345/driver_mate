@@ -3,7 +3,6 @@ import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
-import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/home/view/widget/container_icon_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/coursal_widget.dart';

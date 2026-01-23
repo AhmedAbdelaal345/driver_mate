@@ -14,7 +14,6 @@ import 'package:driver_mate/feature/auth/view/widget/footer_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/social_button_widget.dart';
 import 'package:driver_mate/core/widget/textformfield_widget.dart';
-import 'package:driver_mate/feature/home/view/home_page.dart';
 import 'package:driver_mate/feature/home/view/wrapper_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -17,4 +17,6 @@ abstract class AppColors {
   static const Color green = Color(0xff16A34A);
   static const Color yellow = Color(0xffCA8A04);
   static const Color boarderWhiteColor = Color(0xffE5E7EB);
+  static const Color powderBlueColor = Color(0xffEFF6FF);
+  static const Color paleBlueColor = Color(0xffDBEAFE);
 }

@@ -9,6 +9,8 @@ abstract class AppImagePath {
   static const String facebookPath = "${imagesPath}facebook.svg";
   static const String correctMarkPath = "${imagesPath}correct_mark.svg";
   static const String newsImagePath = "${imagesPath}news.png";
+  static const String camryCarImagePath = "${imagesPath}cammary.png";
+  static const String bmwCarImagePath = "${imagesPath}bmw.png";
   //------------- Icon Paths -------------
   static const String homeIconPath = "assets/icons/home_icon.svg";
   static const String compassIconPath = "assets/icons/compass_icon.svg";
