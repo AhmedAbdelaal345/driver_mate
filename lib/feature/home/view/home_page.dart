@@ -5,10 +5,13 @@ import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/home/view/widget/container_icon_widget.dart';
+import 'package:driver_mate/feature/home/view/widget/container_title.dart';
 import 'package:driver_mate/feature/home/view/widget/coursal_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/custom_container_widget.dart';
+import 'package:driver_mate/feature/home/view/widget/maintainance_container_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/status_container_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -42,11 +45,35 @@ class HomePage extends StatelessWidget {
       ),
       CustomContainerWidget(
         title: AppConstants.recommendedService,
-        subtitle: AppConstants.good,
+        subtitle: AppConstants.oilChange,
         imagePath: AppImagePath.loginImagePath,
       ),
+      CustomContainerWidget(
+        title: AppConstants.aiMaintenance,
+        subtitle: AppConstants.checkTirePressure,
+        imagePath: AppImagePath.camryCarImagePath,
+      ),
     ];
+    const List<MaintainanceContainerWidget> maintanceContainerList = [
+      MaintainanceContainerWidget(),
+      MaintainanceContainerWidget(
+        imagePath: AppImagePath.calenderIconPath,
+        title: AppConstants.annual,
+        subTitle: AppConstants.due2,
+        statusContainerColor: AppColors.smoothcyanColor,
+        statusText: AppConstants.upcoming,
+        statusTextColor: AppColors.cyanColor,
+      ),
 
+      MaintainanceContainerWidget(
+        imagePath: AppImagePath.stationIconPath,
+        title: AppConstants.filterRepalcement,
+        subTitle: AppConstants.due3,
+        statusContainerColor: AppColors.containerGrey,
+        statusText: AppConstants.later,
+        statusTextColor: AppColors.midGrey,
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -61,9 +88,13 @@ class HomePage extends StatelessWidget {
             icon: const Icon(Icons.notifications, color: AppColors.textGrey),
           ),
           const SizedBox(width: 8),
-          CircleAvatar(
-            radius: 20,
-            backgroundImage: AssetImage(AppImagePath.profileIconPath),
+          Container(
+            width: 40,
+            height: 40,
+            decoration: const BoxDecoration(shape: BoxShape.circle),
+            child: ClipOval(
+              child: SvgPicture.asset(AppImagePath.profileIconPath),
+            ),
           ),
           const SizedBox(width: 8),
         ],
@@ -105,6 +136,19 @@ class HomePage extends StatelessWidget {
                 itemCount: listItems.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
+              ),
+              ContainerTitle(),
+              SizedBox(width: SizeConfig.width(context) * 0.015),
+              ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return maintanceContainerList[index];
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: SizeConfig.height(context) * 0.015);
+                },
+                itemCount: maintanceContainerList.length,
               ),
             ],
           ),

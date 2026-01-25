@@ -3,4 +3,5 @@ abstract class AppFonts {
   //------------- Font Names -------------
   static const String fontPoppins = "Poppins";
   static const String fontInter = "Inter";
+  static const String fontArimo = "Arimo";
 }

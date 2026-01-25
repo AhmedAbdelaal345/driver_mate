@@ -71,4 +71,38 @@ abstract class AppStyle {
     color: Colors.white,
     fontFamily: AppFonts.fontInter,
   );
+
+  static TextStyle titleForContainer = const TextStyle(
+    fontSize: AppFontSize.f16,
+    fontWeight: FontWeight.w700,
+    color: AppColors.black,
+    fontFamily: AppFonts.fontArimo,
+  );
+
+  static TextStyle titleOfContainer = const TextStyle(
+    fontSize: AppFontSize.f14,
+    fontWeight: FontWeight.bold,
+    color: AppColors.black,
+    fontFamily: AppFonts.fontArimo,
+  );
+  static TextStyle viewAll = const TextStyle(
+    fontSize: AppFontSize.f13,
+    fontWeight: FontWeight.w400,
+    color: AppColors.cyanColor,
+    fontFamily: AppFonts.fontArimo,
+  );
+
+  static TextStyle containerSubtitle = const TextStyle(
+    fontSize: AppFontSize.f12,
+    fontWeight: FontWeight.bold,
+    color: AppColors.grey,
+    fontFamily: AppFonts.fontArimo,
+  );
+
+  static TextStyle stateContainerStyle = const TextStyle(
+    fontSize: AppFontSize.f12,
+    fontWeight: FontWeight.bold,
+    color: AppColors.orange,
+    fontFamily: AppFonts.fontArimo,
+  );
 }

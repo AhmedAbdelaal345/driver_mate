@@ -3,24 +3,36 @@ abstract class AppConstants {
   static const String driverMate = "Driver Mate";
   static const String loginText = "Login";
   static const String explore = "Explore";
+  static const String bookNow = "Book Now";
+  static const String upcoming = "Up Coming";
   static const String viewAll = "View All";
+  static const String later = "later";
+  static const String annual = "Annual Inspection";
   static const String viewDetails = "View Details";
   static const String welcomeToDriveMate = "Welcome to DriveMate";
   static const String pleaseLogin = "Please log in the form below.";
   static const String emailAddress = "Email Address";
+  static const String aiMaintenance = "Ai Maintenance Tip";
+  static const String checkTirePressure =
+      "Check tire pressure before long tips";
   static const String checkYourEmail = "Check your email";
+  static const String upcomingMaintence = "Upcoming Maintenance";
   static const String enterYourEmail = "Enter your email address";
   static const String enterYourName = "Enter your name";
   static const String pleaseEnterYourName = "Please, enter your name";
   static const String enterYourPassword = "Enter your password";
   static const String reEnterYourPassword = "Enter your new password";
   static const String password = "Password";
+  static const String oilChange = "Oil change due in 500 miles";
+  static const String oilChangeTitle = "Oil Change";
   static const String maintanenceNearService = "Maintenance Near You";
   static const String confirm = "Confirm";
+  static const String soon = "soon";
   static const String featuredCars = "Featured Cars";
   static const String confirmPassword = "Confirm Password";
   static const String doesntMatch = "The password doesn't match";
   static const String fullName = "Full Name";
+  static const String filterRepalcement = "Filter Replacement";
   static const String continu = "Continue";
   static const String attention = "Attention";
   static const String vechicleStatus = "Vehicle Status";
@@ -43,6 +55,9 @@ abstract class AppConstants {
   static const String good = "Good";
   static const String maintanence = "Book Maintenance";
   static const String add = "Add Vehicle";
+  static const String due = "Due in 500 km";
+  static const String due2 = "Due in 7 days";
+  static const String due3 = "Due in 2 weeks";
   static const String updatePassword = "Update password";
   static const String recommendedBannerText =
       "Recommended for you based on your car & usages";

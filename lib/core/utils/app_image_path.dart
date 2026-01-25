@@ -22,4 +22,6 @@ abstract class AppImagePath {
   static const String phoneIconPath = "assets/icons/phone.svg";
   static const String plusIconPath = "assets/icons/plus.svg";
   static const String repairIconPath = "assets/icons/repair_key.svg";
+  static const String calenderIconPath = "assets/icons/calender.svg";
+  static const String stationIconPath = "assets/icons/station.svg";
 }

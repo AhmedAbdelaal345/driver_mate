@@ -80,6 +80,9 @@ flutter:
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Black.ttf
+    - family: Arimo
+      fonts:
+        - asset: assets/fonts/Arimo.ttf    
         # - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
