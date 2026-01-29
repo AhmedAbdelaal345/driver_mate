@@ -14,7 +14,7 @@ abstract class BoxDecorationWidget {
           blurRadius: 2,
           spreadRadius: 0,
           offset: Offset(0, 1),
-          color: AppColors.black.withOpacity(0.05),
+          color: AppColors.black.withValues(alpha: 0.05),
         ),
       ],
       border: Border.all(

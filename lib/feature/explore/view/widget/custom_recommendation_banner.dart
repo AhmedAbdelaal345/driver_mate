@@ -12,7 +12,7 @@ class CustomRecommendationBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.powderBlueColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.paleBlueColor),
+        border: Border.all(color: AppColors.smoothcyanColor),
       ),
       child: Row(
         children: [

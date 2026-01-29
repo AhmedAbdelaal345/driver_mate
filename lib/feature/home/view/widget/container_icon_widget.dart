@@ -24,8 +24,8 @@ class ContainerIconWidget extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppFontSize.f12),
         child: Container(
-          width: double.infinity,
-          height: double.infinity,
+          width: SizeConfig.width(context) * 0.4,
+          height: SizeConfig.height(context) * 0.1,
           decoration: BoxDecorationWidget.customBoxDecoration(),
           child: Padding(
             padding: EdgeInsets.all(SizeConfig.width(context) * 0.04),
@@ -44,12 +44,11 @@ class ContainerIconWidget extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-                SizedBox(height: SizeConfig.height(context) * 0.007),
+                // SizedBox(height: SizeConfig.height(context) * 0.0005),
                 Text(
                   text,
                   style: AppStyle.coursalSubtitleTextStyle.copyWith(
                     color: AppColors.black,
-
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

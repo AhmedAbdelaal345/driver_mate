@@ -11,6 +11,12 @@ abstract class AppImagePath {
   static const String newsImagePath = "${imagesPath}news.png";
   static const String camryCarImagePath = "${imagesPath}cammary.png";
   static const String bmwCarImagePath = "${imagesPath}bmw.png";
+  static const String firstImagePath = "${imagesPath}first_image.png";
+  static const String secondImagePath = "${imagesPath}second_image.png";
+  static const String thirdImagePath = "${imagesPath}third_image.png";
+  static const String tairImagePath = "${imagesPath}tair_image.png";
+  static const String carImagePath = "${imagesPath}car_image.png";
+  static const String brainImagePath = "${imagesPath}brain_image.png";
   //------------- Icon Paths -------------
   static const String homeIconPath = "assets/icons/home_icon.svg";
   static const String compassIconPath = "assets/icons/compass_icon.svg";
@@ -24,4 +30,10 @@ abstract class AppImagePath {
   static const String repairIconPath = "assets/icons/repair_key.svg";
   static const String calenderIconPath = "assets/icons/calender.svg";
   static const String stationIconPath = "assets/icons/station.svg";
+  static const String videoIconPath = "assets/icons/video_icon.svg";
+  static const String warringIconPath = "assets/icons/warring.svg";
+  static const String hintIconPath = "assets/icons/hint_icon.svg";
+  static const String timingIconPath = "assets/icons/timing.svg";
+  static const String doubleArrowIconPath =
+      "assets/icons/double_arrow_icon.svg";
 }

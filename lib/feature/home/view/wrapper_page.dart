@@ -1,4 +1,5 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/feature/Ai/view/ai_page.dart';
@@ -8,7 +9,7 @@ import 'package:driver_mate/feature/home/view/home_page.dart';
 import 'package:driver_mate/feature/home/view/widget/float_action_button_widget.dart';
 import 'package:driver_mate/feature/profile/view/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class WrapperPage extends StatefulWidget {
   const WrapperPage({super.key});
@@ -18,95 +19,74 @@ class WrapperPage extends StatefulWidget {
 }
 
 class _WrapperPageState extends State<WrapperPage> {
-  final List<Widget> _pages = [
+  int _currentIndex = 2;
+
+  // Build once & keep state for each tab via IndexedStack
+  late final List<Widget> _pages = const [
     ExplorePage(),
     AiPage(),
     HomePage(),
     CommunityPage(),
     ProfilePage(),
   ];
-  int _currentIndex = 2;
+
+  Widget _navIcon(String path, {bool active = false}) {
+    return SvgPicture.asset(
+      path,
+      colorFilter: active
+          ? const ColorFilter.mode(AppColors.cyanColor, BlendMode.srcIn)
+          : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        onTap: (index) => setState(() => _currentIndex = index),
         backgroundColor: AppColors.white,
         selectedItemColor: AppColors.cyanColor,
         unselectedItemColor: AppColors.iconGrey,
-        selectedFontSize: AppFontSize.f18,
-        unselectedFontSize: AppFontSize.f14,
+        selectedFontSize: AppFontSize.f12,
+        unselectedFontSize: AppFontSize.f11,
+        unselectedLabelStyle: const TextStyle(overflow: TextOverflow.visible),
+        selectedLabelStyle: const TextStyle(
+          overflow: TextOverflow.visible,
+          fontWeight: FontWeight.w600,
+        ),
         showUnselectedLabels: true,
         items: [
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppImagePath.compassIconPath, height: 24),
-            activeIcon: SvgPicture.asset(
-              AppImagePath.compassIconPath,
-              colorFilter: ColorFilter.mode(
-                AppColors.cyanColor,
-                BlendMode.srcIn,
-              ),
-              height: 26,
-            ),
-            label: 'Explore',
+            icon: _navIcon(AppImagePath.compassIconPath),
+            activeIcon: _navIcon(AppImagePath.compassIconPath, active: true),
+            label: AppConstants.explore, // موجودة عندك
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppImagePath.repboteIconPath, height: 24),
-            activeIcon: SvgPicture.asset(
-              AppImagePath.repboteIconPath,
-              colorFilter: ColorFilter.mode(
-                AppColors.cyanColor,
-                BlendMode.srcIn,
-              ),
-              height: 26,
-            ),
-            label: 'AI Assistant',
+            icon: _navIcon(AppImagePath.repboteIconPath),
+            activeIcon: _navIcon(AppImagePath.repboteIconPath, active: true),
+            label: 'AI Assistant', // لو عايزها constants ضيفها
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppImagePath.homeIconPath, height: 24),
-            activeIcon: SvgPicture.asset(
-              AppImagePath.homeIconPath,
-              colorFilter: ColorFilter.mode(
-                AppColors.cyanColor,
-                BlendMode.srcIn,
-              ),
-              height: 26,
-            ),
-            label: 'Home',
+            icon: _navIcon(AppImagePath.homeIconPath),
+            activeIcon: _navIcon(AppImagePath.homeIconPath, active: true),
+            label: 'Home', // لو عايزها constants ضيفها
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppImagePath.peopleIconPath, height: 24),
-            activeIcon: SvgPicture.asset(
-              AppImagePath.peopleIconPath,
-              colorFilter: ColorFilter.mode(
-                AppColors.cyanColor,
-                BlendMode.srcIn,
-              ),
-              height: 26,
-            ),
-            label: 'Community',
+            icon: _navIcon(AppImagePath.peopleIconPath),
+            activeIcon: _navIcon(AppImagePath.peopleIconPath, active: true),
+            label: 'Community', // لو عايزها constants ضيفها
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppImagePath.profileIconPath, height: 24),
-            activeIcon: SvgPicture.asset(
-              AppImagePath.profileIconPath,
-              colorFilter: ColorFilter.mode(
-                AppColors.cyanColor,
-                BlendMode.srcIn,
-              ),
-              height: 26,
-            ),
-            label: 'Profile',
+            icon: _navIcon(AppImagePath.profileIconPath),
+            activeIcon: _navIcon(AppImagePath.profileIconPath, active: true),
+            label: 'Profile', // لو عايزها constants ضيفها
           ),
         ],
       ),
-      floatingActionButton: FloatActionButtonWidget(onPressed: () {}),
+      // floatingActionButton: FloatActionButtonWidget(onPressed: () {}),
     );
   }
 }

@@ -4,10 +4,12 @@ abstract class AppColors {
   //------------- Colors -------------
   static const Color white = Color(0xffffffff);
   static const Color cyanColor = Color(0xff0891B2);
+  static const Color darkCyanColor = Color(0xff0E7490);
   static const Color smoothcyanColor = Color(0xffDBEAFE);
   static const Color veryDarkBlue = Color(0xff1B3C53);
   static const Color darkBlue = Color(0xff204560);
   static const Color blue = Color(0xff234C6A);
+  static const Color blueText = Color(0xff456882);
   static const Color grey = Color.fromRGBO(165, 164, 164, 1);
   static const Color textGrey = Color(0xff4B5563);
   static const Color midGrey = Color(0xff6B7280);
@@ -21,7 +23,9 @@ abstract class AppColors {
   static const Color yellow = Color(0xffCA8A04);
   static const Color orange = Color(0xffD97706);
   static const Color silentIvory = Color(0xffFEF3C7);
+  static const Color babyBleu = Color(0xff3B82F6);
+  static const Color perpule = Color(0xff9333EA);
   static const Color boarderWhiteColor = Color(0xffE5E7EB);
   static const Color powderBlueColor = Color(0xffEFF6FF);
-  static const Color paleBlueColor = Color(0xffDBEAFE);
+  // static const Color paleBlueColor = Color(0xffDBEAFE);
 }

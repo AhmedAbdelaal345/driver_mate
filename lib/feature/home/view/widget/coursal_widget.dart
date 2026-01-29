@@ -1,15 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
+import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
 
 class CoursalWidget extends StatefulWidget {
-  const CoursalWidget({super.key});
-
+  const CoursalWidget({super.key, this.isAppear, this.onPressed});
+  final bool? isAppear;
+  final VoidCallback? onPressed;
   @override
   _CoursalWidgetState createState() => _CoursalWidgetState();
 }
@@ -17,9 +20,10 @@ class CoursalWidget extends StatefulWidget {
 class _CoursalWidgetState extends State<CoursalWidget> {
   int _currentIndex = 0;
 
-  final List<String> images = [
+  static final List<String> images = [
     AppImagePath.loginImagePath,
-    AppImagePath.newsImagePath,
+    AppImagePath.bmwCarImagePath,
+    AppImagePath.applePath,
   ];
 
   @override
@@ -42,18 +46,48 @@ class _CoursalWidgetState extends State<CoursalWidget> {
                       colors: [AppColors.veryDarkBlue, AppColors.cyanColor],
                     ),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.width(context) * 0.04,
-                      vertical: SizeConfig.height(context) * 0.03,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            horizontal: SizeConfig.width(context) * 0.04,
+                            vertical: SizeConfig.height(context) * 0.03,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              widget.isAppear == true
+                                  ? Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: AppFontSize.f10,
+                                      ),
+                                      decoration:
+                                          BoxDecorationWidget.customBoxDecoration()
+                                              .copyWith(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                      AppFontSize.f18,
+                                                    ),
+                                                color: AppColors.grey
+                                                    .withValues(alpha: 0.5),
+                                                border: Border.all(
+                                                  color: AppColors.grey
+                                                      .withValues(alpha: 0.5),
+                                                ),
+                                              ),
+                                      child: Text(
+                                        AppConstants.due,
+                                        style: AppStyle.buttonTextStyle
+                                            .copyWith(
+                                              fontSize: AppFontSize.f12,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    )
+                                  : SizedBox(),
+                              SizedBox(height: 5),
                               Text(
                                 AppConstants.coursalTitle,
                                 style: AppStyle.coursalTitleTextStyle,
@@ -65,12 +99,12 @@ class _CoursalWidgetState extends State<CoursalWidget> {
                               const SizedBox(height: 10),
                               FittedBox(
                                 child: SizedBox(
-                                  width: SizeConfig.width(context) * 0.45,
-                                  height: SizeConfig.height(context) * 0.05,
+                                  width: SizeConfig.width(context) * 0.2,
+                                  height: SizeConfig.height(context) * 0.06,
                                   child:
                                       PrimaryElevatedButtonWidget(
                                         buttonText: AppConstants.startScan,
-                                        onPressed: () {},
+                                        onPressed: widget.onPressed,
                                       ).copyWith(
                                         backgroundColor: AppColors.cyanColor,
                                       ),
@@ -79,18 +113,18 @@ class _CoursalWidgetState extends State<CoursalWidget> {
                             ],
                           ),
                         ),
-                        SizedBox(width: SizeConfig.width(context) * 0.03),
-                        Opacity(
-                          opacity: 0.3,
-                          child: Image.asset(
-                            img,
-                            width: SizeConfig.width(context) * 0.32,
-                            height: SizeConfig.height(context) * 0.17,
-                            fit: BoxFit.contain,
-                          ),
+                      ),
+                      SizedBox(width: SizeConfig.width(context) * 0.03),
+                      Opacity(
+                        opacity: 0.3,
+                        child: Image.asset(
+                          img,
+                          width: SizeConfig.width(context) * 0.32,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

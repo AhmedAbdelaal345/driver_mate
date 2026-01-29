@@ -44,23 +44,32 @@ class MaintainanceContainerWidget extends StatelessWidget {
             leading: Container(
               width: 40,
               height: 40,
-              padding: EdgeInsets.all(6),
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.cyanColor.withValues(alpha: 0.1),
-                ),
                 color: AppColors.cyanColor.withValues(alpha: 0.1),
-                boxShadow: [BoxShadow(blurRadius: 4)],
+                borderRadius: BorderRadius.circular(
+                  8,
+                ), // Optional: rounds the corners
+                border: Border.all(
+                  color: AppColors.cyanColor.withValues(alpha: 0.01),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: SvgPicture.asset(
-                AppImagePath.repairIconPath,
-                colorFilter: ColorFilter.mode(
+                imagePath ?? AppImagePath.repairIconPath,
+                colorFilter: const ColorFilter.mode(
                   AppColors.cyanColor,
                   BlendMode.srcIn,
                 ),
+                fit: BoxFit.contain,
               ),
             ),
-
             title: Text(
               title ?? AppConstants.oilChangeTitle,
               style: AppStyle.titleOfContainer,
@@ -72,16 +81,24 @@ class MaintainanceContainerWidget extends StatelessWidget {
             ),
 
             trailing: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
+                // 1. Set the background color here
+                color: statusContainerColor ?? AppColors.silentIvory,
+
+                // 2. Keep the border if you want a outlined look
                 border: Border.all(
                   color: statusContainerColor ?? AppColors.silentIvory,
                 ),
+
+                // 3. Round the corners (Tags usually look better rounded)
+                borderRadius: BorderRadius.circular(12),
+
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 2,
                     color: AppColors.black.withValues(alpha: 0.15),
-                    offset: Offset(0, 2),
+                    offset: const Offset(0, 2),
                   ),
                 ],
               ),
@@ -89,6 +106,7 @@ class MaintainanceContainerWidget extends StatelessWidget {
                 statusText ?? AppConstants.soon,
                 style: AppStyle.stateContainerStyle.copyWith(
                   color: statusTextColor ?? AppColors.orange,
+                  fontWeight: FontWeight.bold, // Makes the status pop
                 ),
               ),
             ),

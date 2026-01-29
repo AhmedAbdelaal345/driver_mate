@@ -3,16 +3,47 @@ abstract class AppConstants {
   static const String driverMate = "Driver Mate";
   static const String loginText = "Login";
   static const String explore = "Explore";
+  static const String open = "Open";
+  static const String all = "All";
+  static const String price = "\$28,000";
+  static const String sedan = "Sedan - Automatic";
+  static const String toyotaCamry = "Toyota Camry 2024";
   static const String bookNow = "Book Now";
+  static const String  aiAssistant = "AI Assistant";
+  static const String recommendedForYou = "Recommended for You";
+  static const String readMore = "Read More ";
+  static const String notMatch = "No cars match your filters. ";
+  static const String minRead = "5 min read";
+  static const String completeGuide =
+      "Complete Guide to Tire Care and Rotation";
+  static const String essentialCar =
+      "Essential Car Maintenance Tips for Summer";
+  static const String howToExtend = "How to Extend Your Car Battery Life";
+  static const String checkNow = "Check Now";
+  static const String carservice = "Cars & services you bookmarked";
+  static const String oilChangeOnly = "Oil Change";
   static const String upcoming = "Up Coming";
   static const String viewAll = "View All";
+  static const String carTips = "Car Tips & Guides";
+  static const String recentlyViewed = "Recently Viewed";
+  static const String continueWhere = "Continue where you left off";
+  static const String dist = "2 Km";
+  static const String savedItem = "Saved Items";
   static const String later = "later";
+  static const String seeMap = "See map";
+  static const String aiAlerts = "AI Alerts";
+  static const String findNearby = "Find Nearby Station ";
   static const String annual = "Annual Inspection";
   static const String viewDetails = "View Details";
   static const String welcomeToDriveMate = "Welcome to DriveMate";
   static const String pleaseLogin = "Please log in the form below.";
   static const String emailAddress = "Email Address";
+  static const String tirePressureLow = "Pressure May Be Low";
   static const String aiMaintenance = "Ai Maintenance Tip";
+  static const String batteryStatus =
+      "Your battery voltage is slightly below optimal. Consider getting it checked soon.";
+  static const String nearByService = "Nearby Service Centers";
+  static const String premiumAutoService = "Premium Auto Service";
   static const String checkTirePressure =
       "Check tire pressure before long tips";
   static const String checkYourEmail = "Check your email";

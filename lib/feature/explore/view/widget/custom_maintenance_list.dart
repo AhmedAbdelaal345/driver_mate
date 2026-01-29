@@ -1,46 +1,65 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/feature/explore/data/explore_filter.dart';
+import 'package:driver_mate/feature/explore/data/explore_mock.dart';
 import 'package:flutter/material.dart';
 
 class CustomMaintenanceList extends StatelessWidget {
-  const CustomMaintenanceList({super.key,this.imagePath,this.name,this.disatnce,this.rate});
-final String ?imagePath;
-final String ?name;
-final String ?disatnce;
-final String ?rate;
+  const CustomMaintenanceList({
+    super.key,
+    required this.filter,
+  });
+
+  final ExploreFilter filter;
 
   @override
   Widget build(BuildContext context) {
+    // لو Tips مختارة نخفي maintenance section
+    if (filter.category == "Tips") {
+      return const SizedBox.shrink();
+    }
+
+    final items = mockServices.where((s) {
+      final okDistance = s.distanceKm <= filter.maxDistanceKm;
+      final okRating = s.rating >= filter.minRating;
+      return okDistance && okRating;
+    }).toList();
+
+    if (items.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 12),
+        child: Text(
+          "No service centers match your filters.",
+          style: TextStyle(color: AppColors.textGrey),
+        ),
+      );
+    }
+
     return ListView.separated(
       shrinkWrap: true,
-      physics:
-          const NeverScrollableScrollPhysics(), // Important: prevents nested scroll issues
-      itemCount: 2, // Example count
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
       separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
+        final s = items[index];
+
         return Container(
           padding: const EdgeInsets.all(12),
-          decoration:
-              BoxDecorationWidget.customBoxDecoration(), // Reusing your decoration
+          decoration: BoxDecorationWidget.customBoxDecoration(),
           child: Row(
             children: [
-              // 1. Service Center Image
               Container(
                 height: 70,
                 width: 70,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  image:  DecorationImage(
-                    image: AssetImage(
-                      imagePath??"assets/images/service_center.png",
-                    ), // Replace path
+                  image: DecorationImage(
+                    image: AssetImage(s.image),
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               const SizedBox(width: 12),
-
-              // 2. Info Column
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,16 +67,16 @@ final String ?rate;
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                         Text(
-                           name??"AutoCare Service Center",
-                          style: TextStyle(
+                        Text(
+                          s.name,
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
                         ),
                         Text(
-                          disatnce??"2.3 km",
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                          "${s.distanceKm.toStringAsFixed(1)} km",
+                          style: const TextStyle(color: Colors.grey, fontSize: 12),
                         ),
                       ],
                     ),
@@ -65,17 +84,9 @@ final String ?rate;
                     Row(
                       children: [
                         const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(
-                          Icons.star_half,
-                          color: Colors.amber,
-                          size: 16,
-                        ),
                         const SizedBox(width: 4),
                         Text(
-                         rate ?? "4.8",
+                          s.rating.toStringAsFixed(1),
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 12,
@@ -112,6 +123,5 @@ final String ?rate;
         );
       },
     );
-    
   }
 }
