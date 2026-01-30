@@ -1,4 +1,5 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:flutter/material.dart';
 
 class CommunityTabBar extends StatelessWidget {
@@ -16,9 +17,9 @@ class CommunityTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48,
+      height: AppFontSize.f48,
       child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: AppFontSize.f16),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           final selected = index == selectedIndex;

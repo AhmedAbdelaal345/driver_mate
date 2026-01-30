@@ -1,5 +1,4 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
 
 class CustomCategoryChips extends StatelessWidget {
@@ -25,17 +24,18 @@ class CustomCategoryChips extends StatelessWidget {
           final cat = categories[index];
           final isSelected = cat == selected;
 
-          return Container(
-            decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-              borderRadius: BorderRadius.circular(9999),
-            ),
-            margin: const EdgeInsets.only(right: 10),
+          return Padding(
+            padding: const EdgeInsets.only(right: 10),
+
             child: ActionChip(
               label: Text(cat),
               labelStyle: TextStyle(
                 color: isSelected ? AppColors.white : AppColors.black,
               ),
-              backgroundColor: isSelected ? AppColors.cyanColor : AppColors.white,
+
+              backgroundColor: isSelected
+                  ? AppColors.cyanColor
+                  : AppColors.white,
               shape: RoundedRectangleBorder(
                 side: BorderSide(color: AppColors.boarderWhiteColor, width: 1),
                 borderRadius: BorderRadius.circular(999),

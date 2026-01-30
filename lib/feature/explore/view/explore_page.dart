@@ -1,5 +1,7 @@
 import 'package:driver_mate/feature/explore/data/explore_filter.dart';
+import 'package:driver_mate/feature/explore/view/widget/custom_tips_feed.dart';
 import 'package:driver_mate/feature/explore/view/widget/explore_filter_sheet.dart';
+import 'package:driver_mate/feature/home/view/widget/float_action_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
@@ -38,6 +40,11 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatActionButtonWidget(
+        onPressed: () {
+          // here we will add the functionality to go to ai voice assisstance
+        },
+      ),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -68,13 +75,9 @@ class _ExplorePageState extends State<ExplorePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
-            const CustomRecommendationBanner(),
 
-            const SizedBox(height: 20),
-
-            /// لو الـ chips هي اللي بتحدد category:
+            // 1. Chips are ALWAYS visible at the top
             CustomCategoryChips(
-              // لو widget بتاعك يسمح:
               selected: _filter.category,
               onSelected: (cat) {
                 setState(() => _filter = _filter.copyWith(category: cat));
@@ -82,18 +85,22 @@ class _ExplorePageState extends State<ExplorePage> {
             ),
 
             const SizedBox(height: 25),
-            CustomSectionHeader(title: AppConstants.featuredCars),
-            const SizedBox(height: 15),
 
-            /// مرّر الفلتر للـ slider
-            CustomCarSlider(filter: _filter),
-
-            const SizedBox(height: 25),
-            CustomSectionHeader(title: AppConstants.maintanenceNearService),
-            const SizedBox(height: 15),
-
-            /// مرّر الفلتر للـ list
-            CustomMaintenanceList(filter: _filter),
+            // 2. The dynamic section starts here
+            if (_filter.category == "Tips")
+              const CustomTipsFeed() // This shows the article feed from your screenshots
+            else ...[
+              // 3. This is the Marketplace/Explore view
+              const CustomRecommendationBanner(),
+              const SizedBox(height: 25),
+              CustomSectionHeader(title: AppConstants.featuredCars),
+              const SizedBox(height: 15),
+              CustomCarSlider(filter: _filter),
+              const SizedBox(height: 25),
+              CustomSectionHeader(title: AppConstants.maintanenceNearService),
+              const SizedBox(height: 15),
+              CustomMaintenanceList(filter: _filter),
+            ],
           ],
         ),
       ),

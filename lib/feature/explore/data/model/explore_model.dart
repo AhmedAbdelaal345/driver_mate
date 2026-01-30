@@ -15,13 +15,11 @@ class CarItem {
 }
 
 class ServiceCenterItem {
-  final String image;
   final String name;
   final double distanceKm;
   final double rating;
 
   const ServiceCenterItem({
-    required this.image,
     required this.name,
     required this.distanceKm,
     required this.rating,

@@ -10,6 +10,7 @@ import 'package:driver_mate/feature/home/view/widget/container_item.dart';
 import 'package:driver_mate/feature/home/view/widget/container_title.dart';
 import 'package:driver_mate/feature/home/view/widget/coursal_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/custom_container_widget.dart';
+import 'package:driver_mate/feature/home/view/widget/float_action_button_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/maintainance_container_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/recommended_container.dart';
 import 'package:driver_mate/feature/home/view/widget/service_supplied_widget.dart';
@@ -143,6 +144,11 @@ class HomePage extends StatelessWidget {
     ];
 
     return Scaffold(
+      floatingActionButton: FloatActionButtonWidget(
+        onPressed: () {
+          // here will make the navigation to go to ai voice assisstance
+        },
+      ),
       appBar: AppBar(
         title: Text(
           AppConstants.driverMate,

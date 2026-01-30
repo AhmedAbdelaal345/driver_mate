@@ -1,4 +1,5 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 
 class InputContainerWidget extends StatelessWidget {
@@ -38,24 +39,30 @@ class InputContainerWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          _circleButton(Icons.mic, false),
+          _circleButton(Icons.mic, false, context),
           const SizedBox(width: 8),
-          _circleButton(Icons.send_rounded, true),
+          _circleButton(Icons.send_rounded, true, context),
         ],
       ),
     );
   }
 
-  Widget _circleButton(IconData icon, bool isWhite) {
+  Widget _circleButton(IconData icon, bool isWhite, BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(
+          SizeConfig.width(context) * 0.025,
+        ), // Scaled padding
         decoration: BoxDecoration(
           color: isWhite ? AppColors.white : AppColors.cyanColor,
           shape: BoxShape.circle,
         ),
-        child: Icon(icon, color: isWhite ? AppColors.grey : AppColors.white),
+        child: Icon(
+          icon,
+          color: isWhite ? AppColors.grey : AppColors.white,
+          size: SizeConfig.width(context) * 0.06,
+        ),
       ),
     );
   }

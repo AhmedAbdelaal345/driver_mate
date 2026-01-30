@@ -17,12 +17,19 @@ class VoiceBubbleWidget extends StatefulWidget {
 class _VoiceBubbleWidgetState extends State<VoiceBubbleWidget> {
   @override
   bool isPressed = false;
+
   Widget build(BuildContext context) {
+    final bubbleWidth =
+        SizeConfig.width(context) * 0.75; // Consistent with UserBubble
+    final barWidth = (bubbleWidth * 0.4) / 24;
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        width: SizeConfig.width(context) * 0.26, // ✅ عريض زي الصورة
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        width: bubbleWidth, // ✅ عريض زي الصورة
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.width(context) * 0.04,
+          vertical: SizeConfig.height(context) * 0.015,
+        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
           gradient: const LinearGradient(
@@ -35,8 +42,8 @@ class _VoiceBubbleWidgetState extends State<VoiceBubbleWidget> {
           children: [
             // ▶️ Play button
             Container(
-              height: 42,
-              width: 42,
+              height: SizeConfig.width(context) * 0.1, // Circular button scales
+              width: SizeConfig.width(context) * 0.1,
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.25),
                 shape: BoxShape.circle,
@@ -68,16 +75,16 @@ class _VoiceBubbleWidgetState extends State<VoiceBubbleWidget> {
                     ),
             ),
 
-            const SizedBox(width: 14),
-
+            SizedBox(width: SizeConfig.width(context) * 0.03),
             // 🎵 Extended waveform
             Expanded(
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(
                   24, // ✅ waveform أطول
                   (index) => Container(
                     margin: const EdgeInsets.symmetric(horizontal: 2),
-                    width: 3,
+                    width: 2,
                     height: VoiceBubbleWidget._waveHeight(index),
                     decoration: BoxDecoration(
                       color: Colors.white,

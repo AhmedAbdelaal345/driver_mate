@@ -3,17 +3,54 @@ abstract class AppConstants {
   static const String driverMate = "Driver Mate";
   static const String loginText = "Login";
   static const String explore = "Explore";
+  static const String questions = "Questions";
+  static const String question = "Question";
+  static const String problems = "Problems";
+  static const String problem = "Problem";
+  static const String post = "Post";
+  static const String personalInfo = "Personal Info";
   static const String open = "Open";
+  static const String account = "ACCOUNT";
+  static const String saved = "Saved";
+  static const String call = "Call";
+  static const String edit = "Edit";
+  static const String profile = "Profile";
+  static const String share = "Share";
+  static const String tips = "Tips";
+  static const String booking = "Booking";
+  static const String message = "Message";
+  static const String medium = "Medium";
+  static const String myCars = "My Cars";
   static const String all = "All";
+  static const String reviews = "Reviews";
+  static const String youMust = "You Must Enter Value";
+  static const String marketPlace = "Marketplace";
+  static const String namePhone = "Name, phone, email";
+  static const String manageVehicls = "Manage vehicles";
+  static const String maintenanceHistory = "Maintenance History";
+  static const String pastbookings = "Past bookings";
+  static const String preference = "Preferences";
+  static const String language = "Language";
+  static const String englishArbic = "English / العربية";
+  static const String theme = "Theme";
+  static const String lightDark = "Light / Dark";
+  static const String notifications = "Notifications";
+  static const String reminder = "Reminders & offers";
+
+  static const String community = "Community";
   static const String price = "\$28,000";
   static const String sedan = "Sedan - Automatic";
   static const String toyotaCamry = "Toyota Camry 2024";
   static const String bookNow = "Book Now";
-  static const String  aiAssistant = "AI Assistant";
+  static const String aiAssistant = "AI Assistant";
   static const String recommendedForYou = "Recommended for You";
   static const String readMore = "Read More ";
+  static const String save = "Save ";
   static const String notMatch = "No cars match your filters. ";
   static const String minRead = "5 min read";
+  static const String addReview = "Write a Review";
+  static const String askQuestion = "Ask a question or share a tip...";
+  static const String shareService = "Share your service center experience";
   static const String completeGuide =
       "Complete Guide to Tire Care and Rotation";
   static const String essentialCar =
@@ -109,7 +146,7 @@ abstract class AppConstants {
   static const String coursalSubtitle = "Voice-based sound analysis";
   static const String setNewPasswordHintText =
       "Create a new password.Ensure it is differs from previous one for security.";
-
+  static const String user = "User 1";
   //-------------Toast Messages -------------
   static const String registrationSuccessful = "Registration Successful";
   static const String loginSuccessful = "Login Successful";

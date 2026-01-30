@@ -2,6 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 
 class AiBubbleWidget extends StatelessWidget {
@@ -21,10 +22,13 @@ class AiBubbleWidget extends StatelessWidget {
         Image.asset(
           AppImagePath.brainImagePath,
           fit: BoxFit.scaleDown,
-          width: 35,
+          width: SizeConfig.width(context) * 0.08,
         ),
-        SizedBox(width: 10),
+        SizedBox(width: SizeConfig.width(context) * 0.02),
         Container(
+          constraints: BoxConstraints(
+            maxWidth: SizeConfig.width(context) * 0.75,
+          ), // Allow bubble to grow up to 75%,
           decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
             color: AppColors.white,
             borderRadius: BorderRadius.only(

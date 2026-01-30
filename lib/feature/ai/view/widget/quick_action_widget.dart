@@ -1,3 +1,4 @@
+import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
@@ -52,15 +53,17 @@ class QuickActionItemWidget extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: 45,
-              width: 45,
+              height: SizeConfig.width(context) * 0.12, // ~12% of width
+              width: SizeConfig.width(context) * 0.12,
               decoration: BoxDecoration(
                 color: isHighlighted
                     ? Colors.white.withOpacity(0.25)
                     : AppColors.containerGrey,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(
+                  SizeConfig.width(context) * 0.03,
+                ),
               ),
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(SizeConfig.width(context) * 0.02),
               child: SvgPicture.asset(
                 icon,
                 colorFilter: ColorFilter.mode(

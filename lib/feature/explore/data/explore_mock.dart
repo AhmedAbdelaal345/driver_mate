@@ -29,19 +29,16 @@ const List<CarItem> mockCars = [
 /// ✅ Mock Data (Service Centers)
 const List<ServiceCenterItem> mockServices = [
   ServiceCenterItem(
-    image: "assets/images/service_center.png",
     name: "AutoCare Service Center",
     distanceKm: 2.3,
     rating: 4.8,
   ),
   ServiceCenterItem(
-    image: "assets/images/service_center.png",
     name: "QuickFix Auto Center",
     distanceKm: 6.0,
     rating: 4.4,
   ),
   ServiceCenterItem(
-    image: "assets/images/service_center.png",
     name: "Premium Auto Service",
     distanceKm: 12.0,
     rating: 4.9,

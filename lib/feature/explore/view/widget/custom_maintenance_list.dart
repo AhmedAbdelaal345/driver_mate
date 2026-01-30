@@ -1,14 +1,12 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/explore/data/explore_filter.dart';
 import 'package:driver_mate/feature/explore/data/explore_mock.dart';
 import 'package:flutter/material.dart';
 
 class CustomMaintenanceList extends StatelessWidget {
-  const CustomMaintenanceList({
-    super.key,
-    required this.filter,
-  });
+  const CustomMaintenanceList({super.key, required this.filter});
 
   final ExploreFilter filter;
 
@@ -48,17 +46,6 @@ class CustomMaintenanceList extends StatelessWidget {
           decoration: BoxDecorationWidget.customBoxDecoration(),
           child: Row(
             children: [
-              Container(
-                height: 70,
-                width: 70,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    image: AssetImage(s.image),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -76,13 +63,19 @@ class CustomMaintenanceList extends StatelessWidget {
                         ),
                         Text(
                           "${s.distanceKm.toStringAsFixed(1)} km",
-                          style: const TextStyle(color: Colors.grey, fontSize: 12),
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
+                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                        const Icon(Icons.star, color: Colors.amber, size: 16),
                         const Icon(Icons.star, color: Colors.amber, size: 16),
                         const SizedBox(width: 4),
                         Text(
@@ -95,23 +88,21 @@ class CustomMaintenanceList extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: SizedBox(
-                        height: 32,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.cyanColor,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
+                    SizedBox(
+                      height: 32,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.cyanColor,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          onPressed: () {},
-                          child: const Text(
-                            "Book Now",
-                            style: TextStyle(color: Colors.white, fontSize: 12),
-                          ),
+                        ),
+                        onPressed: () {},
+                        child: const Text(
+                          AppConstants.bookNow,
+                          style: TextStyle(color: Colors.white, fontSize: 12),
                         ),
                       ),
                     ),

@@ -16,11 +16,12 @@ class CustomCarSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cars = mockCars.where((c) {
+      // If 'All' is selected, show everything.
+      // If 'Cars' is selected, you could filter by a specific sub-category like 'Sedan' or 'SUV'
       final okCategory =
-          filter.category == AppConstants.all || c.category == filter.category;
+          filter.category == "All" || c.category == filter.category;
 
       final okPrice = c.price >= filter.minPrice && c.price <= filter.maxPrice;
-
       return okCategory && okPrice;
     }).toList();
 

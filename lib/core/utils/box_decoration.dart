@@ -7,6 +7,7 @@ abstract class BoxDecorationWidget {
     double borderWidth = 1.0,
   }) {
     return BoxDecoration(
+      
       borderRadius: BorderRadius.circular(borderRadius),
       color: AppColors.boarderWhiteColor,
       boxShadow: [

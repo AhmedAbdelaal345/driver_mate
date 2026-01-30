@@ -22,6 +22,8 @@ abstract class AppImagePath {
   static const String compassIconPath = "assets/icons/compass_icon.svg";
   static const String repboteIconPath = "assets/icons/rebot_icon.svg";
   static const String profileIconPath = "assets/icons/profile_icon.svg";
+  static const String profilePersonIconPath =
+      "assets/icons/person_profile_icon.svg";
   static const String peopleIconPath = "assets/icons/people_icon.svg";
   static const String micIconPath = "assets/icons/mic.svg";
   static const String chargeIconPath = "assets/icons/charge.svg";
@@ -34,6 +36,11 @@ abstract class AppImagePath {
   static const String warringIconPath = "assets/icons/warring.svg";
   static const String hintIconPath = "assets/icons/hint_icon.svg";
   static const String timingIconPath = "assets/icons/timing.svg";
+  static const String carIconPath = "assets/icons/car_icon.svg";
+  static const String languageIconPath = "assets/icons/language_icon.svg";
+  static const String notificationIconPath =
+      "assets/icons/notification_icon.svg";
+  static const String themeIconPath = "assets/icons/theme_icon.svg";
   static const String doubleArrowIconPath =
       "assets/icons/double_arrow_icon.svg";
 }

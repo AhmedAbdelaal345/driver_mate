@@ -6,7 +6,6 @@ import 'package:driver_mate/feature/Ai/view/ai_page.dart';
 import 'package:driver_mate/feature/community/view/community_page.dart';
 import 'package:driver_mate/feature/explore/view/explore_page.dart';
 import 'package:driver_mate/feature/home/view/home_page.dart';
-import 'package:driver_mate/feature/home/view/widget/float_action_button_widget.dart';
 import 'package:driver_mate/feature/profile/view/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
