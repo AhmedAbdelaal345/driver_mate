@@ -15,13 +15,12 @@ class VoiceBubbleWidget extends StatefulWidget {
 }
 
 class _VoiceBubbleWidgetState extends State<VoiceBubbleWidget> {
-  @override
   bool isPressed = false;
-
+  @override
   Widget build(BuildContext context) {
     final bubbleWidth =
         SizeConfig.width(context) * 0.75; // Consistent with UserBubble
-    final barWidth = (bubbleWidth * 0.4) / 24;
+    // final barWidth = (bubbleWidth * 0.4) / 24;
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
@@ -45,7 +44,7 @@ class _VoiceBubbleWidgetState extends State<VoiceBubbleWidget> {
               height: SizeConfig.width(context) * 0.1, // Circular button scales
               width: SizeConfig.width(context) * 0.1,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.25),
+                color: Colors.white.withValues(alpha: 0.25),
                 shape: BoxShape.circle,
               ),
               child: isPressed

@@ -6,17 +6,28 @@ abstract class AppConstants {
   static const String questions = "Questions";
   static const String question = "Question";
   static const String problems = "Problems";
+  static const String verifyOTP = "Verify OTP";
   static const String problem = "Problem";
   static const String post = "Post";
+  static const String inService = "In Service";
   static const String personalInfo = "Personal Info";
   static const String open = "Open";
   static const String account = "ACCOUNT";
+  static const String createAccount = "Create Account";
   static const String saved = "Saved";
+  static const String manageYourFleet = "Manage your fleet";
+  static const String addAllYourVehical =
+      "Add all your vehicles to track maintenance, get AI diagnostics, and book services easily.";
   static const String call = "Call";
   static const String edit = "Edit";
+  static const String active = 'Active';
+  static const String yourVechical = 'Your Vehicles';
+  static const String changeImage = "Change Photo";
   static const String profile = "Profile";
+  static const String phone = "Phone Number";
   static const String share = "Share";
   static const String tips = "Tips";
+  static const String allVehical = "All Vehical";
   static const String booking = "Booking";
   static const String message = "Message";
   static const String medium = "Medium";
@@ -36,21 +47,25 @@ abstract class AppConstants {
   static const String lightDark = "Light / Dark";
   static const String notifications = "Notifications";
   static const String reminder = "Reminders & offers";
-
   static const String community = "Community";
   static const String price = "\$28,000";
   static const String sedan = "Sedan - Automatic";
   static const String toyotaCamry = "Toyota Camry 2024";
   static const String bookNow = "Book Now";
   static const String aiAssistant = "AI Assistant";
+  static const String keepYourInfo = "Keep your info up to date";
   static const String recommendedForYou = "Recommended for You";
   static const String readMore = "Read More ";
+  static const String informationHelp =
+      "This information helps service providers contact you and deliver better service.";
   static const String save = "Save ";
   static const String notMatch = "No cars match your filters. ";
   static const String minRead = "5 min read";
   static const String addReview = "Write a Review";
   static const String askQuestion = "Ask a question or share a tip...";
   static const String shareService = "Share your service center experience";
+  static const String weWillVerfiction =
+      "We'll send verification emails to this address";
   static const String completeGuide =
       "Complete Guide to Tire Care and Rotation";
   static const String essentialCar =
@@ -83,7 +98,7 @@ abstract class AppConstants {
   static const String premiumAutoService = "Premium Auto Service";
   static const String checkTirePressure =
       "Check tire pressure before long tips";
-  static const String checkYourEmail = "Check your email";
+  static const String checkYourEmail = "Enter verification code";
   static const String upcomingMaintence = "Upcoming Maintenance";
   static const String enterYourEmail = "Enter your email address";
   static const String enterYourName = "Enter your name";
@@ -109,6 +124,7 @@ abstract class AppConstants {
   static const String recommendedService = "Recommended Service";
   static const String batteryHealth = "Battery Health";
   static const String forgotPassword = "Forgot Password";
+  static const String resetYourPassword = "Reset your password";
   static const String accountToContinue = "Create account to continue";
   static const String pleaseEnterYourEmail = "Please enter your email";
   static const String pleaseEnterYourPassword = "Please enter your password";
@@ -132,7 +148,7 @@ abstract class AppConstants {
   static const String electricVehicles =
       "Electric vehicles reach new efficiency milestone";
   static const String resetByEmail =
-      "Please enter your email to reset the password";
+      "Enter your email and we'll send you a reset link.";
   static const String pleaseEnterTheCode = "Please enter the code";
   static const String verifyCode = "Verify code";
   static const String resendCode = "Resend Code";

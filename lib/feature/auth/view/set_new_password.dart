@@ -5,7 +5,9 @@ import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_regexp.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/core/widget/container_icon.dart';
 import 'package:driver_mate/feature/auth/view/login_page.dart';
+import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +42,7 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: SvgPicture.asset(AppImagePath.arrowBackPath)),
+      appBar: AppBar(leading: LeadingIcon()),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -49,8 +51,12 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
           child: Form(
             key: formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 0.044 * SizeConfig.height(context)),
+                ContainerForIcon(iconPath: AppImagePath.lockIconPath),
+                SizedBox(height: 0.044 * SizeConfig.height(context)),
+
                 Align(
                   alignment: AlignmentGeometry.centerLeft,
                   child: Text(
@@ -113,62 +119,9 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                 PrimaryElevatedButtonWidget(
                   buttonText: AppConstants.updatePassword,
                   onPressed: () {
-                    if (formKey.currentState != null &&
-                        formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       // Implement your update password logic here
-                      showModalBottomSheet(
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(25),
-                          ),
-                        ),
-                        backgroundColor: Colors.white,
-                        builder: (context) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 0.035 * SizeConfig.width(context),
-                              vertical: 0.1 * SizeConfig.height(context),
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SvgPicture.asset(
-                                    AppImagePath.correctMarkPath,
-                                  ),
-                                  SizedBox(
-                                    height: 0.02 * SizeConfig.height(context),
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      "Successful",
-                                      style: AppStyle.labelStyle,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 0.02 * SizeConfig.height(context),
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      "Congratulations your password has been changed.Continue to login",
-                                      style: AppStyle.hintStyle,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 0.02 * SizeConfig.height(context),
-                                  ),
-                                  PrimaryElevatedButtonWidget(
-                                    buttonText: AppConstants.continu,
-                                    onPressed: () =>
-                                        MyNavigation.navigateTo(LoginPage()),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                      _showSuccessBottomSheet(context);
                     }
                   },
                 ),
@@ -177,6 +130,43 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showSuccessBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      backgroundColor: Colors.white,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 0.035 * SizeConfig.width(context),
+            vertical: 0.1 * SizeConfig.height(context),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(AppImagePath.correctMarkPath),
+              SizedBox(height: 0.02 * SizeConfig.height(context)),
+              Text("Successful", style: AppStyle.labelStyle),
+              SizedBox(height: 0.02 * SizeConfig.height(context)),
+              Text(
+                "Congratulations your password has been changed. Continue to login",
+                style: AppStyle.hintStyle,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 0.02 * SizeConfig.height(context)),
+              PrimaryElevatedButtonWidget(
+                buttonText: AppConstants.continu,
+                onPressed: () => MyNavigation.navigateTo(LoginPage()),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

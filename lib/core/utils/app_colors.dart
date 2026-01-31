@@ -24,6 +24,7 @@ abstract class AppColors {
   static const Color orange = Color(0xffD97706);
   static const Color silentIvory = Color(0xffFEF3C7);
   static const Color babyBleu = Color(0xff3B82F6);
+  static const Color lightBleu = Color(0xffDBEAFE);
   static const Color perpule = Color(0xff9333EA);
   static const Color boarderWhiteColor = Color(0xffE5E7EB);
   static const Color powderBlueColor = Color(0xffEFF6FF);

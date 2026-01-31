@@ -1,8 +1,8 @@
+import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
-import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_regexp.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -14,7 +14,6 @@ import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_wid
 import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -23,16 +22,17 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
+        leading: IconButton(
+          onPressed: () {
+            MyNavigation.navigateBack();
           },
-          child: SvgPicture.asset(
-            AppImagePath.arrowBackPath,
-            height: SizeConfig.height(context) * 0.024,
-            width: SizeConfig.width(context) * 0.024,
-          ),
+          icon: Icon(Icons.arrow_back_ios, size: 18),
         ),
+        title: Text(
+          AppConstants.createAccount,
+          style: AppStyle.welcomeTextStyle,
+        ),
+        centerTitle: true,
       ),
       body: Form(
         key: AuthCubit.get(context).registerFormKey,
@@ -152,27 +152,20 @@ class RegisterPage extends StatelessWidget {
                   listener: (context, state) {
                     // TODO: implement listener
                     if (state is RegisterAuthSuccess) {
-                      Fluttertoast.showToast(
-                        msg: state.message,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: AppColors.darkBlue.withOpacity(0.7),
-                        textColor: AppColors.white,
-                        fontSize: AppFontSize.f16,
+                      AppNotifier.show(
+                        context,
+                        state.message,
+                        type: NotifierType.success,
                       );
+
                       AuthCubit.get(context).clearControllers();
 
                       MyNavigation.navigateBack();
                     } else if (state is RegisterAuthFailure) {
-                       Fluttertoast.showToast(
-                        msg: state.errorMessage,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: AppColors.darkBlue.withOpacity(0.7),
-                        textColor: AppColors.white,
-                        fontSize: AppFontSize.f16,
+                      AppNotifier.show(
+                        context,
+                        state.errorMessage,
+                        type: NotifierType.error,
                       );
                     }
                   },

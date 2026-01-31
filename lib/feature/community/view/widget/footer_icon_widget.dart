@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class FooterIconWidget extends StatelessWidget {
   FooterIconWidget({
     super.key,

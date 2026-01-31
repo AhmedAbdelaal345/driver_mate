@@ -3,7 +3,6 @@ import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
-import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

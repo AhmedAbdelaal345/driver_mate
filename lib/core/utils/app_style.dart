@@ -117,4 +117,36 @@ abstract class AppStyle {
     color: AppColors.blueText,
     fontFamily: AppFonts.fontArimo,
   );
+  static const TextStyle appBarTitle = const TextStyle(
+    fontSize: AppFontSize.f17,
+    fontWeight: FontWeight.bold,
+    color: AppColors.black,
+    fontFamily: AppFonts.fontArimo,
+  );
+
+  static const TextStyle mostText = const TextStyle(
+    fontSize: AppFontSize.f14,
+    fontWeight: FontWeight.bold,
+    color: AppColors.cyanColor,
+    fontFamily: AppFonts.fontArimo,
+  );
+
+  static const TextStyle boldSmallText = const TextStyle(
+    fontSize: AppFontSize.f13,
+    fontWeight: FontWeight.bold,
+    color: AppColors.black,
+    fontFamily: AppFonts.fontArimo,
+  );
+  static const TextStyle boldTextStyle = const TextStyle(
+    fontSize: AppFontSize.f14,
+    fontWeight: FontWeight.bold,
+    color: AppColors.black,
+    fontFamily: AppFonts.fontArimo,
+  );
+  static const TextStyle regularSmallText = const TextStyle(
+    fontSize: AppFontSize.f13,
+    fontWeight: FontWeight.normal,
+    color: AppColors.black,
+    fontFamily: AppFonts.fontArimo,
+  );
 }

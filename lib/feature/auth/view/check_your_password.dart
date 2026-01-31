@@ -1,13 +1,16 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/core/widget/container_icon.dart';
+import 'package:driver_mate/core/widget/stack_with_container_widget.dart';
 import 'package:driver_mate/feature/auth/view/confirm_password_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/check_textfield_widget.dart';
+import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CheckYourEmail extends StatefulWidget {
   const CheckYourEmail({super.key, required this.email});
@@ -36,12 +39,9 @@ class _CheckYourEmailState extends State<CheckYourEmail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: SvgPicture.asset(AppImagePath.arrowBackPath),
-        ),
+        leading: LeadingIcon(),
+        title: Text(AppConstants.verifyOTP, style: AppStyle.welcomeTextStyle),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -51,19 +51,32 @@ class _CheckYourEmailState extends State<CheckYourEmail> {
               horizontal: 0.035 * SizeConfig.width(context),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.047),
+                StackWithContainerWidget(),
 
-                Text(AppConstants.checkYourEmail, style: AppStyle.labelStyle),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+
+                Text(
+                  AppConstants.checkYourEmail,
+                  style: AppStyle.labelStyle.copyWith(fontSize: 26),
+                ),
 
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
 
                 Text(
-                  "We sent a reset link to ${widget.email} enter 5 digit code that mentioned in the email",
+                  "We sent a 6-digit code to your email",
                   style: AppStyle.hintStyle,
                 ),
 
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                Text(
+                  widget.email,
+                  style: AppStyle.labelStyle.copyWith(fontSize: 12),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                Text("Code expires in 10 minutes.", style: AppStyle.hintStyle),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.03),
 
                 /// FIX: استخدم Row بدل ListView

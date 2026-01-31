@@ -1,9 +1,13 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/profile/view/edit_profile.dart';
+import 'package:driver_mate/feature/profile/view/maintance_history.dart';
+import 'package:driver_mate/feature/profile/view/my_cars.dart';
 import 'package:driver_mate/feature/profile/view/widget/details_container_widget.dart';
 import 'package:driver_mate/feature/profile/view/widget/item_container.dart';
 import 'package:driver_mate/feature/profile/view/widget/profile_container.dart';
@@ -35,7 +39,11 @@ class ProfilePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: SizeConfig.height(context) * 0.02),
-              ProfileContainer(onPressed: () {}),
+              ProfileContainer(
+                onPressed: () {
+                  MyNavigation.navigateTo(EditProfile());
+                },
+              ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -57,17 +65,25 @@ class ProfilePage extends StatelessWidget {
                 decoration: BoxDecorationWidget.customBoxDecoration(),
                 child: Column(
                   children: [
-                    DetailsContainerWidget(onTap: () {}),
+                    DetailsContainerWidget(
+                      onTap: () {
+                        MyNavigation.navigateTo(EditProfile());
+                      },
+                    ),
                     Divider(color: AppColors.containerGrey),
                     DetailsContainerWidget(
                       title: AppConstants.myCars,
-                      onTap: () {},
+                      onTap: () {
+                        MyNavigation.navigateTo(MyCars());
+                      },
                       subTitle: AppConstants.manageVehicls,
                       iconpath: AppImagePath.carIconPath,
                     ),
                     Divider(color: AppColors.containerGrey),
                     DetailsContainerWidget(
-                      onTap: () {},
+                      onTap: () {
+                        MyNavigation.navigateTo(MaintenanceHistory());
+                      },
                       title: AppConstants.maintenanceHistory,
                       subTitle: AppConstants.pastbookings,
                       iconpath: AppImagePath.calenderIconPath,

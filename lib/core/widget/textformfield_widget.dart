@@ -14,22 +14,24 @@ class TextFormFieldWidget extends StatefulWidget {
   final String hintText;
   final String? Function(String?)? validator;
   final bool isPassword;
-  final TextEditingController controller ;
+  final TextEditingController controller;
 
   @override
   State<TextFormFieldWidget> createState() => _TextFormFieldWidgetState();
 }
 
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
-  late bool isObscure = widget.isPassword? true : false;
+  late bool isObscure = widget.isPassword ? true : false;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller:widget.controller ,
+      controller: widget.controller,
       validator: widget.validator,
       obscureText: isObscure,
+      cursorColor: AppColors.cyanColor,
       decoration: InputDecoration(
         hintText: widget.hintText,
+
         suffixIcon: widget.isPassword == true
             ? IconButton(
                 icon: Icon(
@@ -48,6 +50,10 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppFontSize.f8),
           borderSide: BorderSide(color: AppColors.grey),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppFontSize.f8),
+          borderSide: BorderSide(color: AppColors.cyanColor),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppFontSize.f8),

@@ -1,13 +1,13 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
-import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/core/widget/container_icon.dart';
 import 'package:driver_mate/feature/auth/view/set_new_password.dart';
+import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ConfirmPasswordPage extends StatelessWidget {
   const ConfirmPasswordPage({super.key});
@@ -15,14 +15,7 @@ class ConfirmPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: SvgPicture.asset(AppImagePath.arrowBackPath),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      appBar: AppBar(leading: LeadingIcon()),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: SizeConfig.width(context) * 0.04,
@@ -30,6 +23,7 @@ class ConfirmPasswordPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 0.047 * SizeConfig.height(context)),
+            ContainerForIcon(),
             Align(
               alignment: AlignmentGeometry.centerLeft,
               child: Text(
