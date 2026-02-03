@@ -52,7 +52,7 @@ class _CoursalWidgetState extends State<CoursalWidget> {
                         child: Padding(
                           padding: EdgeInsetsGeometry.symmetric(
                             horizontal: SizeConfig.width(context) * 0.04,
-                            vertical: SizeConfig.height(context) * 0.03,
+                            vertical: SizeConfig.height(context) * 0.025,
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +131,7 @@ class _CoursalWidgetState extends State<CoursalWidget> {
             );
           }).toList(),
           options: CarouselOptions(
-            height: SizeConfig.height(context) * 0.25,
+            height: SizeConfig.height(context) * 0.27,
             autoPlay: true,
             // Key settings to remove the "floating" margins but keep items separate
             viewportFraction: 1.0,

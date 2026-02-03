@@ -1,9 +1,13 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
+import 'package:driver_mate/feature/ai/view/widget/quick_record_sheet.dart';
+import 'package:driver_mate/feature/emergency/view/emergency_assistance_page.dart';
 import 'package:driver_mate/feature/home/view/widget/ai_container_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/container_icon_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/container_item.dart';
@@ -15,28 +19,43 @@ import 'package:driver_mate/feature/home/view/widget/maintainance_container_widg
 import 'package:driver_mate/feature/home/view/widget/recommended_container.dart';
 import 'package:driver_mate/feature/home/view/widget/service_supplied_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/status_container_widget.dart';
+import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
+import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
+import 'package:driver_mate/feature/vehicle_status/view/vehicle_status_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-  static const List<ContainerIconWidget> options = [
+  static final List<ContainerIconWidget> options = [
     ContainerIconWidget(
       icon: AppImagePath.micIconPath,
       text: AppConstants.aiVoice,
+      onTap: () {
+        MyNavigation.navigateTo(AiVoiceDiagnosisPage());
+      },
       // here we will add onTap functionality later
     ),
     ContainerIconWidget(
       icon: AppImagePath.phoneIconPath,
       text: AppConstants.emergencyCall,
+      onTap: () {
+        MyNavigation.navigateTo(EmergencyAssistancePage());
+      },
     ),
     ContainerIconWidget(
       icon: AppImagePath.repairIconPath,
       text: AppConstants.maintanence,
+      onTap: () {
+        MyNavigation.navigateTo(BookMaintenancePage());
+      },
     ),
     ContainerIconWidget(
       icon: AppImagePath.plusIconPath,
       text: AppConstants.add,
+      onTap: () {
+        MyNavigation.navigateTo(AddVehiclePage());
+      },
     ),
   ];
   static const List<MaintainanceContainerWidget> maintanceContainerList = [
@@ -146,7 +165,15 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatActionButtonWidget(
         onPressed: () {
-          // here will make the navigation to go to ai voice assisstance
+          showModalBottomSheet(
+            context: context,
+            backgroundColor: AppColors.white,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            builder: (_) => const QuickRecordSheet(),
+          );
         },
       ),
       appBar: AppBar(
@@ -197,7 +224,11 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
 
-              StatusContainerWidget(),
+              StatusContainerWidget(
+                onTap: () {
+                  MyNavigation.navigateTo(VehicleStatusPage());
+                },
+              ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ListView.separated(
                 padding: EdgeInsets.zero, // REMOVE default padding
@@ -263,17 +294,19 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: SizeConfig.height(context) * 0.015),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ContainerItem(onTap: () {}),
-                  ContainerItem(
-                    title: AppConstants.recentlyViewed,
-                    subTitle: AppConstants.continueWhere,
-                    bottom: AppConstants.open,
-                    containerColor: AppColors.perpule.withValues(alpha: 0.1),
-                    iconColor: AppColors.perpule,
-                    iconPath: AppImagePath.timingIconPath,
-                    onTap: () {},
+                  Expanded(child: ContainerItem(onTap: () {})),
+                  SizedBox(width: SizeConfig.width(context) * 0.04),
+                  Expanded(
+                    child: ContainerItem(
+                      title: AppConstants.recentlyViewed,
+                      subTitle: AppConstants.continueWhere,
+                      bottom: AppConstants.open,
+                      containerColor: AppColors.perpule.withValues(alpha: 0.1),
+                      iconColor: AppColors.perpule,
+                      iconPath: AppImagePath.timingIconPath,
+                      onTap: () {},
+                    ),
                   ),
                 ],
               ),

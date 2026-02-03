@@ -15,6 +15,7 @@ class _ExploreFilterSheetState extends State<ExploreFilterSheet> {
   late RangeValues _price;
 
   final List<String> _categories = const [
+    'All',
     'Sedan',
     'SUV',
     'Hatchback',
@@ -47,6 +48,8 @@ class _ExploreFilterSheetState extends State<ExploreFilterSheet> {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final categoryValue =
+        _categories.contains(_temp.category) ? _temp.category : null;
 
     return Padding(
       padding: EdgeInsets.only(bottom: bottomInset),
@@ -63,13 +66,14 @@ class _ExploreFilterSheetState extends State<ExploreFilterSheet> {
               Text('Category', style: AppStyle.labelStyle),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
-                value: _temp.category,
+                value: categoryValue,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   isDense: true,
                 ),
                 hint: const Text('Select category'),
                 items: _categories
+                    .toSet()
                     .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                     .toList(),
                 onChanged: (v) =>

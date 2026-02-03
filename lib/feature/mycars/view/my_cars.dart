@@ -2,9 +2,9 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
-import 'package:driver_mate/feature/profile/view/widget/container_widget.dart';
-import 'package:driver_mate/feature/profile/view/widget/custom_container_bar.dart';
-import 'package:driver_mate/feature/profile/view/widget/vehical_detail_card.dart';
+import 'package:driver_mate/feature/mycars/view/widget/container_widget.dart';
+import 'package:driver_mate/feature/mycars/view/widget/custom_container_bar.dart';
+import 'package:driver_mate/feature/mycars/view/widget/vehical_detail_card.dart';
 import 'package:flutter/material.dart';
 
 class MyCars extends StatelessWidget {

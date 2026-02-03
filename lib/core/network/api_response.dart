@@ -25,7 +25,7 @@ class ApiResponse {
       statusCode: response.statusCode ?? 0,
       status: body['status'] ?? false,
       message: body['message'] ?? '',
-      data: body['data'] ?? body['user'] ?? null, // flexible
+      data: body['data'] ?? body['user'] , // flexible
       accessToken: body['accessToken'],
       refreshToken: body['refreshToken'],
     );

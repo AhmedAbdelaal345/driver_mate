@@ -1,4 +1,5 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/profile/view/widget/booking_detail_card.dart';
@@ -13,7 +14,7 @@ class MaintenanceHistory extends StatelessWidget {
       backgroundColor: const Color(0xFFF8F9FB), // Light grey background from UI
       appBar: AppBar(
         leading: const LeadingIcon(),
-        title: Text("Maintenance History", style: AppStyle.appBarTitle),
+        title: Text(AppConstants.maintenanceHistory, style: AppStyle.appBarTitle),
         centerTitle: true,
       ),
       body: CustomScrollView(

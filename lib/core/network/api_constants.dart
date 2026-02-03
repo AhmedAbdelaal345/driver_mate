@@ -6,6 +6,7 @@ abstract class ApiConstants {
   static const String requestOTPEndpoint = "request-otp";
   static const String verifiyOTPEndpoint = "verify-otp";
   static const String changePasswordEndpoint = "change-password";
+  static const String audioDiagnosisEndpoint = "audio-diagnosis";
 
   static  String accessToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhYWJkZWxhYWwxNDVAZ21haWwuY29tIiwiaWF0IjoxNzY4ODIyMjM2LCJleHAiOjE3Njg4MjMxMzZ9.CI2BCHNh_UuLqo-8JEQxaag0C9j6miNIlFv0tIFLplc";

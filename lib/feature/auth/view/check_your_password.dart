@@ -1,10 +1,7 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
-import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
-import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
-import 'package:driver_mate/core/widget/container_icon.dart';
 import 'package:driver_mate/core/widget/stack_with_container_widget.dart';
 import 'package:driver_mate/feature/auth/view/confirm_password_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/check_textfield_widget.dart';

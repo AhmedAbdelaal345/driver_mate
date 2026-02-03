@@ -30,7 +30,7 @@ class CommunityPostHeader extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                TextFieldWidget(controller: controller),
+                Expanded(child: TextFieldWidget(controller: controller)),
               ],
             ),
             const SizedBox(height: 16),

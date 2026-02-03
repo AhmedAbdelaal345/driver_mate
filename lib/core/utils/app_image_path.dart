@@ -41,9 +41,17 @@ abstract class AppImagePath {
   static const String warringIconPath = "${iconPath}warring.svg";
   static const String hintIconPath = "${iconPath}hint_icon.svg";
   static const String timingIconPath = "${iconPath}timing.svg";
+  static const String changePasswordIconPath =
+      "${iconPath}change_password_icon.svg";
   static const String carIconPath = "${iconPath}car_icon.svg";
   static const String languageIconPath = "${iconPath}language_icon.svg";
   static const String notificationIconPath = "${iconPath}notification_icon.svg";
   static const String themeIconPath = "${iconPath}theme_icon.svg";
+  static const String privacyIconPath = "${iconPath}privacy.svg";
+  static const String premissionIconPath = "${iconPath}permission.svg";
+  static const String helpCenterIconPath = "${iconPath}help_center.svg";
+  static const String conatactSupportIconPath =
+      "${iconPath}contact_support.svg";
+  static const String aboutIconPath = "${iconPath}about.svg";
   static const String doubleArrowIconPath = "${iconPath}double_arrow_icon.svg";
 }

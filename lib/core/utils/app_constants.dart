@@ -9,10 +9,89 @@ abstract class AppConstants {
   static const String verifyOTP = "Verify OTP";
   static const String problem = "Problem";
   static const String post = "Post";
+  static const String permession = "App Permissions";
+  static const String saveChanges = "Save Changes";
+  static const String restartLanguage =
+      "App will restart to apply language changes";
+  static const String arabic = "Arabic";
+  static const String privacy = "Privacy";
+  static const String arabicNative = "العربية";
   static const String inService = "In Service";
   static const String personalInfo = "Personal Info";
   static const String open = "Open";
+  static const String helpCenter = "Help Center";
+  static const String searchHelp = "Search help...";
+  static const String maintenance = "Maintenance";
+  static const String faqTitle = "FREQUENTLY ASKED QUESTIONS";
+  static const String faqAddVehicle = "How do I add a new vehicle?";
+  static const String faqAiDiagnosis = "How does AI diagnostics work?";
+  static const String faqBookService = "How do I book a service?";
+  static const String faqCancelBooking =
+      "Can I cancel or reschedule a booking?";
+  static const String faqEmergency = "What if I have an emergency?";
+  static const String faqChangePassword = "How do I change my password?";
+  static const String faqVehicleSecure = "Are my vehicle details secure?";
+  static const String faqAiAccuracy = "How accurate is the AI diagnostic?";
+  static const String contactSupport = "Contact Support";
+  static const String about = "About DriveMate";
+  static const String aboutSubtitle =
+      "Your intelligent car maintenance companion. AI-powered diagnostics and seamless service booking.";
+  static const String versionNumber = "Version 1.0.0";
+  static const String legal = "LEGAL";
+  static const String termsOfService = "Terms of Service";
+  static const String termsOfServiceSub = "Read our terms and conditions";
+  static const String privacyPolicy = "Privacy Policy";
+  static const String privacyPolicySub = "How we handle your data";
+  static const String contact = "CONTACT";
+  static const String contactUs = "Contact Us";
+  static const String madeWithLove =
+      "Made with FCI Student IT Department for car owners";
+  static const String copyright = "© 2026 DriveMate. All rights reserved.";
+  static const String changePassword = "Change Password";
+  static const String email = "Email";
+  static const String callUs = "Call Us";
+  static const String supportEmail = "support@drivemate.app";
+  static const String supportPhone = "+1 (555) 123-4567";
+  static const String sendMessage = "SEND A MESSAGE";
+  static const String subject = "Subject";
+  static const String subjectHint = "What do you need help with?";
+  static const String message = "Message";
+  static const String messageHint = "Describe your issue in detail...";
+  static const String charactersLimit = "0/500 characters";
+  static const String sendMessageButton = "Send Message";
+  static const String responseTime = "Response Time";
+  static const String responseTimeNote =
+      "Our support team typically responds within 24 hours. For urgent issues, please use live chat.";
+  static const String appPermissions = "APP PERMISSIONS";
+  static const String yourData = "YOUR DATA";
+  static const String dangerZone = "DANGER ZONE";
+  static const String location = "Location";
+  static const String microphone = "Microphone";
+  static const String allowed = "Allowed";
+  static const String notAllowed = "Not allowed";
+  static const String permissionsInfoTitle = "Why we need permissions:";
+  static const String permissionsInfoBody =
+      "Location helps find nearby services, microphone enables voice commands, and notifications keep you updated on maintenance.";
+  static const String clearSearchHistory = "Clear Search History";
+  static const String clearSearchHistorySub = "Remove all search records";
+  static const String requestDataExport = "Request Data Export";
+  static const String requestDataExportSub = "Download your data as JSON";
+  static const String deleteAccount = "Delete Account";
+  static const String deleteAccountSub = "Permanently remove your account";
+  static const String currentPassword = "Current Password";
+  static const String enterCurrentPassword = "Enter current password";
+  static const String newPassword = "New Password";
+  static const String enterNewPassword = "Enter new password";
+  static const String confirmNewPassword = "Confirm New Password";
+  static const String reEnterNewPassword = "Re-enter new password";
+  static const String passwordRequirements = "PASSWORD REQUIREMENTS";
+  static const String requirementLength = "At least 8 characters";
+  static const String requirementUppercase = "One uppercase letter";
+  static const String requirementLowercase = "One lowercase letter";
+  static const String requirementNumber = "One number";
+  static const String changeYourPassword = "Change Your Password";
   static const String account = "ACCOUNT";
+  static const String settings = "Settings";
   static const String createAccount = "Create Account";
   static const String saved = "Saved";
   static const String manageYourFleet = "Manage your fleet";
@@ -20,6 +99,7 @@ abstract class AppConstants {
       "Add all your vehicles to track maintenance, get AI diagnostics, and book services easily.";
   static const String call = "Call";
   static const String edit = "Edit";
+  static const String english = "English";
   static const String active = 'Active';
   static const String yourVechical = 'Your Vehicles';
   static const String changeImage = "Change Photo";
@@ -29,7 +109,6 @@ abstract class AppConstants {
   static const String tips = "Tips";
   static const String allVehical = "All Vehical";
   static const String booking = "Booking";
-  static const String message = "Message";
   static const String medium = "Medium";
   static const String myCars = "My Cars";
   static const String all = "All";
@@ -44,8 +123,32 @@ abstract class AppConstants {
   static const String language = "Language";
   static const String englishArbic = "English / العربية";
   static const String theme = "Theme";
+  static const String lightMode = "Light Mode";
+  static const String darkMode = "Dark Mode";
+  static const String systemDefault = "System Default";
+  static const String autoSaveEnabled = "Auto-save Enabled";
+  static const String autoSaveThemeNote =
+      "Your theme preference is saved automatically and syncs across all your devices.";
   static const String lightDark = "Light / Dark";
   static const String notifications = "Notifications";
+  static const String notificationPreferences = "NOTIFICATION PREFERENCES";
+  static const String maintenanceReminders = "Maintenance Reminders";
+  static const String maintenanceRemindersSub =
+      "Get notified about upcoming services";
+  static const String offersPromotions = "Offers & Promotions";
+  static const String offersPromotionsSub =
+      "Receive special deals and discounts";
+  static const String aiAlertsSub = "Intelligent diagnostic notifications";
+  static const String emergencyUpdates = "Emergency Updates";
+  static const String emergencyUpdatesSub =
+      "Critical alerts and safety recalls";
+  static const String schedule = "SCHEDULE";
+  static const String notificationSchedule = "Notification Schedule";
+  static const String setQuietHours = "Set quiet hours";
+  static const String notificationSettings = "Notification Settings";
+  static const String notificationSettingsSub =
+      "You can customize your notification preferences at any time. Emergency updates are highly recommended for safety.";
+  static const String currentLanguageEnglish = "Current language:English";
   static const String reminder = "Reminders & offers";
   static const String community = "Community";
   static const String price = "\$28,000";
@@ -87,6 +190,15 @@ abstract class AppConstants {
   static const String findNearby = "Find Nearby Station ";
   static const String annual = "Annual Inspection";
   static const String viewDetails = "View Details";
+  static const String bookMaintenance = "Book Maintenance";
+  static const String listView = "List View";
+  static const String mapView = "Map View";
+  static const String openNow = "Open Now";
+  static const String closed = "Closed";
+  static const String mapPreview = "Map view (mock)";
+  static const String openInMaps = "Open in Google Maps";
+  static const String openingMaps = "Opening maps...";
+  static const String openMapsFailed = "Unable to open maps";
   static const String welcomeToDriveMate = "Welcome to DriveMate";
   static const String pleaseLogin = "Please log in the form below.";
   static const String emailAddress = "Email Address";
@@ -109,6 +221,67 @@ abstract class AppConstants {
   static const String oilChange = "Oil change due in 500 miles";
   static const String oilChangeTitle = "Oil Change";
   static const String maintanenceNearService = "Maintenance Near You";
+  static const String maintenanceBooking = "Maintenance Booking";
+  static const String serviceDetails = "Service Details";
+  static const String serviceType = "Service Type";
+  static const String estimatedDuration = "Estimated Duration";
+  static const String estimatedCost = "Estimated Cost";
+  static const String selectDate = "Select Date";
+  static const String selectTime = "Select Time";
+  static const String pickDateHint = "Choose a date";
+  static const String autoCare = "AutoCare Service Center";
+  static const String rating48 = "4.8";
+  static const String distanceTime = "2.5 km away • Downtown";
+  static const String recommendedForOil = "Recommended for Oil Change";
+  static const String serviceCenterNote =
+      "Specializes in routine maintenance and engine diagnostics. Open Mon-Sat 9AM-6PM.";
+  static const String duration45Min = "45 min";
+  static const String costRange = "\$65 - \$85";
+  static const String time900 = "9:00 AM";
+  static const String time1000 = "10:00 AM";
+  static const String time1100 = "11:00 AM";
+  static const String time1200 = "12:00 PM";
+  static const String time200 = "2:00 PM";
+  static const String time300 = "3:00 PM";
+  static const String time400 = "4:00 PM";
+  static const String time500 = "5:00 PM";
+  static const String carNews = "Car News";
+  static const String newsTitle1 = "Electric vehicles reach";
+  static const String newsSub1 =
+      "Latest EV models are achieving record-breaking range and charging";
+  static const String newsTitle2 = "How to Choose the Right";
+  static const String newsSub2 =
+      "Expert tips on selecting the perfect insurance coverage for your";
+  static const String newsTitle3 = "Top 10 Maintenance Tips";
+  static const String newsSub3 =
+      "Keep your car running smoothly during cold weather with these";
+  static const String newsTitle4 = "Hybrid vs Electric";
+  static const String newsSub4 =
+      "Compare the benefits and drawbacks of hybrid and electric";
+  static const String newsTitle5 = "Understanding Your";
+  static const String newsSub5 =
+      "Learn what each warning light means and when you should take action";
+  static const String newsTagTech = "Technology";
+  static const String newsTagTips = "Tips & Guides";
+  static const String newsTagMaintenance = "Maintenance";
+  static const String newsTagBuying = "Buying Guide";
+  static const String read5 = "5 min read";
+  static const String read7 = "7 min read";
+  static const String read6 = "6 min read";
+  static const String read8 = "8 min read";
+  static const String read4 = "4 min read";
+  static const String recommendedServiceTitle = "Recommended Service";
+  static const String oilChangeDue = "Oil change due in 500 miles";
+  static const String aiBasedRecommendation = "AI-Based Recommendation";
+  static const String recommendedServiceNote =
+      "Based on your current mileage and driving patterns, we recommend scheduling an oil change soon. Regular oil changes help maintain engine health and prevent costly repairs.";
+  static const String confidenceLevel = "Confidence Level";
+  static const String findNearestCenter = "Find Nearest Center";
+  static const String findNearestCenterSub =
+      "Locate service centers near you";
+  static const String bookNowSub = "Schedule your oil change today";
+  static const String setReminder = "Set Reminder";
+  static const String setReminderSub = "Get notified when it’s time";
   static const String confirm = "Confirm";
   static const String soon = "soon";
   static const String featuredCars = "Featured Cars";
@@ -118,7 +291,25 @@ abstract class AppConstants {
   static const String filterRepalcement = "Filter Replacement";
   static const String continu = "Continue";
   static const String attention = "Attention";
-  static const String vechicleStatus = "Vehicle Status";
+  static const String vehicleStatus = "Vehicle Status";
+  static const String vehicleName = "Toyota Camry 2024";
+  static const String lastUpdated = "Last updated: 2 hours ago";
+  static const String vehicleStatusSummary =
+      "Your vehicle is in good condition. Battery requires attention soon.";
+  static const String healthMetrics = "HEALTH METRICS";
+  static const String engineHealthSub =
+      "Engine running smoothly. No issues detected.";
+  static const String batteryHealthSub =
+      "Battery voltage lower than optimal. Consider replacement soon.";
+  static const String tirePressure = "Tire Pressure";
+  static const String tirePressureSub =
+      "All tires at optimal pressure: 32 PSI average.";
+  static const String oilLife = "Oil Life";
+  static const String oilLifeSub = "Oil change recommended in 500 miles.";
+  static const String oilPercent = "65%";
+  static const String runAiScan = "Run AI Scan";
+  static const String book = "Book";
+  static const String seeTips = "See Tips";
   static const String engineHealth = "Engine Health";
   static const String latestCarNews = "Latest Car News";
   static const String recommendedService = "Recommended Service";
@@ -136,9 +327,61 @@ abstract class AppConstants {
   static const String signup = "Sign Up";
   static const String startScan = "Start Scan";
   static const String aiVoice = "AI Voice Diagnosis";
+  static const String aiVoiceDiagnosis = "AI Voice Diagnosis";
+  static const String recordCarSound = "Record Your Car Sound";
+  static const String recordHint =
+      "Our AI will analyze engine sounds to detect potential issues";
+  static const String tapToStart = "Tap to Start Recording";
+  static const String max30Seconds = "Max 30 seconds";
+  static const String uploadAudio = "Upload Audio";
+  static const String recordingTips = "Recording Tips";
+  static const String recentScans = "Recent Scans";
+  static const String low = "Low";
+  static const String high = "High";
+  static const String today = "Today, 10:30 AM";
+  static const String yesterday = "Yesterday, 3:45 PM";
+  static const String jan20 = "Jan 20, 2:15 PM";
+  static const String engineBeltNoise = "Engine Belt Noise";
+  static const String brakeSqueal = "Brake Squeal";
+  static const String fanRattle = "Fan Rattle";
+  static const String recordStart = "Start Recording";
+  static const String recordStop = "Stop Recording";
+  static const String uploading = "Uploading audio...";
+  static const String uploadSuccess = "Audio uploaded successfully";
+  static const String uploadFailed = "Audio upload failed";
+  static const String chooseUploadSource = "Choose upload source";
+  static const String uploadRecording = "Upload last recording";
+  static const String uploadFromDevice = "Upload from device";
+  static const String noRecordingFound = "No recording found";
+  static const String pickAudioFailed = "Unable to pick audio file";
+  static const String analyzingSound = "Analyzing your sound...";
+  static const String micPermissionDenied = "Microphone permission denied";
+  static const String tryAgain = "Please try again";
+  static const String close = "Close";
+  static const String mockEngineBelt =
+      "Detected a possible belt slippage. Consider inspection soon.";
+  static const String mockBrakeSqueal =
+      "Slight brake squeal detected. Monitor and service if it worsens.";
+  static const String mockFanRattle =
+      "Rattle could indicate a loose fan or cover. Check as soon as possible.";
   static const String good = "Good";
   static const String maintanence = "Book Maintenance";
   static const String add = "Add Vehicle";
+  static const String addVehicle = "Add Vehicle";
+  static const String registerVehicle = "Register Your Vehicle";
+  static const String registerVehicleHint =
+      "Track maintenance and service history";
+  static const String brandRequired = "Brand  *";
+  static const String modelRequired = "Model  *";
+  static const String yearRequired = "Year  *";
+  static const String plateNumberOptional = "Plate Number (Optional)";
+  static const String currentMileageOptional = "Current Mileage (Optional)";
+  static const String modelHint = "e.g., Camry, Accord, X5";
+  static const String plateNumberHint = "E.g., ABC-1234";
+  static const String mileageHint = "e.g., 45000";
+  static const String km = "km";
+  static const String addVehicleNote =
+      "Adding your vehicle helps us provide personalized maintenance recommendations and service reminders.";
   static const String due = "Due in 500 km";
   static const String due2 = "Due in 7 days";
   static const String due3 = "Due in 2 weeks";
@@ -159,6 +402,39 @@ abstract class AppConstants {
   static const String passwordRest = "Password reset";
   static const String coursalTitle = "AI Diagnose Your Car";
   static const String emergencyCall = "Emergency Call";
+  static const String emergencyAssistance = "Emergency Assistance";
+  static const String emergencyModeActive = "Emergency Mode Active";
+  static const String helpOnTheWay = "Help is on the way";
+  static const String emergencySos = "Emergency SOS";
+  static const String sos = "SOS";
+  static const String tapToCallEmergency = "Tap to call emergency";
+  static const String emergencyNote =
+      "This will immediately alert emergency services and share your location";
+  static const String currentLocation = "Current Location";
+  static const String locationAddress = "Downtown Area, Main Street";
+  static const String gpsActive = "GPS Active";
+  static const String gpsInactive = "GPS Off";
+  static const String locationLoading = "Getting your location...";
+  static const String locationDisabled = "Location services are off";
+  static const String locationPermissionDenied = "Location permission denied";
+  static const String lat = "Lat";
+  static const String lng = "Lng";
+  static const String quickActions = "Quick Actions";
+  static const String towService = "Tow Service";
+  static const String ambulance = "Ambulance";
+  static const String police = "Police";
+  static const String policeNumber = "122";
+  static const String ambulanceNumber = "123";
+  static const String fireTruckNumber = "180";
+  static const String helpooNumber = "17000";
+  static const String egTowingNumber1 = "+201096099980";
+  static const String egTowingNumber2 = "99083045";
+  static const String mercedesNumber = "16362";
+  static const String fireTruck = "Firetruck";
+  static const String towHelp = "Choose Tow Service";
+  static const String helpoo = "Helpoo Roadside Assistance";
+  static const String egTowing = "EG Towing";
+  static const String mercedesRoadside = "Mercedes-Benz Roadside";
   static const String coursalSubtitle = "Voice-based sound analysis";
   static const String setNewPasswordHintText =
       "Create a new password.Ensure it is differs from previous one for security.";

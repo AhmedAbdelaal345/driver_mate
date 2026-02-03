@@ -117,8 +117,10 @@ class MarketplaceCard extends StatelessWidget {
 
           // Action Buttons Row
           const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            alignment: WrapAlignment.spaceBetween,
             children: [
               _buildIconBtn(Icons.bookmark_border, AppConstants.save, () {}),
               _buildIconBtn(
@@ -173,15 +175,23 @@ class MarketplaceCard extends StatelessWidget {
   }
 
   Widget _buildIconBtn(IconData icon, String label, VoidCallback onPressed) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: onPressed,
-          icon: Icon(icon, size: 18, color: AppColors.iconGrey),
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 18, color: AppColors.iconGrey),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: TextStyle(color: AppColors.textGrey, fontSize: 12),
+            ),
+          ],
         ),
-        const SizedBox(width: 4),
-        Text(label, style: TextStyle(color: AppColors.textGrey, fontSize: 13)),
-      ],
+      ),
     );
   }
 }
