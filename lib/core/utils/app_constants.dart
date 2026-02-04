@@ -8,7 +8,47 @@ abstract class AppConstants {
   static const String problems = "Problems";
   static const String verifyOTP = "Verify OTP";
   static const String problem = "Problem";
+  static const String search = "Search";
+  static const String support = "Support";
+  static const String searchExploreHint = "Search cars, parts, services...";
+  static const String recent = "Recent";
+  static const String clearAll = "Clear all";
+  static const String secuirty = "Secuirty";
+  static const String logout = "Log Out";
+  static const String suggestions = "Suggestions";
+  static const String results = "Results";
+  static const String noResults = "No results found";
+  static const String noRecentSearches = "No recent searches";
+  static const String maxDist = 'Max distance (km)';
+  static const String priceRange = 'Price Range';
   static const String post = "Post";
+  static const String reset = "Reset";
+  static const String apply = "Apply";
+  static const String filter = "Filter";
+  static const String filters = "Filters";
+  static const String applyFilters = "Apply Filters";
+  static const String cancel = "Cancel";
+  static const String sortBy = "Sort By";
+  static const String brand = "Brand";
+  static const String rating = "Rating";
+  static const String minPriceLabel = "Min Price";
+  static const String maxPriceLabel = "Max Price";
+  static const String newest = "Newest";
+  static const String nearest = "Nearest";
+  static const String highestRated = "Highest Rated";
+  static const String lowestPrice = "Lowest Price";
+  static const String highestPrice = "Highest Price";
+  static const String newPost = "New Post";
+  static const String postType = "Post Type";
+  static const String title = "Title";
+  static const String description = "Description";
+  static const String titleHint = "What's your question or topic?";
+  static const String descriptionHint =
+      "Add details, context, or what you've tried...";
+  static const String publishPost = "Publish Post";
+  static const String category = 'Category';
+  static const String minRating = 'Min rating';
+  static const String selectCategory = 'Select category';
   static const String permession = "App Permissions";
   static const String saveChanges = "Save Changes";
   static const String restartLanguage =
@@ -22,6 +62,7 @@ abstract class AppConstants {
   static const String helpCenter = "Help Center";
   static const String searchHelp = "Search help...";
   static const String maintenance = "Maintenance";
+  static const String cars = "Cars";
   static const String faqTitle = "FREQUENTLY ASKED QUESTIONS";
   static const String faqAddVehicle = "How do I add a new vehicle?";
   static const String faqAiDiagnosis = "How does AI diagnostics work?";
@@ -50,8 +91,8 @@ abstract class AppConstants {
   static const String changePassword = "Change Password";
   static const String email = "Email";
   static const String callUs = "Call Us";
-  static const String supportEmail = "support@drivemate.app";
-  static const String supportPhone = "+1 (555) 123-4567";
+  static const String supportEmail = "ahmeed.abdeelaal@gmail.com";
+  static const String supportPhone = "+2 (010) 696-83875";
   static const String sendMessage = "SEND A MESSAGE";
   static const String subject = "Subject";
   static const String subjectHint = "What do you need help with?";
@@ -185,6 +226,8 @@ abstract class AppConstants {
   static const String dist = "2 Km";
   static const String savedItem = "Saved Items";
   static const String later = "later";
+  static const String review = "Review";
+
   static const String seeMap = "See map";
   static const String aiAlerts = "AI Alerts";
   static const String findNearby = "Find Nearby Station ";
@@ -277,8 +320,7 @@ abstract class AppConstants {
       "Based on your current mileage and driving patterns, we recommend scheduling an oil change soon. Regular oil changes help maintain engine health and prevent costly repairs.";
   static const String confidenceLevel = "Confidence Level";
   static const String findNearestCenter = "Find Nearest Center";
-  static const String findNearestCenterSub =
-      "Locate service centers near you";
+  static const String findNearestCenterSub = "Locate service centers near you";
   static const String bookNowSub = "Schedule your oil change today";
   static const String setReminder = "Set Reminder";
   static const String setReminderSub = "Get notified when it’s time";

@@ -6,6 +6,7 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/languge/view/language_page.dart';
+import 'package:driver_mate/feature/notification/view/notification_page.dart';
 import 'package:driver_mate/feature/profile/view/about_page.dart';
 import 'package:driver_mate/feature/profile/view/change_password.dart';
 import 'package:driver_mate/feature/profile/view/contact_support_page.dart';
@@ -126,7 +127,9 @@ class ProfilePage extends StatelessWidget {
                     ),
                     Divider(color: AppColors.containerGrey),
                     DetailsContainerWidget(
-                      onTap: () {},
+                      onTap: () {
+                        MyNavigation.navigateTo(NotificationPage());
+                      },
                       title: AppConstants.notifications,
                       subTitle: AppConstants.reminder,
                       iconpath: AppImagePath.notificationIconPath,
@@ -137,7 +140,7 @@ class ProfilePage extends StatelessWidget {
 
               SizedBox(height: SizeConfig.height(context) * 0.02),
 
-              Text(AppConstants.settings, style: AppStyle.containerSubtitle),
+              Text(AppConstants.secuirty, style: AppStyle.containerSubtitle),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Container(
                 decoration: BoxDecorationWidget.customBoxDecoration(),
@@ -162,6 +165,16 @@ class ProfilePage extends StatelessWidget {
                       iconpath: AppImagePath.privacyIconPath,
                     ),
                     Divider(color: AppColors.containerGrey),
+                  ],
+                ),
+              ),
+              SizedBox(height: SizeConfig.height(context) * 0.02),
+              Text(AppConstants.support, style: AppStyle.containerSubtitle),
+              SizedBox(height: SizeConfig.height(context) * 0.02),
+              Container(
+                decoration: BoxDecorationWidget.customBoxDecoration(),
+                child: Column(
+                  children: [
                     DetailsContainerWidget(
                       onTap: () {
                         MyNavigation.navigateTo(HelpCenterPage());
@@ -189,6 +202,18 @@ class ProfilePage extends StatelessWidget {
                       title: AppConstants.about,
                       subTitle: AppConstants.reminder,
                       iconpath: AppImagePath.aboutIconPath,
+                    ),
+                    SizedBox(height: SizeConfig.height(context) * 0.02),
+                    Container(
+                      decoration: BoxDecorationWidget.customBoxDecoration(),
+                      child: DetailsContainerWidget(
+                        isSvg: false,
+                        icon: Icons.logout_outlined,
+                        title: AppConstants.logout,
+                        onTap: (){
+                          
+                        },
+                      ),
                     ),
                   ],
                 ),

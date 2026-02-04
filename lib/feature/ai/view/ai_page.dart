@@ -39,6 +39,8 @@ class AiPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 16),
+
                   // ----------------------------------------------------------
                   // 🚗 VEHICLE STATUS CARD
                   // ----------------------------------------------------------
@@ -48,8 +50,8 @@ class AiPage extends StatelessWidget {
                     child: Row(
                       children: [
                         Container(
-                          height: SizeConfig.height(context) * 0.08,
-                          width: SizeConfig.width(context) * 0.05,
+                          height: 60,
+                          width: 60,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecorationWidget.customBoxDecoration()
                               .copyWith(
@@ -101,9 +103,9 @@ class AiPage extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
                   QuickActionList(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
 
                   // ----------------------------------------------------------
                   // 🤖 AI Greeting Message
@@ -114,7 +116,7 @@ class AiPage extends StatelessWidget {
                         "find maintenance centers, schedule services, or assist in emergencies.",
                   ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
 
                   // ----------------------------------------------------------
                   // 👤 User Message
@@ -124,7 +126,7 @@ class AiPage extends StatelessWidget {
                         "My car is making a strange noise when I brake. What could it be?",
                   ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
 
                   // ----------------------------------------------------------
                   // 🤖 AI Response + CTA Button
@@ -136,7 +138,7 @@ class AiPage extends StatelessWidget {
                     action: "Find nearby mechanics",
                   ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
 
                   // ----------------------------------------------------------
                   // 🎤 Voice Bubble

@@ -1,7 +1,10 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
+import 'package:driver_mate/feature/community/view/community_filter_page.dart';
+import 'package:driver_mate/feature/community/view/community_new_post_page.dart';
 import 'package:driver_mate/feature/community/view/widget/all_tab_widget.dart';
 import 'package:driver_mate/feature/community/view/widget/community_tabBar_widget.dart';
 import 'package:driver_mate/feature/community/view/widget/market_place_widget.dart';
@@ -42,7 +45,12 @@ class _CommunityPageState extends State<CommunityPage> {
         ),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.tune)),
+          IconButton(
+            onPressed: () {
+              MyNavigation.navigateTo(CommunityFilterPage());
+            },
+            icon: const Icon(Icons.tune),
+          ),
         ],
       ),
 
@@ -50,7 +58,7 @@ class _CommunityPageState extends State<CommunityPage> {
         backgroundColor: AppColors.cyanColor,
         child: const Icon(Icons.add, color: AppColors.white),
         onPressed: () {
-          // here we will add the functionality for navigate to specific page
+          MyNavigation.navigateTo(const CommunityNewPostPage());
         },
       ),
 

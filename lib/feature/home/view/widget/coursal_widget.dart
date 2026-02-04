@@ -1,17 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
-import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
-import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
-import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
 
 class CoursalWidget extends StatefulWidget {
-  const CoursalWidget({super.key, this.isAppear, this.onPressed});
-  final bool? isAppear;
+  const CoursalWidget({super.key, this.onPressed});
   final VoidCallback? onPressed;
   @override
   _CoursalWidgetState createState() => _CoursalWidgetState();
@@ -20,120 +16,44 @@ class CoursalWidget extends StatefulWidget {
 class _CoursalWidgetState extends State<CoursalWidget> {
   int _currentIndex = 0;
 
-  static final List<String> images = [
-    AppImagePath.loginImagePath,
-    AppImagePath.bmwCarImagePath,
-    AppImagePath.applePath,
+  static final List<_CarouselItem> _items = [
+    _CarouselItem(
+      badge: 'Fast response',
+      title: 'Emergency Assist',
+      subtitle: 'Send your location instantly to get help',
+      buttonText: 'Get Help',
+      image: AppImagePath.carImagePath,
+    ),
+    _CarouselItem(
+      badge: 'Due in 500 km',
+      title: 'Maintenance Reminder',
+      subtitle: 'Oil change due soon based on your mileage',
+      buttonText: 'Book Now',
+      image: AppImagePath.loginImagePath,
+    ),
+    _CarouselItem(
+      badge: null,
+      title: AppConstants.coursalTitle,
+      subtitle: AppConstants.coursalSubtitle,
+      buttonText: AppConstants.startScan,
+      image: AppImagePath.camryCarImagePath,
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final cardHeight = SizeConfig.height(context) * 0.23;
+
+    return Stack(
+      alignment: Alignment.bottomCenter,
       children: [
         CarouselSlider(
-          items: images.map((img) {
-            return Padding(
-              // This creates the gap between the items
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [AppColors.veryDarkBlue, AppColors.cyanColor],
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsGeometry.symmetric(
-                            horizontal: SizeConfig.width(context) * 0.04,
-                            vertical: SizeConfig.height(context) * 0.025,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              widget.isAppear == true
-                                  ? Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: AppFontSize.f10,
-                                      ),
-                                      decoration:
-                                          BoxDecorationWidget.customBoxDecoration()
-                                              .copyWith(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                      AppFontSize.f18,
-                                                    ),
-                                                color: AppColors.grey
-                                                    .withValues(alpha: 0.5),
-                                                border: Border.all(
-                                                  color: AppColors.grey
-                                                      .withValues(alpha: 0.5),
-                                                ),
-                                              ),
-                                      child: Text(
-                                        AppConstants.due,
-                                        style: AppStyle.buttonTextStyle
-                                            .copyWith(
-                                              fontSize: AppFontSize.f12,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    )
-                                  : SizedBox(),
-                              SizedBox(height: 5),
-                              Text(
-                                AppConstants.coursalTitle,
-                                style: AppStyle.coursalTitleTextStyle,
-                              ),
-                              Text(
-                                AppConstants.coursalSubtitle,
-                                style: AppStyle.coursalSubtitleTextStyle,
-                              ),
-                              const SizedBox(height: 10),
-                              FittedBox(
-                                child: SizedBox(
-                                  width: SizeConfig.width(context) * 0.2,
-                                  height: SizeConfig.height(context) * 0.06,
-                                  child:
-                                      PrimaryElevatedButtonWidget(
-                                        buttonText: AppConstants.startScan,
-                                        onPressed: widget.onPressed,
-                                      ).copyWith(
-                                        backgroundColor: AppColors.cyanColor,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: SizeConfig.width(context) * 0.03),
-                      Opacity(
-                        opacity: 0.3,
-                        child: Image.asset(
-                          img,
-                          width: SizeConfig.width(context) * 0.32,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
+          items: _items
+              .map((item) => _buildSlide(context, item, cardHeight))
+              .toList(),
           options: CarouselOptions(
-            height: SizeConfig.height(context) * 0.27,
+            height: cardHeight,
             autoPlay: true,
-            // Key settings to remove the "floating" margins but keep items separate
             viewportFraction: 1.0,
             enlargeCenterPage: false,
             onPageChanged: (index, reason) {
@@ -141,25 +61,163 @@ class _CoursalWidgetState extends State<CoursalWidget> {
             },
           ),
         ),
-        const SizedBox(height: 8),
-        // Indicators
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: images.asMap().entries.map((entry) {
-            final bool isActive = _currentIndex == entry.key;
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              width: isActive ? 18 : 8,
-              height: 8,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                color: isActive ? Colors.blue : Colors.grey[400],
-                borderRadius: BorderRadius.circular(4),
-              ),
-            );
-          }).toList(),
+        Positioned(
+          bottom: 12,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _items.asMap().entries.map((entry) {
+              final bool isActive = _currentIndex == entry.key;
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                width: isActive ? 22 : 8,
+                height: 6,
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? AppColors.white
+                      : AppColors.white.withValues(alpha: 0.35),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ],
     );
   }
+
+  Widget _buildSlide(BuildContext context, _CarouselItem item, double height) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: Container(
+        height: height,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [AppColors.veryDarkBlue, AppColors.cyanColor],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.black.withValues(alpha: 0.12),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.width(context) * 0.05,
+                  vertical: SizeConfig.height(context) * 0.012,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (item.badge != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.white.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: AppColors.white.withValues(alpha: 0.2),
+                          ),
+                        ),
+                        child: Text(
+                          item.badge!,
+                          style: AppStyle.buttonTextStyle.copyWith(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 4),
+                    Text(
+                      item.title,
+                      style: AppStyle.coursalTitleTextStyle.copyWith(
+                        fontSize: 17,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      item.subtitle,
+                      style: AppStyle.coursalSubtitleTextStyle.copyWith(
+                        fontSize: 11,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: 30,
+                      child: ElevatedButton(
+                        onPressed: widget.onPressed,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.cyanColor,
+                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          item.buttonText,
+                          style: AppStyle.buttonTextStyle.copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(
+                    item.image,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.centerRight,
+                    filterQuality: FilterQuality.high,
+                  ),
+                  Container(color: AppColors.black.withValues(alpha: 0.25)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CarouselItem {
+  const _CarouselItem({
+    required this.title,
+    required this.subtitle,
+    required this.buttonText,
+    required this.image,
+    this.badge,
+  });
+
+  final String title;
+  final String subtitle;
+  final String buttonText;
+  final String image;
+  final String? badge;
 }

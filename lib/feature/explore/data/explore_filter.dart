@@ -1,5 +1,7 @@
 class ExploreFilter {
   final String category; // "All" / "Cars" / "Maintenance" / "Tips"
+  final String sortBy; // "Recommended" / "Newest" / "Nearest" / "Price: Low to High" / "Price: High to Low"
+  final bool useMyLocation;
   final double minPrice;
   final double maxPrice;
   final double maxDistanceKm;
@@ -7,6 +9,8 @@ class ExploreFilter {
 
   const ExploreFilter({
     this.category = "All",
+    this.sortBy = "Recommended",
+    this.useMyLocation = true,
     this.minPrice = 0,
     this.maxPrice = 100000,
     this.maxDistanceKm = 50,
@@ -15,6 +19,8 @@ class ExploreFilter {
 
   ExploreFilter copyWith({
     String? category,
+    String? sortBy,
+    bool? useMyLocation,
     double? minPrice,
     double? maxPrice,
     double? maxDistanceKm,
@@ -22,6 +28,8 @@ class ExploreFilter {
   }) {
     return ExploreFilter(
       category: category ?? this.category,
+      sortBy: sortBy ?? this.sortBy,
+      useMyLocation: useMyLocation ?? this.useMyLocation,
       minPrice: minPrice ?? this.minPrice,
       maxPrice: maxPrice ?? this.maxPrice,
       maxDistanceKm: maxDistanceKm ?? this.maxDistanceKm,

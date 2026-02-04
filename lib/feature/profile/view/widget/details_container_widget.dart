@@ -13,11 +13,15 @@ class DetailsContainerWidget extends StatelessWidget {
     this.subTitle,
     this.iconpath,
     this.onTap,
+    this.icon,
+    this.isSvg,
   });
   final void Function()? onTap;
   final String? title;
   final String? subTitle;
   final String? iconpath;
+  final IconData? icon;
+  final bool? isSvg;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -27,13 +31,18 @@ class DetailsContainerWidget extends StatelessWidget {
           radius: AppFontSize.f25,
 
           backgroundColor: AppColors.containerGrey,
-          child: SvgPicture.asset(
-            iconpath ?? AppImagePath.profilePersonIconPath,
-            fit: BoxFit.scaleDown,
-            width: 40,
-            height: 40,
-            colorFilter: ColorFilter.mode(AppColors.cyanColor, BlendMode.dstIn),
-          ),
+          child: isSvg ?? true
+              ? SvgPicture.asset(
+                  iconpath ?? AppImagePath.profilePersonIconPath,
+                  fit: BoxFit.scaleDown,
+                  width: 40,
+                  height: 40,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.cyanColor,
+                    BlendMode.dstIn,
+                  ),
+                )
+              : Icon(icon, color: AppColors.cyanColor, size: 18),
         ),
         title: Text(
           title ?? AppConstants.personalInfo,

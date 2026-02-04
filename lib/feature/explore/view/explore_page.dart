@@ -1,6 +1,8 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/feature/explore/data/explore_filter.dart';
 import 'package:driver_mate/feature/explore/view/widget/custom_tips_feed.dart';
 import 'package:driver_mate/feature/explore/view/widget/explore_filter_sheet.dart';
+import 'package:driver_mate/feature/explore/view/explore_search_page.dart';
 import 'package:driver_mate/feature/home/view/widget/float_action_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
@@ -37,6 +39,10 @@ class _ExplorePageState extends State<ExplorePage> {
     }
   }
 
+  void _openSearchPage() {
+    MyNavigation.navigateTo(const ExploreSearchPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +65,7 @@ class _ExplorePageState extends State<ExplorePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.black),
-            onPressed: () {},
+            onPressed: _openSearchPage,
           ),
           IconButton(
             icon: const Icon(Icons.tune, color: Colors.black),

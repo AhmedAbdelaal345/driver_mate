@@ -6,6 +6,7 @@ import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/profile/view/widget/requirement_row_widget.dart';
 import 'package:flutter/material.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -36,7 +37,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(AppConstants.changePassword, style: AppStyle.appBarTitle),
+        title: const Text(
+          AppConstants.changePassword,
+          style: AppStyle.appBarTitle,
+        ),
         leading: const LeadingIcon(),
       ),
       body: SingleChildScrollView(
@@ -68,10 +72,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       validator: (value) => null,
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      AppConstants.newPassword,
-                      style: AppStyle.labelStyle,
-                    ),
+                    Text(AppConstants.newPassword, style: AppStyle.labelStyle),
                     const SizedBox(height: 8),
                     TextFormFieldWidget(
                       hintText: AppConstants.enterNewPassword,
@@ -110,10 +111,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ).copyWith(color: AppColors.containerGrey),
                 child: Column(
                   children: const [
-                    _RequirementRow(text: AppConstants.requirementLength),
-                    _RequirementRow(text: AppConstants.requirementUppercase),
-                    _RequirementRow(text: AppConstants.requirementLowercase),
-                    _RequirementRow(text: AppConstants.requirementNumber),
+                    RequirementRow(text: AppConstants.requirementLength),
+                    RequirementRow(text: AppConstants.requirementUppercase),
+                    RequirementRow(text: AppConstants.requirementLowercase),
+                    RequirementRow(text: AppConstants.requirementNumber),
                   ],
                 ),
               ),
@@ -147,34 +148,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _RequirementRow extends StatelessWidget {
-  const _RequirementRow({required this.text});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          const Icon(Icons.cancel, size: 16, color: AppColors.iconGrey),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: AppStyle.containerSubtitle.copyWith(
-                fontSize: AppFontSize.f11,
-                color: AppColors.iconGrey,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -21,6 +21,7 @@ import 'package:driver_mate/feature/home/view/widget/service_supplied_widget.dar
 import 'package:driver_mate/feature/home/view/widget/status_container_widget.dart';
 import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
+import 'package:driver_mate/feature/notification/view/notification_page.dart';
 import 'package:driver_mate/feature/vehicle_status/view/vehicle_status_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -185,7 +186,9 @@ class HomePage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              MyNavigation.navigateTo(NotificationPage());
+            },
             icon: const Icon(Icons.notifications, color: AppColors.textGrey),
           ),
           const SizedBox(width: 8),
@@ -208,7 +211,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               CoursalWidget(),
-
+              SizedBox(height: SizeConfig.height(context) * 0.03),
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
