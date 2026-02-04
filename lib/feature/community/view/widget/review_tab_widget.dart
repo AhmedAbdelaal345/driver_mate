@@ -1,7 +1,9 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
+import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/community/view/widget/community_filter_row.dart';
+import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
 import 'package:driver_mate/feature/community/view/widget/review_header_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +25,7 @@ class ReviewsTab extends StatelessWidget {
         SizedBox(height: 8),
 
         // 3. The Feed
+        CommunityPostList(filterType: AppConstants.review, showEmptyState: false),
         ReviewCard(),
         ReviewCard(),
         ReviewCard(),

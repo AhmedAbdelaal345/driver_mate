@@ -1,8 +1,8 @@
 import 'package:driver_mate/feature/community/data/model/community_post.dart';
 
 abstract class CommunityPostRepository {
-  Future<List<CommunityPost>> fetchPosts();
-  Future<CommunityPost> createPost({
+  Future<List<CommunityPostModel>> fetchPosts();
+  Future<CommunityPostModel> createPost({
     required String type,
     required String title,
     required String description,
@@ -10,8 +10,8 @@ abstract class CommunityPostRepository {
 }
 
 class InMemoryCommunityPostRepository implements CommunityPostRepository {
-  final List<CommunityPost> _posts = [
-    CommunityPost(
+  final List<CommunityPostModel> _posts = [
+    CommunityPostModel(
       id: 'seed-1',
       type: 'Question',
       title: 'Strange clicking sound when turning',
@@ -21,7 +21,7 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
       authorName: 'Ahmed Hassan',
       authorInitials: 'AH',
     ),
-    CommunityPost(
+    CommunityPostModel(
       id: 'seed-2',
       type: 'Tips',
       title: 'Best oil change interval for city driving',
@@ -34,18 +34,18 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
   ];
 
   @override
-  Future<List<CommunityPost>> fetchPosts() async {
-    return List<CommunityPost>.from(_posts);
+  Future<List<CommunityPostModel>> fetchPosts() async {
+    return List<CommunityPostModel>.from(_posts);
   }
 
   @override
-  Future<CommunityPost> createPost({
+  Future<CommunityPostModel> createPost({
     required String type,
     required String title,
     required String description,
   }) async {
     final now = DateTime.now();
-    final post = CommunityPost(
+    final post = CommunityPostModel(
       id: 'post-${now.microsecondsSinceEpoch}',
       type: type,
       title: title,

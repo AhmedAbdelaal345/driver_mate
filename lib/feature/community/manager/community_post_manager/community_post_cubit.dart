@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CommunityPostCubit extends Cubit<CommunityPostState> {
   CommunityPostCubit({required this.repo})
-      : super(const CommunityPostInitial());
+    : super(const CommunityPostInitial());
 
   final CommunityPostRepository repo;
 
@@ -26,7 +26,7 @@ class CommunityPostCubit extends Cubit<CommunityPostState> {
   }) async {
     emit(CommunityPostLoading(state.posts));
     try {
-      final CommunityPost post = await repo.createPost(
+      final CommunityPostModel post = await repo.createPost(
         type: type,
         title: title,
         description: description,

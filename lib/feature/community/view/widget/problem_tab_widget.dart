@@ -4,6 +4,7 @@ import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/community/view/widget/footer_icon_widget.dart';
+import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
 import 'package:flutter/material.dart';
 
 class ProblemsTab extends StatelessWidget {
@@ -11,7 +12,13 @@ class ProblemsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [ProblemCard(), ProblemCard()]);
+    return ListView(
+      children: const [
+        CommunityPostList(filterType: AppConstants.problem, showEmptyState: false),
+        ProblemCard(),
+        ProblemCard(),
+      ],
+    );
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
 import 'package:driver_mate/feature/community/view/widget/market_place_post_header.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,10 @@ class MarketplaceTab extends StatelessWidget {
         MarketplacePostHeader(
           controller: controller,
         ), // The "Ask a question" style header
+        const CommunityPostList(
+          filterType: AppConstants.marketPlace,
+          showEmptyState: false,
+        ),
         const MarketplaceCard(),
       ],
     );

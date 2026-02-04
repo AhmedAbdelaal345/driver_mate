@@ -53,7 +53,7 @@ class CommunityPostList extends StatelessWidget {
     );
   }
 
-  List<CommunityPost> _filterPosts(List<CommunityPost> posts) {
+  List<CommunityPostModel> _filterPosts(List<CommunityPostModel> posts) {
     if (filterType == null) return posts;
     return posts.where((p) => p.type == filterType).toList();
   }
@@ -62,7 +62,7 @@ class CommunityPostList extends StatelessWidget {
 class _CommunityPostCard extends StatelessWidget {
   const _CommunityPostCard({required this.post});
 
-  final CommunityPost post;
+  final CommunityPostModel post;
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,5 @@
-class CommunityPost {
-  const CommunityPost({
+class CommunityPostModel {
+  const CommunityPostModel({
     required this.id,
     required this.type,
     required this.title,
@@ -17,7 +17,7 @@ class CommunityPost {
   final String authorName;
   final String authorInitials;
 
-  CommunityPost copyWith({
+  CommunityPostModel copyWith({
     String? id,
     String? type,
     String? title,
@@ -26,7 +26,7 @@ class CommunityPost {
     String? authorName,
     String? authorInitials,
   }) {
-    return CommunityPost(
+    return CommunityPostModel(
       id: id ?? this.id,
       type: type ?? this.type,
       title: title ?? this.title,

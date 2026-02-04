@@ -1,11 +1,13 @@
 // feature/community/view/widget/tips_tab_widget.dart
 
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_header.dart';
 import 'package:driver_mate/feature/community/view/widget/footer_icon_widget.dart';
+import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
 import 'package:flutter/material.dart';
 
 class TipsTab extends StatelessWidget {
@@ -14,7 +16,12 @@ class TipsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: const [CommunityPostHeader(), TipCard(), TipCard()],
+      children: const [
+        CommunityPostHeader(),
+        CommunityPostList(filterType: AppConstants.tips, showEmptyState: false),
+        TipCard(),
+        TipCard(),
+      ],
     );
   }
 }
