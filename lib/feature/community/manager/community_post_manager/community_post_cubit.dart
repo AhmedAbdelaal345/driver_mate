@@ -1,4 +1,4 @@
-import 'package:driver_mate/feature/community/data/model/community_post.dart';
+import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/data/repo/community_post_repo.dart';
 import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

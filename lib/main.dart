@@ -10,6 +10,8 @@ import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/auth/view/register_page.dart';
 import 'package:driver_mate/feature/auth/view/set_new_password.dart';
 import 'package:driver_mate/feature/home/view/wrapper_page.dart';
+import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
+import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -50,7 +52,14 @@ class MyApp extends StatelessWidget {
           AppRoutes.setNewPassword: (context) => const SetNewPasswordPage(),
           AppRoutes.loginPage: (context) => const LoginPage(),
         },
-        home: const WrapperPage(),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => EditProfileCubit(repo: EditProfileRepo()),
+            ),
+          ],
+          child: const WrapperPage(),
+        ),
       ),
     );
   }

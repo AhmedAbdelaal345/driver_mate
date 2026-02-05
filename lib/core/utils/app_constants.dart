@@ -12,11 +12,14 @@ abstract class AppConstants {
   static const String support = "Support";
   static const String searchExploreHint = "Search cars, parts, services...";
   static const String recent = "Recent";
+  static const String loading = "Loading";
   static const String clearAll = "Clear all";
   static const String secuirty = "Secuirty";
   static const String logout = "Log Out";
   static const String suggestions = "Suggestions";
   static const String results = "Results";
+  static const String changedSuccefuly = "Your Data Changed Succefully";
+  static const String loadedSuccefully = "Your Data Loaded Succefully";
   static const String noResults = "No results found";
   static const String noRecentSearches = "No recent searches";
   static const String maxDist = 'Max distance (km)';

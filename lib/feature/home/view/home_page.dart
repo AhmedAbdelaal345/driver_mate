@@ -5,6 +5,7 @@ import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/core/widget/container_icon.dart';
 import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
 import 'package:driver_mate/feature/ai/view/widget/quick_record_sheet.dart';
 import 'package:driver_mate/feature/emergency/view/emergency_assistance_page.dart';
@@ -22,11 +23,14 @@ import 'package:driver_mate/feature/home/view/widget/status_container_widget.dar
 import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
 import 'package:driver_mate/feature/notification/view/notification_page.dart';
+import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
+import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
+import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_state.dart';
 import 'package:driver_mate/feature/vehicle_status/view/vehicle_status_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
   static final List<ContainerIconWidget> options = [
     ContainerIconWidget(
@@ -115,6 +119,18 @@ class HomePage extends StatelessWidget {
   ];
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    final cubit = EditProfileCubit(repo: EditProfileRepo());
+    cubit.getUserData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // const List<CustomContainerWidget> listItems = [
     //   CustomContainerWidget(
@@ -192,13 +208,14 @@ class HomePage extends StatelessWidget {
             icon: const Icon(Icons.notifications, color: AppColors.textGrey),
           ),
           const SizedBox(width: 8),
-          Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(shape: BoxShape.circle),
-            child: ClipOval(
-              child: SvgPicture.asset(AppImagePath.profileIconPath),
-            ),
+          BlocBuilder<EditProfileCubit, EditProfileState>(
+            builder: (context, state) {
+              if (state is SuccessEditProfile) {
+                return ContainerForIcon(iconPath: state.data.image);
+              } else {
+                return ContainerForIcon(iconPath: AppImagePath.profileIconPath);
+              }
+            },
           ),
           const SizedBox(width: 8),
         ],
@@ -216,14 +233,14 @@ class HomePage extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero, // REMOVE default padding
-                itemCount: options.length,
+                itemCount: HomePage.options.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: SizeConfig.height(context) * 0.02,
                   crossAxisSpacing: SizeConfig.width(context) * 0.04,
                   childAspectRatio: 2,
                 ),
-                itemBuilder: (context, index) => options[index],
+                itemBuilder: (context, index) => HomePage.options[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
 
@@ -237,10 +254,10 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.zero, // REMOVE default padding
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: aiAlerts.length,
+                itemCount: HomePage.aiAlerts.length,
                 separatorBuilder: (context, index) =>
                     SizedBox(height: SizeConfig.height(context) * 0.015),
-                itemBuilder: (context, index) => aiAlerts[index],
+                itemBuilder: (context, index) => HomePage.aiAlerts[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ContainerTitle(),
@@ -249,12 +266,12 @@ class HomePage extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return maintanceContainerList[index];
+                  return HomePage.maintanceContainerList[index];
                 },
                 separatorBuilder: (context, index) {
                   return SizedBox(height: SizeConfig.height(context) * 0.015);
                 },
-                itemCount: maintanceContainerList.length,
+                itemCount: HomePage.maintanceContainerList.length,
               ),
               SizedBox(height: SizeConfig.height(context) * 0.015),
               ContainerTitle(
@@ -271,11 +288,11 @@ class HomePage extends StatelessWidget {
                 height: SizeConfig.height(context) * 0.40,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  itemCount: service.length,
+                  itemCount: HomePage.service.length,
                   // Add some spacing between cards
                   separatorBuilder: (context, index) =>
                       SizedBox(width: SizeConfig.width(context) * 0.04),
-                  itemBuilder: (context, index) => service[index],
+                  itemBuilder: (context, index) => HomePage.service[index],
 
                   // Add padding so the cards don't touch the screen edges
                 ),
@@ -289,11 +306,11 @@ class HomePage extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
 
-                itemCount: aiAlerts.length,
+                itemCount: HomePage.aiAlerts.length,
                 separatorBuilder: (context, index) {
                   return SizedBox(height: SizeConfig.height(context) * 0.015);
                 },
-                itemBuilder: (context, index) => aiAlerts[index],
+                itemBuilder: (context, index) => HomePage.aiAlerts[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.015),
               Row(
@@ -347,11 +364,11 @@ class HomePage extends StatelessWidget {
                   shrinkWrap: true,
 
                   itemBuilder: (context, index) {
-                    return recommendedCarList[index];
+                    return HomePage.recommendedCarList[index];
                   },
                   separatorBuilder: (context, index) =>
                       SizedBox(width: SizeConfig.width(context) * 0.015),
-                  itemCount: recommendedCarList.length,
+                  itemCount: HomePage.recommendedCarList.length,
                 ),
               ),
             ],

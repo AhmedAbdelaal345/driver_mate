@@ -7,6 +7,8 @@ import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/languge/view/language_page.dart';
 import 'package:driver_mate/feature/notification/view/notification_page.dart';
+import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
+import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_state.dart';
 import 'package:driver_mate/feature/profile/view/about_page.dart';
 import 'package:driver_mate/feature/profile/view/change_password.dart';
 import 'package:driver_mate/feature/profile/view/contact_support_page.dart';
@@ -20,6 +22,7 @@ import 'package:driver_mate/feature/profile/view/widget/item_container.dart';
 import 'package:driver_mate/feature/profile/view/widget/profile_container.dart';
 import 'package:driver_mate/feature/theme/view/theme_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -33,7 +36,12 @@ class ProfilePage extends StatelessWidget {
           icon: const Icon(Icons.settings, color: AppColors.black),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back_ios)),
+          IconButton(
+            onPressed: () {
+              MyNavigation.navigateBack();
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
         ],
         title: const Text(
           AppConstants.profile,
@@ -47,9 +55,42 @@ class ProfilePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: SizeConfig.height(context) * 0.02),
-              ProfileContainer(
-                onPressed: () {
-                  MyNavigation.navigateTo(EditProfile());
+              BlocBuilder<EditProfileCubit, EditProfileState>(
+                builder: (context, state) {
+                  // 🔥 دي أهم سطر
+                  if (state is InitEditProfile) {
+                    context.read<EditProfileCubit>().loadProfile();
+                  }
+
+                  if (state is SuccessEditProfile) {
+                    return ProfileContainer(
+                      email: state.data.emailAddress,
+                      image: state.data.image,
+                      name: state.data.fullName,
+                      onPressed: () {
+                        MyNavigation.navigateTo(
+                          BlocProvider.value(
+                            value: context.read<EditProfileCubit>(),
+                            child: const EditProfile(),
+                          ),
+                        );
+                      },
+                    );
+                  }
+
+                  return ProfileContainer(
+                    name: "User",
+                    email: "example@email.com",
+                    image: AppImagePath.profileIconPath,
+                    onPressed: () {
+                      MyNavigation.navigateTo(
+                        BlocProvider.value(
+                          value: context.read<EditProfileCubit>(),
+                          child: const EditProfile(),
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
@@ -210,9 +251,7 @@ class ProfilePage extends StatelessWidget {
                         isSvg: false,
                         icon: Icons.logout_outlined,
                         title: AppConstants.logout,
-                        onTap: (){
-                          
-                        },
+                        onTap: () {},
                       ),
                     ),
                   ],

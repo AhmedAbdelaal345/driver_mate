@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/container_icon.dart';
@@ -23,7 +24,7 @@ class ConfirmPasswordPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 0.047 * SizeConfig.height(context)),
-            ContainerForIcon(),
+            ContainerForIcon(iconPath: AppImagePath.peopleIconPath),
             Align(
               alignment: AlignmentGeometry.centerLeft,
               child: Text(

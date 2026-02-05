@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
@@ -5,7 +6,7 @@ import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileContainer extends StatelessWidget {
   const ProfileContainer({
@@ -15,10 +16,12 @@ class ProfileContainer extends StatelessWidget {
     this.image,
     this.onPressed,
   });
+
   final String? name;
   final String? email;
   final String? image;
   final void Function()? onPressed;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +30,7 @@ class ProfileContainer extends StatelessWidget {
         leading: CircleAvatar(
           backgroundColor: AppColors.white,
           radius: AppFontSize.f25,
-          child: SvgPicture.asset(image ?? AppImagePath.profileIconPath),
+          child: _buildImage(),
         ),
         title: Text(
           name ?? AppConstants.user,
@@ -39,13 +42,10 @@ class ProfileContainer extends StatelessWidget {
         ),
         trailing: ElevatedButton(
           style: ButtonStyle(
-            padding: const WidgetStatePropertyAll(EdgeInsetsGeometry.all(20)),
-            iconColor: const WidgetStatePropertyAll(
-              AppColors.boarderWhiteColor,
-            ),
+            padding: const WidgetStatePropertyAll(EdgeInsets.all(20)),
             shape: const WidgetStatePropertyAll(
               RoundedRectangleBorder(
-                borderRadius: BorderRadiusGeometry.all(Radius.circular(12)),
+                borderRadius: BorderRadius.all(Radius.circular(12)),
                 side: BorderSide(color: AppColors.cyanColor, width: 1),
               ),
             ),
@@ -55,5 +55,31 @@ class ProfileContainer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildImage() {
+    final img = image ?? "";
+
+    // لو مفيش صورة
+    if (img.isEmpty) {
+      return SvgPicture.asset(AppImagePath.profileIconPath);
+    }
+
+    // صورة من الجهاز (gallery)
+    if (img.startsWith("C:") ||
+        img.startsWith("/data") ||
+        img.startsWith("/storage")) {
+      return ClipOval(
+        child: Image.file(File(img), width: 50, height: 50, fit: BoxFit.cover),
+      );
+    }
+
+    // svg من assets
+    if (img.endsWith(".svg")) {
+      return SvgPicture.asset(img);
+    }
+
+    // png/jpg من assets
+    return Image.asset(img, width: 50, height: 50, fit: BoxFit.cover);
   }
 }

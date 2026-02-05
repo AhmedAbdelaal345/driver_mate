@@ -2,7 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
-import 'package:driver_mate/feature/community/data/model/community_post.dart';
+import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_cubit.dart';
 import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_state.dart';
 import 'package:flutter/material.dart';

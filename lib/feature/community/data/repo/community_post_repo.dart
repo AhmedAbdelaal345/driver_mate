@@ -1,4 +1,4 @@
-import 'package:driver_mate/feature/community/data/model/community_post.dart';
+import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 
 abstract class CommunityPostRepository {
   Future<List<CommunityPostModel>> fetchPosts();
@@ -44,8 +44,8 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
     required String title,
     required String description,
   }) async {
-    final now = DateTime.now();
-    final post = CommunityPostModel(
+    final DateTime now = DateTime.now();
+    final CommunityPostModel post = CommunityPostModel(
       id: 'post-${now.microsecondsSinceEpoch}',
       type: type,
       title: title,

@@ -5,6 +5,10 @@
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>We need your location to share it during emergencies.</string>
 	<key>CFBundleDevelopmentRegion</key>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<key>requestFullMetadata</key>
+	<key>NSMicrophoneUsageDescription</key>
+	<key>NSCameraUsageDescription</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Driver Mate</string>

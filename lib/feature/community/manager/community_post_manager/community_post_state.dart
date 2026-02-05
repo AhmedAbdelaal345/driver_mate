@@ -1,4 +1,4 @@
-import 'package:driver_mate/feature/community/data/model/community_post.dart';
+import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 
 abstract class CommunityPostState {
   const CommunityPostState(this.posts);
@@ -6,25 +6,23 @@ abstract class CommunityPostState {
 }
 
 class CommunityPostInitial extends CommunityPostState {
-  const CommunityPostInitial() : super(const []);
+  const CommunityPostInitial() : super(const  []);
 }
 
 class CommunityPostLoading extends CommunityPostState {
-  const CommunityPostLoading(List<CommunityPostModel> posts) : super(posts);
+  const CommunityPostLoading(super.posts);
 }
 
 class CommunityPostLoaded extends CommunityPostState {
-  const CommunityPostLoaded(List<CommunityPostModel> posts) : super(posts);
+  const CommunityPostLoaded(super.posts);
 }
 
 class CommunityPostSuccess extends CommunityPostState {
-  const CommunityPostSuccess(List<CommunityPostModel> posts, this.message)
-    : super(posts);
+  const CommunityPostSuccess(super.posts, this.message);
   final String message;
 }
 
 class CommunityPostFailure extends CommunityPostState {
-  const CommunityPostFailure(List<CommunityPostModel> posts, this.error)
-    : super(posts);
+  const CommunityPostFailure(super.posts, this.error);
   final String error;
 }
