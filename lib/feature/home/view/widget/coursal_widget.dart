@@ -1,9 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
+import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
+import 'package:driver_mate/feature/emergency/view/emergency_assistance_page.dart';
+import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
 import 'package:flutter/material.dart';
 
 class CoursalWidget extends StatefulWidget {
@@ -23,6 +28,9 @@ class _CoursalWidgetState extends State<CoursalWidget> {
       subtitle: 'Send your location instantly to get help',
       buttonText: 'Get Help',
       image: AppImagePath.carImagePath,
+      onPressed: () {
+        MyNavigation.navigateTo(EmergencyAssistancePage());
+      },
     ),
     _CarouselItem(
       badge: 'Due in 500 km',
@@ -30,6 +38,9 @@ class _CoursalWidgetState extends State<CoursalWidget> {
       subtitle: 'Oil change due soon based on your mileage',
       buttonText: 'Book Now',
       image: AppImagePath.loginImagePath,
+      onPressed: () {
+        MyNavigation.navigateTo(BookMaintenancePage());
+      },
     ),
     _CarouselItem(
       badge: null,
@@ -37,6 +48,9 @@ class _CoursalWidgetState extends State<CoursalWidget> {
       subtitle: AppConstants.coursalSubtitle,
       buttonText: AppConstants.startScan,
       image: AppImagePath.camryCarImagePath,
+      onPressed: () {
+        MyNavigation.navigateTo(AiVoiceDiagnosisPage());
+      },
     ),
   ];
 
@@ -162,22 +176,10 @@ class _CoursalWidgetState extends State<CoursalWidget> {
                     const SizedBox(height: 10),
                     SizedBox(
                       height: 30,
-                      child: ElevatedButton(
+                      child: PrimaryElevatedButtonWidget(
                         onPressed: widget.onPressed,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.cyanColor,
-                          padding: const EdgeInsets.symmetric(horizontal: 18),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          item.buttonText,
-                          style: AppStyle.buttonTextStyle.copyWith(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+
+                        buttonText: item.buttonText,
                       ),
                     ),
                   ],
@@ -213,6 +215,7 @@ class _CarouselItem {
     required this.buttonText,
     required this.image,
     this.badge,
+    this.onPressed,
   });
 
   final String title;
@@ -220,4 +223,5 @@ class _CarouselItem {
   final String buttonText;
   final String image;
   final String? badge;
+  final VoidCallback? onPressed;
 }

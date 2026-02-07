@@ -6,6 +6,8 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/languge/view/language_page.dart';
+import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
+import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
 import 'package:driver_mate/feature/notification/view/notification_page.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_state.dart';
@@ -98,7 +100,15 @@ class ProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ItemContainer(),
+                  BlocBuilder<VehicalCubit, VehicalState>(
+                    builder: (context, state) {
+                      if (state is SuccessVehicalState) {
+                        return ItemContainer(count: state.data.length);
+                      } else {
+                        return ItemContainer(count: 0);
+                      }
+                    },
+                  ),
                   SizedBox(width: SizeConfig.width(context) * 0.03),
                   ItemContainer(title: AppConstants.booking),
                   SizedBox(width: SizeConfig.width(context) * 0.03),
@@ -116,14 +126,25 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     DetailsContainerWidget(
                       onTap: () {
-                        MyNavigation.navigateTo(EditProfile());
+                        MyNavigation.navigateTo(
+                          BlocProvider.value(
+                            value: context.read<EditProfileCubit>(),
+                            child: const EditProfile(),
+                          ),
+                        );
                       },
                     ),
                     Divider(color: AppColors.containerGrey),
                     DetailsContainerWidget(
                       title: AppConstants.myCars,
                       onTap: () {
-                        MyNavigation.navigateTo(MyCars());
+                        BlocProvider.value(value: context.read<VehicalCubit>());
+                        MyNavigation.navigateTo(
+                          BlocProvider.value(
+                            value: context.read<VehicalCubit>(),
+                            child: MyCars(),
+                          ),
+                        );
                       },
                       subTitle: AppConstants.manageVehicls,
                       iconpath: AppImagePath.carIconPath,

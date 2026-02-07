@@ -9,6 +9,7 @@ import 'package:driver_mate/core/widget/container_icon.dart';
 import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
 import 'package:driver_mate/feature/ai/view/widget/quick_record_sheet.dart';
 import 'package:driver_mate/feature/emergency/view/emergency_assistance_page.dart';
+import 'package:driver_mate/feature/explore/view/explore_search_page.dart';
 import 'package:driver_mate/feature/home/view/widget/ai_container_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/container_icon_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/container_item.dart';
@@ -99,7 +100,10 @@ class HomePage extends StatefulWidget {
   ];
 
   static final List<AiContainerWidget> aiAlerts = [
-    AiContainerWidget(onTap: () {}),
+    AiContainerWidget(
+      onTap: () {
+      },
+    ),
     AiContainerWidget(
       title: AppConstants.tirePressureLow,
       action: AppConstants.findNearby,
@@ -203,6 +207,15 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
+              MyNavigation.navigateTo(ExploreSearchPage());
+            },
+            icon: Icon(Icons.search_outlined, color: AppColors.textGrey),
+          ),
+
+          const SizedBox(width: 8),
+
+          IconButton(
+            onPressed: () {
               MyNavigation.navigateTo(NotificationPage());
             },
             icon: const Icon(Icons.notifications, color: AppColors.textGrey),
@@ -211,9 +224,19 @@ class _HomePageState extends State<HomePage> {
           BlocBuilder<EditProfileCubit, EditProfileState>(
             builder: (context, state) {
               if (state is SuccessEditProfile) {
-                return ContainerForIcon(iconPath: state.data.image);
+                return SizedBox(
+                  width: SizeConfig.width(context) * 0.0485,
+                  height: SizeConfig.height(context) * 0.071,
+                  child: ContainerForIcon(iconPath: state.data.image),
+                );
               } else {
-                return ContainerForIcon(iconPath: AppImagePath.profileIconPath);
+                return SizedBox(
+                  width: SizeConfig.width(context) * 0.0485,
+                  height: SizeConfig.height(context) * 0.071,
+                  child: ContainerForIcon(
+                    iconPath: AppImagePath.profileIconPath,
+                  ),
+                );
               }
             },
           ),
@@ -322,8 +345,8 @@ class _HomePageState extends State<HomePage> {
                       title: AppConstants.recentlyViewed,
                       subTitle: AppConstants.continueWhere,
                       bottom: AppConstants.open,
-                      containerColor: AppColors.perpule.withValues(alpha: 0.1),
-                      iconColor: AppColors.perpule,
+                      containerColor: AppColors.purple.withValues(alpha: 0.1),
+                      iconColor: AppColors.purple,
                       iconPath: AppImagePath.timingIconPath,
                       onTap: () {},
                     ),

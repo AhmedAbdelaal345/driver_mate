@@ -1,15 +1,13 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
-import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class StatusContainerWidget extends StatelessWidget {
-  const StatusContainerWidget({super.key,this.onTap});
-final void Function()? onTap;
+  const StatusContainerWidget({super.key, this.onTap});
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -87,15 +85,15 @@ final void Function()? onTap;
                     height: SizeConfig.width(context) * 0.11,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(9999),
-                      color: AppColors.smoothYellow,
+                      color: AppColors.babyBleu.withValues(alpha: 0.3),
                       border: BoxBorder.all(
                         color: AppColors.boarderWhiteColor,
                         width: 1.0,
                       ),
                     ),
-                    child: SvgPicture.asset(
-                      AppImagePath.chargeIconPath,
-                      fit: BoxFit.scaleDown,
+                    child: Icon(
+                      Icons.ev_station_outlined,
+                      color: AppColors.babyBleu,
                     ),
                   ),
                   Column(
@@ -110,7 +108,7 @@ final void Function()? onTap;
                       Text(
                         AppConstants.attention,
                         style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                          color: AppColors.yellow,
+                          color: AppColors.babyBleu,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

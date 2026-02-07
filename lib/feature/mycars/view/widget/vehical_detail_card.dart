@@ -3,28 +3,17 @@ import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class VehicleDetailCard extends StatelessWidget {
   const VehicleDetailCard({
     super.key,
-    this.carNickname,
-    this.carModel,
-    this.year,
-    this.status,
-    this.lastService,
-    this.nextService,
-    this.statusColor,
+    required this.car,
   });
 
-  final String? carNickname;
-  final String? carModel;
-  final String? year;
-  final String? status;
-  final String? lastService;
-  final String? nextService;
-  final Color? statusColor;
+  final VechicleModel car;
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +21,17 @@ class VehicleDetailCard extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecorationWidget.customBoxDecoration(
         borderRadius: AppFontSize.f24,
-      ).copyWith(color: AppColors.white), // Assuming a white card background
+      ).copyWith(color: AppColors.white),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. Car Icon/Image Container
+          /// car icon
           Container(
             height: 80,
             width: 80,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [AppColors.blue, AppColors.veryDarkBlue],
@@ -59,61 +48,63 @@ class VehicleDetailCard extends StatelessWidget {
               ),
             ),
           ),
+
           const SizedBox(width: 16),
 
-          // 2. Info Column
+          /// info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  carNickname ?? "My Daily Driver",
+                  car.brand ?? "Unknown",
                   style: AppStyle.boldTextStyle,
-                ), // Use your bold style
+                ),
+
                 Text(
-                  "${carModel ?? "Hyundai"} • ${year ?? "2022"}",
+                  "${car.model ?? ""} • ${car.year ?? ""}",
                   style: AppStyle.hintStyle,
                 ),
+
                 const SizedBox(height: 8),
 
-                // Status Badge
+                /// status badge
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.orange.withValues(
-                      alpha: 0.1,
-                    ), // Define this in AppColors
+                    color: AppColors.green.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Text(
-                    status ?? "In Service",
+                  child: const Text(
+                    "Active",
                     style: TextStyle(
-                      color: statusColor ?? AppColors.orange,
+                      color: AppColors.green,
                       fontSize: 12,
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 12),
 
-                // Service Dates
                 _buildServiceInfo(
-                  Icons.build_outlined,
-                  "Last service: $lastService",
+                  Icons.calendar_today,
+                  "Mileage: ${car.millAge ?? 0}",
                 ),
+
                 const SizedBox(height: 4),
+
                 _buildServiceInfo(
-                  Icons.calendar_today_outlined,
-                  "Next service: $nextService",
+                  Icons.confirmation_number,
+                  "Plate: ${car.plateNumber ?? "-"}",
                   isNext: true,
                 ),
               ],
             ),
           ),
 
-          // 3. Arrow Icon
           const Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.grey),
         ],
       ),

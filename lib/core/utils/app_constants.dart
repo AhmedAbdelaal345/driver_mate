@@ -8,10 +8,14 @@ abstract class AppConstants {
   static const String problems = "Problems";
   static const String verifyOTP = "Verify OTP";
   static const String problem = "Problem";
+  static const String enterBrandCar = "Enter a Brand Car";
   static const String search = "Search";
   static const String support = "Support";
+  static const String enterYearCar = "Enter The Year for a Car";
   static const String searchExploreHint = "Search cars, parts, services...";
+  static const String carAddedSuccefully = "Car Added Succefully";
   static const String recent = "Recent";
+  static const String model = "Model";
   static const String loading = "Loading";
   static const String clearAll = "Clear all";
   static const String secuirty = "Secuirty";
@@ -413,6 +417,16 @@ abstract class AppConstants {
   static const String maintanence = "Book Maintenance";
   static const String add = "Add Vehicle";
   static const String addVehicle = "Add Vehicle";
+  static const String vehicleAddedTitle = "Vehicle Added!";
+  static const String vehicleAddedSubtitle =
+      "Your vehicle has been successfully registered to your account";
+  static const String manufacturingYear = "Manufacturing Year";
+  static const String plateNumberLabel = "Plate Number";
+  static const String vehicleAddedNote =
+      "You can now track maintenance history and get personalized service recommendations for your vehicle!";
+  static const String backToMyCars = "Back to My Cars";
+  static const String yourVehicle = "Your Vehicle";
+  static const String vehicleModelLabel = "Model";
   static const String registerVehicle = "Register Your Vehicle";
   static const String registerVehicleHint =
       "Track maintenance and service history";

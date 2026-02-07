@@ -6,6 +6,7 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/news/view/article_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class CarNewsPage extends StatelessWidget {
@@ -65,7 +66,23 @@ class CarNewsPage extends StatelessWidget {
           horizontal: SizeConfig.width(context) * 0.05,
           vertical: SizeConfig.height(context) * 0.015,
         ),
-        itemBuilder: (context, index) => _NewsCard(item: news[index]),
+        itemBuilder: (context, index) => GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ArticleDetailPage(
+                  title: news[index].title,
+                  subtitle: news[index].subtitle,
+                  tag: news[index].tag,
+                  readTime: news[index].readTime,
+                  image: news[index].image,
+                ),
+              ),
+            );
+          },
+          child: _NewsCard(item: news[index]),
+        ),
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemCount: news.length,
       ),

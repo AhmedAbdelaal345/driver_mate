@@ -6,8 +6,9 @@ import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/widgets.dart';
 
 class ItemContainer extends StatelessWidget {
-  const ItemContainer({super.key, this.title});
+  const ItemContainer({super.key, this.title,this.count});
   final String? title;
+  final int ?count;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -22,7 +23,7 @@ class ItemContainer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("2", style: AppStyle.titleOfContainer),
+             Text(count.toString(), style: AppStyle.titleOfContainer),
             const SizedBox(height: 10),
             Text(title ?? AppConstants.myCars, style: AppStyle.containerSubtitle),
           ],

@@ -19,7 +19,10 @@ class VehicleStatusPage extends StatelessWidget {
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(AppConstants.vehicleStatus, style: AppStyle.appBarTitle),
+        title: const Text(
+          AppConstants.vehicleStatus,
+          style: AppStyle.appBarTitle,
+        ),
         leading: const LeadingIcon(),
       ),
       body: SingleChildScrollView(
@@ -157,7 +160,7 @@ class VehicleStatusPage extends StatelessWidget {
                   _QuickAction(
                     icon: Icons.auto_awesome,
                     label: AppConstants.runAiScan,
-                    color: AppColors.perpule,
+                    color: AppColors.purple,
                   ),
                   _QuickAction(
                     icon: Icons.build,

@@ -67,14 +67,14 @@ class RecommendedServicePage extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.perpule.withValues(alpha: 0.12),
+                        color: AppColors.purple.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Text(
                         AppConstants.aiBasedRecommendation,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f10,
-                          color: AppColors.perpule,
+                          color: AppColors.purple,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -184,9 +184,7 @@ class _ActionCard extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecorationWidget.customBoxDecoration(
         borderRadius: AppFontSize.f12,
-      ).copyWith(
-        color: isPrimary ? AppColors.cyanColor : AppColors.white,
-      ),
+      ).copyWith(color: isPrimary ? AppColors.cyanColor : AppColors.white),
       child: Row(
         children: [
           Container(
@@ -221,8 +219,7 @@ class _ActionCard extends StatelessWidget {
                   subtitle,
                   style: AppStyle.containerSubtitle.copyWith(
                     fontSize: AppFontSize.f10,
-                    color:
-                        isPrimary ? AppColors.white : AppColors.iconGrey,
+                    color: isPrimary ? AppColors.white : AppColors.iconGrey,
                   ),
                 ),
               ],
