@@ -42,8 +42,10 @@ class MaintainanceContainerWidget extends StatelessWidget {
             minVerticalPadding: 0,
 
             leading: Container(
-              width: 40,
-              height: 40,
+              width: SizeConfig.width(context) * 0.1, // Responsive width ~40
+              height:
+                  SizeConfig.width(context) *
+                  0.1, // Responsive height ~40 (square)
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: AppColors.cyanColor.withValues(alpha: 0.1),

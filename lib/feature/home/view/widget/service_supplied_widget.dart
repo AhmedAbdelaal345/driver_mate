@@ -27,12 +27,16 @@ class ServiceSuppliedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<String?> item = [first, second, third];
     return Container(
-      width: SizeConfig.width(context) * 0.72,
+      width:
+          SizeConfig.width(context) *
+          0.75, // Adjusted width relative to screen width
 
       decoration: BoxDecorationWidget.customBoxDecoration(
         borderRadius: AppFontSize.f16,
       ),
-      padding: EdgeInsets.all(AppFontSize.f16),
+      padding: EdgeInsets.all(
+        SizeConfig.width(context) * 0.04,
+      ), // Responsive padding
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

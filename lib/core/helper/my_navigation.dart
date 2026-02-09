@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 abstract class MyNavigation {
   static void navigateTo(Widget screen, {dynamic arguments}) {
     Get.to(
-      () => screen,
+      screen,
       transition: Transition.rightToLeft,
       arguments: arguments,
       preventDuplicates: true,

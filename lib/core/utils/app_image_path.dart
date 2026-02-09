@@ -17,6 +17,8 @@ abstract class AppImagePath {
   static const String tairImagePath = "${imagesPath}tair_image.png";
   static const String carImagePath = "${imagesPath}car_image.png";
   static const String brainImagePath = "${imagesPath}brain_image.png";
+  static const String container1ImagePath = "${imagesPath}container1.png";
+  static const String container2ImagePath = "${imagesPath}container2.png";
   //------------- Icon Paths -------------
 
   static const String iconPath = "assets/icons/";

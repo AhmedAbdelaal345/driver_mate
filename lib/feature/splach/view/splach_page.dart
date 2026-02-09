@@ -5,6 +5,7 @@ import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/login_page.dart';
+import 'package:driver_mate/feature/home/view/wrapper_page.dart';
 import 'package:driver_mate/feature/splach/manager/cubit/splash_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,8 +29,10 @@ class _SplachPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
-        if (state is SplashNavigate) {
+        if (state is SplashNavigateToLogin) {
           MyNavigation.navigateTo(LoginPage());
+        } else if (state is SplashNavigateToHome) {
+          MyNavigation.navigateTo(WrapperPage());
         }
       },
       child: Scaffold(
@@ -50,7 +53,9 @@ class _SplachPageView extends StatelessWidget {
           child: BlocBuilder<SplashCubit, SplashState>(
             builder: (context, state) {
               final isStart =
-                  state is SplashAnimationStart || state is SplashNavigate;
+                  state is SplashAnimationStart ||
+                  state is SplashNavigateToLogin ||
+                  state is SplashNavigateToHome;
 
               return Stack(
                 children: [

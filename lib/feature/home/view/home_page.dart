@@ -21,8 +21,10 @@ import 'package:driver_mate/feature/home/view/widget/maintainance_container_widg
 import 'package:driver_mate/feature/home/view/widget/recommended_container.dart';
 import 'package:driver_mate/feature/home/view/widget/service_supplied_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/status_container_widget.dart';
-import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
+import 'package:driver_mate/feature/booking/view/maintenance_booking_page.dart';
+import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
+import 'package:driver_mate/feature/news/view/car_news_page.dart';
 import 'package:driver_mate/feature/notification/view/notification_page.dart';
 import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
@@ -33,37 +35,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-  static final List<ContainerIconWidget> options = [
-    ContainerIconWidget(
-      icon: AppImagePath.micIconPath,
-      text: AppConstants.aiVoice,
-      onTap: () {
-        MyNavigation.navigateTo(AiVoiceDiagnosisPage());
-      },
-      // here we will add onTap functionality later
-    ),
-    ContainerIconWidget(
-      icon: AppImagePath.phoneIconPath,
-      text: AppConstants.emergencyCall,
-      onTap: () {
-        MyNavigation.navigateTo(EmergencyAssistancePage());
-      },
-    ),
-    ContainerIconWidget(
-      icon: AppImagePath.repairIconPath,
-      text: AppConstants.maintanence,
-      onTap: () {
-        MyNavigation.navigateTo(BookMaintenancePage());
-      },
-    ),
-    ContainerIconWidget(
-      icon: AppImagePath.plusIconPath,
-      text: AppConstants.add,
-      onTap: () {
-        MyNavigation.navigateTo(AddVehiclePage());
-      },
-    ),
-  ];
+
   static const List<MaintainanceContainerWidget> maintanceContainerList = [
     MaintainanceContainerWidget(),
     MaintainanceContainerWidget(
@@ -100,10 +72,7 @@ class HomePage extends StatefulWidget {
   ];
 
   static final List<AiContainerWidget> aiAlerts = [
-    AiContainerWidget(
-      onTap: () {
-      },
-    ),
+    AiContainerWidget(onTap: () {}),
     AiContainerWidget(
       title: AppConstants.tirePressureLow,
       action: AppConstants.findNearby,
@@ -121,7 +90,29 @@ class HomePage extends StatefulWidget {
       image: AppImagePath.tairImagePath,
     ),
   ];
-
+  static final List<CustomContainerWidget> carTips = [
+    CustomContainerWidget(
+      title: AppConstants.carNews,
+      subtitle: AppConstants.electricVehicles,
+      imagePath: AppImagePath.newsImagePath,
+      isAppear: false,
+      onTap: () {
+        MyNavigation.navigateTo(CarNewsPage());
+      },
+    ),
+    CustomContainerWidget(
+      title: AppConstants.recommendedService,
+      subtitle: AppConstants.oilChangeDue,
+      imagePath: AppImagePath.container1ImagePath,
+      isAppear: false,
+    ),
+    CustomContainerWidget(
+      title: AppConstants.aiMaintenance,
+      subtitle: AppConstants.checkTirePressure,
+      imagePath: AppImagePath.container2ImagePath,
+      isAppear: false,
+    ),
+  ];
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -183,6 +174,43 @@ class _HomePageState extends State<HomePage> {
       ),
     ];
 
+    final List<ContainerIconWidget> options = [
+      ContainerIconWidget(
+        icon: AppImagePath.micIconPath,
+        text: AppConstants.aiVoice,
+        onTap: () {
+          MyNavigation.navigateTo(AiVoiceDiagnosisPage());
+        },
+        // here we will add onTap functionality later
+      ),
+      ContainerIconWidget(
+        icon: AppImagePath.phoneIconPath,
+        text: AppConstants.emergencyCall,
+        onTap: () {
+          MyNavigation.navigateTo(EmergencyAssistancePage());
+        },
+      ),
+      ContainerIconWidget(
+        icon: AppImagePath.repairIconPath,
+        text: AppConstants.maintanence,
+        onTap: () {
+          MyNavigation.navigateTo(MaintenanceBookingPage());
+        },
+      ),
+      ContainerIconWidget(
+        icon: AppImagePath.plusIconPath,
+        text: AppConstants.add,
+        onTap: () {
+          MyNavigation.navigateTo(
+            BlocProvider.value(
+              value: context.read<VehicalCubit>(),
+              child: AddVehiclePage(),
+            ),
+          );
+        },
+      ),
+    ];
+
     return Scaffold(
       floatingActionButton: FloatActionButtonWidget(
         onPressed: () {
@@ -225,8 +253,8 @@ class _HomePageState extends State<HomePage> {
             builder: (context, state) {
               if (state is SuccessEditProfile) {
                 return SizedBox(
-                  width: SizeConfig.width(context) * 0.0485,
-                  height: SizeConfig.height(context) * 0.071,
+                  width: 50,
+                  height: 50,
                   child: ContainerForIcon(iconPath: state.data.image),
                 );
               } else {
@@ -256,14 +284,14 @@ class _HomePageState extends State<HomePage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero, // REMOVE default padding
-                itemCount: HomePage.options.length,
+                itemCount: options.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: SizeConfig.height(context) * 0.02,
                   crossAxisSpacing: SizeConfig.width(context) * 0.04,
-                  childAspectRatio: 2,
+                  childAspectRatio: 1.05,
                 ),
-                itemBuilder: (context, index) => HomePage.options[index],
+                itemBuilder: (context, index) => options[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
 
@@ -277,10 +305,10 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.zero, // REMOVE default padding
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: HomePage.aiAlerts.length,
+                itemCount: HomePage.carTips.length,
                 separatorBuilder: (context, index) =>
                     SizedBox(height: SizeConfig.height(context) * 0.015),
-                itemBuilder: (context, index) => HomePage.aiAlerts[index],
+                itemBuilder: (context, index) => HomePage.carTips[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ContainerTitle(),

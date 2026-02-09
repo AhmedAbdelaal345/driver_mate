@@ -3,6 +3,7 @@ import 'package:driver_mate/core/network/api_response.dart';
 import 'package:driver_mate/feature/auth/data/model/auth_model.dart';
 import 'package:driver_mate/feature/auth/data/repo/auth_repo.dart';
 import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_state.dart';
+import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,10 +30,15 @@ class AuthCubit extends Cubit<AuthState> {
         password: passwordController.text,
       ),
     );
-    result.fold(
-      (String error) => emit(RegisterAuthFailure(error)),
-      (success) => emit(RegisterAuthSuccess(message: success)),
-    );
+    result.fold((String error) => emit(RegisterAuthFailure(error)), (success) {
+      EditProfileRepo.instance.saveProfile(
+        name: nameController.text,
+        email: emailController.text,
+        phone: "01000000000",
+        image: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+      );
+      emit(RegisterAuthSuccess(message: success));
+    });
   }
 
   void clearControllers() {
@@ -69,6 +75,13 @@ class AuthCubit extends Cubit<AuthState> {
         emit(LoginAuthFailure(l.message.toString()));
       },
       (userModel) {
+        // Save user data to shared preferences for EditProfileCubit to use
+        EditProfileRepo.instance.saveProfile(
+          name: userModel.user.name,
+          email: userModel.user.email,
+          phone: "01000000000", // Default or fetch real phone if available
+          image: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+        );
         emit(LoginAuthSuccess(message: userModel.message.toString()));
       },
     );

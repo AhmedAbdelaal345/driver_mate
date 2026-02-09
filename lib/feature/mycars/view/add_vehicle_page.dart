@@ -549,13 +549,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            VehicalCubit.get(
-                              context,
-                            ).formKey.currentState!.validate()
-                            ? AppColors.cyanColor
-                            : AppColors.boarderWhiteColor,
-                        disabledBackgroundColor: AppColors.boarderWhiteColor,
+                        backgroundColor: AppColors.cyanColor,
                         padding: EdgeInsets.symmetric(
                           vertical: SizeConfig.height(context) * 0.018,
                         ),
@@ -567,12 +561,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                       child: Text(
                         AppConstants.addVehicle,
                         style: AppStyle.boldSmallText.copyWith(
-                          color:
-                              VehicalCubit.get(
-                                context,
-                              ).formKey.currentState!.validate()
-                              ? AppColors.white
-                              : AppColors.iconGrey,
+                          color: AppColors.white,
                           fontSize: AppFontSize.f13,
                         ),
                       ),

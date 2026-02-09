@@ -53,7 +53,7 @@ class QuickActionItemWidget extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: SizeConfig.width(context) * 0.12, // ~12% of width
+              height: SizeConfig.height(context) * 0.12, // ~12% of width
               width: SizeConfig.width(context) * 0.12,
               decoration: BoxDecoration(
                 color: isHighlighted

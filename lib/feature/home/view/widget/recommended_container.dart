@@ -27,14 +27,15 @@ class RecommendedContainer extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecorationWidget.customBoxDecoration(),
-        width: SizeConfig.width(context) * 0.75,
-        height: SizeConfig.height(context) * 0.35,
+        width: SizeConfig.width(context) * 0.75, // Responsive width
+        // height: SizeConfig.height(context) * 0.35, // Let content define height or use flexible
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: double.infinity,
-              height: SizeConfig.height(context) * 0.18,
+              height:
+                  SizeConfig.height(context) * 0.18, // Responsive image height
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12),

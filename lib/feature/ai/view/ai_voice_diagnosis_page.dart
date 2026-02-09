@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:dio/dio.dart';
-import 'package:driver_mate/core/network/api_constants.dart';
-import 'package:driver_mate/core/network/api_helper.dart';
+import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/ai/manager/cubit/ai_diagnosis_response_cubit.dart';
+import 'package:driver_mate/feature/ai/manager/state/ai_diagnosis_response_state.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
@@ -137,34 +137,25 @@ class _AiVoiceDiagnosisPageState extends State<AiVoiceDiagnosisPage> {
     setState(() {
       _isUploading = true;
     });
-    final data = {
-      "file": await MultipartFile.fromFile(path, filename: "recording.m4a"),
-    };
 
-    final response = await ApiHelper().postRequest(
-      endpoint: ApiConstants.audioDiagnosisEndpoint,
-      data: data,
-      isForm: true,
-      isAuthorized: true,
-    );
+    context.read<AiDiagnosisCubit>().sendAudio(path);
 
     if (!mounted) return;
     setState(() {
       _isUploading = false;
     });
+    // final message = response.
+    //     ? AppConstants.uploadSuccess
+    //     : AppConstants.uploadFailed;
 
-    final message = response.status
-        ? AppConstants.uploadSuccess
-        : AppConstants.uploadFailed;
-
-    _showSnackBar(message);
+    // _showSnackBar(message);
   }
 
   void _showSnackBar(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _showUploadOptions() {
@@ -190,10 +181,7 @@ class _AiVoiceDiagnosisPageState extends State<AiVoiceDiagnosisPage> {
                 ),
                 const SizedBox(height: 8),
                 ListTile(
-                  leading: const Icon(
-                    Icons.mic,
-                    color: AppColors.cyanColor,
-                  ),
+                  leading: const Icon(Icons.mic, color: AppColors.cyanColor),
                   title: Text(AppConstants.uploadRecording),
                   onTap: () {
                     Navigator.pop(context);
@@ -223,194 +211,223 @@ class _AiVoiceDiagnosisPageState extends State<AiVoiceDiagnosisPage> {
   Widget build(BuildContext context) {
     final timeLabel = "${_elapsed.toString().padLeft(2, "0")}s";
 
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
+    return BlocListener<AiDiagnosisCubit, AiDiagnosisState>(
+      listener: (context, state) {
+        if (state is AiLoading) {
+          setState(() => _isUploading = true);
+        }
+
+        if (state is AiSuccess) {
+          setState(() => _isUploading = false);
+
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: const Text("Diagnosis Result"),
+              content: Text(state.result),
+            ),
+          );
+        }
+
+        if (state is AiError) {
+          setState(() => _isUploading = false);
+
+          AppNotifier.show(context, state.message, type: NotifierType.error);
+        }
+      },
+      child: Scaffold(
         backgroundColor: AppColors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          AppConstants.aiVoiceDiagnosis,
-          style: AppStyle.appBarTitle,
-        ),
-        leading: const LeadingIcon(),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.width(context) * 0.05,
-            vertical: SizeConfig.height(context) * 0.015,
+        appBar: AppBar(
+          backgroundColor: AppColors.white,
+          elevation: 0,
+          centerTitle: true,
+          title: const Text(
+            AppConstants.aiVoiceDiagnosis,
+            style: AppStyle.appBarTitle,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration:
-                    BoxDecorationWidget.customBoxDecoration(
-                      borderRadius: AppFontSize.f12,
-                    ).copyWith(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [AppColors.veryDarkBlue, AppColors.cyanColor],
+          leading: const LeadingIcon(),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.width(context) * 0.05,
+              vertical: SizeConfig.height(context) * 0.015,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration:
+                      BoxDecorationWidget.customBoxDecoration(
+                        borderRadius: AppFontSize.f12,
+                      ).copyWith(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [AppColors.veryDarkBlue, AppColors.cyanColor],
+                        ),
                       ),
-                    ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppConstants.recordCarSound,
-                      style: AppStyle.boldSmallText.copyWith(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppConstants.recordCarSound,
+                        style: AppStyle.boldSmallText.copyWith(
+                          color: AppColors.white,
+                          fontSize: AppFontSize.f13,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        AppConstants.recordHint,
+                        style: AppStyle.containerSubtitle.copyWith(
+                          color: AppColors.white.withValues(alpha: 0.9),
+                          fontSize: AppFontSize.f11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: SizeConfig.height(context) * 0.03),
+                Center(
+                  child: GestureDetector(
+                    onTap: _isRecording ? _stopRecording : _startRecording,
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: AppColors.cyanColor,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.black.withValues(alpha: 0.12),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        _isRecording ? Icons.stop : Icons.mic,
                         color: AppColors.white,
-                        fontSize: AppFontSize.f13,
+                        size: 46,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      AppConstants.recordHint,
-                      style: AppStyle.containerSubtitle.copyWith(
-                        color: AppColors.white.withValues(alpha: 0.9),
-                        fontSize: AppFontSize.f11,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    _isRecording
+                        ? AppConstants.recordStop
+                        : AppConstants.tapToStart,
+                    style: AppStyle.containerSubtitle.copyWith(
+                      color: AppColors.textGrey,
+                      fontSize: AppFontSize.f12,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Center(
+                  child: Text(
+                    _isRecording ? timeLabel : AppConstants.max30Seconds,
+                    style: AppStyle.containerSubtitle.copyWith(
+                      color: AppColors.iconGrey,
+                      fontSize: AppFontSize.f10,
+                    ),
+                  ),
+                ),
+                SizedBox(height: SizeConfig.height(context) * 0.02),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: _isUploading ? null : _showUploadOptions,
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          side: BorderSide(color: AppColors.boarderWhiteColor),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              AppFontSize.f12,
+                            ),
+                          ),
+                        ),
+                        icon: Icon(
+                          Icons.file_upload_outlined,
+                          size: 18,
+                          color: AppColors.cyanColor,
+                        ),
+                        label: Text(
+                          _isUploading
+                              ? AppConstants.uploading
+                              : AppConstants.uploadAudio,
+                          style: AppStyle.boldSmallText.copyWith(
+                            fontSize: AppFontSize.f12,
+                            color: AppColors.textGrey,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          side: BorderSide(color: AppColors.boarderWhiteColor),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              AppFontSize.f12,
+                            ),
+                          ),
+                        ),
+                        icon: Icon(
+                          Icons.info_outline,
+                          size: 18,
+                          color: AppColors.cyanColor,
+                        ),
+                        label: Text(
+                          AppConstants.recordingTips,
+                          style: AppStyle.boldSmallText.copyWith(
+                            fontSize: AppFontSize.f12,
+                            color: AppColors.textGrey,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: SizeConfig.height(context) * 0.03),
-              Center(
-                child: GestureDetector(
-                  onTap: _isRecording ? _stopRecording : _startRecording,
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: AppColors.cyanColor,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.black.withValues(alpha: 0.12),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      _isRecording ? Icons.stop : Icons.mic,
-                      color: AppColors.white,
-                      size: 46,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Center(
-                child: Text(
-                  _isRecording
-                      ? AppConstants.recordStop
-                      : AppConstants.tapToStart,
-                  style: AppStyle.containerSubtitle.copyWith(
-                    color: AppColors.textGrey,
-                    fontSize: AppFontSize.f12,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 4),
-              Center(
-                child: Text(
-                  _isRecording ? timeLabel : AppConstants.max30Seconds,
+                SizedBox(height: SizeConfig.height(context) * 0.02),
+                Text(
+                  AppConstants.recentScans,
                   style: AppStyle.containerSubtitle.copyWith(
                     color: AppColors.iconGrey,
-                    fontSize: AppFontSize.f10,
+                    fontSize: AppFontSize.f11,
                   ),
                 ),
-              ),
-              SizedBox(height: SizeConfig.height(context) * 0.02),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: _isUploading ? null : _showUploadOptions,
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: BorderSide(color: AppColors.boarderWhiteColor),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f12),
-                        ),
-                      ),
-                      icon: Icon(
-                        Icons.file_upload_outlined,
-                        size: 18,
-                        color: AppColors.cyanColor,
-                      ),
-                      label: Text(
-                        _isUploading
-                            ? AppConstants.uploading
-                            : AppConstants.uploadAudio,
-                        style: AppStyle.boldSmallText.copyWith(
-                          fontSize: AppFontSize.f12,
-                          color: AppColors.textGrey,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: BorderSide(color: AppColors.boarderWhiteColor),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f12),
-                        ),
-                      ),
-                      icon: Icon(
-                        Icons.info_outline,
-                        size: 18,
-                        color: AppColors.cyanColor,
-                      ),
-                      label: Text(
-                        AppConstants.recordingTips,
-                        style: AppStyle.boldSmallText.copyWith(
-                          fontSize: AppFontSize.f12,
-                          color: AppColors.textGrey,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: SizeConfig.height(context) * 0.02),
-              Text(
-                AppConstants.recentScans,
-                style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.iconGrey,
-                  fontSize: AppFontSize.f11,
+                const SizedBox(height: 8),
+                _ScanTile(
+                  time: AppConstants.today,
+                  title: AppConstants.engineBeltNoise,
+                  level: AppConstants.medium,
+                  color: AppColors.orange,
                 ),
-              ),
-              const SizedBox(height: 8),
-              _ScanTile(
-                time: AppConstants.today,
-                title: AppConstants.engineBeltNoise,
-                level: AppConstants.medium,
-                color: AppColors.orange,
-              ),
-              const SizedBox(height: 10),
-              _ScanTile(
-                time: AppConstants.yesterday,
-                title: AppConstants.brakeSqueal,
-                level: AppConstants.low,
-                color: AppColors.green,
-              ),
-              const SizedBox(height: 10),
-              _ScanTile(
-                time: AppConstants.jan20,
-                title: AppConstants.fanRattle,
-                level: AppConstants.high,
-                color: AppColors.red,
-              ),
-            ],
+                const SizedBox(height: 10),
+                _ScanTile(
+                  time: AppConstants.yesterday,
+                  title: AppConstants.brakeSqueal,
+                  level: AppConstants.low,
+                  color: AppColors.green,
+                ),
+                const SizedBox(height: 10),
+                _ScanTile(
+                  time: AppConstants.jan20,
+                  title: AppConstants.fanRattle,
+                  level: AppConstants.high,
+                  color: AppColors.red,
+                ),
+              ],
+            ),
           ),
         ),
       ),

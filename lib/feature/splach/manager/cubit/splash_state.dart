@@ -13,3 +13,6 @@ final class SplashAnimationStart extends SplashState {}
 
 final class SplashNavigate extends SplashState {}
 
+class SplashNavigateToHome extends SplashState {}
+
+class SplashNavigateToLogin extends SplashState {}
