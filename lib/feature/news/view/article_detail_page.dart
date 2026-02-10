@@ -2,7 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
-import 'package:driver_mate/feature/booking/view/maintenance_booking_page.dart';
+import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
 import 'package:flutter/material.dart';
 
 class ArticleDetailPage extends StatelessWidget {
@@ -270,8 +270,7 @@ class ArticleDetailPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const MaintenanceBookingPage(),
+                            builder: (context) => const ServiceCenterPage(),
                           ),
                         );
                       },

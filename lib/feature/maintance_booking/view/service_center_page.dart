@@ -8,14 +8,14 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:flutter/material.dart';
 
-class MaintenanceBookingPage extends StatefulWidget {
-  const MaintenanceBookingPage({super.key});
+class ServiceCenterPage extends StatefulWidget {
+  const ServiceCenterPage({super.key});
 
   @override
-  State<MaintenanceBookingPage> createState() => _MaintenanceBookingPageState();
+  State<ServiceCenterPage> createState() => _ServiceCenterPageState();
 }
 
-class _MaintenanceBookingPageState extends State<MaintenanceBookingPage> {
+class _ServiceCenterPageState extends State<ServiceCenterPage> {
   String _selectedTime = AppConstants.time1000;
 
   final List<String> _timeSlots = const [

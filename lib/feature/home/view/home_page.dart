@@ -21,7 +21,7 @@ import 'package:driver_mate/feature/home/view/widget/maintainance_container_widg
 import 'package:driver_mate/feature/home/view/widget/recommended_container.dart';
 import 'package:driver_mate/feature/home/view/widget/service_supplied_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/status_container_widget.dart';
-import 'package:driver_mate/feature/booking/view/maintenance_booking_page.dart';
+import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
 import 'package:driver_mate/feature/news/view/car_news_page.dart';
@@ -29,6 +29,7 @@ import 'package:driver_mate/feature/notification/view/notification_page.dart';
 import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_state.dart';
+import 'package:driver_mate/feature/recommended_service/view/recommended_service_page.dart';
 import 'package:driver_mate/feature/vehicle_status/view/vehicle_status_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -105,6 +106,9 @@ class HomePage extends StatefulWidget {
       subtitle: AppConstants.oilChangeDue,
       imagePath: AppImagePath.container1ImagePath,
       isAppear: false,
+      onTap: () {
+        MyNavigation.navigateTo(RecommendedServicePage());
+      },
     ),
     CustomContainerWidget(
       title: AppConstants.aiMaintenance,
@@ -194,7 +198,7 @@ class _HomePageState extends State<HomePage> {
         icon: AppImagePath.repairIconPath,
         text: AppConstants.maintanence,
         onTap: () {
-          MyNavigation.navigateTo(MaintenanceBookingPage());
+          MyNavigation.navigateTo(ServiceCenterPage());
         },
       ),
       ContainerIconWidget(

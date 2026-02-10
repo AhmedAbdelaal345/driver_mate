@@ -15,6 +15,7 @@ abstract class AppConstants {
   static const String searchExploreHint = "Search cars, parts, services...";
   static const String carAddedSuccefully = "Car Added Succefully";
   static const String recent = "Recent";
+  static const String selectServiceCenter = "Select Service Center";
   static const String model = "Model";
   static const String loading = "Loading";
   static const String clearAll = "Clear all";
