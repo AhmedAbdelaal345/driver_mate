@@ -9,7 +9,7 @@ class OpenAiService {
   final Dio dio;
   OpenAiService(this.dio);
   final String apiKey =
-      "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";
+      "";
   Future<String> speechToText(File file) async {
     final formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(file.path),
