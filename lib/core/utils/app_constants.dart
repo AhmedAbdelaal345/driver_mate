@@ -10,6 +10,9 @@ abstract class AppConstants {
   static const String problem = "Problem";
   static const String enterBrandCar = "Enter a Brand Car";
   static const String search = "Search";
+  static const String viewMoreTips = "View More Tips";
+  static const String seeAll = "See All";
+  static const String relatedTips = "Related Tips";
   static const String support = "Support";
   static const String enterYearCar = "Enter The Year for a Car";
   static const String searchExploreHint = "Search cars, parts, services...";
@@ -38,6 +41,7 @@ abstract class AppConstants {
   static const String cancel = "Cancel";
   static const String sortBy = "Sort By";
   static const String brand = "Brand";
+  static const String maintenanceTip = "Maintenance Tip";
   static const String rating = "Rating";
   static const String minPriceLabel = "Min Price";
   static const String maxPriceLabel = "Max Price";

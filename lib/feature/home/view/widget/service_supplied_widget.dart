@@ -17,88 +17,93 @@ class ServiceSuppliedWidget extends StatelessWidget {
     this.first,
     this.second,
     this.third,
+    this.onTap,
   });
   final String? title;
   final String? distance;
   final String? rate;
   final String? numberOfReviews;
   final String? first, second, third;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     final List<String?> item = [first, second, third];
-    return Container(
-      width:
-          SizeConfig.width(context) *
-          0.75, // Adjusted width relative to screen width
-
-      decoration: BoxDecorationWidget.customBoxDecoration(
-        borderRadius: AppFontSize.f16,
-      ),
-      padding: EdgeInsets.all(
-        SizeConfig.width(context) * 0.04,
-      ), // Responsive padding
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            title ?? AppConstants.premiumAutoService,
-            style: AppStyle.titleOfContainer,
-          ),
-          Row(
-            children: [
-              Icon(
-                Icons.location_on_outlined,
-                color: AppColors.cyanColor,
-                fontWeight: FontWeight.bold,
-                size: AppFontSize.f13,
-              ),
-              SizedBox(width: AppFontSize.f5),
-              Text(
-                distance ?? AppConstants.dist,
-                style: AppStyle.viewAll.copyWith(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          SizedBox(height: SizeConfig.height(context) * 0.015),
-          Row(
-            children: [
-              Icon(Icons.star_rounded, color: AppColors.orange),
-              Text(rate ?? "4.8", style: AppStyle.titleForContainer),
-              Text(
-                numberOfReviews ?? " (234 reviews)",
-                style: AppStyle.containerSubtitle,
-              ),
-            ],
-          ),
-
-          SizedBox(height: SizeConfig.height(context) * 0.015),
-
-          // Instead of ListView.separated, use this:
-          Wrap(
-            spacing: 8, // space between chips
-            children: item
-                .where((i) => i != null)
-                .map(
-                  (text) => Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecorationWidget.customBoxDecoration()
-                        .copyWith(
-                          color: AppColors.containerGrey,
-                          borderRadius: BorderRadius.circular(AppFontSize.f18),
-                        ),
-                    child: Text(text!, style: AppStyle.containerSubtitle),
-                  ),
-                )
-                .toList(),
-          ),
-          SizedBox(height: SizeConfig.height(context) * 0.015),
-          PrimaryElevatedButtonWidget(
-            buttonText: AppConstants.bookNow,
-            onPressed: () {},
-          ).copyWith(backgroundColor: AppColors.cyanColor),
-          // SizedBox(height: SizeConfig.height(context) * 0.015),
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width:
+            SizeConfig.width(context) *
+            0.75, // Adjusted width relative to screen width
+      
+        decoration: BoxDecorationWidget.customBoxDecoration(
+          borderRadius: AppFontSize.f16,
+        ),
+        padding: EdgeInsets.all(
+          SizeConfig.width(context) * 0.04,
+        ), // Responsive padding
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              title ?? AppConstants.premiumAutoService,
+              style: AppStyle.titleOfContainer,
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.location_on_outlined,
+                  color: AppColors.cyanColor,
+                  fontWeight: FontWeight.bold,
+                  size: AppFontSize.f13,
+                ),
+                SizedBox(width: AppFontSize.f5),
+                Text(
+                  distance ?? AppConstants.dist,
+                  style: AppStyle.viewAll.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: SizeConfig.height(context) * 0.015),
+            Row(
+              children: [
+                Icon(Icons.star_rounded, color: AppColors.orange),
+                Text(rate ?? "4.8", style: AppStyle.titleForContainer),
+                Text(
+                  numberOfReviews ?? " (234 reviews)",
+                  style: AppStyle.containerSubtitle,
+                ),
+              ],
+            ),
+      
+            SizedBox(height: SizeConfig.height(context) * 0.015),
+      
+            // Instead of ListView.separated, use this:
+            Wrap(
+              spacing: 8, // space between chips
+              children: item
+                  .where((i) => i != null)
+                  .map(
+                    (text) => Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecorationWidget.customBoxDecoration()
+                          .copyWith(
+                            color: AppColors.containerGrey,
+                            borderRadius: BorderRadius.circular(AppFontSize.f18),
+                          ),
+                      child: Text(text!, style: AppStyle.containerSubtitle),
+                    ),
+                  )
+                  .toList(),
+            ),
+            SizedBox(height: SizeConfig.height(context) * 0.015),
+            PrimaryElevatedButtonWidget(
+              buttonText: AppConstants.bookNow,
+              onPressed: () {},
+            ).copyWith(backgroundColor: AppColors.cyanColor),
+            // SizedBox(height: SizeConfig.height(context) * 0.015),
+          ],
+        ),
       ),
     );
   }

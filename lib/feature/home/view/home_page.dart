@@ -8,6 +8,7 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/container_icon.dart';
 import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
 import 'package:driver_mate/feature/ai/view/widget/quick_record_sheet.dart';
+import 'package:driver_mate/feature/cartips/view/cartips_page.dart';
 import 'package:driver_mate/feature/emergency/view/emergency_assistance_page.dart';
 import 'package:driver_mate/feature/explore/view/explore_search_page.dart';
 import 'package:driver_mate/feature/home/view/widget/ai_container_widget.dart';
@@ -21,6 +22,8 @@ import 'package:driver_mate/feature/home/view/widget/maintainance_container_widg
 import 'package:driver_mate/feature/home/view/widget/recommended_container.dart';
 import 'package:driver_mate/feature/home/view/widget/service_supplied_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/status_container_widget.dart';
+import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
+import 'package:driver_mate/feature/maintance_booking/view/maintenance_tip_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
@@ -37,8 +40,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  static const List<MaintainanceContainerWidget> maintanceContainerList = [
-    MaintainanceContainerWidget(),
+  static List<MaintainanceContainerWidget> maintanceContainerList = [
+    MaintainanceContainerWidget(
+      onTap: () {
+        MyNavigation.navigateTo(BookMaintenancePage());
+      },
+    ),
     MaintainanceContainerWidget(
       imagePath: AppImagePath.calenderIconPath,
       title: AppConstants.annual,
@@ -46,6 +53,9 @@ class HomePage extends StatefulWidget {
       statusContainerColor: AppColors.smoothcyanColor,
       statusText: AppConstants.upcoming,
       statusTextColor: AppColors.cyanColor,
+      onTap: () {
+        MyNavigation.navigateTo(BookMaintenancePage());
+      },
     ),
 
     MaintainanceContainerWidget(
@@ -55,20 +65,29 @@ class HomePage extends StatefulWidget {
       statusContainerColor: AppColors.containerGrey,
       statusText: AppConstants.later,
       statusTextColor: AppColors.midGrey,
+      onTap: () {
+        MyNavigation.navigateTo(BookMaintenancePage());
+      },
     ),
   ];
 
-  static const List<ServiceSuppliedWidget> service = [
+  static List<ServiceSuppliedWidget> service = [
     ServiceSuppliedWidget(
       first: "Tair Repaire",
       second: "help1",
       third: "help3",
+      onTap: () {
+        MyNavigation.navigateTo(ServiceCenterPage());
+      },
     ),
     ServiceSuppliedWidget(
       title: "QuickFix Auto Center",
       first: "AC Repair",
       second: "help1",
       third: "help2",
+      onTap: () {
+        MyNavigation.navigateTo(ServiceCenterPage());
+      },
     ),
   ];
 
@@ -115,6 +134,9 @@ class HomePage extends StatefulWidget {
       subtitle: AppConstants.checkTirePressure,
       imagePath: AppImagePath.container2ImagePath,
       isAppear: false,
+      onTap: () {
+        MyNavigation.navigateTo(MaintenanceTipPage());
+      },
     ),
   ];
   @override
@@ -157,6 +179,15 @@ class _HomePageState extends State<HomePage> {
         readMore: AppConstants.readMore,
         width: SizeConfig.width(context) * 0.213,
         height: SizeConfig.height(context) * 0.14,
+        onTap: () {
+          MyNavigation.navigateTo(
+            CarTipsPage(
+              assetName: AppImagePath.firstImagePath,
+              hintText: AppConstants.maintenance,
+              labelText: AppConstants.essentialCar,
+            ),
+          );
+        },
       ),
       CustomContainerWidget(
         title: AppConstants.howToExtend,
@@ -166,6 +197,15 @@ class _HomePageState extends State<HomePage> {
         readMore: AppConstants.readMore,
         width: SizeConfig.width(context) * 0.213,
         height: SizeConfig.height(context) * 0.14,
+        onTap: () {
+          MyNavigation.navigateTo(
+            CarTipsPage(
+              assetName: AppImagePath.secondImagePath,
+              hintText: AppConstants.maintenance,
+              labelText: AppConstants.howToExtend,
+            ),
+          );
+        },
       ),
       CustomContainerWidget(
         title: AppConstants.completeGuide,
@@ -175,6 +215,15 @@ class _HomePageState extends State<HomePage> {
         readMore: AppConstants.readMore,
         width: SizeConfig.width(context) * 0.213,
         height: SizeConfig.height(context) * 0.14,
+        onTap: () {
+          MyNavigation.navigateTo(
+            CarTipsPage(
+              assetName: AppImagePath.thirdImagePath,
+              hintText: AppConstants.maintenance,
+              labelText: AppConstants.completeGuide,
+            ),
+          );
+        },
       ),
     ];
 
@@ -332,6 +381,7 @@ class _HomePageState extends State<HomePage> {
               ContainerTitle(
                 onTap: () {
                   //here  we will add the functionality for the item
+                  BookMaintenancePage();
                 },
                 title: AppConstants.nearByService,
                 subTitle: AppConstants.seeMap,
