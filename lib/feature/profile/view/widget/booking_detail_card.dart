@@ -9,6 +9,7 @@ class BookingDetailCard extends StatelessWidget {
     required this.state,
     required this.date,
     required this.price,
+    required this.onPressed,
   });
   final String centerName;
   final String location;
@@ -16,6 +17,7 @@ class BookingDetailCard extends StatelessWidget {
   final String state;
   final DateTime date;
   final double price;
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,23 +32,30 @@ class BookingDetailCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    centerName,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text(
-                    service,
-                    style: TextStyle(color: Colors.grey, fontSize: 13),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      centerName,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      service,
+                      style: const TextStyle(color: Colors.grey, fontSize: 13),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
               IconButton(
-                onPressed: () {
-                  // TODO: Navigate to specific booking details
-                },
+                onPressed: onPressed,
                 icon: const Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
@@ -74,18 +83,16 @@ class BookingDetailCard extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
+                  color: _getStateColor().withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text(
-                  "Upcoming",
-                  style: TextStyle(color: Colors.blue, fontSize: 12),
+                child: Text(
+                  state,
+                  style: TextStyle(color: _getStateColor(), fontSize: 12),
                 ),
               ),
               TextButton(
-                onPressed: () {
-                  // TODO: Logic for individual booking action
-                },
+                onPressed: onPressed,
                 child: const Text(
                   "View Details",
                   style: TextStyle(color: Colors.teal),
@@ -106,5 +113,16 @@ class BookingDetailCard extends StatelessWidget {
         Text(text, style: const TextStyle(fontSize: 13, color: Colors.grey)),
       ],
     );
+  }
+
+  Color _getStateColor() {
+    switch (state.toLowerCase()) {
+      case "completed":
+        return Colors.green;
+      case "canceled":
+        return Colors.red;
+      default:
+        return Colors.blue;
+    }
   }
 }

@@ -15,6 +15,8 @@ import 'package:driver_mate/feature/maintance_booking/view/widget/note_textfield
 import 'package:driver_mate/feature/maintance_booking/view/widget/service_center_info_card.dart';
 import 'package:driver_mate/feature/maintance_booking/view/widget/time_selector.dart';
 import 'package:driver_mate/feature/maintance_booking/view/widget/vehicle_selector.dart';
+import 'package:driver_mate/feature/maintance_history/data/model/maintance_history_model.dart';
+import 'package:driver_mate/feature/maintance_history/manager/cubit/maintence_history_cubit.dart';
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
@@ -71,12 +73,28 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
   void _confirmBooking() {
     if (_canConfirmBooking) {
       // TODO: Implement booking confirmation logic
+      context.read<MaintenceHistoryCubit>().addItem(
+        MaintanceHistoryModel(
+          centerName: widget.serviceCenter.serviceCenterName ?? " No Data",
+          typeOfService:
+              widget.serviceCenter.servicesOffered?.join(", ") ??
+              "General Service",
+          location: widget.serviceCenter.address ?? "No Data",
+          state: _selectedDate!.isAfter(DateTime.now())
+              ? "Upcoming"
+              : "Completed",
+          date: _selectedDate ?? DateTime.now(),
+          price: widget.serviceCenter.price ?? 10,
+          notes: _notesController.text.trim(),
+          phone: widget.serviceCenter.phoneNumber ?? "010000000",
+        ),
+      );
       AppNotifier.show(
         context,
         'Booking confirmed for ${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year} at $_selectedTime',
         type: NotifierType.success,
       );
-      MyNavigation.navigateTo(WrapperPage());
+      MyNavigation.navigateOff(WrapperPage());
     } else {
       AppNotifier.show(
         context,

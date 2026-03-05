@@ -6,6 +6,8 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/vehicle_status/view/widget/metric_tile.dart';
+import 'package:driver_mate/feature/vehicle_status/view/widget/quick_action_widget.dart';
 import 'package:flutter/material.dart';
 
 class VehicleStatusPage extends StatelessWidget {
@@ -110,7 +112,7 @@ class VehicleStatusPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              _MetricTile(
+              MetricTile(
                 icon: Icons.monitor_heart,
                 iconColor: AppColors.green,
                 title: AppConstants.engineHealth,
@@ -119,7 +121,7 @@ class VehicleStatusPage extends StatelessWidget {
                 subtitle: AppConstants.engineHealthSub,
               ),
               const SizedBox(height: 10),
-              _MetricTile(
+              MetricTile(
                 icon: Icons.battery_charging_full,
                 iconColor: AppColors.orange,
                 title: AppConstants.batteryHealth,
@@ -128,7 +130,7 @@ class VehicleStatusPage extends StatelessWidget {
                 subtitle: AppConstants.batteryHealthSub,
               ),
               const SizedBox(height: 10),
-              _MetricTile(
+              MetricTile(
                 icon: Icons.tire_repair,
                 iconColor: AppColors.babyBleu,
                 title: AppConstants.tirePressure,
@@ -137,7 +139,7 @@ class VehicleStatusPage extends StatelessWidget {
                 subtitle: AppConstants.tirePressureSub,
               ),
               const SizedBox(height: 10),
-              _MetricTile(
+              MetricTile(
                 icon: Icons.local_gas_station,
                 iconColor: AppColors.yellow,
                 title: AppConstants.oilLife,
@@ -157,17 +159,17 @@ class VehicleStatusPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
-                  _QuickAction(
+                  QuickAction(
                     icon: Icons.auto_awesome,
                     label: AppConstants.runAiScan,
                     color: AppColors.purple,
                   ),
-                  _QuickAction(
+                  QuickAction(
                     icon: Icons.build,
                     label: AppConstants.book,
                     color: AppColors.babyBleu,
                   ),
-                  _QuickAction(
+                  QuickAction(
                     icon: Icons.lightbulb_outline,
                     label: AppConstants.seeTips,
                     color: AppColors.green,
@@ -182,116 +184,4 @@ class VehicleStatusPage extends StatelessWidget {
   }
 }
 
-class _MetricTile extends StatelessWidget {
-  const _MetricTile({
-    required this.icon,
-    required this.iconColor,
-    required this.title,
-    required this.status,
-    required this.statusColor,
-    required this.subtitle,
-  });
 
-  final IconData icon;
-  final Color iconColor;
-  final String title;
-  final String status;
-  final Color statusColor;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecorationWidget.customBoxDecoration(
-        borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.white),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: iconColor.withValues(alpha: 0.12),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: iconColor, size: 20),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: AppStyle.boldSmallText.copyWith(
-                          fontSize: AppFontSize.f12,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      status,
-                      style: AppStyle.containerSubtitle.copyWith(
-                        fontSize: AppFontSize.f11,
-                        color: statusColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: AppStyle.containerSubtitle.copyWith(
-                    fontSize: AppFontSize.f11,
-                    color: AppColors.iconGrey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _QuickAction extends StatelessWidget {
-  const _QuickAction({
-    required this.icon,
-    required this.label,
-    required this.color,
-  });
-
-  final IconData icon;
-  final String label;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 52,
-          height: 52,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.15),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: color, size: 22),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          label,
-          style: AppStyle.containerSubtitle.copyWith(
-            fontSize: AppFontSize.f10,
-            color: AppColors.textGrey,
-          ),
-        ),
-      ],
-    );
-  }
-}

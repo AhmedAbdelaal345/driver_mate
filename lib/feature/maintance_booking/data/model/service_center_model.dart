@@ -6,6 +6,7 @@ class ServiceCenterModel {
   final String? phoneNumber;
   final String? holiday;
   final String? distance;
+  final double? price;
   final List<String>? servicesOffered;
   ServiceCenterModel({
     this.serviceCenterName,
@@ -15,6 +16,7 @@ class ServiceCenterModel {
     this.phoneNumber,
     this.holiday,
     this.distance,
+    this.price,
     this.servicesOffered,
   });
   factory ServiceCenterModel.fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,7 @@ class ServiceCenterModel {
       address: json['address'] as String?,
       workingHours: json['workingHours'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
+      price: json["price"],
       holiday: json['holiday'] as String?,
       distance: json['distance'] as String?,
       servicesOffered: (json['servicesOffered'] as List<dynamic>?)

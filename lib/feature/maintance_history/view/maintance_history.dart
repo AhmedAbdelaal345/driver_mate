@@ -1,7 +1,9 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/booking_details/view/booking_details_page.dart';
 import 'package:driver_mate/feature/maintance_history/data/model/maintance_history_model.dart';
 import 'package:driver_mate/feature/maintance_history/manager/cubit/maintence_history_cubit.dart';
 import 'package:driver_mate/feature/maintance_history/manager/state/maintence_history_state.dart';
@@ -75,7 +77,9 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 24, 16, 12),
               child: Text(
-                "ALL BOOKINGS",
+                selectedFilter == "All"
+                    ? "ALL BOOKINGS"
+                    : "${selectedFilter.toUpperCase()} BOOKINGS",
                 style: AppStyle.hintStyle.copyWith(
                   letterSpacing: 1.2,
                   fontWeight: FontWeight.bold,
@@ -85,30 +89,37 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
           ),
 
           /// List of bookings
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                if (items.isEmpty) {
-                  return const Center(
-                    child: Text("No bookings found for this filter"),
+          /// List of bookings
+          if (items.isEmpty)
+            const SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(child: Text("No bookings found for this filter")),
+            )
+          else
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final item = items[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: BookingDetailCard(
+                      centerName: item.centerName,
+                      location: item.location,
+                      service: item.typeOfService,
+                      state: item.state,
+                      date: item.date,
+                      price: item.price,
+                      onPressed: () {
+                        MyNavigation.navigateTo(
+                          BookingDetailsPage(booking: item),
+                        );
+                      },
+                    ),
                   );
-                }
-                final item = items[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: BookingDetailCard(
-                    centerName: item.centerName,
-                    location: item.location,
-                    service: item.typeOfService,
-                    state: item.state,
-                    date: item.date,
-                    price: item.price,
-                  ),
-                );
-              }, childCount: items.length),
+                }, childCount: items.length),
+              ),
             ),
-          ),
         ],
       );
     }
@@ -135,14 +146,25 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
 
           if (state is MaintenceHistorySuccessState) {
             final items = state.items;
+            for (var item in items) {
+              print("STATE: ${item.state}");
+            }
+            final upcoming = items
+                .where((e) => e.state.trim().toLowerCase() == "upcoming")
+                .length;
 
-            final upcoming = items.where((e) => e.state == "Upcoming").length;
-            final completed = items.where((e) => e.state == "Completed").length;
-
+            final completed = items
+                .where((e) => e.state.trim().toLowerCase() == "completed")
+                .length;
             final filteredItems = selectedFilter == "All"
                 ? items
-                : items.where((e) => e.state == selectedFilter).toList();
-
+                : items
+                      .where(
+                        (e) =>
+                            e.state.trim().toLowerCase() ==
+                            selectedFilter.trim().toLowerCase(),
+                      )
+                      .toList();
             return _buildBody(context, filteredItems, upcoming, completed);
           }
           return SizedBox();

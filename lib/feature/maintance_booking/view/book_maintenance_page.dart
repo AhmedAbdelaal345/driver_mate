@@ -1,16 +1,16 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
-import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
-import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'dart:io';
-
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/explore/view/explore_search_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
+import 'package:driver_mate/feature/maintance_booking/view/widget/moc_map_view_widget.dart';
+import 'package:driver_mate/feature/maintance_booking/view/widget/service_center_card.dart';
+import 'package:driver_mate/feature/maintance_booking/view/widget/view_toggle_wiget.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,8 +26,8 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
   bool _isMapView = false;
   bool _isOpeningMap = false;
 
-  final List<_ServiceCenter> _centers = [
-    _ServiceCenter(
+  final List<ServiceCenter> _centers = [
+    ServiceCenter(
       name: "AutoCare Service Center",
       distance: "1.2 km",
       rating: "4.8",
@@ -48,7 +48,7 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
         );
       },
     ),
-    _ServiceCenter(
+    ServiceCenter(
       name: "QuickFix Auto Works",
       distance: "2.5 km",
       rating: "4.6",
@@ -69,7 +69,7 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
         );
       },
     ),
-    _ServiceCenter(
+    ServiceCenter(
       name: "ProTech Motors",
       distance: "3.8 km",
       rating: "4.9",
@@ -90,7 +90,7 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
         );
       },
     ),
-    _ServiceCenter(
+    ServiceCenter(
       name: "SpeedCare Garage",
       distance: "4.2 km",
       rating: "4.5",
@@ -142,7 +142,7 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
               horizontal: SizeConfig.width(context) * 0.05,
               vertical: SizeConfig.height(context) * 0.01,
             ),
-            child: _ViewToggle(
+            child: ViewToggle(
               isMapView: _isMapView,
               onChanged: (value) {
                 setState(() {
@@ -153,7 +153,7 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
           ),
           Expanded(
             child: _isMapView
-                ? _MockMapView(
+                ? MockMapView(
                     isLoading: _isOpeningMap,
                     onOpenMaps: _openNearbyCenters,
                   )
@@ -163,7 +163,7 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
                       vertical: SizeConfig.height(context) * 0.01,
                     ),
                     itemBuilder: (context, index) {
-                      return _ServiceCenterCard(center: _centers[index]);
+                      return ServiceCenterCard(center: _centers[index]);
                     },
                     separatorBuilder: (_, __) => const SizedBox(height: 12),
                     itemCount: _centers.length,
@@ -258,295 +258,7 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
   }
 }
 
-class _ViewToggle extends StatelessWidget {
-  const _ViewToggle({required this.isMapView, required this.onChanged});
 
-  final bool isMapView;
-  final ValueChanged<bool> onChanged;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecorationWidget.customBoxDecoration(
-        borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.containerGrey),
-      child: Row(
-        children: [
-          Expanded(
-            child: _ToggleButton(
-              text: AppConstants.listView,
-              icon: Icons.list,
-              isActive: !isMapView,
-              onTap: () => onChanged(false),
-            ),
-          ),
-          Expanded(
-            child: _ToggleButton(
-              text: AppConstants.mapView,
-              icon: Icons.map_outlined,
-              isActive: isMapView,
-              onTap: () => onChanged(true),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
-class _ToggleButton extends StatelessWidget {
-  const _ToggleButton({
-    required this.text,
-    required this.icon,
-    required this.isActive,
-    required this.onTap,
-  });
 
-  final String text;
-  final IconData icon;
-  final bool isActive;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: isActive ? AppColors.cyanColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(AppFontSize.f12),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 16,
-              color: isActive ? AppColors.white : AppColors.textGrey,
-            ),
-            const SizedBox(width: 6),
-            Text(
-              text,
-              style: AppStyle.boldSmallText.copyWith(
-                fontSize: AppFontSize.f12,
-                color: isActive ? AppColors.white : AppColors.textGrey,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MockMapView extends StatelessWidget {
-  const _MockMapView({required this.onOpenMaps, required this.isLoading});
-
-  final VoidCallback onOpenMaps;
-  final bool isLoading;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: SizeConfig.width(context) * 0.05,
-      ),
-      decoration: BoxDecoration(
-        color: const Color(0xFF16C9C9),
-        borderRadius: BorderRadius.circular(AppFontSize.f12),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.location_pin, size: 64, color: AppColors.red),
-            const SizedBox(height: 6),
-            Text(
-              AppConstants.mapPreview,
-              style: AppStyle.boldSmallText.copyWith(
-                color: AppColors.white,
-                fontSize: AppFontSize.f12,
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton.icon(
-              onPressed: isLoading ? null : onOpenMaps,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.white,
-                disabledBackgroundColor: AppColors.white.withValues(alpha: 0.7),
-                foregroundColor: AppColors.cyanColor,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(999),
-                ),
-              ),
-              icon: Icon(
-                Icons.map_outlined,
-                size: 16,
-                color: isLoading ? AppColors.iconGrey : AppColors.cyanColor,
-              ),
-              label: Text(
-                isLoading ? AppConstants.openingMaps : AppConstants.openInMaps,
-                style: AppStyle.boldSmallText.copyWith(
-                  fontSize: AppFontSize.f11,
-                  color: isLoading ? AppColors.iconGrey : AppColors.cyanColor,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ServiceCenterCard extends StatelessWidget {
-  const _ServiceCenterCard({required this.center});
-
-  final _ServiceCenter center;
-  @override
-  Widget build(BuildContext context) {
-    final isOpen = center.status == AppConstants.openNow;
-    final statusColor = isOpen ? AppColors.green : AppColors.iconGrey;
-    return InkWell(
-      onTap: center.onTap,
-      child: Container(
-        decoration: BoxDecorationWidget.customBoxDecoration(
-          borderRadius: AppFontSize.f12,
-        ).copyWith(color: AppColors.white),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      center.name,
-                      style: AppStyle.boldSmallText.copyWith(
-                        fontSize: AppFontSize.f13,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: statusColor.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                    child: Text(
-                      center.status,
-                      style: AppStyle.containerSubtitle.copyWith(
-                        fontSize: AppFontSize.f10,
-                        color: statusColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.location_on_outlined,
-                    size: 14,
-                    color: AppColors.iconGrey,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    center.distance,
-                    style: AppStyle.containerSubtitle.copyWith(
-                      fontSize: AppFontSize.f11,
-                      color: AppColors.iconGrey,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  const Icon(Icons.star, size: 14, color: AppColors.orange),
-                  const SizedBox(width: 4),
-                  Text(
-                    "${center.rating} ${center.reviews}",
-                    style: AppStyle.containerSubtitle.copyWith(
-                      fontSize: AppFontSize.f11,
-                      color: AppColors.iconGrey,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: center.services
-                    .map(
-                      (service) => Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.containerGrey,
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                        child: Text(
-                          service,
-                          style: AppStyle.containerSubtitle.copyWith(
-                            fontSize: AppFontSize.f10,
-                            color: AppColors.textGrey,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Text(
-                    AppConstants.viewDetails,
-                    style: AppStyle.viewAll.copyWith(fontSize: AppFontSize.f12),
-                  ),
-                  const Spacer(),
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 14,
-                    color: AppColors.iconGrey,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ServiceCenter {
-  const _ServiceCenter({
-    required this.name,
-    required this.distance,
-    required this.rating,
-    required this.reviews,
-    required this.status,
-    required this.services,
-    required this.onTap,
-  });
-
-  final String name;
-  final String distance;
-  final String rating;
-  final String reviews;
-  final String status;
-  final List<String> services;
-  final void Function()? onTap;
-}

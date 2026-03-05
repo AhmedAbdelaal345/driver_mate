@@ -5,8 +5,10 @@ class MaintanceHistoryModel {
   final String typeOfService;
   final String location;
   final String state;
+  final String phone;
   final DateTime date;
   final double price;
+  final String? notes; // 👈 optional field
 
   MaintanceHistoryModel({
     required this.centerName,
@@ -15,6 +17,8 @@ class MaintanceHistoryModel {
     required this.state,
     required this.date,
     required this.price,
+    required this.phone,
+    this.notes,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +29,7 @@ class MaintanceHistoryModel {
       "state": state,
       "date": date.toIso8601String(),
       "price": price,
+      "notes": notes,
     };
   }
 
@@ -35,7 +40,9 @@ class MaintanceHistoryModel {
       location: map["location"],
       state: map["state"],
       date: DateTime.parse(map["date"]),
+      phone: map["phone"],
       price: map["price"],
+      notes: map["notes"],
     );
   }
 

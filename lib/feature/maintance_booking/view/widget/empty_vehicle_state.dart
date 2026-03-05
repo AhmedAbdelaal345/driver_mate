@@ -1,8 +1,10 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
 import 'package:flutter/material.dart';
 
 class EmptyVehicleState extends StatelessWidget {
@@ -32,7 +34,7 @@ class EmptyVehicleState extends StatelessWidget {
           const SizedBox(height: 8),
           TextButton(
             onPressed: () {
-              // TODO: Navigate to add vehicle page
+              MyNavigation.navigateTo(AddVehiclePage());
             },
             child: Text(
               AppConstants.addVehicle,
