@@ -8,7 +8,7 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/languge/view/language_page.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
-import 'package:driver_mate/feature/notification/view/notification_page.dart';
+import 'package:driver_mate/feature/notification/view/notification_settings_page.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_state.dart';
 import 'package:driver_mate/feature/profile/view/about_page.dart';
@@ -22,6 +22,9 @@ import 'package:driver_mate/feature/profile/view/privacy_page.dart';
 import 'package:driver_mate/feature/profile/view/widget/details_container_widget.dart';
 import 'package:driver_mate/feature/profile/view/widget/item_container.dart';
 import 'package:driver_mate/feature/profile/view/widget/profile_container.dart';
+import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
+import 'package:driver_mate/feature/saved_item/manager/state/saved_item_state.dart';
+import 'package:driver_mate/feature/saved_item/view/saved_item_page.dart';
 import 'package:driver_mate/feature/theme/view/theme_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,11 +62,6 @@ class ProfilePage extends StatelessWidget {
               SizedBox(height: SizeConfig.height(context) * 0.02),
               BlocBuilder<EditProfileCubit, EditProfileState>(
                 builder: (context, state) {
-                  // 🔥 دي أهم سطر
-                  if (state is InitEditProfile) {
-                    context.read<EditProfileCubit>().loadProfile();
-                  }
-
                   if (state is SuccessEditProfile) {
                     return ProfileContainer(
                       email: state.data.emailAddress,
@@ -103,17 +101,46 @@ class ProfilePage extends StatelessWidget {
                   BlocBuilder<VehicalCubit, VehicalState>(
                     builder: (context, state) {
                       if (state is SuccessVehicalState) {
-                        return ItemContainer(count: state.data.length);
+                        return ItemContainer(
+                          count: state.data.length,
+                          onTap: () {
+                            MyNavigation.navigateTo(MyCars());
+                          },
+                        );
                       } else {
-                        return ItemContainer(count: 0);
+                        return ItemContainer(
+                          count: 0,
+                          onTap: () {
+                            MyNavigation.navigateTo(MyCars());
+                          },
+                        );
                       }
                     },
                   ),
                   SizedBox(width: SizeConfig.width(context) * 0.03),
-                  ItemContainer(title: AppConstants.booking),
+                  ItemContainer(title: AppConstants.booking, onTap: () {}),
                   SizedBox(width: SizeConfig.width(context) * 0.03),
 
-                  ItemContainer(title: AppConstants.saved),
+                  BlocBuilder<SavedItemCubit, SavedItemState>(
+                    builder: (context, state) {
+                      if (state is SavedItemLoaded) {
+                        return ItemContainer(
+                          title: AppConstants.saved,
+                          count: state.items.length,
+                          onTap: () {
+                            MyNavigation.navigateTo(SavedItemsPage());
+                          },
+                        );
+                      }
+                      return ItemContainer(
+                        title: AppConstants.saved,
+                        count: 0,
+                        onTap: () {
+                          MyNavigation.navigateTo(SavedItemsPage());
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
@@ -190,7 +217,7 @@ class ProfilePage extends StatelessWidget {
                     Divider(color: AppColors.containerGrey),
                     DetailsContainerWidget(
                       onTap: () {
-                        MyNavigation.navigateTo(NotificationPage());
+                        MyNavigation.navigateTo(NotificationSettingPage());
                       },
                       title: AppConstants.notifications,
                       subTitle: AppConstants.reminder,

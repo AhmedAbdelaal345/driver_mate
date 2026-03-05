@@ -26,7 +26,9 @@ class RecommendedContainer extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecorationWidget.customBoxDecoration(),
+        decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
+          color: AppColors.white,
+        ),
         width: SizeConfig.width(context) * 0.75, // Responsive width
         // height: SizeConfig.height(context) * 0.35, // Let content define height or use flexible
         child: Column(

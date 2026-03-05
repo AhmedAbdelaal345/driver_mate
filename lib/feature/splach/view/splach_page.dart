@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
@@ -22,11 +23,43 @@ class SplachPage extends StatelessWidget {
   }
 }
 
-class _SplachPageView extends StatelessWidget {
+class _SplachPageView extends StatefulWidget {
   const _SplachPageView();
 
   @override
+  State<_SplachPageView> createState() => _SplachPageViewState();
+}
+
+class _SplachPageViewState extends State<_SplachPageView> {
+  late final AudioPlayer player;
+  @override
+  void initState() {
+    super.initState();
+
+    // Create the audio player.
+    player = AudioPlayer();
+
+    // Set the release mode to keep the source after playback has completed.
+    player.setReleaseMode(ReleaseMode.stop);
+
+    // Start the player as soon as the app is displayed.
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await player.setSource(AssetSource('audio/splash.mp3'));
+      await player.resume();
+    });
+  }
+
+  @override
+  dispose() {
+    // Dispose the audio player when the widget is removed from the widget tree.
+    player.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final AudioPlayer player = AudioPlayer();
+    player.play(AssetSource(""));
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashNavigateToLogin) {
@@ -87,7 +120,7 @@ class _SplachPageView extends StatelessWidget {
                   // Car Animation
                   AnimatedPositioned(
                     duration: const Duration(seconds: 3),
-                    curve: Curves.easeOutQuart,
+                    curve: Curves.linear,
                     bottom: SizeConfig.height(context) * 0.1,
 
                     // --- KEY CHANGE HERE ---

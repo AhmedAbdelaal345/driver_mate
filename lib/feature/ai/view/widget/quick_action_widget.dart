@@ -16,6 +16,7 @@ class QuickActionItemWidget extends StatelessWidget {
     this.onTap,
     this.borderColor,
     this.gradient,
+    this.isWhite = false,
   });
 
   final String icon;
@@ -26,6 +27,7 @@ class QuickActionItemWidget extends StatelessWidget {
   final Color? borderColor;
   final Gradient? gradient;
   final VoidCallback? onTap;
+  final bool isWhite;
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +55,11 @@ class QuickActionItemWidget extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: SizeConfig.height(context) * 0.12, // ~12% of width
-              width: SizeConfig.width(context) * 0.12,
+              height: SizeConfig.height(context) * 0.05, // ~12% of width
+              width: SizeConfig.width(context) * 0.1,
               decoration: BoxDecoration(
                 color: isHighlighted
-                    ? Colors.white.withOpacity(0.25)
+                    ? Colors.white.withValues(alpha: 0.25)
                     : AppColors.containerGrey,
                 borderRadius: BorderRadius.circular(
                   SizeConfig.width(context) * 0.03,
@@ -77,7 +79,12 @@ class QuickActionItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: AppStyle.titleOfContainer),
-                Text(subtitle, style: AppStyle.containerSubtitle),
+                Text(
+                  subtitle,
+                  style: AppStyle.containerSubtitle.copyWith(
+                    color: isWhite ? AppColors.white : AppColors.iconGrey,
+                  ),
+                ),
               ],
             ),
           ],

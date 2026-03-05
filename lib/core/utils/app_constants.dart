@@ -10,9 +10,69 @@ abstract class AppConstants {
   static const String problem = "Problem";
   static const String enterBrandCar = "Enter a Brand Car";
   static const String search = "Search";
+  static const String selectVehicle = 'Select Vehicle';
+  static const String carDetails = 'Car Details';
+  static const String nickname = 'Nickname';
+  static const String batteryHealth = 'battery Health';
+  static const String duplicateCarError =
+      'A car with the same brand, model, and year already exists.';
+  static const String year = 'Year';
+  static const String duplicatePlateError =
+      'A car with the same plate number already exists.';
+  static const String currentMileage = 'Current Mileage';
+  static const String currentMileageHint = 'Enter current mileage';
+  static const String nicknameHint = 'e.g., My Camry';
+  static const String carTagline = 'Family · Comfort · Reliable';
+  static const String keySpecifications = 'KEY SPECIFICATIONS';
+  static const String commonMaintenance = 'COMMON MAINTENANCE';
+  static const String highlights = 'HIGHLIGHTS';
+  static const String addToMyCars = 'Add to My Cars';
+  static const String reviewDetails = 'REVIEW DETAILS';
+
+  static const String newLabel = 'New';
+  static const String engine = 'Engine';
+  static const String engineValue = '2.5L 4-Cyl';
+  static const String transmission = 'Transmission';
+  static const String transmissionValue = 'Automatic';
+  static const String fuelType = 'Fuel Type';
+  static const String fuelTypeValue = 'Petrol';
+  static const String drivetrain = 'Drivetrain';
+  static const String drivetrainValue = 'FWD';
+  static const String seating = 'Seating';
+  static const String seatingValue = '5 Passengers';
+  static const String mpg = 'MPG';
+  static const String mpgValue = '32 Combined';
+  static const String highlight1 =
+      'Advanced safety features including adaptive cruise control';
+  static const String highlight2 = 'Spacious interior with premium cloth seats';
+  static const String highlight3 = 'Apple CarPlay & Android Auto integration';
+  static const String highlight4 = 'Excellent fuel efficiency: 32 MPG combined';
+  static const String highlight5 = 'Toyota Safety Sense™ 3.0 included';
+  static const String additionalNotesHint =
+      'Add any special requests or notes about your service...';
+  static const String confirmBooking = 'Confirm Booking';
   static const String viewMoreTips = "View More Tips";
+  static const String additionalNotes = 'Additional Notes (Optional)';
   static const String seeAll = "See All";
+  static const String bookAppointment = 'Book Appointment';
+  static const String selectYourVehicle = 'Select your vehicle';
+  static const String noVehiclesFound = 'No vehicles found';
+  static const String ownershipDetails = 'OWNERSHIP DETAILS';
+  static const String purchaseDate = 'Purchase Date';
+  static const String purchaseDateHint = 'mm/dd/yyyy';
+  static const String serviceReminders = 'Service Reminders';
+  static const String serviceRemindersDescription =
+      'Get notified when it\'s time for oil changes, tire rotations, and other maintenance';
+  static const String avoidCommonMistakes = "Avoid Common Mistakes";
+  static const String whyItMatters = "Why It Matters";
+  static const String howToSteps = "How To Steps";
+  static const String whatYouNeed = "What You Need";
   static const String relatedTips = "Related Tips";
+  static const String oilChangeInterval = 'Every 6 months';
+  static const String tireRotation = 'Tire Rotation';
+  static const String tireRotationInterval = 'Every 10,000 km';
+  static const String brakeInspection = 'Brake Inspection';
+  static const String brakeInspectionInterval = 'Every 12 months';
   static const String support = "Support";
   static const String enterYearCar = "Enter The Year for a Car";
   static const String searchExploreHint = "Search cars, parts, services...";
@@ -60,6 +120,7 @@ abstract class AppConstants {
   static const String publishPost = "Publish Post";
   static const String category = 'Category';
   static const String minRating = 'Min rating';
+  static const String thereAre = 'There Are Error';
   static const String selectCategory = 'Select category';
   static const String permession = "App Permissions";
   static const String saveChanges = "Save Changes";
@@ -239,7 +300,9 @@ abstract class AppConstants {
   static const String savedItem = "Saved Items";
   static const String later = "later";
   static const String review = "Review";
-
+  static const String stayOnTopMaintenance = 'Stay on Top of Maintenance';
+  static const String stayOnTopMaintenanceDescription =
+      'Enable reminders to receive notifications for upcoming service intervals based on your car\'s schedule.';
   static const String seeMap = "See map";
   static const String aiAlerts = "AI Alerts";
   static const String findNearby = "Find Nearby Station ";
@@ -344,7 +407,7 @@ abstract class AppConstants {
   static const String fullName = "Full Name";
   static const String filterRepalcement = "Filter Replacement";
   static const String continu = "Continue";
-  static const String attention = "Attention";
+  static const String normal = "Normal";
   static const String vehicleStatus = "Vehicle Status";
   static const String vehicleName = "Toyota Camry 2024";
   static const String lastUpdated = "Last updated: 2 hours ago";
@@ -367,7 +430,7 @@ abstract class AppConstants {
   static const String engineHealth = "Engine Health";
   static const String latestCarNews = "Latest Car News";
   static const String recommendedService = "Recommended Service";
-  static const String batteryHealth = "Battery Health";
+  static const String oilhealth = "Oil Health";
   static const String forgotPassword = "Forgot Password";
   static const String resetYourPassword = "Reset your password";
   static const String accountToContinue = "Create account to continue";
@@ -503,6 +566,29 @@ abstract class AppConstants {
   static const String setNewPasswordHintText =
       "Create a new password.Ensure it is differs from previous one for security.";
   static const String user = "User 1";
+
+  static const String serviceCenter = 'Service Center';
+  static const String autoCareServiceCenter = 'AutoCare Service Center';
+  static const String reviews234 = '(234 reviews)';
+  static const String address = 'Address';
+  static const String fullAddress =
+      '123 Main Street, Downtown Area, City 12345';
+  static const String workingHours = 'Working Hours';
+  static const String workingHoursDetails =
+      'Mon - Sat: 8:00 AM - 6:00 PM\nSunday: Closed';
+  static const String phoneNumber = '+1 (555) 123-4567';
+  static const String availableServices = 'Available Services';
+  static const String brakeService = 'Brake Service';
+  static const String diagnostics = 'Diagnostics';
+  static const String engineRepair = 'Engine Repair';
+  static const String tireService = 'Tire Service';
+  static const String acService = 'AC Service';
+  static const String batteryReplacement = 'Battery Replacement';
+  static const String wheelAlignment = 'Wheel Alignment';
+  static const String distanceFromLocation =
+      '1.2 km away from your current location';
+  static const String selectDateTime = 'Select Date & Time';
+
   //-------------Toast Messages -------------
   static const String registrationSuccessful = "Registration Successful";
   static const String loginSuccessful = "Login Successful";

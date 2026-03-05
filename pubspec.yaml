@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.2.3
   fluttertoast: ^9.0.0
   image_picker: ^1.2.1
+  audioplayers: ^6.5.1
   get: ^4.7.3
   shared_preferences: ^2.5.4
   carousel_slider: ^5.1.1
@@ -80,6 +81,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/ # Ensure this exact file is here
+    - assets/audio/ # Ensure this exact file is here
 
   fonts:
     - family: Inter

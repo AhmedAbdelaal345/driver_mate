@@ -1,10 +1,8 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
-import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
-import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart'
     show PrimaryElevatedButtonWidget;
 import 'package:flutter/material.dart';
@@ -33,107 +31,105 @@ class MaintainanceContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecorationWidget.customBoxDecoration(
-        borderRadius: AppFontSize.f16,
-      ),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Column(
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: 12),
-              dense: true,
-              minVerticalPadding: 0,
-
-              leading: Container(
-                width: SizeConfig.width(context) * 0.1, // Responsive width ~40
-                height:
-                    SizeConfig.width(context) *
-                    0.1, // Responsive height ~40 (square)
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: AppColors.cyanColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(
-                    8,
-                  ), // Optional: rounds the corners
-                  border: Border.all(
-                    color: AppColors.cyanColor.withValues(alpha: 0.01),
+        borderRadius: 16,
+      ).copyWith(color: AppColors.white),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          /// 🔹 HEADER
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// ICON
+                Container(
+                  width: 42,
+                  height: 42,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.cyanColor.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
+                  child: SvgPicture.asset(
+                    imagePath ?? AppImagePath.repairIconPath,
+                    fit: BoxFit.contain,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.cyanColor,
+                      BlendMode.srcIn,
                     ),
-                  ],
-                ),
-                child: SvgPicture.asset(
-                  imagePath ?? AppImagePath.repairIconPath,
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.cyanColor,
-                    BlendMode.srcIn,
                   ),
-                  fit: BoxFit.contain,
                 ),
-              ),
-              title: Text(
-                title ?? AppConstants.oilChangeTitle,
-                style: AppStyle.titleOfContainer,
-              ),
 
-              subtitle: Text(
-                subTitle ?? AppConstants.due,
-                style: AppStyle.containerSubtitle,
-              ),
+                const SizedBox(width: 12),
 
-              trailing: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  // 1. Set the background color here
-                  color: statusContainerColor ?? AppColors.silentIvory,
-
-                  // 2. Keep the border if you want a outlined look
-                  border: Border.all(
-                    color: statusContainerColor ?? AppColors.silentIvory,
+                /// TITLE + SUBTITLE
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title ?? AppConstants.oilChangeTitle,
+                        style: AppStyle.titleOfContainer,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        subTitle ?? AppConstants.due,
+                        style: AppStyle.containerSubtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
+                ),
 
-                  // 3. Round the corners (Tags usually look better rounded)
-                  borderRadius: BorderRadius.circular(12),
+                const SizedBox(width: 8),
 
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 2,
-                      color: AppColors.black.withValues(alpha: 0.15),
-                      offset: const Offset(0, 2),
+                /// STATUS TAG
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color:
+                        statusContainerColor ??
+                        AppColors.silentIvory.withValues(alpha: 0.6),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Text(
+                    statusText ?? AppConstants.soon,
+                    style: AppStyle.stateContainerStyle.copyWith(
+                      color: statusTextColor ?? AppColors.orange,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11,
                     ),
-                  ],
-                ),
-                child: Text(
-                  statusText ?? AppConstants.soon,
-                  style: AppStyle.stateContainerStyle.copyWith(
-                    color: statusTextColor ?? AppColors.orange,
-                    fontWeight: FontWeight.bold, // Makes the status pop
                   ),
                 ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          /// 🔹 BUTTON
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: SizedBox(
+              height: 42,
+              width: double.infinity,
+              child: PrimaryElevatedButtonWidget(
+                buttonText: AppConstants.bookNow,
+                onPressed: onTap,
               ),
             ),
-
-            SizedBox(height: SizeConfig.height(context) * 0.015),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: SizedBox(
-                width: double.infinity,
-                child: PrimaryElevatedButtonWidget(
-                  buttonText: AppConstants.bookNow,
-                  onPressed: () {},
-                ).copyWith(backgroundColor: AppColors.cyanColor),
-              ),
-            ),
-
-            SizedBox(height: SizeConfig.height(context) * 0.02),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

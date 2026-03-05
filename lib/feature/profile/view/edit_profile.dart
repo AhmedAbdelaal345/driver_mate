@@ -29,6 +29,13 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> key = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<EditProfileCubit>().loadProfile();
+  }
+
   @override
   void dispose() {
     fullNameController.dispose();
@@ -93,7 +100,7 @@ class _EditProfileState extends State<EditProfile> {
                         hintText: AppConstants.enterYourName,
                         isPassword: false,
                         validator: (value) {
-                          if (value == null) {
+                          if (value == null || value.trim().isEmpty) {
                             return AppConstants.youMust;
                           }
                           return null;
@@ -105,7 +112,7 @@ class _EditProfileState extends State<EditProfile> {
                         hintText: AppConstants.phone,
                         isPassword: false,
                         validator: (value) {
-                          if (value == null) {
+                          if (value == null || value.trim().isEmpty) {
                             return AppConstants.youMust;
                           }
                           return null;
@@ -117,7 +124,7 @@ class _EditProfileState extends State<EditProfile> {
                         hintText: AppConstants.emailAddress,
                         isPassword: false,
                         validator: (value) {
-                          if (value == null) {
+                          if (value == null || value.trim().isEmpty) {
                             return AppConstants.youMust;
                           }
                           return null;
@@ -136,19 +143,24 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(height: SizeConfig.height(context) * 0.015),
                 BlocConsumer<EditProfileCubit, EditProfileState>(
                   listener: (context, state) {
-                    if (state is ErrorEditProfile) {
-                      AppNotifier.show(
-                        context,
-                        state.error,
-                        type: NotifierType.error,
-                      );
-                    } else if (state is SuccessEditProfile) {
+                    if (state is SuccessEditProfile) {
+                      /// fill fields with stored data
+                      fullNameController.text = state.data.fullName;
+                      emailController.text = state.data.emailAddress;
+                      phoneController.text = state.data.phoneNumber;
+                      imagePath = state.data.image;
+
                       AppNotifier.show(
                         context,
                         state.message,
                         type: NotifierType.success,
                       );
-                      MyNavigation.navigateBack();
+                    } else if (state is ErrorEditProfile) {
+                      AppNotifier.show(
+                        context,
+                        state.error,
+                        type: NotifierType.error,
+                      );
                     }
                   },
                   builder: (context, state) {
@@ -156,13 +168,24 @@ class _EditProfileState extends State<EditProfile> {
                       buttonText: AppConstants.save,
                       onPressed: () {
                         if (key.currentState!.validate()) {
-                          //here will make the functionality
-                          context.read<EditProfileCubit>().changeUser(
-                            fullName: fullNameController.text,
-                            emailAddress: emailController.text,
-                            image: imagePath ?? "",
-                            phoneNumber: phoneController.text,
-                          );
+                          final cubit = context.read<EditProfileCubit>();
+                          final state = cubit.state;
+
+                          if (state is SuccessEditProfile) {
+                            cubit.changeUser(
+                              fullName: fullNameController.text.isEmpty
+                                  ? state.data.fullName
+                                  : fullNameController.text,
+                              emailAddress: emailController.text.isEmpty
+                                  ? state.data.emailAddress
+                                  : emailController.text,
+                              phoneNumber: phoneController.text.isEmpty
+                                  ? state.data.phoneNumber
+                                  : phoneController.text,
+                              image: imagePath ?? state.data.image,
+                            );
+                            MyNavigation.navigateBack();
+                          }
                         }
                       },
                     );

@@ -193,8 +193,8 @@ class RegisterPage extends StatelessWidget {
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 timeInSecForIosWeb: 1,
-                                backgroundColor: AppColors.darkBlue.withOpacity(
-                                  0.7,
+                                backgroundColor: AppColors.darkBlue.withValues(
+                                  alpha: 0.7,
                                 ),
                                 textColor: AppColors.white,
                                 fontSize: AppFontSize.f16,

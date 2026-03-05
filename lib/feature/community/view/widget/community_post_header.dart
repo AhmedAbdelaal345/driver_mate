@@ -10,10 +10,10 @@ class CommunityPostHeader extends StatelessWidget {
   const CommunityPostHeader({super.key});
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> _key = GlobalKey();
+    final GlobalKey<FormState> key = GlobalKey();
     final TextEditingController controller = TextEditingController();
     return Form(
-      key: _key,
+      key: key,
       child: Container(
         margin: const EdgeInsets.all(16),
         padding: const EdgeInsets.all(16),
@@ -43,8 +43,8 @@ class CommunityPostHeader extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     if (controller.text.isNotEmpty &&
-                        _key.currentState!.validate()) {
-                      _key.currentState!.save();
+                        key.currentState!.validate()) {
+                      key.currentState!.save();
                     }
                   },
                   style: ElevatedButton.styleFrom(

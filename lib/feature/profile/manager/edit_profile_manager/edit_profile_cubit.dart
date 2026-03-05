@@ -6,7 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
   final EditProfileRepo repo;
-  EditProfileCubit({required this.repo}) : super(InitEditProfile());
+  EditProfileCubit({required this.repo}) : super(InitEditProfile()) {
+    loadProfile();
+  }
 
   Future<void> changeUser({
     required String fullName,
@@ -31,6 +33,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       emit(
         SuccessEditProfile(message: AppConstants.changedSuccefuly, data: data),
       );
+      loadProfile();
     } catch (e) {
       emit(ErrorEditProfile(error: e.toString()));
     }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:driver_mate/core/local/shared_key.dart';
 import 'package:driver_mate/feature/profile/data/model/edit_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,26 +18,45 @@ class EditProfileRepo {
     required String image,
   }) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.setString(SharedKey.name, name);
-    await pref.setString(SharedKey.email, email);
-    await pref.setString(SharedKey.phone, phone);
-    await pref.setString(SharedKey.image, image);
+    await pref.clear();
+    try {
+      await pref.setString(SharedKey.name, name);
+      await pref.setString(SharedKey.email, email);
+      await pref.setString(SharedKey.phone, phone);
+      await pref.setString(SharedKey.image, image);
+    } on Exception catch (e) {
+      log("there is exception when saving profile data: $e");
+    }
   }
 
   Future<EditProfileModel?> getProfile() async {
-    final SharedPreferences pref = await SharedPreferences.getInstance();
-    final name = await pref.getString(SharedKey.name);
-    final email = await pref.getString(SharedKey.email);
-    final phone = await pref.getString(SharedKey.phone);
-    final image = await pref.getString(SharedKey.image);
+    try {
+      final SharedPreferences pref = await SharedPreferences.getInstance();
 
-    if (name == null) return null;
-    return EditProfileModel(
-      fullName: name,
-      emailAddress: email ?? "null",
-      image: image ?? "null",
-      phoneNumber: phone ?? "null",
-    );
+      final name = pref.getString(SharedKey.name);
+      final email = pref.getString(SharedKey.email);
+      final phone = pref.getString(SharedKey.phone);
+      final image = pref.getString(SharedKey.image);
+
+      if (name == null || email == null) {
+        return null;
+      }
+
+      return EditProfileModel(
+        fullName: name,
+        emailAddress: email,
+        image: image ?? "",
+        phoneNumber: phone ?? "",
+      );
+    } on Exception catch (e) {
+      log(e.toString(), name: "there is exception when getting profile data");
+      return EditProfileModel(
+        fullName: "Unknown",
+        emailAddress: "Unknown",
+        image: "Unknown",
+        phoneNumber: "Unknown",
+      );
+    }
   }
 
   Future<EditProfileModel> changeProfile({

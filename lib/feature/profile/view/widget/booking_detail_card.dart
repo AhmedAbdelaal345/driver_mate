@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
 
 class BookingDetailCard extends StatelessWidget {
-  const BookingDetailCard({super.key});
-
+  const BookingDetailCard({
+    super.key,
+    required this.centerName,
+    required this.location,
+    required this.service,
+    required this.state,
+    required this.date,
+    required this.price,
+  });
+  final String centerName;
+  final String location;
+  final String service;
+  final String state;
+  final DateTime date;
+  final double price;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,15 +30,15 @@ class BookingDetailCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Auto Care Center",
+                    centerName,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(
-                    "Oil Change & Filter",
+                    service,
                     style: TextStyle(color: Colors.grey, fontSize: 13),
                   ),
                 ],
@@ -42,15 +55,15 @@ class BookingDetailCard extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(height: 24),
+          Divider(height: 24),
           _buildInfoRow(
             Icons.calendar_today_outlined,
-            "Jan 30, 2024 • 10:00 AM",
+            date.toString(), //"Jan 30, 2024 • 10:00 AM",
           ),
           const SizedBox(height: 8),
-          _buildInfoRow(Icons.location_on_outlined, "Downtown Plaza, Main S"),
+          _buildInfoRow(Icons.location_on_outlined, location),
           const SizedBox(height: 8),
-          _buildInfoRow(Icons.attach_money, "45", isPrice: true),
+          _buildInfoRow(Icons.attach_money, price.toString(), isPrice: true),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

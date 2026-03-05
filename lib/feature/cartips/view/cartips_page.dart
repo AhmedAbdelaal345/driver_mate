@@ -1,13 +1,18 @@
+import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/cartips/view/widget/header_image.dart';
-import 'package:driver_mate/feature/cartips/view/widget/tip_Item.dart';
+import 'package:driver_mate/feature/cartips/view/widget/tip_item.dart';
 import 'package:driver_mate/feature/home/view/widget/container_title.dart';
+import 'package:driver_mate/feature/saved_item/data/model/saved_item_model.dart';
+import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
+import 'package:driver_mate/feature/saved_item/manager/state/saved_item_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CarTipsPage extends StatelessWidget {
+class CarTipsPage extends StatefulWidget {
   const CarTipsPage({
     super.key,
     required this.assetName,
@@ -18,6 +23,25 @@ class CarTipsPage extends StatelessWidget {
   final String assetName;
   final String? hintText;
   final String? labelText;
+
+  @override
+  State<CarTipsPage> createState() => _CarTipsPageState();
+}
+
+class _CarTipsPageState extends State<CarTipsPage> {
+  bool isBookmarked = false;
+  @override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+
+  final cubit = context.read<SavedItemCubit>();
+  final state = cubit.state;
+
+  if (state is SavedItemLoaded) {
+    isBookmarked = state.items.any((e) => e.title == widget.labelText);
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,10 +54,45 @@ class CarTipsPage extends StatelessWidget {
         leading: const LeadingIcon(),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                isBookmarked = !isBookmarked;
+                if (isBookmarked == true) {
+                  context.read<SavedItemCubit>().addItem(
+                    SavedItemModel(
+                      title: widget.labelText ?? "",
+                      subtitle: widget.hintText ?? "",
+                      image: widget.assetName,
+                      type: SavedType.article,
+                      readTime: "5 min read",
+                    ),
+                  );
+                  AppNotifier.show(
+                    context,
+                    "The Item Saved Successfully",
+                    type: NotifierType.success,
+                  );
+                } else {
+                  context.read<SavedItemCubit>().removeItem(
+                    SavedItemModel(
+                      title: widget.labelText ?? "",
+                      subtitle: widget.hintText ?? "",
+                      image: widget.assetName,
+                      type: SavedType.article,
+                      readTime: "5 min read",
+                    ),
+                  );
+                  AppNotifier.show(
+                    context,
+                    "The Item Removed Successfully",
+                    type: NotifierType.error,
+                  );
+                }
+              });
+            },
             icon: Icon(
-              Icons.bookmark_border_outlined,
-              color: AppColors.iconGrey,
+              isBookmarked ? Icons.bookmark : Icons.bookmark_border_outlined,
+              color: isBookmarked ? AppColors.cyanColor : AppColors.iconGrey,
             ),
           ),
           SizedBox(width: 12),
@@ -53,9 +112,9 @@ class CarTipsPage extends StatelessWidget {
             children: [
               /// HEADER IMAGE
               HeaderImage(
-                assetName: assetName,
-                hintText: hintText,
-                labelText: labelText,
+                assetName: widget.assetName,
+                hintText: widget.hintText,
+                labelText: widget.labelText,
               ),
 
               /// RELATED TIPS TITLE
@@ -110,10 +169,18 @@ class CarTipsPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.bookmark_border,
-                        color: AppColors.cyanColor,
+                      onPressed: () {
+                        setState(() {
+                          isBookmarked = !isBookmarked;
+                        });
+                      },
+                      icon: Icon(
+                        isBookmarked
+                            ? Icons.bookmark
+                            : Icons.bookmark_border_outlined,
+                        color: isBookmarked
+                            ? AppColors.cyanColor
+                            : AppColors.iconGrey,
                       ),
                       label: const Text(
                         AppConstants.save,

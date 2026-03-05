@@ -1,6 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'splash_state.dart';
 

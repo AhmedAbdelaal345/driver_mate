@@ -3,8 +3,9 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 
 class InputContainerWidget extends StatelessWidget {
-  const InputContainerWidget({super.key, this.onTap, this.controller});
-  final VoidCallback? onTap;
+  const InputContainerWidget({super.key, this.onTapVoice,this.onTapMessage, this.controller});
+  final VoidCallback? onTapVoice;
+  final VoidCallback? onTapMessage;
   final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
@@ -39,15 +40,15 @@ class InputContainerWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          _circleButton(Icons.mic, false, context),
+          _circleButton(Icons.mic, false, context,onTap: onTapVoice),
           const SizedBox(width: 8),
-          _circleButton(Icons.send_rounded, true, context),
+          _circleButton(Icons.send_rounded, true, context,onTap: onTapMessage),
         ],
       ),
     );
   }
 
-  Widget _circleButton(IconData icon, bool isWhite, BuildContext context) {
+  Widget _circleButton(IconData icon, bool isWhite, BuildContext context,{void Function()? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(

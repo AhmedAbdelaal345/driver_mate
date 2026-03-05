@@ -165,7 +165,7 @@ class MarketplaceCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.cyan.withOpacity(0.1),
+        color: Colors.cyan.withValues(alpha:  0.1),
         borderRadius: BorderRadius.circular(6),
       ),
       child: const Text(

@@ -1,12 +1,13 @@
+import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 
 class AvoidMistakesSection extends StatelessWidget {
-  const AvoidMistakesSection({super.key});
-
+  const AvoidMistakesSection({super.key, this.mistakes});
+  final List<String>? mistakes;
   @override
   Widget build(BuildContext context) {
-    final mistakes = [
+    final List<String> mistakes = this.mistakes ?? [
       "Do not rely only on visual inspection—tires can look fine but be under-inflated.",
       "Do not overinflate—always follow the recommended PSI for your vehicle.",
       "Re-check pressure after adjusting to ensure it is correct.",
@@ -26,7 +27,7 @@ class AvoidMistakesSection extends StatelessWidget {
             children: const [
               Icon(Icons.warning_amber_rounded, color: Colors.orange),
               SizedBox(width: 8),
-              Text("Avoid common mistakes", style: AppStyle.titleOfContainer),
+              Text(AppConstants.avoidCommonMistakes, style: AppStyle.titleOfContainer),
             ],
           ),
           const SizedBox(height: 12),

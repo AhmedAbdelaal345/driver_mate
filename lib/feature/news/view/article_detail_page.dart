@@ -159,10 +159,10 @@ class ArticleDetailPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.cyanColor.withOpacity(0.1),
+                      color: AppColors.cyanColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: AppColors.cyanColor.withOpacity(0.3),
+                        color: AppColors.cyanColor.withValues(alpha:  0.3),
                         width: 1,
                       ),
                     ),

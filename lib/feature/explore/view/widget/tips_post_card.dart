@@ -3,7 +3,9 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
 
-class TipPostCard extends StatelessWidget {
+ class TipPostCard extends StatelessWidget {
+  const TipPostCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +19,7 @@ class TipPostCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
+                  color: Colors.green.withValues(alpha:0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(

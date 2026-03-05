@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
@@ -7,7 +9,10 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/container_icon.dart';
 import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
-import 'package:driver_mate/feature/ai/view/widget/quick_record_sheet.dart';
+import 'package:driver_mate/feature/car_details/manager/cubit/car_details_cubit.dart';
+import 'package:driver_mate/feature/car_details/manager/state/car_details_state.dart';
+import 'package:driver_mate/feature/car_details/view/car_details_page.dart';
+import 'package:driver_mate/feature/cartips/view/car_tip_list_page.dart';
 import 'package:driver_mate/feature/cartips/view/cartips_page.dart';
 import 'package:driver_mate/feature/emergency/view/emergency_assistance_page.dart';
 import 'package:driver_mate/feature/explore/view/explore_search_page.dart';
@@ -22,6 +27,9 @@ import 'package:driver_mate/feature/home/view/widget/maintainance_container_widg
 import 'package:driver_mate/feature/home/view/widget/recommended_container.dart';
 import 'package:driver_mate/feature/home/view/widget/service_supplied_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/status_container_widget.dart';
+import 'package:driver_mate/feature/home/view/wrapper_page.dart';
+import 'package:driver_mate/feature/maintance_booking/manager/cubit/service_center_cubit.dart';
+import 'package:driver_mate/feature/maintance_booking/manager/state/service_center_state.dart';
 import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/maintenance_tip_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
@@ -29,10 +37,12 @@ import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
 import 'package:driver_mate/feature/news/view/car_news_page.dart';
 import 'package:driver_mate/feature/notification/view/notification_page.dart';
+
 import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_state.dart';
 import 'package:driver_mate/feature/recommended_service/view/recommended_service_page.dart';
+import 'package:driver_mate/feature/saved_item/view/saved_item_page.dart';
 import 'package:driver_mate/feature/vehicle_status/view/vehicle_status_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +50,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  static List<MaintainanceContainerWidget> maintanceContainerList = [
+  static final List<MaintainanceContainerWidget> maintanceContainerList = [
     MaintainanceContainerWidget(
       onTap: () {
         MyNavigation.navigateTo(BookMaintenancePage());
@@ -71,26 +81,6 @@ class HomePage extends StatefulWidget {
     ),
   ];
 
-  static List<ServiceSuppliedWidget> service = [
-    ServiceSuppliedWidget(
-      first: "Tair Repaire",
-      second: "help1",
-      third: "help3",
-      onTap: () {
-        MyNavigation.navigateTo(ServiceCenterPage());
-      },
-    ),
-    ServiceSuppliedWidget(
-      title: "QuickFix Auto Center",
-      first: "AC Repair",
-      second: "help1",
-      third: "help2",
-      onTap: () {
-        MyNavigation.navigateTo(ServiceCenterPage());
-      },
-    ),
-  ];
-
   static final List<AiContainerWidget> aiAlerts = [
     AiContainerWidget(onTap: () {}),
     AiContainerWidget(
@@ -100,14 +90,6 @@ class HomePage extends StatefulWidget {
       iconColor: AppColors.babyBleu,
       icon: AppImagePath.warringIconPath,
       onTap: () {},
-    ),
-  ];
-  static const List<RecommendedContainer> recommendedCarList = [
-    RecommendedContainer(),
-    RecommendedContainer(
-      title: "Honda Accord 2023",
-      price: "\$26,500",
-      image: AppImagePath.tairImagePath,
     ),
   ];
   static final List<CustomContainerWidget> carTips = [
@@ -153,23 +135,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // const List<CustomContainerWidget> listItems = [
-    //   CustomContainerWidget(
-    //     title: AppConstants.latestCarNews,
-    //     subtitle: AppConstants.electricVehicles,
-    //     imagePath: AppImagePath.newsImagePath,
-    //   ),
-    //   CustomContainerWidget(
-    //     title: AppConstants.recommendedService,
-    //     subtitle: AppConstants.oilChange,
-    //     imagePath: AppImagePath.loginImagePath,
-    //   ),
-    //   CustomContainerWidget(
-    //     title: AppConstants.aiMaintenance,
-    //     subtitle: AppConstants.checkTirePressure,
-    //     imagePath: AppImagePath.camryCarImagePath,
-    //   ),
-    // ];
     final List<CustomContainerWidget> carTips = [
       CustomContainerWidget(
         title: AppConstants.essentialCar,
@@ -178,7 +143,7 @@ class _HomePageState extends State<HomePage> {
         isAppear: true,
         readMore: AppConstants.readMore,
         width: SizeConfig.width(context) * 0.213,
-        height: SizeConfig.height(context) * 0.14,
+        height: SizeConfig.height(context) * 0.10,
         onTap: () {
           MyNavigation.navigateTo(
             CarTipsPage(
@@ -196,7 +161,7 @@ class _HomePageState extends State<HomePage> {
         isAppear: true,
         readMore: AppConstants.readMore,
         width: SizeConfig.width(context) * 0.213,
-        height: SizeConfig.height(context) * 0.14,
+        height: SizeConfig.height(context) * 0.10,
         onTap: () {
           MyNavigation.navigateTo(
             CarTipsPage(
@@ -214,7 +179,7 @@ class _HomePageState extends State<HomePage> {
         isAppear: true,
         readMore: AppConstants.readMore,
         width: SizeConfig.width(context) * 0.213,
-        height: SizeConfig.height(context) * 0.14,
+        height: SizeConfig.height(context) * 0.10,
         onTap: () {
           MyNavigation.navigateTo(
             CarTipsPage(
@@ -237,19 +202,20 @@ class _HomePageState extends State<HomePage> {
         // here we will add onTap functionality later
       ),
       ContainerIconWidget(
-        icon: AppImagePath.phoneIconPath,
-        text: AppConstants.emergencyCall,
-        onTap: () {
-          MyNavigation.navigateTo(EmergencyAssistancePage());
-        },
-      ),
-      ContainerIconWidget(
         icon: AppImagePath.repairIconPath,
         text: AppConstants.maintanence,
         onTap: () {
           MyNavigation.navigateTo(ServiceCenterPage());
         },
       ),
+      ContainerIconWidget(
+        icon: AppImagePath.phoneIconPath,
+        text: AppConstants.emergencyCall,
+        onTap: () {
+          MyNavigation.navigateTo(EmergencyAssistancePage());
+        },
+      ),
+
       ContainerIconWidget(
         icon: AppImagePath.plusIconPath,
         text: AppConstants.add,
@@ -267,18 +233,20 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: FloatActionButtonWidget(
         onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            backgroundColor: AppColors.white,
-            isScrollControlled: true,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            builder: (_) => const QuickRecordSheet(),
-          );
+          // showModalBottomSheet(
+          //   context: context,
+          //   backgroundColor: AppColors.white,
+          //   isScrollControlled: true,
+          //   shape: const RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          //   ),
+          //   builder: (_) => const WrapperPage(initialIndex: 1,),
+          // );
+          MyNavigation.navigateTo(WrapperPage(initialIndex: 1));
         },
       ),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           AppConstants.driverMate,
           style: AppStyle.socialButtonTextStyle.copyWith(
@@ -342,12 +310,11 @@ class _HomePageState extends State<HomePage> {
                   crossAxisCount: 2,
                   mainAxisSpacing: SizeConfig.height(context) * 0.02,
                   crossAxisSpacing: SizeConfig.width(context) * 0.04,
-                  childAspectRatio: 1.05,
+                  childAspectRatio: 2.0,
                 ),
                 itemBuilder: (context, index) => options[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
-
               StatusContainerWidget(
                 onTap: () {
                   MyNavigation.navigateTo(VehicleStatusPage());
@@ -381,7 +348,7 @@ class _HomePageState extends State<HomePage> {
               ContainerTitle(
                 onTap: () {
                   //here  we will add the functionality for the item
-                  BookMaintenancePage();
+                  MyNavigation.navigateTo(BookMaintenancePage());
                 },
                 title: AppConstants.nearByService,
                 subTitle: AppConstants.seeMap,
@@ -390,16 +357,56 @@ class _HomePageState extends State<HomePage> {
 
               SizedBox(
                 // Adjust this height based on your card design (usually between 250-300)
-                height: SizeConfig.height(context) * 0.40,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: HomePage.service.length,
-                  // Add some spacing between cards
-                  separatorBuilder: (context, index) =>
-                      SizedBox(width: SizeConfig.width(context) * 0.04),
-                  itemBuilder: (context, index) => HomePage.service[index],
-
-                  // Add padding so the cards don't touch the screen edges
+                height: SizeConfig.height(context) * 0.25,
+                child: BlocBuilder<ServiceCenterCubit, ServiceCenterState>(
+                  builder: (context, state) {
+                    log(state.toString());
+                    if (state is ServiceCenterLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is ServiceCenterLoaded) {
+                      return ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.serviceCenters.length,
+                        // Add some spacing between cards
+                        separatorBuilder: (context, index) =>
+                            SizedBox(width: SizeConfig.width(context) * 0.02),
+                        itemBuilder: (context, index) => ServiceSuppliedWidget(
+                          distance: state.serviceCenters[index].distance,
+                          title: state.serviceCenters[index].serviceCenterName,
+                          first: "Tair Repaire",
+                          second: "help1",
+                          third: "help3",
+                          onTap: () {
+                            MyNavigation.navigateTo(
+                              BlocProvider.value(
+                                value: context.read<ServiceCenterCubit>(),
+                                child: ServiceCenterPage(
+                                  address: state.serviceCenters[index].address,
+                                  holiday: state.serviceCenters[index].holiday,
+                                  imagePath:
+                                      state.serviceCenters[index].imagePath,
+                                  phoneNumber:
+                                      state.serviceCenters[index].phoneNumber,
+                                  serviceCenterName: state
+                                      .serviceCenters[index]
+                                      .serviceCenterName,
+                                  workingHours:
+                                      state.serviceCenters[index].workingHours,
+                                  serviceProvided: state
+                                      .serviceCenters[index]
+                                      .servicesOffered,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else if (state is ServiceCenterError) {
+                      return Center(child: Text(state.message));
+                    } else {
+                      return const SizedBox(); // Empty state
+                    }
+                  },
                 ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
@@ -420,7 +427,13 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: SizeConfig.height(context) * 0.015),
               Row(
                 children: [
-                  Expanded(child: ContainerItem(onTap: () {})),
+                  Expanded(
+                    child: ContainerItem(
+                      onTap: () {
+                        MyNavigation.navigateTo(SavedItemsPage());
+                      },
+                    ),
+                  ),
                   SizedBox(width: SizeConfig.width(context) * 0.04),
                   Expanded(
                     child: ContainerItem(
@@ -440,6 +453,9 @@ class _HomePageState extends State<HomePage> {
                 title: AppConstants.carTips,
                 subTitle: AppConstants.viewAll,
                 isAppear: true,
+                onTap: () {
+                  MyNavigation.navigateTo(CarTipsListPage());
+                },
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ListView.separated(
@@ -464,18 +480,50 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: SizeConfig.height(context) * 0.031),
               SizedBox(
                 height: SizeConfig.height(context) * 0.33,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-
-                  itemBuilder: (context, index) {
-                    return HomePage.recommendedCarList[index];
+                child: BlocBuilder<CarDetailsCubit, CarDetailsState>(
+                  builder: (context, state) {
+                    if (state is CarDetailsLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is CarDetailsLoaded) {
+                      final recommendedCars = state.carDetails;
+                      return ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: recommendedCars.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBox(width: SizeConfig.width(context) * 0.04),
+                        itemBuilder: (context, index) => RecommendedContainer(
+                          title: recommendedCars[index].carName,
+                          price: "\$${recommendedCars[index].price}",
+                          image: recommendedCars[index].carImagePath,
+                          subTitle: recommendedCars[index].carType,
+                          onTap: () {
+                            MyNavigation.navigateTo(
+                              BlocProvider.value(
+                                value: context.read<CarDetailsCubit>(),
+                                child: CarDetailsPage(
+                                  carName: recommendedCars[index].carName,
+                                  carType: recommendedCars[index].carType,
+                                  carDescription:
+                                      recommendedCars[index].carDescription,
+                                  carImagePath:
+                                      recommendedCars[index].carImagePath,
+                                  carYear: recommendedCars[index].carYear,
+                                  isNew: recommendedCars[index].isNew,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else if (state is CarDetailsError) {
+                      return Center(child: Text(state.message));
+                    } else {
+                      return const SizedBox(); // Empty state
+                    }
                   },
-                  separatorBuilder: (context, index) =>
-                      SizedBox(width: SizeConfig.width(context) * 0.015),
-                  itemCount: HomePage.recommendedCarList.length,
                 ),
               ),
+              SizedBox(height: SizeConfig.height(context) * 0.05),
             ],
           ),
         ),

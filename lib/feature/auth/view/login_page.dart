@@ -36,12 +36,10 @@ class LoginPage extends StatelessWidget {
             msg: AppConstants.pressBackAgainToExit,
             gravity: ToastGravity.BOTTOM,
             textColor: AppColors.white,
-            backgroundColor: AppColors.darkBlue.withOpacity(0.7),
+            backgroundColor: AppColors.darkBlue.withValues(alpha: 0.7),
           );
         } else {
-          Future.delayed(Duration(milliseconds: 100), () {
-            Navigator.of(context).pop(true);
-          });
+          Navigator.of(context).pop(true);
         }
       },
       child: Scaffold(

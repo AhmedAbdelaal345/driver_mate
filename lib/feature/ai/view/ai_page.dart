@@ -9,15 +9,13 @@ import 'package:driver_mate/feature/ai/view/widget/ai_bubble_widget.dart';
 import 'package:driver_mate/feature/ai/view/widget/input_container_widget.dart';
 import 'package:driver_mate/feature/ai/view/widget/quick_action_list.dart';
 import 'package:driver_mate/feature/ai/view/widget/user_bubble_widget.dart';
+import 'package:driver_mate/feature/ai/view/widget/vehicle_status_card.dart';
 
 import 'package:driver_mate/feature/mycars/data/repo/vechicle_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
-import 'package:driver_mate/core/utils/app_image_path.dart';
-import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 
 class AiPage extends StatelessWidget {
@@ -33,13 +31,13 @@ class AiPage extends StatelessWidget {
           return Scaffold(
             backgroundColor: AppColors.white,
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               elevation: 0,
               backgroundColor: AppColors.white,
               title: Text(
                 AppConstants.aiAssistant,
                 style: AppStyle.titleForContainer.copyWith(fontSize: 18),
               ),
-              leading: Icon(Icons.arrow_back_ios, color: AppColors.black),
             ),
 
             body: Column(
@@ -57,67 +55,7 @@ class AiPage extends StatelessWidget {
                         // ----------------------------------------------------------
                         // 🚗 VEHICLE STATUS CARD
                         // ----------------------------------------------------------
-                        Container(
-                          decoration: BoxDecorationWidget.customBoxDecoration(),
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 60,
-                                width: 60,
-                                padding: const EdgeInsets.all(10),
-                                decoration:
-                                    BoxDecorationWidget.customBoxDecoration()
-                                        .copyWith(
-                                          gradient: const LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              AppColors.veryDarkBlue,
-                                              AppColors.cyanColor,
-                                            ],
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            18,
-                                          ),
-                                        ),
-                                child: SvgPicture.asset(
-                                  AppImagePath.doubleArrowIconPath,
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      AppConstants.toyotaCamry,
-                                      style: AppStyle.titleOfContainer,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.circle,
-                                          size: 10,
-                                          color: AppColors.green,
-                                        ),
-                                        const SizedBox(width: 6),
-                                        Text(
-                                          "Status: Good",
-                                          style: AppStyle.containerSubtitle
-                                              .copyWith(color: AppColors.green),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
+                       VehicleStatusCard(),
                         const SizedBox(height: 16),
                         QuickActionList(),
                         const SizedBox(height: 16),
@@ -170,7 +108,7 @@ class AiPage extends StatelessWidget {
                 // ----------------------------------------------------------
                 InputContainerWidget(
                   controller: controller,
-                  onTap: () {
+                  onTapMessage: () {
                     final text = controller.text.trim();
 
                     if (text.isEmpty) return;

@@ -204,7 +204,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
             _SectionCard(
               title: AppConstants.location,
               child: DropdownButtonFormField<String>(
-                value: _selectedLocation,
+                initialValue: _selectedLocation,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: AppColors.white,

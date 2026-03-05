@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 class ApiResponse {
@@ -25,7 +27,7 @@ class ApiResponse {
       statusCode: response.statusCode ?? 0,
       status: body['status'] ?? false,
       message: body['message'] ?? '',
-      data: body['data'] ?? body['user'] , // flexible
+      data: body['data'] ?? body['user'], // flexible
       accessToken: body['accessToken'],
       refreshToken: body['refreshToken'],
     );
@@ -60,7 +62,9 @@ class ApiResponse {
       case DioExceptionType.receiveTimeout:
         return "Receive timeout in connection with server";
       case DioExceptionType.badResponse:
-        print("Invalid status code: ${error.response?.statusCode} , message: ${error.response?.data['message'] ?? error.message}");
+        log(
+          "Invalid status code: ${error.response?.statusCode} , message: ${error.response?.data['message'] ?? error.message}",
+        );
         return "Invalid status code: ${error.response?.statusCode} , message: ${error.response?.data['message'] ?? error.message}";
       case DioExceptionType.cancel:
         return "Request cancelled";

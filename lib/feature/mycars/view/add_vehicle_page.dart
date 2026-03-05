@@ -272,7 +272,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                     _FieldLabel(text: AppConstants.brandRequired),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: _selectedBrand,
+                      initialValue: _selectedBrand,
                       decoration: InputDecoration(
                         hintText: "Select Brand",
                         hintStyle: AppStyle.hintStyle,
@@ -326,7 +326,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                     _FieldLabel(text: AppConstants.modelRequired),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: _selectedModel,
+                      initialValue: _selectedModel,
                       decoration: InputDecoration(
                         hintText: _selectedBrand == null
                             ? "Select Brand First"
@@ -381,7 +381,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                     _FieldLabel(text: AppConstants.yearRequired),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<int>(
-                      value: _selectedYear,
+                      initialValue: _selectedYear,
                       decoration: InputDecoration(
                         hintText: "Select Year",
                         hintStyle: AppStyle.hintStyle,

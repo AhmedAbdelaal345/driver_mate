@@ -22,7 +22,19 @@ class ContainerForIcon extends StatelessWidget {
     if (iconPath.endsWith(".svg")) {
       return SvgPicture.asset(iconPath, width: 30, height: 30);
     }
-
+    if (iconPath.startsWith("http")) {
+      return ClipOval(
+        child: Image.network(
+          iconPath,
+          fit: BoxFit.cover,
+          width: 70,
+          height: 70,
+          errorBuilder: (context, error, stackTrace) {
+            return const Icon(Icons.person, size: 35);
+          },
+        ),
+      );
+    }
     // صورة من الجهاز (file path)
     if (iconPath.startsWith("C:") ||
         iconPath.startsWith("/data") ||

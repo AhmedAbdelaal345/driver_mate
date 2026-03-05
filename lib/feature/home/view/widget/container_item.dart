@@ -30,7 +30,10 @@ class ContainerItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecorationWidget.customBoxDecoration(),
+        decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
+          color: AppColors.white,
+        ),
+
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

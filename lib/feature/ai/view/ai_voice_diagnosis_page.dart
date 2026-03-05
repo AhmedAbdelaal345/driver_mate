@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
@@ -51,15 +52,18 @@ class _AiVoiceDiagnosisPageState extends State<AiVoiceDiagnosisPage> {
     final path =
         "${dir.path}/ai_voice_${DateTime.now().millisecondsSinceEpoch}.m4a";
 
-    await _record.start(
+    final Stream<Uint8List> stream = await _record.startStream(
       const RecordConfig(
-        encoder: AudioEncoder.aacLc,
+        encoder: AudioEncoder.pcm16bits,
         bitRate: 128000,
         sampleRate: 44100,
       ),
-      path: path,
     );
 
+    stream.listen((data) {
+      print(data.length);
+      //TODO:here we sent the audio
+    });
     if (!mounted) return;
     setState(() {
       _filePath = path;

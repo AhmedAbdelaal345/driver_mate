@@ -34,6 +34,7 @@ class QuickActionList extends StatelessWidget {
             end: Alignment.centerRight,
           ),
           iconColor: Colors.white,
+          isWhite: true,
           onTap: () {},
         ),
 

@@ -7,7 +7,7 @@ import '../utils/app_font_size.dart';
 
 enum NotifierType { success, error, warning }
 
-class AppNotifier {
+abstract class AppNotifier {
   static void show(
     BuildContext context,
     String message, {

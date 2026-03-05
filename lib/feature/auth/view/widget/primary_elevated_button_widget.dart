@@ -11,7 +11,9 @@ class PrimaryElevatedButtonWidget extends StatelessWidget {
     required this.buttonText,
     required this.onPressed,
     this.padding,
-    this.backgroundColor, // <<< add color here
+    this.backgroundColor,
+    // <<< add color here
+    this.icon,
   });
 
   final GlobalKey<FormState>? formKey;
@@ -20,42 +22,45 @@ class PrimaryElevatedButtonWidget extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? backgroundColor; // <<< added
 
-
+  final IconData? icon;
   PrimaryElevatedButtonWidget copyWith({
-  Key? key,
-  GlobalKey<FormState>? formKey,
-  String? buttonText,
-  VoidCallback? onPressed,
-  EdgeInsetsGeometry? padding,
-  Color? backgroundColor,
-}) {
-  return PrimaryElevatedButtonWidget(
-    key: key ?? this.key,
-    formKey: formKey ?? this.formKey,
-    buttonText: buttonText ?? this.buttonText,
-    onPressed: onPressed ?? this.onPressed,
-    padding: padding ?? this.padding,
-    backgroundColor: backgroundColor ?? this.backgroundColor,
-  );
-}
-
+    Key? key,
+    GlobalKey<FormState>? formKey,
+    String? buttonText,
+    VoidCallback? onPressed,
+    EdgeInsetsGeometry? padding,
+    Color? backgroundColor,
+  }) {
+    return PrimaryElevatedButtonWidget(
+      key: key ?? this.key,
+      formKey: formKey ?? this.formKey,
+      buttonText: buttonText ?? this.buttonText,
+      onPressed: onPressed ?? this.onPressed,
+      padding: padding ?? this.padding,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-  backgroundColor: backgroundColor ?? AppColors.darkBlue,
-        minimumSize: Size(
-          double.infinity,
-          SizeConfig.height(context) * 0.07,
-        ),
+        backgroundColor: backgroundColor ?? AppColors.darkBlue,
+        minimumSize: Size(double.infinity, SizeConfig.height(context) * 0.07),
         padding: padding,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppFontSize.f8),
         ),
       ),
-      child: Text(buttonText, style: AppStyle.buttonTextStyle),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: AppColors.white), // <<< added icon
+          SizedBox(width: 8), // <<< spacing between icon and text
+          Text(buttonText, style: AppStyle.buttonTextStyle),
+        ],
+      ),
     );
   }
 }

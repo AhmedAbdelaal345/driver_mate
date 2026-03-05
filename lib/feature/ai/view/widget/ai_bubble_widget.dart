@@ -58,7 +58,7 @@ class AiBubbleWidget extends StatelessWidget {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.cyanColor.withOpacity(0.1),
+                    color: AppColors.cyanColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: InkWell(

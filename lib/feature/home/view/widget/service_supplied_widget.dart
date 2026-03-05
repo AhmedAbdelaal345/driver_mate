@@ -1,6 +1,5 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
-import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -19,89 +18,125 @@ class ServiceSuppliedWidget extends StatelessWidget {
     this.third,
     this.onTap,
   });
+
   final String? title;
   final String? distance;
   final String? rate;
   final String? numberOfReviews;
   final String? first, second, third;
   final void Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
-    final List<String?> item = [first, second, third];
+    final items = [first, second, third].where((e) => e != null).toList();
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width:
-            SizeConfig.width(context) *
-            0.75, // Adjusted width relative to screen width
-      
+        width: SizeConfig.width(context) * 0.78,
+        margin: const EdgeInsets.only(right: 14),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecorationWidget.customBoxDecoration(
-          borderRadius: AppFontSize.f16,
+          borderRadius: 16,
+        ).copyWith(
+          color: AppColors.white
         ),
-        padding: EdgeInsets.all(
-          SizeConfig.width(context) * 0.04,
-        ), // Responsive padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            /// 🔹 TITLE
             Text(
               title ?? AppConstants.premiumAutoService,
               style: AppStyle.titleOfContainer,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
+
+            const SizedBox(height: 6),
+
+            /// 🔹 DISTANCE
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.location_on_outlined,
+                  size: 16,
                   color: AppColors.cyanColor,
-                  fontWeight: FontWeight.bold,
-                  size: AppFontSize.f13,
                 ),
-                SizedBox(width: AppFontSize.f5),
-                Text(
-                  distance ?? AppConstants.dist,
-                  style: AppStyle.viewAll.copyWith(fontWeight: FontWeight.bold),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    distance ?? AppConstants.dist,
+                    style: AppStyle.viewAll.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
-            SizedBox(height: SizeConfig.height(context) * 0.015),
+
+            const SizedBox(height: 8),
+
+            /// 🔹 RATING
             Row(
               children: [
-                Icon(Icons.star_rounded, color: AppColors.orange),
-                Text(rate ?? "4.8", style: AppStyle.titleForContainer),
-                Text(
-                  numberOfReviews ?? " (234 reviews)",
-                  style: AppStyle.containerSubtitle,
+                const Icon(
+                  Icons.star_rounded,
+                  size: 18,
+                  color: AppColors.orange,
+                ),
+                const SizedBox(width: 4),
+                Text(rate ?? "4.8",
+                    style: AppStyle.titleForContainer.copyWith(fontSize: 14)),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    numberOfReviews ?? "(234 reviews)",
+                    style: AppStyle.containerSubtitle,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
-      
-            SizedBox(height: SizeConfig.height(context) * 0.015),
-      
-            // Instead of ListView.separated, use this:
+
+            const SizedBox(height: 10),
+
+            /// 🔹 SERVICES TAGS
             Wrap(
-              spacing: 8, // space between chips
-              children: item
-                  .where((i) => i != null)
+              spacing: 6,
+              runSpacing: 6,
+              children: items
                   .map(
                     (text) => Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecorationWidget.customBoxDecoration()
-                          .copyWith(
-                            color: AppColors.containerGrey,
-                            borderRadius: BorderRadius.circular(AppFontSize.f18),
-                          ),
-                      child: Text(text!, style: AppStyle.containerSubtitle),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.containerGrey,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        text!,
+                        style: AppStyle.containerSubtitle,
+                      ),
                     ),
                   )
                   .toList(),
             ),
-            SizedBox(height: SizeConfig.height(context) * 0.015),
-            PrimaryElevatedButtonWidget(
-              buttonText: AppConstants.bookNow,
-              onPressed: () {},
-            ).copyWith(backgroundColor: AppColors.cyanColor),
-            // SizedBox(height: SizeConfig.height(context) * 0.015),
+
+            const SizedBox(height: 12),
+
+            /// 🔹 BUTTON
+            SizedBox(
+              height: 40,
+              width: double.infinity,
+              child: PrimaryElevatedButtonWidget(
+                buttonText: AppConstants.bookNow,
+                onPressed: onTap,
+              ),
+            ),
           ],
         ),
       ),

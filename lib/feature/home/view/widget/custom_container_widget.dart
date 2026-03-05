@@ -17,6 +17,7 @@ class CustomContainerWidget extends StatelessWidget {
     this.width,
     this.isAppear,
   });
+
   final String title;
   final String subtitle;
   final String imagePath;
@@ -25,21 +26,25 @@ class CustomContainerWidget extends StatelessWidget {
   final bool? isAppear;
   final String? readMore;
   final void Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
       child: Container(
-        width: double.infinity,
         margin: EdgeInsets.only(bottom: SizeConfig.height(context) * 0.015),
-        decoration: BoxDecorationWidget.customBoxDecoration(),
-        padding: EdgeInsets.all(SizeConfig.height(context) * 0.015),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
+          color: AppColors.white,
+        ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// 🖼 IMAGE
             Container(
-              height: height ?? SizeConfig.height(context) * 0.06,
-              width: width ?? SizeConfig.width(context) * 0.13,
+              height: height ?? 55,
+              width: width ?? 55,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
@@ -48,41 +53,67 @@ class CustomContainerWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: SizeConfig.width(context) * 0.04),
+
+            const SizedBox(width: 14),
+
+            /// 📝 TEXT AREA
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  /// TITLE
                   Text(
                     title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: AppStyle.coursalSubtitleTextStyle.copyWith(
                       color: AppColors.black,
-                      fontSize: AppFontSize.f14,
+                      fontSize: AppFontSize.f15,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: SizeConfig.height(context) * 0.004),
+
+                  const SizedBox(height: 6),
+
+                  /// SUBTITLE + ICON
                   Row(
                     children: [
-                      isAppear == true || isAppear == null
-                          ? Icon(Icons.access_time, color: AppColors.midGrey)
-                          : SizedBox(),
-
-                      Text(
-                        subtitle,
-                        style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                          color: AppColors.textGrey,
-                          fontSize: AppFontSize.f12,
+                      if (isAppear == true || isAppear == null) ...[
+                        const Icon(
+                          Icons.access_time,
+                          size: 16,
+                          color: AppColors.midGrey,
+                        ),
+                        const SizedBox(width: 6),
+                      ],
+                      Flexible(
+                        child: Text(
+                          subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppStyle.coursalSubtitleTextStyle.copyWith(
+                            color: AppColors.textGrey,
+                            fontSize: AppFontSize.f12,
+                          ),
                         ),
                       ),
                     ],
                   ),
+
                   if (isAppear == true || isAppear == null) ...[
-                    SizedBox(height: SizeConfig.height(context) * 0.03),
+                    const SizedBox(height: 10),
+
+                    /// READ MORE
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(readMore ?? "", style: AppStyle.viewAll),
-                        Icon(Icons.arrow_right_alt, color: AppColors.cyanColor),
+                        const SizedBox(width: 4),
+                        const Icon(
+                          Icons.arrow_right_alt,
+                          size: 18,
+                          color: AppColors.cyanColor,
+                        ),
                       ],
                     ),
                   ],

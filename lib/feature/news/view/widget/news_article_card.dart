@@ -85,7 +85,7 @@ class NewsArticleCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: _getCategoryColor(
                           article.category,
-                        ).withOpacity(0.15),
+                        ).withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(

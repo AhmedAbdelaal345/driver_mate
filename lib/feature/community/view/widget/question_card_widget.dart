@@ -133,7 +133,7 @@ class _QuestionCardState extends State<QuestionCard> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.cyanColor.withOpacity(0.1),
+        color: AppColors.cyanColor.withValues(alpha:  0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Text(

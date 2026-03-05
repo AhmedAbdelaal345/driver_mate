@@ -2,34 +2,42 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/maintance_history/data/model/maintance_history_model.dart';
+import 'package:driver_mate/feature/maintance_history/manager/cubit/maintence_history_cubit.dart';
+import 'package:driver_mate/feature/maintance_history/manager/state/maintence_history_state.dart';
 import 'package:driver_mate/feature/profile/view/widget/booking_detail_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MaintenanceHistory extends StatelessWidget {
+class MaintenanceHistory extends StatefulWidget {
   const MaintenanceHistory({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB), // Light grey background from UI
-      appBar: AppBar(
-        leading: const LeadingIcon(),
-        title: Text(AppConstants.maintenanceHistory, style: AppStyle.appBarTitle),
-        centerTitle: true,
-      ),
-      body: CustomScrollView(
-        slivers: [
+  State<MaintenanceHistory> createState() => _MaintenanceHistoryState();
+}
 
-          // 1. Summary Cards (Upcoming & Completed)
+class _MaintenanceHistoryState extends State<MaintenanceHistory> {
+  String selectedFilter = "All";
+  @override
+  Widget build(BuildContext context) {
+    Widget _buildBody(
+      BuildContext context,
+      List<MaintanceHistoryModel> items,
+      int upcoming,
+      int completed,
+    ) {
+      return CustomScrollView(
+        slivers: [
+          /// Summary cards
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
                   Expanded(
                     child: _buildSummaryCard(
                       label: "UPCOMING",
-                      count: "2",
+                      count: upcoming.toString(),
                       dotColor: Colors.blue,
                     ),
                   ),
@@ -37,7 +45,7 @@ class MaintenanceHistory extends StatelessWidget {
                   Expanded(
                     child: _buildSummaryCard(
                       label: "COMPLETED",
-                      count: "2",
+                      count: completed.toString(),
                       dotColor: Colors.green,
                     ),
                   ),
@@ -46,14 +54,14 @@ class MaintenanceHistory extends StatelessWidget {
             ),
           ),
 
-          // 2. Filter Tabs (Horizontal List)
+          /// Filter chips
           SliverToBoxAdapter(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  _buildFilterChip("All", isSelected: true),
+                  _buildFilterChip("All"),
                   _buildFilterChip("Upcoming"),
                   _buildFilterChip("Completed"),
                   _buildFilterChip("Canceled"),
@@ -62,7 +70,7 @@ class MaintenanceHistory extends StatelessWidget {
             ),
           ),
 
-          // 3. Section Title
+          /// Section title
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 24, 16, 12),
@@ -76,22 +84,69 @@ class MaintenanceHistory extends StatelessWidget {
             ),
           ),
 
-          // 4. List of Booking Cards
+          /// List of bookings
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return const Padding(
-                    padding: EdgeInsets.only(bottom: 16),
-                    child: BookingDetailCard(), // Use the modular card widget
+              delegate: SliverChildBuilderDelegate((context, index) {
+                if (items.isEmpty) {
+                  return const Center(
+                    child: Text("No bookings found for this filter"),
                   );
-                },
-                childCount: 3, // Actual data length
-              ),
+                }
+                final item = items[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: BookingDetailCard(
+                    centerName: item.centerName,
+                    location: item.location,
+                    service: item.typeOfService,
+                    state: item.state,
+                    date: item.date,
+                    price: item.price,
+                  ),
+                );
+              }, childCount: items.length),
             ),
           ),
         ],
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8F9FB), // Light grey background from UI
+      appBar: AppBar(
+        leading: const LeadingIcon(),
+        title: Text(
+          AppConstants.maintenanceHistory,
+          style: AppStyle.appBarTitle,
+        ),
+        centerTitle: true,
+      ),
+      body: BlocBuilder<MaintenceHistoryCubit, MaintenceHistoryState>(
+        builder: (context, state) {
+          if (state is MaintenceHistoryLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is MaintenceHistoryErrorState) {
+            return Center(child: Text(state.message));
+          }
+
+          if (state is MaintenceHistorySuccessState) {
+            final items = state.items;
+
+            final upcoming = items.where((e) => e.state == "Upcoming").length;
+            final completed = items.where((e) => e.state == "Completed").length;
+
+            final filteredItems = selectedFilter == "All"
+                ? items
+                : items.where((e) => e.state == selectedFilter).toList();
+
+            return _buildBody(context, filteredItems, upcoming, completed);
+          }
+          return SizedBox();
+        },
       ),
     );
   }
@@ -137,12 +192,16 @@ class MaintenanceHistory extends StatelessWidget {
   }
 
   // Filter Chip Helper
-  Widget _buildFilterChip(String label, {bool isSelected = false}) {
+  Widget _buildFilterChip(String label) {
+    final isSelected = selectedFilter == label;
+
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: GestureDetector(
         onTap: () {
-          // TODO: Implement filtering logic
+          setState(() {
+            selectedFilter = label;
+          });
         },
         child: Chip(
           backgroundColor: isSelected ? AppColors.veryDarkBlue : Colors.white,

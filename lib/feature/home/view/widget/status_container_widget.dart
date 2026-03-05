@@ -23,16 +23,16 @@ class StatusContainerWidget extends StatelessWidget {
           ),
         ),
         SizedBox(height: SizeConfig.height(context) * 0.015),
-        Row(
-          children: [
-            Expanded(
-              child: InkWell(
-                onTap: onTap,
-                child: Container(
-                  padding: EdgeInsets.all(SizeConfig.width(context) * 0.03),
-                  decoration: BoxDecorationWidget.customBoxDecoration(
-                    borderRadius: 12,
-                  ),
+        InkWell(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.all(SizeConfig.width(context) * 0.06),
+            decoration: BoxDecorationWidget.customBoxDecoration(
+              borderRadius: 12,
+            ).copyWith(color: AppColors.white),
+            child: Row(
+              children: [
+                Expanded(
                   child: Row(
                     children: [
                       Container(
@@ -74,61 +74,55 @@ class StatusContainerWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-            ),
-            SizedBox(
-              width: SizeConfig.width(context) * 0.04,
-            ), // Spacing between cards
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(SizeConfig.width(context) * 0.03),
-                decoration: BoxDecorationWidget.customBoxDecoration(
-                  borderRadius: 12,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: SizeConfig.width(context) * 0.1,
-                      height: SizeConfig.width(context) * 0.1,
-                      decoration: BoxDecoration(
-                        color: AppColors.babyBleu.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
+                SizedBox(
+                  width: SizeConfig.width(context) * 0.04,
+                ), // Spacing between cards
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        width: SizeConfig.width(context) * 0.1,
+                        height: SizeConfig.width(context) * 0.1,
+                        decoration: BoxDecoration(
+                          color: AppColors.babyBleu.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.ev_station_outlined,
+                          size: AppFontSize.f20,
+                          color: AppColors.babyBleu,
+                        ),
                       ),
-                      child: Icon(
-                        Icons.ev_station_outlined,
-                        size: AppFontSize.f20,
-                        color: AppColors.babyBleu,
-                      ),
-                    ),
-                    SizedBox(width: SizeConfig.width(context) * 0.03),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppConstants.batteryHealth,
-                            style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                              color: AppColors.textGrey,
-                              fontSize: AppFontSize.f12,
-                              fontWeight: FontWeight.normal,
+                      SizedBox(width: SizeConfig.width(context) * 0.03),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppConstants.oilhealth,
+                              style: AppStyle.coursalSubtitleTextStyle.copyWith(
+                                color: AppColors.textGrey,
+                                fontSize: AppFontSize.f12,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
-                          ),
-                          Text(
-                            AppConstants
-                                .attention, // Should ideally be "Normal" or based on data
-                            style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600,
+                            Text(
+                              AppConstants
+                                  .normal, // Should ideally be "Normal" or based on data
+                              style: AppStyle.coursalSubtitleTextStyle.copyWith(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ],
     );

@@ -24,13 +24,16 @@ class ContainerIconWidget extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppFontSize.f12),
         child: Container(
-          decoration: BoxDecorationWidget.customBoxDecoration(),
+          height: SizeConfig.height(context) * 0.0002, // Responsive height
+          decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
+            color: AppColors.white,
+          ),
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal:
                   SizeConfig.width(context) *
                   0.03, // Responsive horizontal padding
-              vertical: SizeConfig.height(context) * 0.008, // Reduced padding
+              vertical: SizeConfig.height(context) * 0.0002, // Reduced padding
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

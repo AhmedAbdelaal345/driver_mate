@@ -13,10 +13,14 @@ import 'package:driver_mate/feature/auth/view/forgot_password.dart';
 import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/auth/view/register_page.dart';
 import 'package:driver_mate/feature/auth/view/set_new_password.dart';
+import 'package:driver_mate/feature/maintance_history/data/repo/maintance_history_repo.dart';
+import 'package:driver_mate/feature/maintance_history/manager/cubit/maintence_history_cubit.dart';
 import 'package:driver_mate/feature/mycars/data/repo/vechicle_repo.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
+import 'package:driver_mate/feature/saved_item/data/repo/saved_item_repo.dart';
+import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
 import 'package:driver_mate/feature/splach/view/splach_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,6 +49,13 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               AiDiagnosisCubit(AiDiagnosisRepo(OpenAiService(Dio()))),
         ),
+        BlocProvider(
+          create: (_) => SavedItemCubit(SavedItemRepo())..loadItems(),
+        ),
+        BlocProvider(
+          create: (_) =>
+              MaintenceHistoryCubit(MaintanceHistoryRepo())..loadItems(),
+        ),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
@@ -52,6 +63,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: AppFonts.fontInter,
           primaryColor: AppColors.darkBlue,
+          scaffoldBackgroundColor: AppColors.white,
 
           appBarTheme: const AppBarTheme(
             titleTextStyle: TextStyle(
@@ -60,6 +72,7 @@ class MyApp extends StatelessWidget {
               color: AppColors.darkBlue,
               fontFamily: AppFonts.fontPoppins,
             ),
+            backgroundColor: AppColors.white,
           ),
         ),
         routes: {

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -15,10 +16,10 @@ class CoursalWidget extends StatefulWidget {
   const CoursalWidget({super.key, this.onPressed});
   final VoidCallback? onPressed;
   @override
-  _CoursalWidgetState createState() => _CoursalWidgetState();
+  CoursalWidgetState createState() => CoursalWidgetState();
 }
 
-class _CoursalWidgetState extends State<CoursalWidget> {
+class CoursalWidgetState extends State<CoursalWidget> {
   int _currentIndex = 0;
 
   static final List<_CarouselItem> _items = [
@@ -68,7 +69,7 @@ class _CoursalWidgetState extends State<CoursalWidget> {
           options: CarouselOptions(
             height: cardHeight,
             autoPlay: true,
-            viewportFraction: 1.0,
+            viewportFraction: 1.05,
             enlargeCenterPage: false,
             onPageChanged: (index, reason) {
               setState(() => _currentIndex = index);
@@ -102,12 +103,11 @@ class _CoursalWidgetState extends State<CoursalWidget> {
 
   Widget _buildSlide(BuildContext context, _CarouselItem item, double height) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Container(
         height: height,
-        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(20),
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -115,93 +115,101 @@ class _CoursalWidgetState extends State<CoursalWidget> {
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withValues(alpha: 0.12),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+              color: Colors.black.withValues(alpha: 0.15),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.width(context) * 0.05,
-                  vertical: SizeConfig.height(context) * 0.012,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Row(
+            children: [
+              /// 🔵 LEFT SIDE (TEXT)
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 16,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (item.badge != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            item.badge!,
+                            style: AppStyle.buttonTextStyle.copyWith(
+                              fontSize: AppFontSize.f11,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 8),
+                      Text(
+                        item.title,
+                        style: AppStyle.coursalTitleTextStyle.copyWith(
+                          fontSize: AppFontSize.f18,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        item.subtitle,
+                        style: AppStyle.coursalSubtitleTextStyle.copyWith(
+                          fontSize: 12,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 14),
+                      SizedBox(
+                        height: 34,
+                        child: PrimaryElevatedButtonWidget(
+                          onPressed: item.onPressed, // 🔥 FIXED
+                          buttonText: item.buttonText,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (item.badge != null)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.white.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(999),
-                          border: Border.all(
-                            color: AppColors.white.withValues(alpha: 0.2),
-                          ),
-                        ),
-                        child: Text(
-                          item.badge!,
-                          style: AppStyle.buttonTextStyle.copyWith(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: 4),
-                    Text(
-                      item.title,
-                      style: AppStyle.coursalTitleTextStyle.copyWith(
-                        fontSize: 17,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      item.subtitle,
-                      style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                        fontSize: 11,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      height: 30,
-                      child: PrimaryElevatedButtonWidget(
-                        onPressed: widget.onPressed,
+              ),
 
-                        buttonText: item.buttonText,
+              /// 🔵 RIGHT SIDE (IMAGE)
+              Expanded(
+                flex: 2,
+                child: Stack(
+                  fit: StackFit.expand,
+
+                  children: [
+                    Opacity(
+                      opacity: 0.6,
+                      child: Image.asset(item.image, fit: BoxFit.cover),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Colors.black45, Colors.transparent],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    item.image,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.centerRight,
-                    filterQuality: FilterQuality.high,
-                  ),
-                  Container(color: AppColors.black.withValues(alpha: 0.25)),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

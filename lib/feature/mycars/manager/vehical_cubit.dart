@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class VehicalCubit extends Cubit<VehicalState> {
   VehicalCubit({required this.repo}) : super(InitialVehicalState());
   static VehicalCubit get(context) => BlocProvider.of<VehicalCubit>(context);
+
   final TextEditingController modelController = TextEditingController();
   final TextEditingController plateController = TextEditingController();
   final TextEditingController mileageController = TextEditingController();
@@ -18,6 +19,10 @@ class VehicalCubit extends Cubit<VehicalState> {
   int count = 0;
 
   VechicleRepo repo;
+
+  // Store the current list of vehicles for duplicate checking
+  List<VechicleModel> _currentVehicles = [];
+
   void clearControllers() {
     mileageController.clear();
     modelController.clear();
@@ -34,7 +39,42 @@ class VehicalCubit extends Cubit<VehicalState> {
     yearController.dispose();
   }
 
+  /// Check if a vehicle already exists in the list
+  bool _isDuplicate(VechicleModel newVehicle) {
+    return _currentVehicles.any((existingVehicle) {
+      // Check if brand, model, and year match (case-insensitive)
+      return existingVehicle.brand!.toLowerCase() ==
+              newVehicle.brand!.toLowerCase() &&
+          existingVehicle.model!.toLowerCase() ==
+              newVehicle.model!.toLowerCase() &&
+          existingVehicle.year == newVehicle.year;
+    });
+  }
+
+  /// Check if a vehicle with the same plate number exists
+  bool _isDuplicatePlate(VechicleModel newVehicle) {
+    // Only check if plate is not empty
+    if (newVehicle.plateNumber!.isEmpty) return false;
+
+    return _currentVehicles.any((existingVehicle) {
+      return existingVehicle.plateNumber!.toLowerCase() ==
+          newVehicle.plateNumber!.toLowerCase();
+    });
+  }
+
   Future<void> addVehicle({required VechicleModel vehicle}) async {
+    // Check for duplicate before adding
+    if (_isDuplicate(vehicle)) {
+      emit(ErrorVehicalState(error: AppConstants.duplicateCarError));
+      return;
+    }
+
+    // Check for duplicate plate number
+    if (_isDuplicatePlate(vehicle)) {
+      emit(ErrorVehicalState(error: AppConstants.duplicatePlateError));
+      return;
+    }
+
     emit(LoadingVehicalState());
 
     final Either<String, VechicleModel> result = await repo.addCar(
@@ -58,11 +98,31 @@ class VehicalCubit extends Cubit<VehicalState> {
 
     final data = await repo.getCar();
     count = data.length;
+
+    // Store the current vehicles list for duplicate checking
+    _currentVehicles = data;
+
     emit(
       SuccessVehicalState(
         data: data, // list
         message: AppConstants.loadedSuccefully,
       ),
     );
+  }
+
+  /// Optional: Method to check if car can be added before navigating to add page
+  bool canAddVehicle({
+    required String brand,
+    required String model,
+    required String year,
+  }) {
+    final tempVehicle = VechicleModel(
+      brand: brand,
+      model: model,
+      year: int.tryParse(year) ?? 0,
+      plateNumber: '', // Empty for this check
+      millAge: 0,
+    );
+    return !_isDuplicate(tempVehicle);
   }
 }

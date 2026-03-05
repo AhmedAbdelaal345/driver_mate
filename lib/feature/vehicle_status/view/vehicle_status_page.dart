@@ -123,7 +123,7 @@ class VehicleStatusPage extends StatelessWidget {
                 icon: Icons.battery_charging_full,
                 iconColor: AppColors.orange,
                 title: AppConstants.batteryHealth,
-                status: AppConstants.attention,
+                status: AppConstants.normal,
                 statusColor: AppColors.orange,
                 subtitle: AppConstants.batteryHealthSub,
               ),

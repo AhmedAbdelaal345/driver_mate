@@ -29,7 +29,9 @@ class HeaderImage extends StatelessWidget {
             height: SizeConfig.height(context) * 0.4,
             decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
               image: DecorationImage(
-                image: AssetImage(assetName),
+                image: assetName.startsWith("http")
+                    ? NetworkImage(assetName)
+                    : AssetImage(assetName) as ImageProvider,
                 fit: BoxFit.cover,
               ),
             ),

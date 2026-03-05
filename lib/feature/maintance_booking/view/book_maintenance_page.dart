@@ -1,12 +1,16 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'dart:io';
 
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/explore/view/explore_search_page.dart';
+import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +26,7 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
   bool _isMapView = false;
   bool _isOpeningMap = false;
 
-  final List<_ServiceCenter> _centers = const [
+  final List<_ServiceCenter> _centers = [
     _ServiceCenter(
       name: "AutoCare Service Center",
       distance: "1.2 km",
@@ -30,6 +34,19 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
       reviews: "(234)",
       status: AppConstants.openNow,
       services: ["Oil Change", "Brake Service", "Diagnostics"],
+      onTap: () {
+        MyNavigation.navigateTo(
+          ServiceCenterPage(
+            serviceCenterName: "AutoCare Service Center",
+            address: "123 Auto Street, Cityville",
+            holiday: "Closed on Sundays",
+            phoneNumber: "+1 (555) 123-4567",
+            serviceProvided: ["Oil Change", "Brake Service", "Diagnostics"],
+            imagePath: AppImagePath.carImagePath,
+            workingHours: "Mon-Sat: 8am-6pm, Sun: Closed",
+          ),
+        );
+      },
     ),
     _ServiceCenter(
       name: "QuickFix Auto Works",
@@ -38,6 +55,19 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
       reviews: "(189)",
       status: AppConstants.openNow,
       services: ["Engine", "Tire Service", "AC Service"],
+      onTap: () {
+        MyNavigation.navigateTo(
+          ServiceCenterPage(
+            serviceCenterName: "QuickFix Auto Works",
+            address: "456 Repair Ave, Townsville",
+            holiday: "Closed on Sundays",
+            phoneNumber: "+1 (555) 987-6543",
+            serviceProvided: ["Engine", "Tire Service", "AC Service"],
+            imagePath: AppImagePath.carImagePath,
+            workingHours: "Mon-Sat: 9am-5pm, Sun: Closed",
+          ),
+        );
+      },
     ),
     _ServiceCenter(
       name: "ProTech Motors",
@@ -46,6 +76,19 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
       reviews: "(312)",
       status: AppConstants.closed,
       services: ["Full Service", "Body Work", "Electrical"],
+      onTap: () {
+        MyNavigation.navigateTo(
+          ServiceCenterPage(
+            serviceCenterName: "ProTech Motors",
+            address: "456 Repair Ave, Townsville",
+            holiday: "Closed on Sundays",
+            phoneNumber: "+1 (555) 987-6543",
+            serviceProvided: ["Full Service", "Body Work", "Electrical"],
+            imagePath: AppImagePath.bmwCarImagePath,
+            workingHours: "Mon-Sat: 9am-5pm, Sun: Closed",
+          ),
+        );
+      },
     ),
     _ServiceCenter(
       name: "SpeedCare Garage",
@@ -54,6 +97,19 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
       reviews: "(156)",
       status: AppConstants.openNow,
       services: ["Oil Change", "Suspension", "Battery"],
+      onTap: () {
+        MyNavigation.navigateTo(
+          ServiceCenterPage(
+            serviceCenterName: "SpeedCare Garage",
+            address: "789 Service Rd, Villagetown",
+            holiday: "Closed on Sundays",
+            phoneNumber: "+1 (555) 555-1234",
+            serviceProvided: ["Oil Change", "Suspension", "Battery"],
+            imagePath: AppImagePath.carImagePath,
+            workingHours: "Mon-Sat: 7am-7pm, Sun: Closed",
+          ),
+        );
+      },
     ),
   ];
 
@@ -72,7 +128,9 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
         leading: const LeadingIcon(),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              MyNavigation.navigateTo(ExploreSearchPage());
+            },
             icon: const Icon(Icons.search, color: AppColors.iconGrey),
           ),
         ],
@@ -161,9 +219,9 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
 
   void _showMessage(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   List<Uri> _buildMapUris(double lat, double lng) {
@@ -201,10 +259,7 @@ class _BookMaintenancePageState extends State<BookMaintenancePage> {
 }
 
 class _ViewToggle extends StatelessWidget {
-  const _ViewToggle({
-    required this.isMapView,
-    required this.onChanged,
-  });
+  const _ViewToggle({required this.isMapView, required this.onChanged});
 
   final bool isMapView;
   final ValueChanged<bool> onChanged;
@@ -286,10 +341,7 @@ class _ToggleButton extends StatelessWidget {
 }
 
 class _MockMapView extends StatelessWidget {
-  const _MockMapView({
-    required this.onOpenMaps,
-    required this.isLoading,
-  });
+  const _MockMapView({required this.onOpenMaps, required this.isLoading});
 
   final VoidCallback onOpenMaps;
   final bool isLoading;
@@ -308,11 +360,7 @@ class _MockMapView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.location_pin,
-              size: 64,
-              color: AppColors.red,
-            ),
+            const Icon(Icons.location_pin, size: 64, color: AppColors.red),
             const SizedBox(height: 6),
             Text(
               AppConstants.mapPreview,
@@ -361,126 +409,122 @@ class _ServiceCenterCard extends StatelessWidget {
   const _ServiceCenterCard({required this.center});
 
   final _ServiceCenter center;
-
   @override
   Widget build(BuildContext context) {
     final isOpen = center.status == AppConstants.openNow;
     final statusColor = isOpen ? AppColors.green : AppColors.iconGrey;
-    return Container(
-      decoration: BoxDecorationWidget.customBoxDecoration(
-        borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.white),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    center.name,
-                    style: AppStyle.boldSmallText.copyWith(
-                      fontSize: AppFontSize.f13,
+    return InkWell(
+      onTap: center.onTap,
+      child: Container(
+        decoration: BoxDecorationWidget.customBoxDecoration(
+          borderRadius: AppFontSize.f12,
+        ).copyWith(color: AppColors.white),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      center.name,
+                      style: AppStyle.boldSmallText.copyWith(
+                        fontSize: AppFontSize.f13,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: statusColor.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Text(
+                      center.status,
+                      style: AppStyle.containerSubtitle.copyWith(
+                        fontSize: AppFontSize.f10,
+                        color: statusColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  decoration: BoxDecoration(
-                    color: statusColor.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(999),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.location_on_outlined,
+                    size: 14,
+                    color: AppColors.iconGrey,
                   ),
-                  child: Text(
-                    center.status,
+                  const SizedBox(width: 4),
+                  Text(
+                    center.distance,
                     style: AppStyle.containerSubtitle.copyWith(
-                      fontSize: AppFontSize.f10,
-                      color: statusColor,
-                      fontWeight: FontWeight.bold,
+                      fontSize: AppFontSize.f11,
+                      color: AppColors.iconGrey,
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Row(
-              children: [
-                const Icon(
-                  Icons.location_on_outlined,
-                  size: 14,
-                  color: AppColors.iconGrey,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  center.distance,
-                  style: AppStyle.containerSubtitle.copyWith(
-                    fontSize: AppFontSize.f11,
-                    color: AppColors.iconGrey,
+                  const SizedBox(width: 10),
+                  const Icon(Icons.star, size: 14, color: AppColors.orange),
+                  const SizedBox(width: 4),
+                  Text(
+                    "${center.rating} ${center.reviews}",
+                    style: AppStyle.containerSubtitle.copyWith(
+                      fontSize: AppFontSize.f11,
+                      color: AppColors.iconGrey,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                const Icon(
-                  Icons.star,
-                  size: 14,
-                  color: AppColors.orange,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  "${center.rating} ${center.reviews}",
-                  style: AppStyle.containerSubtitle.copyWith(
-                    fontSize: AppFontSize.f11,
-                    color: AppColors.iconGrey,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: center.services
-                  .map(
-                    (service) => Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.containerGrey,
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                      child: Text(
-                        service,
-                        style: AppStyle.containerSubtitle.copyWith(
-                          fontSize: AppFontSize.f10,
-                          color: AppColors.textGrey,
+                ],
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: center.services
+                    .map(
+                      (service) => Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.containerGrey,
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        child: Text(
+                          service,
+                          style: AppStyle.containerSubtitle.copyWith(
+                            fontSize: AppFontSize.f10,
+                            color: AppColors.textGrey,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                  .toList(),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Text(
-                  AppConstants.viewDetails,
-                  style: AppStyle.viewAll.copyWith(
-                    fontSize: AppFontSize.f12,
+                    )
+                    .toList(),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Text(
+                    AppConstants.viewDetails,
+                    style: AppStyle.viewAll.copyWith(fontSize: AppFontSize.f12),
                   ),
-                ),
-                const Spacer(),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: AppColors.iconGrey,
-                ),
-              ],
-            ),
-          ],
+                  const Spacer(),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14,
+                    color: AppColors.iconGrey,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -495,6 +539,7 @@ class _ServiceCenter {
     required this.reviews,
     required this.status,
     required this.services,
+    required this.onTap,
   });
 
   final String name;
@@ -503,4 +548,5 @@ class _ServiceCenter {
   final String reviews;
   final String status;
   final List<String> services;
+  final void Function()? onTap;
 }

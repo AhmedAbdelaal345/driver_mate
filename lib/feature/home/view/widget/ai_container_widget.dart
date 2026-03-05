@@ -33,6 +33,7 @@ class AiContainerWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
+          color: AppColors.white,
           border: BoxBorder.fromLTRB(
             left: BorderSide(
               color: iconColor ?? AppColors.orange,
