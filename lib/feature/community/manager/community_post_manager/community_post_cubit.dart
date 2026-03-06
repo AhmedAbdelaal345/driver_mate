@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/data/repo/community_post_repo.dart';
 import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_state.dart';
@@ -23,6 +25,7 @@ class CommunityPostCubit extends Cubit<CommunityPostState> {
     required String type,
     required String title,
     required String description,
+    File? image,
   }) async {
     emit(CommunityPostLoading(state.posts));
     try {
@@ -30,6 +33,7 @@ class CommunityPostCubit extends Cubit<CommunityPostState> {
         type: type,
         title: title,
         description: description,
+        image: image ,
       );
       final updated = [post, ...state.posts];
       emit(CommunityPostSuccess(updated, 'Post published'));

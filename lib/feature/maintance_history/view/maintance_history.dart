@@ -93,7 +93,7 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
           if (items.isEmpty)
             const SliverFillRemaining(
               hasScrollBody: false,
-              child: Center(child: Text("No bookings found for this filter")),
+              child: Center(child: Text("No bookings found for this filter",style: AppStyle.containerSubtitle,)),
             )
           else
             SliverPadding(
@@ -110,6 +110,7 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
                       state: item.state,
                       date: item.date,
                       price: item.price,
+                      time: item.time,
                       onPressed: () {
                         MyNavigation.navigateTo(
                           BookingDetailsPage(booking: item),

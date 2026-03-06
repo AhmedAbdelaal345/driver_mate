@@ -12,7 +12,7 @@ class CommunityPostList extends StatelessWidget {
   const CommunityPostList({
     super.key,
     this.filterType,
-    this.showEmptyState = false,
+    this.showEmptyState = true,
   });
 
   final String? filterType;
@@ -119,6 +119,18 @@ class _CommunityPostCard extends StatelessWidget {
             post.description,
             style: AppStyle.containerSubtitle.copyWith(height: 1.4),
           ),
+          if (post.image != null) ...[
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.file(
+                post.image!,
+                width: double.infinity,
+                height: 180,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
         ],
       ),
     );

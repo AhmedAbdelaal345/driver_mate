@@ -6,6 +6,8 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/languge/view/language_page.dart';
+import 'package:driver_mate/feature/maintance_history/manager/cubit/maintence_history_cubit.dart';
+import 'package:driver_mate/feature/maintance_history/manager/state/maintence_history_state.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
 import 'package:driver_mate/feature/notification/view/notification_settings_page.dart';
@@ -118,7 +120,27 @@ class ProfilePage extends StatelessWidget {
                     },
                   ),
                   SizedBox(width: SizeConfig.width(context) * 0.03),
-                  ItemContainer(title: AppConstants.booking, onTap: () {}),
+                  BlocBuilder<MaintenceHistoryCubit, MaintenceHistoryState>(
+                    builder: (context, state) {
+                      if (state is MaintenceHistorySuccessState) {
+                        return ItemContainer(
+                          title: AppConstants.booking,
+                          onTap: () {
+                            MyNavigation.navigateTo(MaintenanceHistory());
+                          },
+                          count: state.items.length,
+                        );
+                      } else {
+                        return ItemContainer(
+                          title: AppConstants.booking,
+                          onTap: () {
+                            MyNavigation.navigateTo(MaintenanceHistory());
+                          },
+                          count: 0,
+                        );
+                      }
+                    },
+                  ),
                   SizedBox(width: SizeConfig.width(context) * 0.03),
 
                   BlocBuilder<SavedItemCubit, SavedItemState>(

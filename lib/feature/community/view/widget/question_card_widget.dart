@@ -3,9 +3,13 @@ import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_header.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
+import 'package:driver_mate/feature/saved_item/data/model/saved_item_model.dart';
+import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QuestionTab extends StatelessWidget {
   const QuestionTab({super.key});
@@ -13,18 +17,46 @@ class QuestionTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: const [
-        CommunityPostHeader(),
-        CommunityPostList(filterType: AppConstants.question, showEmptyState: false),
-        QuestionCard(), // Each card now manages its own "Love" state
-        QuestionCard(),
+      children: [
+        const CommunityPostHeader(),
+        const CommunityPostList(
+          filterType: AppConstants.question,
+          showEmptyState: false,
+        ),
+        QuestionCard(
+          post: CommunityPostModel(
+            id: "1",
+            title: "Strange clicking sound when turning",
+            description:
+                "My car makes a clicking noise when I turn the steering wheel.",
+            image: null,
+            authorInitials: "AH",
+            authorName: "Ahmed Hassan",
+            createdAt: DateTime.now(),
+            type: "Question",
+          ),
+        ),
+        QuestionCard(
+          post: CommunityPostModel(
+            id: "2",
+            title: "Strange clicking sound when turning",
+            description:
+                "My car makes a clicking noise when I turn the steering wheel.",
+            image: null,
+            authorInitials: "AH",
+            authorName: "Ahmed Hassan",
+            createdAt: DateTime.now(),
+            type: "Question",
+          ),
+        ),
       ],
     );
   }
 }
 
 class QuestionCard extends StatefulWidget {
-  const QuestionCard({super.key});
+  const QuestionCard({super.key, required this.post});
+  final CommunityPostModel post;
 
   @override
   State<QuestionCard> createState() => _QuestionCardState();
@@ -80,7 +112,8 @@ class _QuestionCardState extends State<QuestionCard> {
           const SizedBox(height: 16),
           // 2. Content
           Text(
-            "Strange clicking sound when turning — what could it be?",
+            widget.post.title,
+            // "Strange clicking sound when turning — what could it be?",
             style: AppStyle.titleOfContainer.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: AppFontSize.f16,
@@ -88,10 +121,26 @@ class _QuestionCardState extends State<QuestionCard> {
           ),
           const SizedBox(height: 8),
           Text(
-            "My car makes a clicking noise when I turn the steering wheel. It only happens at low speeds.",
+            widget.post.description,
+
+            // "My car makes a clicking noise when I turn the steering wheel. It only happens at low speeds.",
             style: AppStyle.containerSubtitle.copyWith(height: 1.4),
           ),
+          const SizedBox(height: 6),
+          if (widget.post.image != null) ...[
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.file(
+                widget.post.image!,
+                width: double.infinity,
+                height: 180,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
           const SizedBox(height: 16),
+
           Divider(
             indent: 0.1,
             endIndent: 0.9,
@@ -115,7 +164,16 @@ class _QuestionCardState extends State<QuestionCard> {
               ),
               const SizedBox(width: 16),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<SavedItemCubit>().addItem(
+                    SavedItemModel(
+                      title: widget.post.title,
+                      subtitle: widget.post.description,
+                      image: widget.post.image.toString(),
+                      type: SavedType.post,
+                    ),
+                  );
+                },
                 icon: const Icon(
                   Icons.bookmark_border,
                   size: 20,
@@ -133,7 +191,7 @@ class _QuestionCardState extends State<QuestionCard> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.cyanColor.withValues(alpha:  0.1),
+        color: AppColors.cyanColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Text(

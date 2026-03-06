@@ -6,6 +6,7 @@ class MaintanceHistoryModel {
   final String location;
   final String state;
   final String phone;
+  final String time;
   final DateTime date;
   final double price;
   final String? notes; // 👈 optional field
@@ -18,6 +19,7 @@ class MaintanceHistoryModel {
     required this.date,
     required this.price,
     required this.phone,
+    required this.time,
     this.notes,
   });
 
@@ -28,6 +30,7 @@ class MaintanceHistoryModel {
       "location": location,
       "state": state,
       "date": date.toIso8601String(),
+      "time": time,
       "price": price,
       "notes": notes,
     };
@@ -41,6 +44,7 @@ class MaintanceHistoryModel {
       state: map["state"],
       date: DateTime.parse(map["date"]),
       phone: map["phone"],
+      time: map["time"],
       price: map["price"],
       notes: map["notes"],
     );

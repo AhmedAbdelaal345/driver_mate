@@ -8,7 +8,7 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/feature/maintance_booking/data/model/service_center_model.dart';
-import 'package:driver_mate/feature/booking_details/book_appointment.dart';
+import 'package:driver_mate/feature/booking_details/view/book_appointment.dart';
 import 'package:driver_mate/feature/maintance_booking/view/widget/available_service_chip.dart';
 import 'package:driver_mate/feature/maintance_booking/view/widget/hero_image_section.dart';
 import 'package:driver_mate/feature/maintance_booking/view/widget/info_row_widget.dart';

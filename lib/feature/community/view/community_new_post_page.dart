@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
@@ -7,8 +9,10 @@ import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_cubit.dart';
 import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_state.dart';
+import 'package:driver_mate/feature/community/view/widget/add_image_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CommunityNewPostPage extends StatefulWidget {
   const CommunityNewPostPage({super.key});
@@ -29,6 +33,16 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
     AppConstants.review,
     AppConstants.marketPlace,
   ];
+  final ImagePicker _picker = ImagePicker();
+  File? selectedImage;
+
+  Future<void> openGallery() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      selectedImage = File(image.path);
+    }
+  }
 
   int _selectedType = 0;
   static const int _maxChars = 1000;
@@ -52,18 +66,10 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
     return BlocConsumer<CommunityPostCubit, CommunityPostState>(
       listener: (context, state) {
         if (state is CommunityPostFailure) {
-          AppNotifier.show(
-            context,
-            state.error,
-            type: NotifierType.error,
-          );
+          AppNotifier.show(context, state.error, type: NotifierType.error);
         }
         if (state is CommunityPostSuccess) {
-          AppNotifier.show(
-            context,
-            state.message,
-            type: NotifierType.success,
-          );
+          AppNotifier.show(context, state.message, type: NotifierType.success);
           Navigator.pop(context);
         }
       },
@@ -75,7 +81,10 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
             backgroundColor: AppColors.white,
             elevation: 0,
             centerTitle: true,
-            title: const Text(AppConstants.newPost, style: AppStyle.appBarTitle),
+            title: const Text(
+              AppConstants.newPost,
+              style: AppStyle.appBarTitle,
+            ),
             leading: const LeadingIcon(),
           ),
           body: Form(
@@ -107,8 +116,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                         selected: isSelected,
                         showCheckmark: false,
                         labelStyle: TextStyle(
-                          color:
-                              isSelected ? AppColors.white : AppColors.black,
+                          color: isSelected ? AppColors.white : AppColors.black,
                           fontWeight: FontWeight.w500,
                         ),
                         selectedColor: AppColors.cyanColor,
@@ -116,7 +124,8 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(999),
                         ),
-                        onSelected: (_) => setState(() => _selectedType = index),
+                        onSelected: (_) =>
+                            setState(() => _selectedType = index),
                       );
                     }),
                   ),
@@ -194,7 +203,13 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 80),
+                  const SizedBox(height: 6),
+                  InkWell(
+                    onTap: () {
+                      openGallery();
+                    },
+                    child: AddPhotoContainer(),
+                  ),
                 ],
               ),
             ),
@@ -207,11 +222,11 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                     ? () {
                         if (_formKey.currentState?.validate() ?? false) {
                           context.read<CommunityPostCubit>().createPost(
-                                type: _postTypes[_selectedType],
-                                title: _titleController.text.trim(),
-                                description:
-                                    _descriptionController.text.trim(),
-                              );
+                            type: _postTypes[_selectedType],
+                            title: _titleController.text.trim(),
+                            description: _descriptionController.text.trim(),
+                            image: selectedImage,
+                          );
                         }
                       }
                     : null,

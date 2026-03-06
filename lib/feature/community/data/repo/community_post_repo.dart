@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 
 abstract class CommunityPostRepository {
@@ -6,6 +9,7 @@ abstract class CommunityPostRepository {
     required String type,
     required String title,
     required String description,
+    File? image,
   });
 }
 
@@ -20,6 +24,7 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
       createdAt: DateTime.now().subtract(const Duration(hours: 2)),
       authorName: 'Ahmed Hassan',
       authorInitials: 'AH',
+      image: File(AppImagePath.bmwCarImagePath),
     ),
     CommunityPostModel(
       id: 'seed-2',
@@ -43,6 +48,7 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
     required String type,
     required String title,
     required String description,
+    File ?image,
   }) async {
     final DateTime now = DateTime.now();
     final CommunityPostModel post = CommunityPostModel(
@@ -53,6 +59,7 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
       createdAt: now,
       authorName: 'User',
       authorInitials: 'US',
+      image: image
     );
     _posts.insert(0, post);
     return post;

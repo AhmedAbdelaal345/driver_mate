@@ -84,6 +84,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
               ? "Upcoming"
               : "Completed",
           date: _selectedDate ?? DateTime.now(),
+          time: _selectedTime??"No Time",
           price: widget.serviceCenter.price ?? 10,
           notes: _notesController.text.trim(),
           phone: widget.serviceCenter.phoneNumber ?? "010000000",

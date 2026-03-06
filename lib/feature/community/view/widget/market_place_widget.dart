@@ -2,6 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
 import 'package:driver_mate/feature/community/view/widget/market_place_post_header.dart';
 import 'package:flutter/material.dart';
@@ -23,15 +24,27 @@ class MarketplaceTab extends StatelessWidget {
           filterType: AppConstants.marketPlace,
           showEmptyState: false,
         ),
-        const MarketplaceCard(),
+        MarketplaceCard(
+          post: CommunityPostModel(
+            id: DateTime(2026).millisecond.toString(),
+            type: "Marketplace",
+            title: "Brake Pads for Toyota Camry",
+            description:
+                "Original brake pads, used for 6 months only. In excellent condition. Fits 2018-2022 models.",
+
+            createdAt: DateTime.now(),
+            authorName: "Ahmed",
+            authorInitials: "Ah",
+          ),
+        ),
       ],
     );
   }
 }
 
 class MarketplaceCard extends StatelessWidget {
-  const MarketplaceCard({super.key});
-
+  const MarketplaceCard({super.key, required this.post});
+  final CommunityPostModel post;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -67,7 +80,7 @@ class MarketplaceCard extends StatelessWidget {
 
           // Title & Price
           Text(
-            "Brake Pads for Toyota Camry",
+            post.title,
             style: AppStyle.titleOfContainer.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -95,10 +108,7 @@ class MarketplaceCard extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Description
-          Text(
-            "Original brake pads, used for 6 months only. In excellent condition. Fits 2018-2022 models.",
-            style: AppStyle.containerSubtitle,
-          ),
+          Text(post.description, style: AppStyle.containerSubtitle),
           const SizedBox(height: 16),
 
           // Image Gallery (Placeholders)
@@ -114,7 +124,9 @@ class MarketplaceCard extends StatelessWidget {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.image_outlined, color: Colors.grey),
+                child: post.image == null
+                    ? const Icon(Icons.image_outlined, color: Colors.grey)
+                    : Image.file(post.image!),
               ),
             ),
           ),
@@ -165,7 +177,7 @@ class MarketplaceCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.cyan.withValues(alpha:  0.1),
+        color: Colors.cyan.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(6),
       ),
       child: const Text(

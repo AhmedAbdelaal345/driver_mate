@@ -1,0 +1,39 @@
+import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_style.dart';
+import 'package:flutter/material.dart';
+
+class BookingInfoRow extends StatelessWidget {
+  const BookingInfoRow({
+    super.key,
+    required this.label,
+    required this.value,
+    this.valueColor,
+  });
+
+  final String label;
+  final String value;
+  final Color? valueColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: AppStyle.containerSubtitle.copyWith(color: AppColors.midGrey),
+        ),
+
+        Flexible(
+          child: Text(
+            value,
+            style: AppStyle.titleOfContainer.copyWith(
+              color: valueColor ?? AppColors.black,
+              fontSize: 13,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

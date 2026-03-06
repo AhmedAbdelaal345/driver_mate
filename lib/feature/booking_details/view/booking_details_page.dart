@@ -6,6 +6,7 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
+import 'package:driver_mate/feature/booking_details/view/reschedule_booking_page.dart';
 import 'package:driver_mate/feature/booking_details/view/widget/icon_label_value_widget.dart';
 import 'package:driver_mate/feature/booking_details/view/widget/info_row.dart';
 import 'package:driver_mate/feature/booking_details/view/widget/label_text_widget.dart';
@@ -62,7 +63,7 @@ class BookingDetailsPage extends StatelessWidget {
   // ── actions ────────────────────────────────────────────────────────────────
 
   void _reschedule(BuildContext context) {
-    // TODO: navigate to BookAppointmentPage with pre-filled data
+    MyNavigation.navigateTo(RescheduleBookingPage(booking: booking));
     AppNotifier.show(
       context,
       'Reschedule feature coming soon',
@@ -71,10 +72,11 @@ class BookingDetailsPage extends StatelessWidget {
   }
 
   Future<void> _callCenter(BuildContext context) async {
-    // Replace with real phone from serviceCenter model when available
-    final uri = Uri.parse(booking.phone);
-    final launched = await launchUrl(uri);
-    if (!launched && context.mounted) {
+    final uri = Uri.parse("tel:${booking.phone}");
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else if (context.mounted) {
       AppNotifier.show(
         context,
         'Unable to open dialer',
@@ -205,7 +207,7 @@ class BookingDetailsPage extends StatelessWidget {
                     InfoRow(
                       icon: Icons.calendar_month_outlined,
                       label: 'DATE & TIME',
-                      value: '${_formattedDate()} • ${booking.date.hour}:${booking.date.minute} ',
+                      value: '${_formattedDate()} • ${booking.time}',
                     ),
                     const SizedBox(height: 12),
 

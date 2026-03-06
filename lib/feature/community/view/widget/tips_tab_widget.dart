@@ -5,6 +5,7 @@ import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_header.dart';
 import 'package:driver_mate/feature/community/view/widget/footer_icon_widget.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
@@ -19,16 +20,14 @@ class TipsTab extends StatelessWidget {
       children: const [
         CommunityPostHeader(),
         CommunityPostList(filterType: AppConstants.tips, showEmptyState: false),
-        TipCard(),
-        TipCard(),
       ],
     );
   }
 }
 
 class TipCard extends StatelessWidget {
-  const TipCard({super.key});
-
+  const TipCard({super.key, required this.post});
+  final CommunityPostModel post;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,7 +63,7 @@ class TipCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            "Best oil change interval for city driving",
+            post.title,
             style: AppStyle.titleOfContainer.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -72,20 +71,36 @@ class TipCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "I recommend changing oil every 5,000 km if you drive mostly in heavy traffic to maintain engine health.",
+            post.description,
             style: AppStyle.containerSubtitle.copyWith(height: 1.4),
           ),
           const SizedBox(height: 16),
+          if (post.image != null) ...[
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.file(
+                post.image!,
+                width: double.infinity,
+                height: 180,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
+          const SizedBox(height: 16),
+
           Container(
             padding: EdgeInsets.all(8),
             decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
               color: AppColors.cyanColor.withValues(alpha: 0.1),
             ),
+
             child: Row(
               children: [
-                const Icon(
-                  Icons.bookmark,
-                  size: 20,
+                IconButton(
+                  icon: Icon(Icons.bookmark),
+                  onPressed: () {},
+                  iconSize: 20,
                   color: AppColors.cyanColor,
                 ),
                 const SizedBox(width: 6),

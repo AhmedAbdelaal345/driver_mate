@@ -1,9 +1,12 @@
+import 'dart:io';
+
 class CommunityPostModel {
-  const CommunityPostModel({
+   CommunityPostModel({
     required this.id,
     required this.type,
     required this.title,
     required this.description,
+     this.image,
     required this.createdAt,
     required this.authorName,
     required this.authorInitials,
@@ -14,6 +17,7 @@ class CommunityPostModel {
   final String title;
   final String description;
   final DateTime createdAt;
+   File? image;
   final String authorName;
   final String authorInitials;
 
@@ -31,6 +35,7 @@ class CommunityPostModel {
       type: type ?? this.type,
       title: title ?? this.title,
       description: description ?? this.description,
+      image: image ,
       createdAt: createdAt ?? this.createdAt,
       authorName: authorName ?? this.authorName,
       authorInitials: authorInitials ?? this.authorInitials,

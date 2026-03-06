@@ -9,14 +9,17 @@ class BookingDetailCard extends StatelessWidget {
     required this.state,
     required this.date,
     required this.price,
+    required this.time,
     required this.onPressed,
   });
   final String centerName;
   final String location;
   final String service;
   final String state;
+  final String time;
   final DateTime date;
   final double price;
+
   final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
@@ -67,7 +70,7 @@ class BookingDetailCard extends StatelessWidget {
           Divider(height: 24),
           _buildInfoRow(
             Icons.calendar_today_outlined,
-            date.toString(), //"Jan 30, 2024 • 10:00 AM",
+            "month: ${date.month}, day: ${date.day}, ${date.year} • $time ", //"Jan 30, 2024 • 10:00 AM",
           ),
           const SizedBox(height: 8),
           _buildInfoRow(Icons.location_on_outlined, location),
