@@ -1,6 +1,5 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
-import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/explore/data/explore_filter.dart';
 import 'package:driver_mate/feature/explore/data/explore_mock.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +11,6 @@ class CustomMaintenanceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // لو Tips مختارة نخفي maintenance section
-    if (filter.category == "Tips") {
-      return const SizedBox.shrink();
-    }
-
     final items = mockServices.where((s) {
       final okDistance = s.distanceKm <= filter.maxDistanceKm;
       final okRating = s.rating >= filter.minRating;
@@ -27,92 +21,106 @@ class CustomMaintenanceList extends StatelessWidget {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 12),
         child: Text(
-          "No service centers match your filters.",
+          'No service centers match your filters.',
           style: TextStyle(color: AppColors.textGrey),
         ),
       );
     }
 
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: items.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 12),
-      itemBuilder: (context, index) {
-        final s = items[index];
-
-        return Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecorationWidget.customBoxDecoration(),
-          child: Row(
-            children: [
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
+    return Column(
+      children: items
+          .map(
+            (s) => Container(
+              margin: const EdgeInsets.only(bottom: 18),
+              padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
                           s.name,
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                            color: AppColors.veryDarkBlue,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                        Text(
-                          "${s.distanceKm.toStringAsFixed(1)} km",
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
+                      ),
+                      Text(
+                        '${s.distanceKm.toStringAsFixed(1)} km',
+                        style: const TextStyle(
+                          color: AppColors.blueText,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const SizedBox(width: 4),
-                        Text(
-                          s.rating.toStringAsFixed(1),
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 12,
-                          ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  Row(
+                    children: [
+                      ...List.generate(
+                        5,
+                        (index) => Icon(
+                          index < s.rating.floor()
+                              ? Icons.star
+                              : Icons.star_half,
+                          color: const Color(0xFFFFBF00),
+                          size: 20,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 32,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.cyanColor,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        s.rating.toStringAsFixed(1),
+                        style: const TextStyle(
+                          color: AppColors.veryDarkBlue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
-                        onPressed: () {},
-                        child: const Text(
-                          AppConstants.bookNow,
-                          style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 54,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.cyanColor,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        AppConstants.bookNow,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
-      },
+            ),
+          )
+          .toList(),
     );
   }
 }

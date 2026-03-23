@@ -1,7 +1,5 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
-import 'package:driver_mate/core/utils/size.dart';
-import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/feature/explore/data/explore_filter.dart';
 import 'package:driver_mate/feature/explore/data/explore_mock.dart';
 import 'package:driver_mate/feature/explore/data/model/explore_model.dart';
@@ -16,18 +14,14 @@ class CustomCarSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cars = mockCars.where((c) {
-      // If 'All' is selected, show everything.
-      // If 'Cars' is selected, you could filter by a specific sub-category like 'Sedan' or 'SUV'
-      final okCategory =
-          filter.category == "All" || c.category == filter.category;
-
+      final okCategory = filter.category == 'All' || c.category == filter.category;
       final okPrice = c.price >= filter.minPrice && c.price <= filter.maxPrice;
       return okCategory && okPrice;
     }).toList();
 
     if (cars.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 12),
         child: Text(
           AppConstants.notMatch,
           style: TextStyle(color: AppColors.textGrey),
@@ -35,86 +29,136 @@ class CustomCarSlider extends StatelessWidget {
       );
     }
 
-    return SizedBox(
-      height: SizeConfig.height(context) * 0.38,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: cars.length,
-        itemBuilder: (context, index) {
-          final car = cars[index];
-
-          return Container(
-            width: SizeConfig.width(context) * 0.65,
-            margin: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.grey.shade200),
+    return Column(
+      children: cars
+          .map(
+            (car) => Padding(
+              padding: const EdgeInsets.only(bottom: 18),
+              child: _ExploreCarCard(
+                car: car,
+                onViewDetails: onViewDetails,
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 🖼 Image (EXPANDED بدل height ثابت)
-                Expanded(
+          )
+          .toList(),
+    );
+  }
+}
+
+class _ExploreCarCard extends StatelessWidget {
+  const _ExploreCarCard({required this.car, this.onViewDetails});
+
+  final CarItem car;
+  final void Function(CarItem car)? onViewDetails;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 18,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                child: Image.asset(
+                  car.image,
+                  width: double.infinity,
+                  height: 240,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              if (car.isNew)
+                Positioned(
+                  top: 16,
+                  right: 16,
                   child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(16),
-                      ),
-                      image: DecorationImage(
-                        image: AssetImage(car.image),
-                        fit: BoxFit.cover,
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: const Text(
+                      AppConstants.newLabel,
+                      style: TextStyle(
+                        color: AppColors.cyanColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
                 ),
-
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        car.title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          color: AppColors.black,
-                        ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  car.title,
+                  style: const TextStyle(
+                    color: AppColors.veryDarkBlue,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  car.subtitle,
+                  style: const TextStyle(
+                    color: AppColors.cyanColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  car.details,
+                  style: const TextStyle(
+                    color: AppColors.textGrey,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  height: 58,
+                  child: ElevatedButton(
+                    onPressed: () => onViewDetails?.call(car),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.darkBlue,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        "\$${car.price.toStringAsFixed(0)}",
-                        style: const TextStyle(
-                          color: AppColors.textGrey,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
+                    ),
+                    child: const Text(
+                      AppConstants.viewDetails,
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        car.location,
-                        style: const TextStyle(
-                          color: AppColors.textGrey,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        height: 0.044 * SizeConfig.height(context),
-                        child: PrimaryElevatedButtonWidget(
-                          buttonText: AppConstants.viewDetails,
-                          onPressed: () => onViewDetails?.call(car),
-                        ).copyWith(backgroundColor: AppColors.cyanColor),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
