@@ -1,9 +1,12 @@
 class CarItem {
   final String image;
   final String title;
-  final double price; // رقم للفلترة
+  final double price;
   final String location;
-  final String category; // مثال: Cars, Electric...
+  final String category;
+  final String subtitle;
+  final String details;
+  final bool isNew;
 
   const CarItem({
     required this.image,
@@ -11,6 +14,9 @@ class CarItem {
     required this.price,
     required this.location,
     required this.category,
+    required this.subtitle,
+    required this.details,
+    this.isNew = false,
   });
 }
 
@@ -26,3 +32,18 @@ class ServiceCenterItem {
   });
 }
 
+class TipItem {
+  final String image;
+  final String category;
+  final String readTime;
+  final String title;
+  final String excerpt;
+
+  const TipItem({
+    required this.image,
+    required this.category,
+    required this.readTime,
+    required this.title,
+    required this.excerpt,
+  });
+}

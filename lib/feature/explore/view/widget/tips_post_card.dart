@@ -1,65 +1,116 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_style.dart';
-import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/feature/explore/data/model/explore_model.dart';
 import 'package:flutter/material.dart';
 
- class TipPostCard extends StatelessWidget {
-  const TipPostCard({super.key});
+class TipPostCard extends StatelessWidget {
+  const TipPostCard({super.key, required this.item});
+
+  final TipItem item;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration(),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha:0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  "Tip",
-                  style: TextStyle(color: Colors.green, fontSize: 12),
-                ),
-              ),
-            ],
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            child: Image.asset(
+              item.image,
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
           ),
-          const SizedBox(height: 12),
-          const Text(
-            "How to maintain your tires?",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            "Checking tire pressure regularly can save fuel and increase tire life...",
-            maxLines: 2,
-          ),
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextButton.icon(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.thumb_up_outlined,
-                  color: AppColors.cyanColor,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 18, 18, 22),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE6F7FD),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Text(
+                        item.category,
+                        style: const TextStyle(
+                          color: AppColors.cyanColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      item.readTime,
+                      style: const TextStyle(
+                        color: AppColors.textGrey,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
-                label: Text("Like", style: AppStyle.viewAll),
-              ),
-              TextButton.icon(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.comment_outlined,
-                  color: AppColors.cyanColor,
+                const SizedBox(height: 18),
+                Text(
+                  item.title,
+                  style: const TextStyle(
+                    color: AppColors.veryDarkBlue,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-                label: Text("Comment", style: AppStyle.viewAll),
-              ),
-            ],
+                const SizedBox(height: 12),
+                Text(
+                  item.excerpt,
+                  style: const TextStyle(
+                    color: AppColors.textGrey,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Read More',
+                        style: TextStyle(
+                          color: AppColors.cyanColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(width: 6),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: AppColors.cyanColor,
+                        size: 18,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

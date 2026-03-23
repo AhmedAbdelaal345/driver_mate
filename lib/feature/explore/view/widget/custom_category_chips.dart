@@ -13,34 +13,43 @@ class CustomCategoryChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const List<String> categories = ["All", "Cars", "Maintenance", "Tips"];
+    const List<String> categories = ['All', 'Cars', 'Maintenance', 'Tips'];
 
     return SizedBox(
-      height: 40,
-      child: ListView.builder(
+      height: 58,
+      child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
           final cat = categories[index];
           final isSelected = cat == selected;
 
-          return Padding(
-            padding: const EdgeInsets.only(right: 10),
-
-            child: ActionChip(
-              label: Text(cat),
-              labelStyle: TextStyle(
-                color: isSelected ? AppColors.white : AppColors.black,
+          return GestureDetector(
+            onTap: () => onSelected(cat),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 15),
+              decoration: BoxDecoration(
+                color: isSelected ? AppColors.cyanColor : AppColors.white,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: AppColors.boarderWhiteColor),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-
-              backgroundColor: isSelected
-                  ? AppColors.cyanColor
-                  : AppColors.white,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: AppColors.boarderWhiteColor, width: 1),
-                borderRadius: BorderRadius.circular(999),
+              child: Text(
+                cat,
+                style: TextStyle(
+                  color: isSelected ? AppColors.white : AppColors.veryDarkBlue,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              onPressed: () => onSelected(cat),
             ),
           );
         },

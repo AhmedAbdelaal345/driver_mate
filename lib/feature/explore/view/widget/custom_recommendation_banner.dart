@@ -4,30 +4,26 @@ import 'package:flutter/material.dart';
 
 class CustomRecommendationBanner extends StatelessWidget {
   const CustomRecommendationBanner({super.key, this.recommdedText});
+
   final String? recommdedText;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
       decoration: BoxDecoration(
-        color: AppColors.powderBlueColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.smoothcyanColor),
+        color: const Color(0xFFEFF9FD),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFA7E3F4)),
       ),
-      child: Row(
-        children: [
-          Icon(Icons.psychology, color: AppColors.cyanColor, size: 30),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              recommdedText ?? AppConstants.recommendedBannerText,
-              style: const TextStyle(
-                color: AppColors.cyanColor,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-        ],
+      child: Text(
+        recommdedText ?? AppConstants.recommendedBannerText,
+        style: const TextStyle(
+          color: AppColors.veryDarkBlue,
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
