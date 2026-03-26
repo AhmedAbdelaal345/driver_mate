@@ -1,4 +1,5 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/core/service/local_notification_service.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
@@ -149,6 +150,12 @@ class LoginPage extends StatelessWidget {
                           listener: (context, state) {
                             // implement listener
                             if (state is LoginAuthFailure) {
+                              LocalNotificationService.basicNotification(
+                                  notificationId: "id:2",
+                                  id: 1,
+                                  title: "Login Failuor",
+                                  body: "There is  problem in login ❌"
+                                );
                               Fluttertoast.showToast(
                                 msg: state.errorMessage,
                                 gravity: ToastGravity.BOTTOM,
@@ -157,6 +164,12 @@ class LoginPage extends StatelessWidget {
                               );
                             } else {
                               if (state is LoginAuthSuccess) {
+                                LocalNotificationService.basicNotification(
+                                  notificationId: "id:1",
+                                  id: 0,
+                                  title: "Login Successfuly",
+                                  body: "You have Logined Successfully ✅"
+                                );
                                 Fluttertoast.showToast(
                                   msg: state.message,
                                   gravity: ToastGravity.BOTTOM,

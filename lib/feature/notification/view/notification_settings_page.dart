@@ -5,185 +5,264 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/notification/data/repo/notification_setting_repo.dart';
+import 'package:driver_mate/feature/notification/manager/cubit/notification_setting_cubit.dart';
+import 'package:driver_mate/feature/notification/manager/state/notification_setting_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NotificationSettingPage extends StatefulWidget {
   const NotificationSettingPage({super.key});
 
   @override
-  State<NotificationSettingPage> createState() => _NotificationSettingPageState();
+  State<NotificationSettingPage> createState() =>
+      _NotificationSettingPageState();
 }
 
 class _NotificationSettingPageState extends State<NotificationSettingPage> {
-  bool _maintenance = true;
-  bool _offers = true;
-  bool _aiAlerts = true;
-  bool _emergency = true;
+  final bool _maintenance = true;
+  final bool _offers = true;
+  final bool _aiAlerts = true;
+  final bool _emergency = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
+    return BlocProvider(
+      create: (context) =>
+          NotificationSettingsCubit(NotificationSettingsRepo())..loadSettings(),
+      child: Scaffold(
         backgroundColor: AppColors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(AppConstants.notifications, style: AppStyle.appBarTitle),
-        leading: const LeadingIcon(),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.width(context) * 0.05,
-            vertical: SizeConfig.height(context) * 0.015,
+        appBar: AppBar(
+          backgroundColor: AppColors.white,
+          elevation: 0,
+          centerTitle: true,
+          title: const Text(
+            AppConstants.notifications,
+            style: AppStyle.appBarTitle,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                AppConstants.notificationPreferences,
-                style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.iconGrey,
-                  fontSize: AppFontSize.f11,
-                ),
-              ),
-              SizedBox(height: SizeConfig.height(context) * 0.012),
-              Container(
-                decoration: BoxDecorationWidget.customBoxDecoration(
-                  borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
-                child: Column(
-                  children: [
-                    _NotificationSwitchTile(
-                      title: AppConstants.maintenanceReminders,
-                      subtitle: AppConstants.maintenanceRemindersSub,
-                      value: _maintenance,
-                      onChanged: (value) {
-                        setState(() {
-                          _maintenance = value;
-                        });
-                      },
-                    ),
-                    Divider(color: AppColors.containerGrey),
-                    _NotificationSwitchTile(
-                      title: AppConstants.offersPromotions,
-                      subtitle: AppConstants.offersPromotionsSub,
-                      value: _offers,
-                      onChanged: (value) {
-                        setState(() {
-                          _offers = value;
-                        });
-                      },
-                    ),
-                    Divider(color: AppColors.containerGrey),
-                    _NotificationSwitchTile(
-                      title: AppConstants.aiAlerts,
-                      subtitle: AppConstants.aiAlertsSub,
-                      value: _aiAlerts,
-                      onChanged: (value) {
-                        setState(() {
-                          _aiAlerts = value;
-                        });
-                      },
-                    ),
-                    Divider(color: AppColors.containerGrey),
-                    _NotificationSwitchTile(
-                      title: AppConstants.emergencyUpdates,
-                      subtitle: AppConstants.emergencyUpdatesSub,
-                      value: _emergency,
-                      onChanged: (value) {
-                        setState(() {
-                          _emergency = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: SizeConfig.height(context) * 0.025),
-              Text(
-                AppConstants.schedule,
-                style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.iconGrey,
-                  fontSize: AppFontSize.f11,
-                ),
-              ),
-              SizedBox(height: SizeConfig.height(context) * 0.012),
-              Container(
-                decoration: BoxDecorationWidget.customBoxDecoration(
-                  borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: AppColors.cyanColor.withValues(alpha: 0.12),
-                    child: const Icon(
-                      Icons.access_time,
-                      color: AppColors.cyanColor,
-                      size: 18,
-                    ),
-                  ),
-                  title: Text(
-                    AppConstants.notificationSchedule,
-                    style: AppStyle.boldSmallText.copyWith(
-                      fontSize: AppFontSize.f13,
-                    ),
-                  ),
-                  subtitle: Text(
-                    AppConstants.setQuietHours,
-                    style: AppStyle.containerSubtitle.copyWith(
-                      fontSize: AppFontSize.f11,
-                      color: AppColors.iconGrey,
-                    ),
-                  ),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 14,
+          leading: const LeadingIcon(),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.width(context) * 0.05,
+              vertical: SizeConfig.height(context) * 0.015,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  AppConstants.notificationPreferences,
+                  style: AppStyle.containerSubtitle.copyWith(
                     color: AppColors.iconGrey,
+                    fontSize: AppFontSize.f11,
                   ),
-                  onTap: () {},
                 ),
-              ),
-              SizedBox(height: SizeConfig.height(context) * 0.025),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                decoration: BoxDecorationWidget.customBoxDecoration(
-                  borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.containerGrey),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.notifications_none,
-                      color: AppColors.textGrey,
-                      size: 18,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppConstants.notificationSettings,
-                            style: AppStyle.boldSmallText.copyWith(
-                              fontSize: AppFontSize.f12,
-                              color: AppColors.textGrey,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            AppConstants.notificationSettingsSub,
-                            style: AppStyle.regularSmallText.copyWith(
-                              fontSize: AppFontSize.f11,
-                              color: AppColors.iconGrey,
-                            ),
-                          ),
-                        ],
+                SizedBox(height: SizeConfig.height(context) * 0.012),
+                Container(
+                  decoration: BoxDecorationWidget.customBoxDecoration(
+                    borderRadius: AppFontSize.f12,
+                  ).copyWith(color: AppColors.white),
+                  child: Column(
+                    children: [
+                      BlocBuilder<
+                        NotificationSettingsCubit,
+                        NotificationSettingsState
+                      >(
+                        builder: (context, state) {
+                          if (state is NotificationSettingsLoaded) {
+                            return _NotificationSwitchTile(
+                              title: AppConstants.maintenanceReminders,
+                              subtitle: AppConstants.maintenanceRemindersSub,
+                              value: state.maintenance,
+                              onChanged: (value) {
+                                context
+                                    .read<NotificationSettingsCubit>()
+                                    .toggleMaintenance(value);
+                              },
+                            );
+                          }
+                          return _NotificationSwitchTile(
+                            title: AppConstants.maintenanceReminders,
+                            subtitle: AppConstants.maintenanceRemindersSub,
+                            value: _maintenance,
+                            onChanged: (value) {
+                              value = true;
+                            },
+                          );
+                        },
+                      ),
+                      Divider(color: AppColors.containerGrey),
+                      BlocBuilder<
+                        NotificationSettingsCubit,
+                        NotificationSettingsState
+                      >(
+                        builder: (context, state) {
+                          if (state is NotificationSettingsLoaded) {
+                            return _NotificationSwitchTile(
+                              title: AppConstants.offersPromotions,
+                              subtitle: AppConstants.offersPromotionsSub,
+                              value: state.offers,
+                              onChanged: (value) {
+                                context
+                                    .read<NotificationSettingsCubit>()
+                                    .toggleOffers(value);
+                              },
+                            );
+                          }
+                          return _NotificationSwitchTile(
+                            title: AppConstants.offersPromotions,
+                            subtitle: AppConstants.offersPromotionsSub,
+                            value: _offers,
+                            onChanged: (value) {},
+                          );
+                        },
+                      ),
+                      Divider(color: AppColors.containerGrey),
+                      BlocBuilder<
+                        NotificationSettingsCubit,
+                        NotificationSettingsState
+                      >(
+                        builder: (context, state) {
+                          if (state is NotificationSettingsLoaded) {
+                            return _NotificationSwitchTile(
+                              title: AppConstants.aiAlerts,
+                              subtitle: AppConstants.aiAlertsSub,
+                              value: state.ai,
+                              onChanged: (value) {
+                                context
+                                    .read<NotificationSettingsCubit>()
+                                    .toggleAI(value);
+                              },
+                            );
+                          }
+                          return _NotificationSwitchTile(
+                            title: AppConstants.aiAlerts,
+                            subtitle: AppConstants.aiAlertsSub,
+                            value: _aiAlerts,
+                            onChanged: (value) {},
+                          );
+                        },
+                      ),
+                      Divider(color: AppColors.containerGrey),
+                      BlocBuilder<
+                        NotificationSettingsCubit,
+                        NotificationSettingsState
+                      >(
+                        builder: (context, state) {
+                          if (state is NotificationSettingsLoaded) {
+                            return _NotificationSwitchTile(
+                              title: AppConstants.emergencyUpdates,
+                              subtitle: AppConstants.emergencyUpdatesSub,
+                              value: state.emergency,
+                              onChanged: (value) {
+                                context
+                                    .read<NotificationSettingsCubit>()
+                                    .toggleEmergency(value);
+                              },
+                            );
+                          }
+                          return _NotificationSwitchTile(
+                            title: AppConstants.emergencyUpdates,
+                            subtitle: AppConstants.emergencyUpdatesSub,
+                            value: _emergency,
+                            onChanged: (value) {},
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: SizeConfig.height(context) * 0.025),
+                Text(
+                  AppConstants.schedule,
+                  style: AppStyle.containerSubtitle.copyWith(
+                    color: AppColors.iconGrey,
+                    fontSize: AppFontSize.f11,
+                  ),
+                ),
+                SizedBox(height: SizeConfig.height(context) * 0.012),
+                Container(
+                  decoration: BoxDecorationWidget.customBoxDecoration(
+                    borderRadius: AppFontSize.f12,
+                  ).copyWith(color: AppColors.white),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: AppColors.cyanColor.withValues(
+                        alpha: 0.12,
+                      ),
+                      child: const Icon(
+                        Icons.access_time,
+                        color: AppColors.cyanColor,
+                        size: 18,
                       ),
                     ),
-                  ],
+                    title: Text(
+                      AppConstants.notificationSchedule,
+                      style: AppStyle.boldSmallText.copyWith(
+                        fontSize: AppFontSize.f13,
+                      ),
+                    ),
+                    subtitle: Text(
+                      AppConstants.setQuietHours,
+                      style: AppStyle.containerSubtitle.copyWith(
+                        fontSize: AppFontSize.f11,
+                        color: AppColors.iconGrey,
+                      ),
+                    ),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                      color: AppColors.iconGrey,
+                    ),
+                    onTap: () {},
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: SizeConfig.height(context) * 0.025),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecorationWidget.customBoxDecoration(
+                    borderRadius: AppFontSize.f12,
+                  ).copyWith(color: AppColors.containerGrey),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.notifications_none,
+                        color: AppColors.textGrey,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppConstants.notificationSettings,
+                              style: AppStyle.boldSmallText.copyWith(
+                                fontSize: AppFontSize.f12,
+                                color: AppColors.textGrey,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              AppConstants.notificationSettingsSub,
+                              style: AppStyle.regularSmallText.copyWith(
+                                fontSize: AppFontSize.f11,
+                                color: AppColors.iconGrey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

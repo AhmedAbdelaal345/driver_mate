@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:driver_mate/core/helper/open_ai_helper.dart';
+import 'package:driver_mate/core/service/local_notification_service.dart';
+import 'package:driver_mate/core/service/work_manger_service.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
@@ -27,6 +29,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Future.wait([
+    LocalNotificationService.initialize(),
+    WorkManagerService().init(),
+  ]);
   runApp(const MyApp());
 }
 
