@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/core/helper/open_gallary.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
@@ -7,10 +10,12 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/community/view/widget/add_image_container_widget.dart';
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
 import 'package:driver_mate/feature/mycars/view/vehicle_added_success_page.dart';
+import 'package:driver_mate/feature/mycars/view/widget/delete_vehicle_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -145,9 +150,12 @@ const Map<String, List<String>> brandModels = {
   'Tesla': ['Model 3', 'Model S', 'Model X', 'Model Y', 'Cybertruck', 'Other'],
   'Other': ['Other'],
 };
+late Future<File?> selectedImage;
 
 class AddVehiclePage extends StatefulWidget {
-  const AddVehiclePage({super.key});
+  const AddVehiclePage({super.key, this.isEditPage = false, this.vehicle});
+  final bool isEditPage;
+  final VechicleModel? vehicle;
 
   @override
   State<AddVehiclePage> createState() => _AddVehiclePageState();
@@ -171,6 +179,25 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    final cubit = VehicalCubit.get(context);
+
+    if (widget.isEditPage && widget.vehicle != null) {
+      _selectedBrand = widget.vehicle!.brand;
+      _selectedModel = widget.vehicle!.model;
+      _selectedYear = widget.vehicle!.year;
+
+      cubit.brandController.text = widget.vehicle!.brand ?? "";
+      cubit.modelController.text = widget.vehicle!.model ?? "";
+      cubit.yearController.text = widget.vehicle!.year.toString();
+      cubit.plateController.text = widget.vehicle!.plateNumber;
+      cubit.mileageController.text = widget.vehicle!.millAge.toString();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<VehicalCubit, VehicalState>(
       listener: (context, state) {
@@ -189,384 +216,453 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
         return Form(
           key: VehicalCubit.get(context).formKey,
 
-          child: Scaffold(
-            backgroundColor: AppColors.white,
-            appBar: AppBar(
+          child: SafeArea(
+            top: false,
+            child: Scaffold(
               backgroundColor: AppColors.white,
-              elevation: 0,
-              centerTitle: true,
-              title: const Text(
-                AppConstants.addVehicle,
-                style: AppStyle.appBarTitle,
-              ),
-              leading: const LeadingIcon(),
-            ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.width(context) * 0.05,
-                  vertical: SizeConfig.height(context) * 0.015,
+              appBar: AppBar(
+                backgroundColor: AppColors.white,
+                elevation: 0,
+                centerTitle: true,
+                title: Text(
+                  widget.isEditPage
+                      ? AppConstants.editVehicle
+                      : AppConstants.addVehicle,
+                  style: AppStyle.appBarTitle,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration:
-                          BoxDecorationWidget.customBoxDecoration(
-                            borderRadius: AppFontSize.f12,
-                          ).copyWith(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                AppColors.veryDarkBlue,
-                                AppColors.cyanColor,
-                              ],
+                leading: const LeadingIcon(),
+              ),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.width(context) * 0.05,
+                    vertical: SizeConfig.height(context) * 0.015,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration:
+                            BoxDecorationWidget.customBoxDecoration(
+                              borderRadius: AppFontSize.f12,
+                            ).copyWith(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  AppColors.veryDarkBlue,
+                                  AppColors.cyanColor,
+                                ],
+                              ),
                             ),
-                          ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              color: AppColors.white.withValues(alpha: 0.15),
-                              shape: BoxShape.circle,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: AppColors.white.withValues(alpha: 0.15),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.directions_car,
+                                color: AppColors.white,
+                                size: 18,
+                              ),
                             ),
-                            child: const Icon(
-                              Icons.directions_car,
-                              color: AppColors.white,
-                              size: 18,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  AppConstants.registerVehicle,
-                                  style: AppStyle.boldSmallText.copyWith(
-                                    color: AppColors.white,
-                                    fontSize: AppFontSize.f13,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  AppConstants.registerVehicleHint,
-                                  style: AppStyle.containerSubtitle.copyWith(
-                                    color: AppColors.white.withValues(
-                                      alpha: 0.9,
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.isEditPage
+                                        ? AppConstants.updateYourVehicle
+                                        : AppConstants.registerVehicle,
+                                    style: AppStyle.boldSmallText.copyWith(
+                                      color: AppColors.white,
+                                      fontSize: AppFontSize.f13,
                                     ),
-                                    fontSize: AppFontSize.f11,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    widget.isEditPage
+                                        ? AppConstants.updateYourVehicleHint
+                                        : AppConstants.registerVehicleHint,
+                                    style: AppStyle.containerSubtitle.copyWith(
+                                      color: AppColors.white.withValues(
+                                        alpha: 0.9,
+                                      ),
+                                      fontSize: AppFontSize.f11,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.height(context) * 0.02),
+                      _FieldLabel(text: AppConstants.brandRequired),
+                      const SizedBox(height: 8),
+                      DropdownButtonFormField<String>(
+                        initialValue: _selectedBrand,
+                        decoration: InputDecoration(
+                          hintText: "Select Brand",
+                          hintStyle: AppStyle.hintStyle,
+                          filled: true,
+                          fillColor: AppColors.white,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.grey),
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: SizeConfig.height(context) * 0.02),
-                    _FieldLabel(text: AppConstants.brandRequired),
-                    const SizedBox(height: 8),
-                    DropdownButtonFormField<String>(
-                      initialValue: _selectedBrand,
-                      decoration: InputDecoration(
-                        hintText: "Select Brand",
-                        hintStyle: AppStyle.hintStyle,
-                        filled: true,
-                        fillColor: AppColors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.cyanColor),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
-                      ),
-                      items: carBrands.map((brand) {
-                        return DropdownMenuItem<String>(
-                          value: brand,
-                          child: Text(brand, style: AppStyle.regularSmallText),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedBrand = value;
-                          _selectedModel =
-                              null; // Reset model when brand changes
-                          VehicalCubit.get(context).brandController.text =
-                              value ?? '';
-                          VehicalCubit.get(context).modelController.clear();
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return AppConstants.youMust;
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 14),
-                    _FieldLabel(text: AppConstants.modelRequired),
-                    const SizedBox(height: 8),
-                    DropdownButtonFormField<String>(
-                      initialValue: _selectedModel,
-                      decoration: InputDecoration(
-                        hintText: _selectedBrand == null
-                            ? "Select Brand First"
-                            : "Select Model",
-                        hintStyle: AppStyle.hintStyle,
-                        filled: true,
-                        fillColor: AppColors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.cyanColor),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
-                      ),
-                      items: _availableModels.map((model) {
-                        return DropdownMenuItem<String>(
-                          value: model,
-                          child: Text(model, style: AppStyle.regularSmallText),
-                        );
-                      }).toList(),
-                      onChanged: _selectedBrand == null
-                          ? null
-                          : (value) {
-                              setState(() {
-                                _selectedModel = value;
-                                VehicalCubit.get(context).modelController.text =
-                                    value ?? '';
-                              });
-                            },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return AppConstants.youMust;
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 14),
-                    _FieldLabel(text: AppConstants.yearRequired),
-                    const SizedBox(height: 8),
-                    DropdownButtonFormField<int>(
-                      initialValue: _selectedYear,
-                      decoration: InputDecoration(
-                        hintText: "Select Year",
-                        hintStyle: AppStyle.hintStyle,
-                        prefixIcon: Icon(
-                          Icons.calendar_today,
-                          size: 20,
-                          color: AppColors.iconGrey,
-                        ),
-                        filled: true,
-                        fillColor: AppColors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.cyanColor),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
-                      ),
-                      items: _years.map((year) {
-                        return DropdownMenuItem<int>(
-                          value: year,
-                          child: Text(
-                            year.toString(),
-                            style: AppStyle.regularSmallText,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.cyanColor),
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedYear = value;
-                          VehicalCubit.get(context).yearController.text =
-                              value?.toString() ?? '';
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return AppConstants.youMust;
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 14),
-                    _FieldLabel(text: AppConstants.plateNumberOptional),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      controller: VehicalCubit.get(context).plateController,
-                      textCapitalization: TextCapitalization.characters,
-                      decoration: InputDecoration(
-                        hintText: AppConstants.plateNumberHint,
-                        hintStyle: AppStyle.hintStyle,
-                        filled: true,
-                        fillColor: AppColors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.grey),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.cyanColor),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return AppConstants.youMust;
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 14),
-                    _FieldLabel(text: AppConstants.currentMileageOptional),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      controller: VehicalCubit.get(context).mileageController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(
-                        hintText: AppConstants.mileageHint,
-                        hintStyle: AppStyle.hintStyle,
-                        filled: true,
-                        fillColor: AppColors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.cyanColor),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f8),
-                          borderSide: BorderSide(color: AppColors.red),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
-                      ),
-                      validator: (value) {
-                        // Mileage is optional, so only validate if value is provided
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 14),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecorationWidget.customBoxDecoration(
-                        borderRadius: AppFontSize.f12,
-                      ).copyWith(color: AppColors.lightBleu),
-                      child: Text(
-                        AppConstants.addVehicleNote,
-                        style: AppStyle.regularSmallText.copyWith(
-                          fontSize: AppFontSize.f11,
-                          color: AppColors.textGrey,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: SizeConfig.height(context) * 0.02),
-                    ElevatedButton(
-                      onPressed: () {
-                        final cubit = VehicalCubit.get(context);
-
-                        if (cubit.formKey.currentState!.validate()) {
-                          final model = VechicleModel(
-                            brand: cubit.brandController.text,
-                            model: cubit.modelController.text,
-                            year: int.tryParse(cubit.yearController.text),
-                            plateNumber: cubit.plateController.text,
-                            millAge: double.tryParse(
-                              cubit.mileageController.text,
+                        items: carBrands.map((brand) {
+                          return DropdownMenuItem<String>(
+                            value: brand,
+                            child: Text(
+                              brand,
+                              style: AppStyle.regularSmallText,
                             ),
-                            date: DateTime.now(),
                           );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedBrand = value;
+                            _selectedModel =
+                                null; // Reset model when brand changes
+                            VehicalCubit.get(context).brandController.text =
+                                value ?? '';
+                            VehicalCubit.get(context).modelController.clear();
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppConstants.youMust;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 14),
+                      _FieldLabel(text: AppConstants.modelRequired),
+                      const SizedBox(height: 8),
+                      DropdownButtonFormField<String>(
+                        initialValue: _selectedModel,
+                        decoration: InputDecoration(
+                          hintText: _selectedBrand == null
+                              ? "Select Brand First"
+                              : "Select Model",
+                          hintStyle: AppStyle.hintStyle,
+                          filled: true,
+                          fillColor: AppColors.white,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.cyanColor),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
+                        ),
+                        items: _availableModels.map((model) {
+                          return DropdownMenuItem<String>(
+                            value: model,
+                            child: Text(
+                              model,
+                              style: AppStyle.regularSmallText,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: _selectedBrand == null
+                            ? null
+                            : (value) {
+                                setState(() {
+                                  _selectedModel = value;
+                                  VehicalCubit.get(
+                                    context,
+                                  ).modelController.text = value ?? '';
+                                });
+                              },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppConstants.youMust;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 14),
+                      _FieldLabel(text: AppConstants.yearRequired),
+                      const SizedBox(height: 8),
+                      DropdownButtonFormField<int>(
+                        initialValue: _selectedYear,
+                        decoration: InputDecoration(
+                          hintText: "Select Year",
+                          hintStyle: AppStyle.hintStyle,
+                          prefixIcon: Icon(
+                            Icons.calendar_today,
+                            size: 20,
+                            color: AppColors.iconGrey,
+                          ),
+                          filled: true,
+                          fillColor: AppColors.white,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.cyanColor),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
+                        ),
+                        items: _years.map((year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(
+                              year.toString(),
+                              style: AppStyle.regularSmallText,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedYear = value;
+                            VehicalCubit.get(context).yearController.text =
+                                value?.toString() ?? '';
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return AppConstants.youMust;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 14),
+                      _FieldLabel(text: AppConstants.plateNumberOptional),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: VehicalCubit.get(context).plateController,
+                        textCapitalization: TextCapitalization.characters,
+                        decoration: InputDecoration(
+                          hintText: AppConstants.plateNumberHint,
+                          hintStyle: AppStyle.hintStyle,
+                          filled: true,
+                          fillColor: AppColors.white,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.cyanColor),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppConstants.youMust;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 14),
+                      _FieldLabel(text: AppConstants.currentMileageOptional),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: VehicalCubit.get(context).mileageController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: InputDecoration(
+                          hintText: AppConstants.mileageHint,
+                          hintStyle: AppStyle.hintStyle,
+                          filled: true,
+                          fillColor: AppColors.white,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.cyanColor),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppFontSize.f8),
+                            borderSide: BorderSide(color: AppColors.red),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            final mileage = double.tryParse(value);
+                            if (mileage == null) {
+                              return AppConstants.invalidMileage;
+                            }
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 14),
+                      //here
+                      InkWell(
+                        onTap: () {
+                          selectedImage = OpenGallery.openGallery();
+                        },
+                        child: const AddPhotoContainer(),
+                      ),
+                      const SizedBox(height: 14),
+                      widget.isEditPage
+                          ? DeleteVehicleWidget(
+                              onTap: () async {
+                                final cubit = VehicalCubit.get(context);
+                                cubit.deleteVehicle(
+                                  vehicle: VechicleModel(
+                                    image: await selectedImage,
+                                    brand: cubit.brandController.text,
+                                    model: cubit.modelController.text,
+                                    year:
+                                        int.tryParse(
+                                          cubit.yearController.text,
+                                        ) ??
+                                        0,
+                                    plateNumber: cubit.plateController.text,
+                                    millAge:
+                                        double.tryParse(
+                                          cubit.mileageController.text,
+                                        ) ??
+                                        0,
+                                    date: DateTime.now(),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration:
+                                  BoxDecorationWidget.customBoxDecoration(
+                                    borderRadius: AppFontSize.f12,
+                                  ).copyWith(color: AppColors.lightBleu),
+                              child: Text(
+                                AppConstants.addVehicleNote,
+                                style: AppStyle.regularSmallText.copyWith(
+                                  fontSize: AppFontSize.f11,
+                                  color: AppColors.textGrey,
+                                ),
+                              ),
+                            ),
+                      SizedBox(height: SizeConfig.height(context) * 0.02),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final cubit = VehicalCubit.get(context);
 
-                          cubit.addVehicle(vehicle: model);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.cyanColor,
-                        padding: EdgeInsets.symmetric(
-                          vertical: SizeConfig.height(context) * 0.018,
+                          if (cubit.formKey.currentState!.validate()) {
+                            final updatedVehicle = VechicleModel(
+                              image: await selectedImage,
+                              brand: cubit.brandController.text,
+                              model: cubit.modelController.text,
+                              year:
+                                  int.tryParse(cubit.yearController.text) ?? 0,
+                              plateNumber: cubit.plateController.text,
+                              millAge:
+                                  double.tryParse(
+                                    cubit.mileageController.text,
+                                  ) ??
+                                  0,
+                              date: widget.vehicle?.date ?? DateTime.now(),
+                            );
+
+                            if (widget.isEditPage && widget.vehicle != null) {
+                              cubit.updateVehicle(
+                                oldVehicle: widget.vehicle!,
+                                updatedVehicle: updatedVehicle,
+                              );
+                            } else {
+                              cubit.addVehicle(vehicle: updatedVehicle);
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.cyanColor,
+                          padding: EdgeInsets.symmetric(
+                            vertical: SizeConfig.height(context) * 0.018,
+                          ),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              AppFontSize.f12,
+                            ),
+                          ),
                         ),
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppFontSize.f12),
+                        child: Text(
+                          AppConstants.addVehicle,
+                          style: AppStyle.boldSmallText.copyWith(
+                            color: AppColors.white,
+                            fontSize: AppFontSize.f13,
+                          ),
                         ),
                       ),
-                      child: Text(
-                        AppConstants.addVehicle,
-                        style: AppStyle.boldSmallText.copyWith(
-                          color: AppColors.white,
-                          fontSize: AppFontSize.f13,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.setNewPassword: (context) => const SetNewPasswordPage(),
           AppRoutes.loginPage: (context) => const LoginPage(),
         },
-        home: const SplachPage(),
+        home: SafeArea(top: false, child: const SplachPage()),
       ),
     );
   }

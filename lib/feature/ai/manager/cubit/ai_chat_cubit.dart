@@ -19,6 +19,9 @@ class AiChatCubit extends Cubit<AiChatState> {
     model: "Camry",
     year: 2020,
     millAge: 92000,
+    image:null ,
+    plateNumber: "ABC-123",
+    date: DateTime(2020, 5, 20),
   );
   Future<VechicleModel?> _getUserVehicle() async {
     final cars = await vechicleRepo.getCar();
@@ -55,6 +58,9 @@ class AiChatCubit extends Cubit<AiChatState> {
                 model: "Unknown",
                 year: 0,
                 millAge: 0,
+                image: vehicle?.image,
+                plateNumber: "Unknown",
+                date: DateTime.now(),
               ),
           history: messages,
         ),

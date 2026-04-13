@@ -1,12 +1,15 @@
 import 'dart:developer';
 
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/car_details/view/car_details_page.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
+import 'package:driver_mate/feature/mycars/view/daily_car_details_page.dart';
 import 'package:driver_mate/feature/mycars/view/widget/container_widget.dart';
 import 'package:driver_mate/feature/mycars/view/widget/custom_container_bar.dart';
 import 'package:driver_mate/feature/mycars/view/widget/vehical_detail_card.dart';
@@ -105,7 +108,15 @@ class MyCars extends StatelessWidget {
 
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 12.0),
-                          child: VehicleDetailCard(car: car),
+                          child: InkWell(
+                            onTap: () {
+                              log("Navigate to car details page");
+                              MyNavigation.navigateTo(
+                                DailyCarDetailsPage(vehicle: car),
+                              );
+                            },
+                            child: VehicleDetailCard(car: car),
+                          ),
                         );
                       }, childCount: cars.length),
                     ),

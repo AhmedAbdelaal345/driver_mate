@@ -12,30 +12,37 @@ class HeroImageSectionWidget extends StatelessWidget {
     required this.isNew,
   });
 
-  final String imagePath;
+  final dynamic imagePath;
   final bool isNew;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          height: SizeConfig.height(context) * 0.28,
-          width: double.infinity,
-          margin: EdgeInsets.symmetric(
-            horizontal: SizeConfig.width(context) * 0.05,
-            vertical: 16,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppFontSize.f16),
-            image: DecorationImage(
-              image: imagePath.startsWith("http")
-                  ? NetworkImage(imagePath)
-                  : AssetImage(imagePath) as ImageProvider,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
+        imagePath is Widget
+            ? Padding(
+                padding: EdgeInsetsGeometry.symmetric(
+                  horizontal: SizeConfig.width(context) * 0.05,
+                  vertical: 16,
+                ),
+              )
+            : Container(
+                height: SizeConfig.height(context) * 0.28,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.width(context) * 0.05,
+                  vertical: 16,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppFontSize.f16),
+                  image: DecorationImage(
+                    image: imagePath.startsWith("http")
+                        ? NetworkImage(imagePath)
+                        : AssetImage(imagePath) as ImageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
         if (isNew)
           Positioned(
             top: 32,

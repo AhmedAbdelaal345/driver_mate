@@ -4,14 +4,12 @@ import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
+import 'package:driver_mate/feature/mycars/view/widget/custom_car_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class VehicleDetailCard extends StatelessWidget {
-  const VehicleDetailCard({
-    super.key,
-    required this.car,
-  });
+  const VehicleDetailCard({super.key, required this.car});
 
   final VechicleModel car;
 
@@ -26,29 +24,7 @@ class VehicleDetailCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// car icon
-          Container(
-            height: 80,
-            width: 80,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [AppColors.blue, AppColors.veryDarkBlue],
-              ),
-            ),
-            child: Center(
-              child: SvgPicture.asset(
-                AppImagePath.carIconPath,
-                width: 40,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.white,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
-          ),
-
+          CustomCarContainer(),
           const SizedBox(width: 16),
 
           /// info
@@ -56,10 +32,7 @@ class VehicleDetailCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  car.brand ?? "Unknown",
-                  style: AppStyle.boldTextStyle,
-                ),
+                Text(car.brand ?? "Unknown", style: AppStyle.boldTextStyle),
 
                 Text(
                   "${car.model ?? ""} • ${car.year ?? ""}",
@@ -80,10 +53,7 @@ class VehicleDetailCard extends StatelessWidget {
                   ),
                   child: const Text(
                     "Active",
-                    style: TextStyle(
-                      color: AppColors.green,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: AppColors.green, fontSize: 12),
                   ),
                 ),
 

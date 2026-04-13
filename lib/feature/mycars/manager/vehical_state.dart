@@ -9,7 +9,13 @@ class LoadingVehicalState extends VehicalState {}
 class SuccessVehicalState extends VehicalState {
   final String message;
   final List<VechicleModel> data;
+
   SuccessVehicalState({required this.data, required this.message});
+}
+
+class DeleteVehicalSuccessState extends VehicalState {
+  final String message;
+  DeleteVehicalSuccessState({required this.message});
 }
 
 class AddVehicalSuccessState extends VehicalState {

@@ -13,7 +13,33 @@ abstract class AppConstants {
   static const String selectVehicle = 'Select Vehicle';
   static const String carDetails = 'Car Details';
   static const String nickname = 'Nickname';
+  static const String removeVehicle = 'Remove Vehicle';
   static const String batteryHealth = 'battery Health';
+  static const String myDailyDriver = 'My Daily Driver';
+  static const String lastService = 'LAST SERVICE';
+  static const String editVehicle = 'EDIT VEHICLE';
+  static const String nextService = 'NEXT SERVICE';
+  static const String nextServiceDate = 'Apr 15, 2024';
+  static const String mileage = 'MILEAGE';
+  static const String runAIScan = 'Run AI Scan';
+  static const String updateYourVehicleHint =
+      'Keep your vehicle information up to date';
+  static const String runAIScanDescription =
+      'Diagnose issues with AI technology';
+  static const String bookMaintenance = 'Book Maintenance';
+  static const String bookMaintenanceDescription =
+      'Schedule service appointment';
+  static const String emergencyHelp = 'Emergency Help';
+  static const String viewMaintenanceHistory = 'View Maintenance History';
+  static const String viewMaintenanceHistoryDescription =
+      'See all past services and repairs';
+  static const String emergencyHelpDescription =
+      'Get immediate roadside assistance';
+  static const String lastServiceDate = 'Jan 15, 2024';
+  static const String removeVehicleTitle = 'Remove Vehicle';
+  static const String removeVehicleMessage =
+      'Are you sure you want to remove this vehicle from your garage? This action cannot be undone.';
+  static const String remove = 'Remove';
   static const String duplicateCarError =
       'A car with the same brand, model, and year already exists.';
   static const String year = 'Year';
@@ -28,6 +54,7 @@ abstract class AppConstants {
   static const String highlights = 'HIGHLIGHTS';
   static const String addToMyCars = 'Add to My Cars';
   static const String reviewDetails = 'REVIEW DETAILS';
+  static const String updateYourVehicle = 'UPDATE YOUR VEHICLE';
 
   static const String newLabel = 'New';
   static const String engine = 'Engine';
@@ -42,6 +69,8 @@ abstract class AppConstants {
   static const String seatingValue = '5 Passengers';
   static const String mpg = 'MPG';
   static const String mpgValue = '32 Combined';
+  static const String invalidMileage = 'Invalid mileage format';
+  static const String recentHistory = 'RECENT HISTORY';
   static const String highlight1 =
       'Advanced safety features including adaptive cruise control';
   static const String highlight2 = 'Spacious interior with premium cloth seats';
@@ -145,6 +174,7 @@ abstract class AppConstants {
   static const String faqEmergency = "What if I have an emergency?";
   static const String faqChangePassword = "How do I change my password?";
   static const String faqVehicleSecure = "Are my vehicle details secure?";
+  static const String carDeletedSuccessfully = "Vehicle deleted successfully!";
   static const String faqAiAccuracy = "How accurate is the AI diagnostic?";
   static const String contactSupport = "Contact Support";
   static const String about = "About DriveMate";
@@ -308,7 +338,6 @@ abstract class AppConstants {
   static const String findNearby = "Find Nearby Station ";
   static const String annual = "Annual Inspection";
   static const String viewDetails = "View Details";
-  static const String bookMaintenance = "Book Maintenance";
   static const String listView = "List View";
   static const String mapView = "Map View";
   static const String openNow = "Open Now";
@@ -501,7 +530,7 @@ abstract class AppConstants {
   static const String brandRequired = "Brand  *";
   static const String modelRequired = "Model  *";
   static const String yearRequired = "Year  *";
-  static const String plateNumberOptional = "Plate Number (Optional)";
+  static const String plateNumberOptional = "Plate Number *";
   static const String currentMileageOptional = "Current Mileage (Optional)";
   static const String modelHint = "e.g., Camry, Accord, X5";
   static const String plateNumberHint = "E.g., ABC-1234";

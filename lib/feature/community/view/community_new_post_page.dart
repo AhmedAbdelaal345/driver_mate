@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:driver_mate/core/helper/open_gallary.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
@@ -12,7 +13,6 @@ import 'package:driver_mate/feature/community/manager/community_post_manager/com
 import 'package:driver_mate/feature/community/view/widget/add_image_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CommunityNewPostPage extends StatefulWidget {
   const CommunityNewPostPage({super.key});
@@ -33,16 +33,6 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
     AppConstants.review,
     AppConstants.marketPlace,
   ];
-  final ImagePicker _picker = ImagePicker();
-  File? selectedImage;
-
-  Future<void> openGallery() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      selectedImage = File(image.path);
-    }
-  }
 
   int _selectedType = 0;
   static const int _maxChars = 1000;
@@ -206,7 +196,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                   const SizedBox(height: 6),
                   InkWell(
                     onTap: () {
-                      openGallery();
+                      OpenGallery.openGallery();
                     },
                     child: AddPhotoContainer(),
                   ),
@@ -219,13 +209,13 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
               padding: EdgeInsets.fromLTRB(horizontal, 8, horizontal, 12),
               child: ElevatedButton(
                 onPressed: _canPublish && !isLoading
-                    ? () {
+                    ? () async {
                         if (_formKey.currentState?.validate() ?? false) {
                           context.read<CommunityPostCubit>().createPost(
                             type: _postTypes[_selectedType],
                             title: _titleController.text.trim(),
                             description: _descriptionController.text.trim(),
-                            image: selectedImage,
+                            image: await OpenGallery.openGallery(),
                           );
                         }
                       }

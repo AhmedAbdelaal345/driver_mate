@@ -1,17 +1,22 @@
+
+import 'dart:io';
+
 class VechicleModel {
-  String? brand;
-  String? model;
-  int? year;
-  String? plateNumber;
-  double? millAge;
-  DateTime? date;
+  String brand;
+  String model;
+  int year;
+  String plateNumber;
+  File? image;
+  double millAge;
+  DateTime date;
   VechicleModel({
-    this.brand,
-    this.model,
-    this.year,
-    this.plateNumber,
-    this.millAge,
-    this.date,
+    required this.brand,
+    required this.model,
+    required this.year,
+    required this.plateNumber,
+    required this.millAge,
+    required this.date,
+    this.image,
   });
   Map<String, dynamic> toJson() {
     return {
@@ -20,7 +25,7 @@ class VechicleModel {
       "year": year,
       "plateNumber": plateNumber,
       "millAge": millAge,
-      "date": date?.toIso8601String(),
+      "date": date.toIso8601String(),
     };
   }
 
@@ -29,9 +34,12 @@ class VechicleModel {
       brand: json["brand"],
       model: json["model"],
       year: json["year"],
+      image: json["image"] != null ? File(json["image"]) : null,
       plateNumber: json["plateNumber"],
       millAge: json["millAge"],
-      date: json["date"] != null ? DateTime.parse(json["date"]) : null,
+      date: json["date"] != null
+          ? DateTime.parse(json["date"])
+          : DateTime.now(),
     );
   }
 }
