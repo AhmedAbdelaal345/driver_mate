@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:driver_mate/core/local/api_keys.dart';
 
 class ApiResponse {
   ApiResponse({
@@ -25,11 +26,11 @@ class ApiResponse {
 
     return ApiResponse(
       statusCode: response.statusCode ?? 0,
-      status: body['status'] ?? false,
-      message: body['message'] ?? '',
-      data: body['data'] ?? body['user'], // flexible
-      accessToken: body['accessToken'],
-      refreshToken: body['refreshToken'],
+      status: body[ApiKeys.status] ?? false,
+      message: body[ApiKeys.message] ?? '',
+      data: body[ApiKeys.data], // flexible
+      accessToken: body[ApiKeys.accessToken],
+      refreshToken: body[ApiKeys.refreshToken],
     );
   }
 
