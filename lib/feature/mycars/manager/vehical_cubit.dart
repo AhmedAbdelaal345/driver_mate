@@ -175,9 +175,7 @@ class VehicalCubit extends Cubit<VehicalState> {
       await loadCar();
     });
   }
-  
 
-  
   /// Optional: Method to check if car can be added before navigating to add page
   bool canAddVehicle({
     required String brand,
@@ -187,10 +185,12 @@ class VehicalCubit extends Cubit<VehicalState> {
     required double millAge,
     required DateTime date,
     File? image,
+    VehicleStatus status = VehicleStatus.active,
   }) {
     final tempVehicle = VechicleModel(
       brand: brand,
       model: model,
+      status: status,
       year: int.tryParse(year) ?? 0,
       plateNumber: plateNumber, // Empty for this check
       millAge: millAge,

@@ -1,12 +1,11 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
-import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
 import 'package:driver_mate/feature/mycars/view/widget/custom_car_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class VehicleDetailCard extends StatelessWidget {
   const VehicleDetailCard({super.key, required this.car});
@@ -24,7 +23,9 @@ class VehicleDetailCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// car icon
-          CustomCarContainer(),
+          car.image != null
+              ? CustomCarContainer(image: car.image!)
+              : CustomCarContainer(),
           const SizedBox(width: 16),
 
           /// info
@@ -32,12 +33,9 @@ class VehicleDetailCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(car.brand ?? "Unknown", style: AppStyle.boldTextStyle),
+                Text(car.brand, style: AppStyle.boldTextStyle),
 
-                Text(
-                  "${car.model ?? ""} • ${car.year ?? ""}",
-                  style: AppStyle.hintStyle,
-                ),
+                Text("${car.model} • ${car.year}", style: AppStyle.hintStyle),
 
                 const SizedBox(height: 8),
 
@@ -48,12 +46,27 @@ class VehicleDetailCard extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.green.withValues(alpha: 0.1),
+                    color: car.status == VehicleStatus.active
+                        ? AppColors.green.withValues(alpha: 0.1)
+                        : car.status == VehicleStatus.inactive
+                        ? AppColors.grey.withValues(alpha: 0.1)
+                        : AppColors.orange.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Text(
-                    "Active",
-                    style: TextStyle(color: AppColors.green, fontSize: 12),
+                  child: Text(
+                    car.status == VehicleStatus.active
+                        ? AppConstants.active
+                        : car.status == VehicleStatus.inactive
+                        ? AppConstants.inactive
+                        : AppConstants.inService,
+                    style: TextStyle(
+                      color: car.status == VehicleStatus.active
+                          ? AppColors.green
+                          : car.status == VehicleStatus.inactive
+                          ? AppColors.grey
+                          : AppColors.orange,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
 
@@ -61,14 +74,14 @@ class VehicleDetailCard extends StatelessWidget {
 
                 _buildServiceInfo(
                   Icons.calendar_today,
-                  "Mileage: ${car.millAge ?? 0}",
+                  "Mileage: ${car.millAge}",
                 ),
 
                 const SizedBox(height: 4),
 
                 _buildServiceInfo(
                   Icons.confirmation_number,
-                  "Plate: ${car.plateNumber ?? "-"}",
+                  "Plate: ${car.plateNumber}",
                   isNext: true,
                 ),
               ],

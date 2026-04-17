@@ -18,8 +18,9 @@ class AiChatCubit extends Cubit<AiChatState> {
     brand: "Toyota",
     model: "Camry",
     year: 2020,
+    status: VehicleStatus.active,
     millAge: 92000,
-    image:null ,
+    image: null,
     plateNumber: "ABC-123",
     date: DateTime(2020, 5, 20),
   );
@@ -56,6 +57,7 @@ class AiChatCubit extends Cubit<AiChatState> {
               VechicleModel(
                 brand: "Unknown",
                 model: "Unknown",
+                status: VehicleStatus.inactive,
                 year: 0,
                 millAge: 0,
                 image: vehicle?.image,

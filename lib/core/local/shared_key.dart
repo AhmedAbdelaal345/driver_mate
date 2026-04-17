@@ -4,6 +4,7 @@ abstract class SharedKey {
   static final String email = "email";
   static final String phone = "phone";
   static final String image = "image";
+  static final String accessToken = "access_token";
   //edit add vehical key
   static final String brand = "brand";
   static final String year = "year";

@@ -5,12 +5,16 @@ import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/core/widget/show_dialoge_widget.dart';
+import 'package:driver_mate/feature/home/view/wrapper_page.dart';
 import 'package:driver_mate/feature/languge/view/language_page.dart';
 import 'package:driver_mate/feature/maintance_history/manager/cubit/maintence_history_cubit.dart';
 import 'package:driver_mate/feature/maintance_history/manager/state/maintence_history_state.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
 import 'package:driver_mate/feature/notification/view/notification_settings_page.dart';
+import 'package:driver_mate/feature/profile/data/model/edit_profile_model.dart';
+import 'package:driver_mate/feature/profile/manager/change_password_manager/change_password_cubit.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_state.dart';
 import 'package:driver_mate/feature/profile/view/about_page.dart';
@@ -31,8 +35,19 @@ import 'package:driver_mate/feature/theme/view/theme_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<EditProfileCubit>().getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +60,7 @@ class ProfilePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              MyNavigation.navigateBack();
+              MyNavigation.navigateTo(WrapperPage(initialIndex: 2));
             },
             icon: const Icon(Icons.arrow_back_ios),
           ),
@@ -64,18 +79,26 @@ class ProfilePage extends StatelessWidget {
               SizedBox(height: SizeConfig.height(context) * 0.02),
               BlocBuilder<EditProfileCubit, EditProfileState>(
                 builder: (context, state) {
+                  EditProfileModel? profile;
+
                   if (state is SuccessEditProfile) {
+                    profile = state.data;
+                  } else if (state is UpdateProfileSuccess) {
+                    profile = state.data;
+                  }
+
+                  if (profile != null) {
                     return ProfileContainer(
-                      email: state.data.emailAddress,
-                      image: state.data.image,
-                      name: state.data.fullName,
+                      name: profile.fullName,
+                      email: profile.emailAddress,
+                      image: profile.image,
                       onPressed: () {
                         MyNavigation.navigateTo(
-                          BlocProvider.value(
-                            value: context.read<EditProfileCubit>(),
-                            child: const EditProfile(),
-                          ),
-                        );
+                        BlocProvider.value(
+                          value: context.read<EditProfileCubit>(),
+                          child: const EditProfile(),
+                        ),
+                      );
                       },
                     );
                   }
@@ -259,7 +282,12 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     DetailsContainerWidget(
                       onTap: () {
-                        MyNavigation.navigateTo(ChangePasswordPage());
+                        MyNavigation.navigateTo(
+                          BlocProvider(
+                            create: (context) => ChangePasswordCubit(),
+                            child: ChangePasswordPage(),
+                          ),
+                        );
                       },
                       title: AppConstants.changePassword,
                       subTitle: AppConstants.changeYourPassword,
@@ -321,7 +349,17 @@ class ProfilePage extends StatelessWidget {
                         isSvg: false,
                         icon: Icons.logout_outlined,
                         title: AppConstants.logout,
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ShowDialogWidget(
+                                title: AppConstants.confirmLogout,
+                                content: AppConstants.logoutConfirmation,
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ],

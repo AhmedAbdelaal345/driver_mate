@@ -1,5 +1,6 @@
-
 import 'dart:io';
+
+enum VehicleStatus { active, inService, inactive }
 
 class VechicleModel {
   String brand;
@@ -9,6 +10,8 @@ class VechicleModel {
   File? image;
   double millAge;
   DateTime date;
+  VehicleStatus status;
+
   VechicleModel({
     required this.brand,
     required this.model,
@@ -16,6 +19,7 @@ class VechicleModel {
     required this.plateNumber,
     required this.millAge,
     required this.date,
+    required this.status,
     this.image,
   });
   Map<String, dynamic> toJson() {
@@ -25,6 +29,8 @@ class VechicleModel {
       "year": year,
       "plateNumber": plateNumber,
       "millAge": millAge,
+      "image": image?.path,
+      "status": status.name,
       "date": date.toIso8601String(),
     };
   }
@@ -40,6 +46,10 @@ class VechicleModel {
       date: json["date"] != null
           ? DateTime.parse(json["date"])
           : DateTime.now(),
+      status: VehicleStatus.values.firstWhere(
+        (s) => s.name == json["status"],
+        orElse: () => VehicleStatus.inactive,
+      ),
     );
   }
 }

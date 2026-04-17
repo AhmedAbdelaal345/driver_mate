@@ -37,6 +37,7 @@ import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
 import 'package:driver_mate/feature/news/view/car_news_page.dart';
 import 'package:driver_mate/feature/notification/view/notification_page.dart';
+import 'package:driver_mate/feature/profile/data/model/edit_profile_model.dart';
 
 import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
@@ -272,11 +273,19 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(width: 8),
           BlocBuilder<EditProfileCubit, EditProfileState>(
             builder: (context, state) {
+              EditProfileModel? profile;
+
               if (state is SuccessEditProfile) {
+                profile = state.data;
+              } else if (state is UpdateProfileSuccess) {
+                profile = state.data;
+              }
+
+              if (profile != null) {
                 return SizedBox(
                   width: 50,
                   height: 50,
-                  child: ContainerForIcon(iconPath: state.data.image),
+                  child: ContainerForIcon(iconPath: profile.image),
                 );
               } else {
                 return SizedBox(

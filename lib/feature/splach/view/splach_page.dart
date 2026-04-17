@@ -1,5 +1,4 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
@@ -8,6 +7,7 @@ import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/home/view/wrapper_page.dart';
 import 'package:driver_mate/feature/splach/manager/cubit/splash_cubit.dart';
+import 'package:driver_mate/feature/splach/manager/cubit/splash_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,6 +32,7 @@ class _SplachPageView extends StatefulWidget {
 
 class _SplachPageViewState extends State<_SplachPageView> {
   late final AudioPlayer player;
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +51,7 @@ class _SplachPageViewState extends State<_SplachPageView> {
   }
 
   @override
-  dispose() {
+  void dispose() {
     // Dispose the audio player when the widget is removed from the widget tree.
     player.dispose();
     super.dispose();
@@ -58,14 +59,18 @@ class _SplachPageViewState extends State<_SplachPageView> {
 
   @override
   Widget build(BuildContext context) {
-    final AudioPlayer player = AudioPlayer();
-    player.play(AssetSource(""));
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashNavigateToLogin) {
-          MyNavigation.navigateTo(LoginPage());
+          // Use Navigator.pushReplacement to ensure proper navigation
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => LoginPage()),
+          );
         } else if (state is SplashNavigateToHome) {
-          MyNavigation.navigateTo(WrapperPage());
+          // Use Navigator.pushReplacement to ensure proper navigation
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => WrapperPage()),
+          );
         }
       },
       child: Scaffold(
@@ -85,8 +90,7 @@ class _SplachPageViewState extends State<_SplachPageView> {
           ),
           child: BlocBuilder<SplashCubit, SplashState>(
             builder: (context, state) {
-              final isStart =
-                  state is SplashAnimationStart ||
+              final isStart = state is SplashAnimationStart ||
                   state is SplashNavigateToLogin ||
                   state is SplashNavigateToHome;
 
@@ -122,19 +126,11 @@ class _SplachPageViewState extends State<_SplachPageView> {
                     duration: const Duration(seconds: 3),
                     curve: Curves.linear,
                     bottom: SizeConfig.height(context) * 0.1,
-
-                    // --- KEY CHANGE HERE ---
-                    // Start at -width (off-screen left) and move to 0 (visible)
                     left: isStart ? 0 : -SizeConfig.width(context),
-
-                    // We keep right null or fixed so the car doesn't stretch
                     width: SizeConfig.width(context),
-
-                    // -----------------------
                     child: Image.asset(
                       AppImagePath.carPath,
                       height: SizeConfig.height(context) * 0.18,
-                      // Use BoxFit.contain to ensure the car isn't distorted
                       fit: BoxFit.contain,
                     ),
                   ),

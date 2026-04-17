@@ -59,67 +59,70 @@ class _WrapperPageState extends State<WrapperPage> {
           create: (context) => CarDetailsCubit()..loadCarDetails(),
         ),
       ],
-      child: Scaffold(
-        body: IndexedStack(index: _currentIndex, children: _pages),
-        bottomNavigationBar: SafeArea(
-          bottom: true,
-          top: true,
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _currentIndex,
-            onTap: (index) => setState(() => _currentIndex = index),
-            backgroundColor: AppColors.white,
-            selectedItemColor: AppColors.cyanColor,
-            unselectedItemColor: AppColors.iconGrey,
-            selectedFontSize: AppFontSize.f12,
-            unselectedFontSize: AppFontSize.f11,
-            unselectedLabelStyle: const TextStyle(
-              overflow: TextOverflow.visible,
+      child: PopScope(
+        canPop: false,
+        child: Scaffold(
+          body: IndexedStack(index: _currentIndex, children: _pages),
+          bottomNavigationBar: SafeArea(
+            bottom: true,
+            top: true,
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: _currentIndex,
+              onTap: (index) => setState(() => _currentIndex = index),
+              backgroundColor: AppColors.white,
+              selectedItemColor: AppColors.cyanColor,
+              unselectedItemColor: AppColors.iconGrey,
+              selectedFontSize: AppFontSize.f12,
+              unselectedFontSize: AppFontSize.f11,
+              unselectedLabelStyle: const TextStyle(
+                overflow: TextOverflow.visible,
+              ),
+              selectedLabelStyle: const TextStyle(
+                overflow: TextOverflow.visible,
+                fontWeight: FontWeight.w600,
+              ),
+              showUnselectedLabels: true,
+              items: [
+                BottomNavigationBarItem(
+                  icon: _navIcon(AppImagePath.compassIconPath),
+                  activeIcon: _navIcon(
+                    AppImagePath.compassIconPath,
+                    active: true,
+                  ),
+                  label: AppConstants.explore, // موجودة عندك
+                ),
+                BottomNavigationBarItem(
+                  icon: _navIcon(AppImagePath.repboteIconPath),
+                  activeIcon: _navIcon(
+                    AppImagePath.repboteIconPath,
+                    active: true,
+                  ),
+                  label: 'AI Assistant', // لو عايزها constants ضيفها
+                ),
+                BottomNavigationBarItem(
+                  icon: _navIcon(AppImagePath.homeIconPath),
+                  activeIcon: _navIcon(AppImagePath.homeIconPath, active: true),
+                  label: 'Home', // لو عايزها constants ضيفها
+                ),
+                BottomNavigationBarItem(
+                  icon: _navIcon(AppImagePath.peopleIconPath),
+                  activeIcon: _navIcon(AppImagePath.peopleIconPath, active: true),
+                  label: 'Community', // لو عايزها constants ضيفها
+                ),
+                BottomNavigationBarItem(
+                  icon: _navIcon(AppImagePath.profileIconPath),
+                  activeIcon: _navIcon(
+                    AppImagePath.profileIconPath,
+                    active: true,
+                  ),
+                  label: 'Profile', // لو عايزها constants ضيفها
+                ),
+              ],
             ),
-            selectedLabelStyle: const TextStyle(
-              overflow: TextOverflow.visible,
-              fontWeight: FontWeight.w600,
-            ),
-            showUnselectedLabels: true,
-            items: [
-              BottomNavigationBarItem(
-                icon: _navIcon(AppImagePath.compassIconPath),
-                activeIcon: _navIcon(
-                  AppImagePath.compassIconPath,
-                  active: true,
-                ),
-                label: AppConstants.explore, // موجودة عندك
-              ),
-              BottomNavigationBarItem(
-                icon: _navIcon(AppImagePath.repboteIconPath),
-                activeIcon: _navIcon(
-                  AppImagePath.repboteIconPath,
-                  active: true,
-                ),
-                label: 'AI Assistant', // لو عايزها constants ضيفها
-              ),
-              BottomNavigationBarItem(
-                icon: _navIcon(AppImagePath.homeIconPath),
-                activeIcon: _navIcon(AppImagePath.homeIconPath, active: true),
-                label: 'Home', // لو عايزها constants ضيفها
-              ),
-              BottomNavigationBarItem(
-                icon: _navIcon(AppImagePath.peopleIconPath),
-                activeIcon: _navIcon(AppImagePath.peopleIconPath, active: true),
-                label: 'Community', // لو عايزها constants ضيفها
-              ),
-              BottomNavigationBarItem(
-                icon: _navIcon(AppImagePath.profileIconPath),
-                activeIcon: _navIcon(
-                  AppImagePath.profileIconPath,
-                  active: true,
-                ),
-                label: 'Profile', // لو عايزها constants ضيفها
-              ),
-            ],
           ),
+          // floatingActionButton: FloatActionButtonWidget(onPressed: () {}),
         ),
-        // floatingActionButton: FloatActionButtonWidget(onPressed: () {}),
       ),
     );
   }

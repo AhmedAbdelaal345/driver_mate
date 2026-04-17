@@ -26,10 +26,11 @@ class AuthRepo {
         endpoint: ApiConstants.registerEndpoint,
         isForm: false,
         data: {
-          ApiKeys.name: user.name,
+          ApiKeys.fullname: user.name,
           ApiKeys.email: user.email,
           ApiKeys.password: user.password,
-          ApiKeys.isAgreed: true,
+          ApiKeys.confirmPassword: user.password,
+          // ApiKeys.isAgreed: true,
         },
         isAuthorized: false,
       );
@@ -46,53 +47,36 @@ class AuthRepo {
     }
   }
 
-  Future<Either<ApiResponse, LoginResponse>> login({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      if (user == null) {
-        return Left(
-          ApiResponse(
-            statusCode: 500,
-            status: false,
-            message: "User not found",
-          ),
-        );
-      }
+  Future<Either<ApiResponse, ApiResponse>> login({
+  required String email,
+  required String password,
+}) async {
+  try {
+    final response = await apiHelper.postRequest(
+      isAuthorized: false,
+      endpoint: ApiConstants.loginEndpoint,
+      isForm: false,
+      data: {
+        ApiKeys.email: email,
+        ApiKeys.password: password,
+      },
+    );
 
-      if (email != user!.email || password != user!.password) {
-        return Left(
-          ApiResponse(
-            statusCode: 500,
-            status: false,
-            message: "Wrong email or password",
-          ),
-        );
-      }
-
-      ApiResponse response = await apiHelper.postRequest(
-        isAuthorized: false,
-        endpoint: ApiConstants.loginEndpoint,
-        data: {ApiKeys.email: email, ApiKeys.password: password},
-      );
-
-      if (response.accessToken != null && response.refreshToken != null) {
+    if (response.status == true) {
+      if (response.accessToken != null) {
         ApiConstants.accessToken = response.accessToken!;
+      }
+
+      if (response.refreshToken != null) {
         ApiConstants.refreshToken = response.refreshToken!;
       }
 
-      return Right(
-        LoginResponse(
-          status: response.status,
-          message: response.message,
-          accessToken: ApiConstants.accessToken,
-          refreshToken: ApiConstants.refreshToken,
-          user: user!,
-        ),
-      );
-    } catch (e) {
-      return Left(ApiResponse.fromError(e));
+      return Right(response);
+    } else {
+      return Left(response);
     }
+  } catch (e) {
+    return Left(ApiResponse.fromError(e));
   }
+}
 }

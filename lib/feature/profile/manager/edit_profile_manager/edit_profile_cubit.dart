@@ -6,8 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
   final EditProfileRepo repo;
+  String? selectedImage;
+
   EditProfileCubit({required this.repo}) : super(InitEditProfile()) {
-    loadProfile();
+    getUserData(); // single call — removed duplicate from initState
+  }
+
+  Future<void> getUserData() async {
+    emit(LoadingEditProfile());
+    try {
+      final EditProfileModel data = await repo.getProfile();
+      emit(SuccessEditProfile(message: AppConstants.fetchSuccess, data: data));
+    } catch (e) {
+      emit(ErrorEditProfile(error: e.toString()));
+    }
   }
 
   Future<void> changeUser({
@@ -18,51 +30,32 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }) async {
     emit(LoadingEditProfile());
     try {
-      final EditProfileModel data = await repo.changeProfile(
+      final current = await repo.getProfile();
+
+      final EditProfileModel updated = await repo.changeProfile(
         fullName: fullName,
         emailAddress: emailAddress,
         image: image,
         phoneNumber: phoneNumber,
+        accessToken: current.accessToken,
       );
-      repo.saveProfile(
-        name: fullName,
-        email: emailAddress,
-        phone: phoneNumber,
-        image: image,
-      );
+
+      selectedImage = null; // reset picked image after saving
+
       emit(
-        SuccessEditProfile(message: AppConstants.changedSuccefuly, data: data),
+        UpdateProfileSuccess(
+          message: AppConstants.changedSuccefuly,
+          data: updated,
+        ),
       );
-      loadProfile();
+      // ✅ Removed getUserData() — it would overwrite with stale server data
     } catch (e) {
       emit(ErrorEditProfile(error: e.toString()));
     }
   }
 
-  Future<void> getUserData() async {
-    emit(LoadingEditProfile());
-    try {
-      final EditProfileModel? data = await repo.getProfile();
-      if (data != null) {
-        emit(
-          SuccessEditProfile(
-            message: AppConstants.loadedSuccefully,
-            data: data,
-          ),
-        );
-      }
-    } catch (e) {
-      emit(ErrorEditProfile(error: e.toString()));
-    }
-  }
-
-  Future<void> loadProfile() async {
-    final data = await repo.getProfile();
-
-    if (data != null) {
-      emit(
-        SuccessEditProfile(message: AppConstants.loadedSuccefully, data: data),
-      );
-    }
+  void updateImage(String path) {
+    selectedImage = path;
+    emit(EditProfileImageChanged(path));
   }
 }

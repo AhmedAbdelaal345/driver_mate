@@ -17,31 +17,39 @@ class ApiHelper {
     return instance;
   }
 
-  Future<ApiResponse> postRequest({
-    required String endpoint,
-    Map<String, dynamic>? data,
-    bool isAuthorized = true,
-    bool isForm = true,
-  }) async {
-    try {
-      Response response = await dio.post(
-        endpoint,
-        data: isForm ? FormData.fromMap(data ?? {}) : data,
-        options: Options(
-          headers: {
-            if (isAuthorized)
-              ApiConstants.authorization: "Bearer${ApiConstants.accessToken}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
-        ),
-      );
-      return ApiResponse.fromResponse(response);
-    } on Exception catch (e) {
-      return ApiResponse.fromError(e);
-    }
-  }
+Future<ApiResponse> postRequest({
+  required String endpoint,
+  Map<String, dynamic>? data,
+  bool isAuthorized = true,
+  bool isForm = true,
+}) async {
+  try {
+    final body = isForm
+        ? FormData.fromMap(data ?? {})
+        : data;
 
+    final response = await dio.post(
+      endpoint,
+      data: body,
+      options: Options(
+        headers: {
+          if (isAuthorized)
+            ApiConstants.authorization:
+                "Bearer ${ApiConstants.accessToken}",
+
+          "Accept": "application/json",
+
+          if (!isForm)
+            "Content-Type": "application/json",
+        },
+      ),
+    );
+
+    return ApiResponse.fromResponse(response);
+  } catch (e) {
+    return ApiResponse.fromError(e);
+  }
+}
   Future<ApiResponse> getRequest({
     required String endpoint,
     Map<String, dynamic>? data,
@@ -55,7 +63,7 @@ class ApiHelper {
         options: Options(
           headers: {
             if (isAuthorized)
-              ApiConstants.authorization: "Bearer${ApiConstants.accessToken}",
+              ApiConstants.authorization: "Bearer ${ApiConstants.accessToken}",
           },
         ),
       );
@@ -78,7 +86,7 @@ class ApiHelper {
         options: Options(
           headers: {
             if (isAuthorized)
-              ApiConstants.authorization: "Bearer${ApiConstants.accessToken}",
+              ApiConstants.authorization: "Bearer ${ApiConstants.accessToken}",
           },
         ),
       );
@@ -101,7 +109,7 @@ class ApiHelper {
         options: Options(
           headers: {
             if (isAuthorized)
-              ApiConstants.authorization: "Bearer${ApiConstants.accessToken}",
+              ApiConstants.authorization: "Bearer ${ApiConstants.accessToken}",
           },
         ),
       );

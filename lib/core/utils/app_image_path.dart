@@ -1,4 +1,7 @@
 abstract class AppImagePath {
+  //-------------default image paths-------
+  static const String defaultProfileImagePath =
+      "https://cdn-icons-png.flaticon.com/512/149/149071.png";
   //------------- Asset Paths -------------
   static const String imagesPath = "assets/images/";
   static const String carPath = "${imagesPath}car.png";

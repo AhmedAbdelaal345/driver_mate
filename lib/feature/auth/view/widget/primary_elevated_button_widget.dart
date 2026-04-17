@@ -1,65 +1,78 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
-import 'package:driver_mate/core/utils/app_style.dart' show AppStyle;
+import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryElevatedButtonWidget extends StatelessWidget {
   const PrimaryElevatedButtonWidget({
     super.key,
-    this.formKey,
     required this.buttonText,
     required this.onPressed,
     this.padding,
     this.backgroundColor,
-    // <<< add color here
     this.icon,
+    this.width,
+    this.formKey,
+    this.height,
+    this.isExpanded = true,
   });
-
   final GlobalKey<FormState>? formKey;
   final String buttonText;
   final VoidCallback? onPressed;
   final EdgeInsetsGeometry? padding;
-  final Color? backgroundColor; // <<< added
-
+  final Color? backgroundColor;
   final IconData? icon;
-  PrimaryElevatedButtonWidget copyWith({
-    Key? key,
-    GlobalKey<FormState>? formKey,
-    String? buttonText,
-    VoidCallback? onPressed,
-    EdgeInsetsGeometry? padding,
-    Color? backgroundColor,
-  }) {
-    return PrimaryElevatedButtonWidget(
-      key: key ?? this.key,
-      formKey: formKey ?? this.formKey,
-      buttonText: buttonText ?? this.buttonText,
-      onPressed: onPressed ?? this.onPressed,
-      padding: padding ?? this.padding,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-    );
-  }
+
+  final double? width;
+  final double? height;
+  final bool isExpanded;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor ?? AppColors.darkBlue,
-        minimumSize: Size(double.infinity, SizeConfig.height(context) * 0.07),
-        padding: padding,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppFontSize.f8),
+    return SizedBox(
+      width: isExpanded ? (width ?? double.infinity) : width,
+      height: height ?? SizeConfig.height(context) * 0.06,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          padding:
+              padding ??
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          backgroundColor: backgroundColor ?? AppColors.darkBlue,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppFontSize.f8),
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: AppColors.white), // <<< added icon
-          SizedBox(width: 8), // <<< spacing between icon and text
-          Text(buttonText, style: AppStyle.buttonTextStyle),
-        ],
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icon != null) ...[
+                Icon(
+                  icon,
+                  size: 18,
+                  color: backgroundColor == AppColors.white
+                      ? AppColors.darkBlue
+                      : AppColors.white,
+                ),
+                const SizedBox(width: 6),
+              ],
+              Text(
+                buttonText,
+                overflow: TextOverflow.ellipsis,
+                style: AppStyle.buttonTextStyle.copyWith(
+                  color: backgroundColor == AppColors.white
+                      ? AppColors.darkBlue
+                      : AppColors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

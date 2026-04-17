@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/image_picker.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
@@ -28,12 +29,23 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final GlobalKey<FormState> key = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    context.read<EditProfileCubit>().loadProfile();
+    // ✅ Pre-fill controllers if data is already loaded — no double fetch
+    final state = context.read<EditProfileCubit>().state;
+    if (state is SuccessEditProfile) {
+      _fillControllers(state.data);
+    }
+    // No getUserData() call here — cubit constructor already fetched it
+  }
+
+  void _fillControllers(dynamic profile) {
+    fullNameController.text = profile.fullName;
+    emailController.text = profile.emailAddress;
+    phoneController.text = profile.phoneNumber;
   }
 
   @override
@@ -44,40 +56,74 @@ class _EditProfileState extends State<EditProfile> {
     super.dispose();
   }
 
-  String? imagePath;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: LeadingIcon(),
+        leading: const LeadingIcon(),
         title: Text(AppConstants.personalInfo, style: AppStyle.appBarTitle),
         centerTitle: true,
       ),
-      body: Form(
-        key: key,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsetsGeometry.all(16),
+      body: BlocListener<EditProfileCubit, EditProfileState>(
+        listener: (context, state) {
+          // ✅ Fill controllers when data loads (handles the async case)
+          if (state is SuccessEditProfile) {
+            _fillControllers(state.data);
+          }
+
+          if (state is UpdateProfileSuccess) {
+            AppNotifier.show(
+              context,
+              state.message,
+              type: NotifierType.success,
+            );
+            MyNavigation.navigateBack(); // single navigateBack — only here
+          }
+
+          if (state is ErrorEditProfile) {
+            AppNotifier.show(
+              context,
+              state.error,
+              type: NotifierType.error,
+            );
+          }
+        },
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
-                    // here we will add the fuctionality for take image
                     final picked = await ImagePickerHelper.pickImageAsString();
-
-                    if (picked != null) {
-                      setState(() {
-                        imagePath = picked;
-                      });
+                    if (picked != null && mounted) {
+                      context.read<EditProfileCubit>().updateImage(picked);
                     }
                   },
                   child: Column(
                     children: [
-                      StackWithContainerWidget(
-                        iconPath: imagePath ?? AppImagePath.profileIconPath,
-                        icon: Icons.camera_alt_outlined,
+                      // ✅ EditProfileImageChanged state now handled here
+                      BlocBuilder<EditProfileCubit, EditProfileState>(
+                        builder: (context, state) {
+                          final cubit = context.read<EditProfileCubit>();
+                          String imageToShow = AppImagePath.profileIconPath;
+
+                          if (cubit.selectedImage != null) {
+                            imageToShow = cubit.selectedImage!;
+                          } else if (state is SuccessEditProfile) {
+                            imageToShow = state.data.image;
+                          } else if (state is UpdateProfileSuccess) {
+                            imageToShow = state.data.image;
+                          }
+
+                          return StackWithContainerWidget(
+                            iconPath: imageToShow,
+                            icon: Icons.camera_alt_outlined,
+                          );
+                        },
                       ),
                       const SizedBox(height: 20),
                       Text(AppConstants.changeImage, style: AppStyle.mostText),
@@ -88,11 +134,10 @@ class _EditProfileState extends State<EditProfile> {
                 Container(
                   decoration: BoxDecorationWidget.customBoxDecoration(),
                   height: SizeConfig.height(context) * 0.4,
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
-
                     children: [
                       LabelTextWidget(title: AppConstants.fullName),
                       TextFormFieldWidget(
@@ -130,62 +175,33 @@ class _EditProfileState extends State<EditProfile> {
                           return null;
                         },
                       ),
-
-                      Text(
-                        AppConstants.weWillVerfiction,
-                        style: AppStyle.hintStyle,
-                      ),
+                      Text(AppConstants.weWillVerfiction, style: AppStyle.hintStyle),
                     ],
                   ),
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.015),
                 ContainerWidget(),
                 SizedBox(height: SizeConfig.height(context) * 0.015),
-                BlocConsumer<EditProfileCubit, EditProfileState>(
-                  listener: (context, state) {
-                    if (state is SuccessEditProfile) {
-                      /// fill fields with stored data
-                      fullNameController.text = state.data.fullName;
-                      emailController.text = state.data.emailAddress;
-                      phoneController.text = state.data.phoneNumber;
-                      imagePath = state.data.image;
-
-                      AppNotifier.show(
-                        context,
-                        state.message,
-                        type: NotifierType.success,
-                      );
-                    } else if (state is ErrorEditProfile) {
-                      AppNotifier.show(
-                        context,
-                        state.error,
-                        type: NotifierType.error,
+                BlocBuilder<EditProfileCubit, EditProfileState>(
+                  builder: (context, state) {
+                    if (state is LoadingEditProfile) {
+                      return const Center(
+                        child: CircularProgressIndicator(color: AppColors.darkBlue),
                       );
                     }
-                  },
-                  builder: (context, state) {
                     return PrimaryElevatedButtonWidget(
                       buttonText: AppConstants.save,
                       onPressed: () {
-                        if (key.currentState!.validate()) {
+                        if (_formKey.currentState!.validate()) {
                           final cubit = context.read<EditProfileCubit>();
-                          final state = cubit.state;
-
-                          if (state is SuccessEditProfile) {
-                            cubit.changeUser(
-                              fullName: fullNameController.text.isEmpty
-                                  ? state.data.fullName
-                                  : fullNameController.text,
-                              emailAddress: emailController.text.isEmpty
-                                  ? state.data.emailAddress
-                                  : emailController.text,
-                              phoneNumber: phoneController.text.isEmpty
-                                  ? state.data.phoneNumber
-                                  : phoneController.text,
-                              image: imagePath ?? state.data.image,
-                            );
-                            MyNavigation.navigateBack();
-                          }
+                          cubit.changeUser(
+                            fullName: fullNameController.text.trim(),
+                            emailAddress: emailController.text.trim(),
+                            phoneNumber: phoneController.text.trim(),
+                            image: cubit.selectedImage
+                                ?? AppImagePath.defaultProfileImagePath,
+                          );
+                          // ✅ No navigateBack() here — listener handles it
                         }
                       },
                     );

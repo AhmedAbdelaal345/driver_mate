@@ -16,11 +16,19 @@ abstract class AppConstants {
   static const String removeVehicle = 'Remove Vehicle';
   static const String batteryHealth = 'battery Health';
   static const String myDailyDriver = 'My Daily Driver';
+  static const String fetchSuccess = 'Data fetched successfully';
   static const String lastService = 'LAST SERVICE';
+  static const String currentPasswordRequired = 'Current password is required';
+  static const String newPasswordRequired = 'New password is required';
+  static const String confirmNewPasswordRequired = 'Confirm new password is required';
   static const String editVehicle = 'EDIT VEHICLE';
   static const String nextService = 'NEXT SERVICE';
+  static const String updateVehicle = 'UPDATE VEHICLE';
   static const String nextServiceDate = 'Apr 15, 2024';
   static const String mileage = 'MILEAGE';
+  static const String inactive = 'INACTIVE';
+  static const String confirmLogout = 'Confirm Logout';
+  static const String logoutConfirmation = 'Are you sure you want to logout?';
   static const String runAIScan = 'Run AI Scan';
   static const String updateYourVehicleHint =
       'Keep your vehicle information up to date';

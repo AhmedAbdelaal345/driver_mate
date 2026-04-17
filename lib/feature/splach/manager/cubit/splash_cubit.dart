@@ -1,8 +1,7 @@
-import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
-import 'package:equatable/equatable.dart';
+import 'package:driver_mate/core/local/shared_key.dart';
+import 'package:driver_mate/feature/splach/manager/cubit/splash_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-part 'splash_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashCubit extends Cubit<SplashState> {
   SplashCubit() : super(SplashInitial());
@@ -10,9 +9,12 @@ class SplashCubit extends Cubit<SplashState> {
   void startAnimation() {
     Future.delayed(const Duration(milliseconds: 500), () {
       emit(SplashAnimationStart());
+
       Future.delayed(const Duration(seconds: 3), () async {
-        final profile = await EditProfileRepo.instance.getProfile();
-        if (profile != null && profile.fullName.isNotEmpty) {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        final String? profile =  pref.getString(SharedKey.accessToken);
+
+        if (profile != null && profile.trim().isNotEmpty) {
           emit(SplashNavigateToHome());
         } else {
           emit(SplashNavigateToLogin());

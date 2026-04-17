@@ -6,8 +6,9 @@ import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_regexp.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
-import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_cubit.dart';
-import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_state.dart';
+import 'package:driver_mate/feature/auth/manager/auth/auth_cubit.dart';
+import 'package:driver_mate/feature/auth/manager/auth/auth_state.dart';
+import 'package:driver_mate/feature/auth/manager/forget_password/forget_password_cubit.dart';
 import 'package:driver_mate/feature/auth/view/forgot_password.dart';
 import 'package:driver_mate/feature/auth/view/register_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/divider_widget.dart';
@@ -139,7 +140,13 @@ class LoginPage extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   // Navigate to forgot password page
-                                  MyNavigation.navigateTo(ForgotPassword());
+                                  MyNavigation.navigateTo(
+                                    BlocProvider(
+                                      create: (context) =>
+                                          ForgetPasswordCubit(),
+                                      child: const ForgotPassword(),
+                                    ),
+                                  );
                                 },
                               ),
                             ),
@@ -151,34 +158,36 @@ class LoginPage extends StatelessWidget {
                             // implement listener
                             if (state is LoginAuthFailure) {
                               LocalNotificationService.basicNotification(
-                                  notificationId: "id:2",
-                                  id: 1,
-                                  title: "Login Failuor",
-                                  body: "There is  problem in login ❌"
-                                );
+                                notificationId: "id:2",
+                                id: 1,
+                                title: "Login Failuor",
+                                body: "There is  problem in login ❌",
+                              );
                               Fluttertoast.showToast(
                                 msg: state.errorMessage,
                                 gravity: ToastGravity.BOTTOM,
                                 textColor: AppColors.white,
                                 backgroundColor: AppColors.red,
                               );
+                              print(state.errorMessage.toString());
                             } else {
                               if (state is LoginAuthSuccess) {
                                 LocalNotificationService.basicNotification(
                                   notificationId: "id:1",
                                   id: 0,
                                   title: "Login Successfuly",
-                                  body: "You have Logined Successfully ✅"
+                                  body: "You have Logined Successfully ✅",
                                 );
                                 Fluttertoast.showToast(
-                                  msg: state.message,
+                                  msg: "Login Successfuly",
                                   gravity: ToastGravity.BOTTOM,
                                   textColor: AppColors.white,
                                   backgroundColor: AppColors.blue,
                                 );
+                                //  log(state.message);
                                 AuthCubit.get(context).clearControllers();
                                 // Process data.
-                                AuthCubit.get(context).resetState();
+                                // AuthCubit.get(context).resetState();
                                 MyNavigation.navigateTo(const WrapperPage());
                                 // AuthCubit.get(context).disposeControllers();
                               }

@@ -4,13 +4,11 @@ import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
+import 'package:driver_mate/feature/mycars/view/widget/custom_car_container.dart';
 import 'package:flutter/material.dart';
 
 class VehicleHeaderCard extends StatelessWidget {
-  const VehicleHeaderCard({
-    super.key,
-    required this.vehicle,
-  });
+  const VehicleHeaderCard({super.key, required this.vehicle});
 
   final VechicleModel vehicle;
 
@@ -24,10 +22,7 @@ class VehicleHeaderCard extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.veryDarkBlue,
-            AppColors.cyanColor,
-          ],
+          colors: [AppColors.veryDarkBlue, AppColors.cyanColor],
         ),
         borderRadius: BorderRadius.circular(AppFontSize.f16),
         boxShadow: [
@@ -48,11 +43,13 @@ class VehicleHeaderCard extends StatelessWidget {
               color: AppColors.white.withOpacity(0.2),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(
-              Icons.directions_car_rounded,
-              color: AppColors.white,
-              size: 32,
-            ),
+            child: vehicle.image != null
+                ? CustomCarContainer(image: vehicle.image!)
+                : const Icon(
+                    Icons.directions_car_rounded,
+                    color: AppColors.white,
+                    size: 32,
+                  ),
           ),
           const SizedBox(width: 16),
           // Vehicle Info
@@ -84,27 +81,51 @@ class VehicleHeaderCard extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.green.withOpacity(0.2),
+                    color: vehicle.status == VehicleStatus.active
+                        ? AppColors.green.withOpacity(0.2)
+                        : vehicle.status == VehicleStatus.inactive
+                        ? AppColors.grey.withOpacity(0.2)
+                        : AppColors.orange.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(
-                      color: AppColors.green,
+                      color: vehicle.status == VehicleStatus.active
+                          ? AppColors.green
+                          : vehicle.status == VehicleStatus.inactive
+                          ? AppColors.grey
+                          : AppColors.orange,
                       width: 1.5,
                     ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
-                        Icons.check_circle,
+                      Icon(
+                        vehicle.status == VehicleStatus.active
+                            ? Icons.check_circle
+                            : vehicle.status == VehicleStatus.inactive
+                            ? Icons.cancel
+                            : Icons.schedule,
                         size: 14,
-                        color: AppColors.green,
+                        color: vehicle.status == VehicleStatus.active
+                            ? AppColors.green
+                            : vehicle.status == VehicleStatus.inactive
+                            ? AppColors.grey
+                            : AppColors.orange,
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        AppConstants.active,
+                        vehicle.status == VehicleStatus.active
+                            ? AppConstants.active
+                            : vehicle.status == VehicleStatus.inactive
+                            ? AppConstants.inactive
+                            : AppConstants.inService,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f11,
-                          color: AppColors.green,
+                          color: vehicle.status == VehicleStatus.active
+                              ? AppColors.green
+                              : vehicle.status == VehicleStatus.inactive
+                              ? AppColors.grey
+                              : AppColors.orange,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -120,8 +141,8 @@ class VehicleHeaderCard extends StatelessWidget {
   }
 
   String _getVehicleTitle() {
-    final brand = (vehicle.brand ?? "").trim();
-    final model = (vehicle.model ?? "").trim();
+    final brand = (vehicle.brand).trim();
+    final model = (vehicle.model).trim();
     if (brand.isEmpty && model.isEmpty) {
       return AppConstants.yourVehicle;
     }
@@ -131,9 +152,6 @@ class VehicleHeaderCard extends StatelessWidget {
   }
 
   String _getVehicleSubtitle() {
-    if (vehicle.year == null) {
-      return AppConstants.model;
-    }
     return "${vehicle.year} ${AppConstants.model}";
   }
 }

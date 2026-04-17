@@ -1,3 +1,4 @@
+import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
@@ -6,8 +7,11 @@ import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/profile/manager/change_password_manager/change_password_cubit.dart';
+import 'package:driver_mate/feature/profile/manager/change_password_manager/change_password_state.dart';
 import 'package:driver_mate/feature/profile/view/widget/requirement_row_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -20,7 +24,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final TextEditingController _currentController = TextEditingController();
   final TextEditingController _newController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void dispose() {
     _currentController.dispose();
@@ -49,103 +53,162 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             horizontal: SizeConfig.width(context) * 0.05,
             vertical: SizeConfig.height(context) * 0.015,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecorationWidget.customBoxDecoration(
-                  borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppConstants.currentPassword,
-                      style: AppStyle.labelStyle,
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormFieldWidget(
-                      hintText: AppConstants.enterCurrentPassword,
-                      isPassword: true,
-                      controller: _currentController,
-                      validator: (value) => null,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(AppConstants.newPassword, style: AppStyle.labelStyle),
-                    const SizedBox(height: 8),
-                    TextFormFieldWidget(
-                      hintText: AppConstants.enterNewPassword,
-                      isPassword: true,
-                      controller: _newController,
-                      validator: (value) => null,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      AppConstants.confirmNewPassword,
-                      style: AppStyle.labelStyle,
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormFieldWidget(
-                      hintText: AppConstants.reEnterNewPassword,
-                      isPassword: true,
-                      controller: _confirmController,
-                      validator: (value) => null,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: SizeConfig.height(context) * 0.02),
-              Text(
-                AppConstants.passwordRequirements,
-                style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.iconGrey,
-                  fontSize: AppFontSize.f11,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecorationWidget.customBoxDecoration(
-                  borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.containerGrey),
-                child: Column(
-                  children: const [
-                    RequirementRow(text: AppConstants.requirementLength),
-                    RequirementRow(text: AppConstants.requirementUppercase),
-                    RequirementRow(text: AppConstants.requirementLowercase),
-                    RequirementRow(text: AppConstants.requirementNumber),
-                  ],
-                ),
-              ),
-              SizedBox(height: SizeConfig.height(context) * 0.02),
-              ElevatedButton.icon(
-                onPressed: null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.boarderWhiteColor,
-                  disabledBackgroundColor: AppColors.boarderWhiteColor,
-                  padding: EdgeInsets.symmetric(
-                    vertical: SizeConfig.height(context) * 0.018,
-                  ),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppFontSize.f12),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecorationWidget.customBoxDecoration(
+                    borderRadius: AppFontSize.f12,
+                  ).copyWith(color: AppColors.white),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppConstants.currentPassword,
+                        style: AppStyle.labelStyle,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormFieldWidget(
+                        hintText: AppConstants.enterCurrentPassword,
+                        isPassword: true,
+                        controller: _currentController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppConstants.currentPasswordRequired;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        AppConstants.newPassword,
+                        style: AppStyle.labelStyle,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormFieldWidget(
+                        hintText: AppConstants.enterNewPassword,
+                        isPassword: true,
+                        controller: _newController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppConstants.newPasswordRequired;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        AppConstants.confirmNewPassword,
+                        style: AppStyle.labelStyle,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormFieldWidget(
+                        hintText: AppConstants.reEnterNewPassword,
+                        isPassword: true,
+                        controller: _confirmController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppConstants.confirmNewPasswordRequired;
+                          }
+                          if (value != _newController.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                icon: const Icon(
-                  Icons.lock_outline,
-                  color: AppColors.iconGrey,
-                  size: 18,
-                ),
-                label: Text(
-                  AppConstants.saveChanges,
-                  style: AppStyle.boldSmallText.copyWith(
+                SizedBox(height: SizeConfig.height(context) * 0.02),
+                Text(
+                  AppConstants.passwordRequirements,
+                  style: AppStyle.containerSubtitle.copyWith(
                     color: AppColors.iconGrey,
-                    fontSize: AppFontSize.f13,
+                    fontSize: AppFontSize.f11,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecorationWidget.customBoxDecoration(
+                    borderRadius: AppFontSize.f12,
+                  ).copyWith(color: AppColors.containerGrey),
+                  child: Column(
+                    children: const [
+                      RequirementRow(text: AppConstants.requirementLength),
+                      RequirementRow(text: AppConstants.requirementUppercase),
+                      RequirementRow(text: AppConstants.requirementLowercase),
+                      RequirementRow(text: AppConstants.requirementNumber),
+                    ],
+                  ),
+                ),
+                SizedBox(height: SizeConfig.height(context) * 0.02),
+                BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
+                  listener: (context, state) {
+                    if (state is ChangePasswordErrorState) {
+                      AppNotifier.show(
+                        context,
+                        type: NotifierType.error,
+                        state.errorMessage,
+                      );
+                    }
+                    if (state is ChangePasswordSuccessState) {
+                      AppNotifier.show(
+                        context,
+                        type: NotifierType.success,
+                        "Password changed successfully",
+                      );
+                      Navigator.pop(context);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is ChangePasswordLoadingState) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.darkBlue,
+                        ),
+                      );
+                    }
+                    return ElevatedButton.icon(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<ChangePasswordCubit>().changePassword(
+                            _currentController.text,
+                            _newController.text,
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.boarderWhiteColor,
+                        disabledBackgroundColor: AppColors.boarderWhiteColor,
+                        padding: EdgeInsets.symmetric(
+                          vertical: SizeConfig.height(context) * 0.018,
+                        ),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppFontSize.f12),
+                        ),
+                      ),
+                      icon: const Icon(
+                        Icons.lock_outline,
+                        color: AppColors.iconGrey,
+                        size: 18,
+                      ),
+                      label: Text(
+                        AppConstants.saveChanges,
+                        style: AppStyle.boldSmallText.copyWith(
+                          color: AppColors.iconGrey,
+                          fontSize: AppFontSize.f13,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

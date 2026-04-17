@@ -1,4 +1,5 @@
-part of 'splash_cubit.dart';
+
+import 'package:equatable/equatable.dart';
 
 sealed class SplashState extends Equatable {
   const SplashState();

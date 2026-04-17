@@ -1,23 +1,28 @@
+import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/stack_with_container_widget.dart';
+import 'package:driver_mate/feature/auth/manager/otp/otp_cubit.dart';
+import 'package:driver_mate/feature/auth/manager/otp/otp_state.dart';
 import 'package:driver_mate/feature/auth/view/confirm_password_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/check_textfield_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CheckYourEmail extends StatefulWidget {
-  const CheckYourEmail({super.key, required this.email});
+class CheckYourOTP extends StatefulWidget {
+  const CheckYourOTP({super.key, required this.email});
   final String email;
 
   @override
-  State<CheckYourEmail> createState() => _CheckYourEmailState();
+  State<CheckYourOTP> createState() => _CheckYourOTPState();
 }
 
-class _CheckYourEmailState extends State<CheckYourEmail> {
+class _CheckYourOTPState extends State<CheckYourOTP> {
   final List<TextEditingController> _codeControllers = List.generate(
     5,
     (index) => TextEditingController(),
@@ -63,7 +68,7 @@ class _CheckYourEmailState extends State<CheckYourEmail> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
 
                 Text(
-                  "We sent a 6-digit code to your email",
+                  "We sent a 5-digit code to your email",
                   style: AppStyle.hintStyle,
                 ),
 
@@ -98,13 +103,46 @@ class _CheckYourEmailState extends State<CheckYourEmail> {
 
                 SizedBox(height: 0.06 * SizeConfig.height(context)),
 
-                PrimaryElevatedButtonWidget(
-                  formKey: formKey,
-                  buttonText: AppConstants.verifyCode,
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
+                BlocConsumer<OtpCubit, OtpState>(
+                  listener: (context, state) {
+                    // TODO: implement listener
+                    if (state is OtpSuccessState) {
+                      AppNotifier.show(
+                        context,
+                        state.message,
+                        type: NotifierType.success,
+                      );
                       MyNavigation.navigateTo(ConfirmPasswordPage());
+                    } else if (state is OtpErrorState) {
+                      AppNotifier.show(
+                        context,
+                        state.error,
+                        type: NotifierType.error,
+                      );
                     }
+                  },
+                  builder: (context, state) {
+                    if (state is OtpLoadingState) {
+                      return const CircularProgressIndicator(
+                        backgroundColor: AppColors.darkBlue,
+                      );
+                    }
+                    return PrimaryElevatedButtonWidget(
+                      formKey: formKey,
+                      buttonText: AppConstants.verifyCode,
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          String otp = _codeControllers
+                              .map((controller) => controller.text)
+                              .join();
+                          BlocProvider.of<OtpCubit>(context).postOTP(
+                            widget.email,
+                            otp,
+                            "123456789", // TODO: replace with actual new password
+                          );
+                        }
+                      },
+                    );
                   },
                 ),
 

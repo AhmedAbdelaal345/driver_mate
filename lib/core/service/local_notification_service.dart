@@ -59,7 +59,7 @@ class LocalNotificationService {
         importance: Importance.high,
         priority: Priority.high,
         sound: RawResourceAndroidNotificationSound(
-          "assets/audio/splash.mp3".split(".").first,
+          "android/app/src/main/res/raw/splash.mp3".split(".").first,
         ),
       ),
     );

@@ -16,6 +16,7 @@ import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
 import 'package:driver_mate/feature/mycars/view/vehicle_added_success_page.dart';
 import 'package:driver_mate/feature/mycars/view/widget/delete_vehicle_widget.dart';
+import 'package:driver_mate/feature/mycars/view/widget/vehicle_status_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -178,19 +179,22 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
     return brandModels[_selectedBrand] ?? ['Other'];
   }
 
+  VehicleStatus selectedStatus = VehicleStatus.active;
   @override
   void initState() {
     super.initState();
 
     final cubit = VehicalCubit.get(context);
+    if (widget.vehicle != null) {
+      selectedStatus = widget.vehicle!.status;
+    }
 
     if (widget.isEditPage && widget.vehicle != null) {
       _selectedBrand = widget.vehicle!.brand;
       _selectedModel = widget.vehicle!.model;
       _selectedYear = widget.vehicle!.year;
-
-      cubit.brandController.text = widget.vehicle!.brand ?? "";
-      cubit.modelController.text = widget.vehicle!.model ?? "";
+      cubit.brandController.text = widget.vehicle!.brand;
+      cubit.modelController.text = widget.vehicle!.model;
       cubit.yearController.text = widget.vehicle!.year.toString();
       cubit.plateController.text = widget.vehicle!.plateNumber;
       cubit.mileageController.text = widget.vehicle!.millAge.toString();
@@ -563,7 +567,57 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         },
                       ),
                       const SizedBox(height: 14),
+                      _FieldLabel(text: AppConstants.vehicleStatus),
+                      const SizedBox(height: 8),
+                      Column(
+                        children: [
+                          VehicleStatusCard(
+                            title: "Active",
+                            subtitle: "Vehicle is in regular use",
+                            icon: Icons.check_circle_outline,
+                            color: AppColors.green,
+                            isSelected: selectedStatus == VehicleStatus.active,
+                            onTap: () {
+                              setState(() {
+                                selectedStatus = VehicleStatus.active;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 12),
+
+                          VehicleStatusCard(
+                            title: "In Service",
+                            subtitle: "Currently at service center",
+                            icon: Icons.access_time,
+                            color: AppColors.orange,
+                            isSelected:
+                                selectedStatus == VehicleStatus.inService,
+                            onTap: () {
+                              setState(() {
+                                selectedStatus = VehicleStatus.inService;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 12),
+
+                          VehicleStatusCard(
+                            title: "Inactive",
+                            subtitle: "Not currently in use",
+                            icon: Icons.block,
+                            color: AppColors.iconGrey,
+                            isSelected:
+                                selectedStatus == VehicleStatus.inactive,
+                            onTap: () {
+                              setState(() {
+                                selectedStatus = VehicleStatus.inactive;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                       //here
+                      const SizedBox(height: 14),
+
                       InkWell(
                         onTap: () {
                           selectedImage = OpenGallery.openGallery();
@@ -580,6 +634,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                                     image: await selectedImage,
                                     brand: cubit.brandController.text,
                                     model: cubit.modelController.text,
+                                    status: selectedStatus,
                                     year:
                                         int.tryParse(
                                           cubit.yearController.text,
@@ -620,6 +675,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                               image: await selectedImage,
                               brand: cubit.brandController.text,
                               model: cubit.modelController.text,
+                              status: selectedStatus,
                               year:
                                   int.tryParse(cubit.yearController.text) ?? 0,
                               plateNumber: cubit.plateController.text,
@@ -654,7 +710,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           ),
                         ),
                         child: Text(
-                          AppConstants.addVehicle,
+                          widget.isEditPage ? AppConstants.updateVehicle : AppConstants.addVehicle,
                           style: AppStyle.boldSmallText.copyWith(
                             color: AppColors.white,
                             fontSize: AppFontSize.f13,

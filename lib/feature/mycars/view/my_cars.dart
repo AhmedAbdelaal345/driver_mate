@@ -6,6 +6,7 @@ import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/car_details/view/car_details_page.dart';
+import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
@@ -63,7 +64,6 @@ class MyCars extends StatelessWidget {
 
           if (state is SuccessVehicalState) {
             final cars = state.data; // list of cars
-
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: CustomScrollView(
@@ -76,8 +76,18 @@ class MyCars extends StatelessWidget {
                         const SizedBox(height: 10),
                         CustomContainerBar(
                           numberOfAllVehical: cars.length.toString(),
-                          numOfActive: cars.length.toString(),
-                          numOfInService: "0",
+                          numOfActive: cars
+                              .where(
+                                (car) => car.status == VehicleStatus.active,
+                              )
+                              .length
+                              .toString(),
+                          numOfInService: cars
+                              .where(
+                                (car) => car.status == VehicleStatus.inService,
+                              )
+                              .length
+                              .toString(),
                         ),
                         const SizedBox(height: 24),
                         Text(

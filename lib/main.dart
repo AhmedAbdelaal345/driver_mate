@@ -9,7 +9,7 @@ import 'package:driver_mate/core/utils/app_fonts.dart';
 import 'package:driver_mate/core/utils/app_routes.dart';
 import 'package:driver_mate/feature/ai/data/repo/ai_diagnosis_response_repo.dart';
 import 'package:driver_mate/feature/ai/manager/cubit/ai_diagnosis_response_cubit.dart';
-import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_cubit.dart';
+import 'package:driver_mate/feature/auth/manager/auth/auth_cubit.dart';
 import 'package:driver_mate/feature/auth/view/confirm_password_page.dart';
 import 'package:driver_mate/feature/auth/view/forgot_password.dart';
 import 'package:driver_mate/feature/auth/view/login_page.dart';
@@ -28,9 +28,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Future.wait([
+  await Future.wait([
     LocalNotificationService.initialize(),
     WorkManagerService().init(),
   ]);

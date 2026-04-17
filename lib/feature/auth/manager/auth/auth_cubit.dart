@@ -1,8 +1,11 @@
 import 'package:dartz/dartz.dart';
+import 'package:driver_mate/core/local/api_keys.dart';
 import 'package:driver_mate/core/network/api_response.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_routes.dart';
 import 'package:driver_mate/feature/auth/data/model/auth_model.dart';
 import 'package:driver_mate/feature/auth/data/repo/auth_repo.dart';
-import 'package:driver_mate/feature/auth/manager/auth_cubit/auth_state.dart';
+import 'package:driver_mate/feature/auth/manager/auth/auth_state.dart';
 import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,9 +39,22 @@ class AuthCubit extends Cubit<AuthState> {
         email: emailController.text,
         phone: "01000000000",
         image: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+        accessToken: "",
       );
       emit(RegisterAuthSuccess(message: success));
     });
+  }
+
+  Future<void> logout(BuildContext context) async {
+    await EditProfileRepo.instance.clearProfile();
+
+    clearControllers();
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutes.loginPage,
+      (route) => false,
+    );
   }
 
   void clearControllers() {
@@ -64,26 +80,41 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthInitial());
   }
 
-  void onLoginPress() async {
-    emit(LoginAuthLoading());
-    Either<ApiResponse, LoginResponse> response = await authRepo.login(
+ Future<void> onLoginPress() async {
+  print("STEP 1: start login");
+  emit(LoginAuthLoading());
+
+  try {
+    final response = await authRepo.login(
       email: emailController.text,
       password: passwordController.text,
     );
+
+    print("STEP 2: response returned");
+
     response.fold(
-      (l) {
-        emit(LoginAuthFailure(l.message.toString()));
+      (failure) {
+        print("STEP 3: failure => ${failure.message}");
+        emit(LoginAuthFailure(failure.message));
       },
-      (userModel) {
-        // Save user data to shared preferences for EditProfileCubit to use
-        EditProfileRepo.instance.saveProfile(
-          name: userModel.user.name,
-          email: userModel.user.email,
-          phone: "01000000000", // Default or fetch real phone if available
-          image: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+      (success) async {
+        print("STEP 4: success");
+
+        await EditProfileRepo.instance.saveProfile(
+          name: success.data[ApiKeys.fullname] ?? "Unknown",
+          email: success.data[ApiKeys.email],
+          phone: "01000000000",
+          image: AppImagePath.defaultProfileImagePath,
+          accessToken: success.data[ApiKeys.accessToken] ?? "",
         );
-        emit(LoginAuthSuccess(message: userModel.message.toString()));
+
+        print("STEP 5: saved");
+
+        emit(LoginAuthSuccess(message: success.message));
       },
     );
+  } catch (e) {
+    print("STEP ERROR: $e");
+    emit(LoginAuthFailure(e.toString()));
   }
-}
+}}

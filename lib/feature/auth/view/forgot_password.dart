@@ -1,4 +1,6 @@
+import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
@@ -6,11 +8,15 @@ import 'package:driver_mate/core/utils/app_regexp.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/container_icon.dart';
-import 'package:driver_mate/feature/auth/view/check_your_password.dart';
+import 'package:driver_mate/feature/auth/manager/forget_password/forget_password_cubit.dart';
+import 'package:driver_mate/feature/auth/manager/forget_password/forget_password_state.dart';
+import 'package:driver_mate/feature/auth/manager/otp/otp_cubit.dart';
+import 'package:driver_mate/feature/auth/view/check_your_OTP.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -27,6 +33,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   void initState() {
     emailController = TextEditingController();
     formKey = GlobalKey<FormState>();
+
     super.initState();
   }
 
@@ -98,18 +105,58 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 },
               ),
               SizedBox(height: SizeConfig.height(context) * 0.07),
-              PrimaryElevatedButtonWidget(
-                formKey: formKey,
-                onPressed: () {
-                  final FormState form = formKey.currentState as FormState;
-                  if (form.validate()) {
-                    // Implement your forgot password logic here
-                    MyNavigation.navigateTo(
-                      CheckYourEmail(email: emailController.text.trim()),
+              Flexible(
+                child: BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
+                  listener: (context, state) {
+                    // TODO: implement listener
+                    if (state is ForgetPasswordSuccessState) {
+                      AppNotifier.show(
+                        context,
+                        state.message,
+                        type: NotifierType.success,
+                      );
+                      MyNavigation.navigateTo(
+                        BlocProvider(
+                          create: (context) => OtpCubit(),
+                          child: CheckYourOTP(
+                            email: emailController.text.trim(),
+                          ),
+                        ),
+                      );
+                    } else if (state is ForgetPasswordErrorState) {
+                      AppNotifier.show(
+                        context,
+                        state.error,
+                        type: NotifierType.error,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is ForgetPasswordLoadingState) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.darkBlue,
+                        ),
+                      );
+                    }
+                    return PrimaryElevatedButtonWidget(
+                      formKey: formKey,
+                      onPressed: () {
+                        final FormState form =
+                            formKey.currentState as FormState;
+
+                        if (form.validate()) {
+                          // Implement your forgot password logic here
+
+                          context.read<ForgetPasswordCubit>().forgetPassword(
+                            emailController.text.trim(),
+                          );
+                        }
+                      },
+                      buttonText: AppConstants.continu,
                     );
-                  }
-                },
-                buttonText: AppConstants.continu,
+                  },
+                ),
               ),
             ],
           ),

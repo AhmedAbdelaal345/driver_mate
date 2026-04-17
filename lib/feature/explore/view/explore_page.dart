@@ -2,7 +2,9 @@ import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
+import 'package:driver_mate/feature/car_details/view/car_details_page.dart';
 import 'package:driver_mate/feature/explore/data/explore_filter.dart';
+import 'package:driver_mate/feature/explore/data/model/explore_model.dart';
 import 'package:driver_mate/feature/explore/view/explore_search_page.dart';
 import 'package:driver_mate/feature/explore/view/widget/custom_car_slider.dart';
 import 'package:driver_mate/feature/explore/view/widget/custom_category_chips.dart';
@@ -110,16 +112,26 @@ class _ExplorePageState extends State<ExplorePage> {
         return [
           const CustomSectionHeader(title: AppConstants.featuredCars),
           const SizedBox(height: 16),
-          CustomCarSlider(filter: _filter),
+          CustomCarSlider(
+            filter: _filter,
+            onViewDetails: (CarItem carItem) {
+              MyNavigation.navigateTo(
+                CarDetailsPage(
+                  carName: carItem.title,
+                  carYear: carItem.subtitle,
+                  carType: carItem.category,
+                  carDescription: carItem.details,
+                  carImagePath: carItem.image,
+                  isNew: carItem.isNew,
+                ),
+              );
+            },
+          ),
         ];
       case 'Maintenance':
-        return [
-          CustomMaintenanceList(filter: _filter),
-        ];
+        return [CustomMaintenanceList(filter: _filter)];
       case 'Tips':
-        return [
-          const CustomTipsFeed(),
-        ];
+        return [const CustomTipsFeed()];
       case 'All':
       default:
         return [

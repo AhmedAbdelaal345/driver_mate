@@ -4,7 +4,11 @@ import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/emergency/view/emergency_assistance_page.dart';
+import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
+import 'package:driver_mate/feature/maintance_history/view/maintance_history.dart';
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
 
@@ -39,10 +43,9 @@ class DailyCarDetailsPage extends StatelessWidget {
             IconButton(
               onPressed: () {
                 // TODO: Navigate to edit vehicle
-                MyNavigation.navigateTo(AddVehiclePage(
-                  isEditPage: true,
-                  vehicle: vehicle,
-                ));
+                MyNavigation.navigateTo(
+                  AddVehiclePage(isEditPage: true, vehicle: vehicle),
+                );
               },
               icon: const Icon(Icons.edit_outlined, color: AppColors.iconGrey),
             ),
@@ -198,6 +201,7 @@ class _QuickActionsSection extends StatelessWidget {
           trailing: Icons.show_chart,
           onTap: () {
             // TODO: Navigate to AI Scan
+            MyNavigation.navigateTo(const AiVoiceDiagnosisPage());
           },
         ),
         const SizedBox(height: 12),
@@ -209,6 +213,7 @@ class _QuickActionsSection extends StatelessWidget {
           trailing: Icons.build_outlined,
           onTap: () {
             // TODO: Navigate to Book Maintenance
+            MyNavigation.navigateTo(const BookMaintenancePage());
           },
         ),
         const SizedBox(height: 12),
@@ -220,6 +225,7 @@ class _QuickActionsSection extends StatelessWidget {
           trailing: Icons.warning_amber_outlined,
           onTap: () {
             // TODO: Navigate to Emergency Help
+            MyNavigation.navigateTo(const EmergencyAssistancePage());
           },
         ),
         const SizedBox(height: 12),
@@ -231,6 +237,7 @@ class _QuickActionsSection extends StatelessWidget {
           trailing: Icons.description_outlined,
           onTap: () {
             // TODO: Navigate to Full Maintenance History
+            MyNavigation.navigateTo(const MaintenanceHistory());
           },
         ),
       ],
