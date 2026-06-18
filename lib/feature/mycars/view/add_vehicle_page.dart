@@ -4,8 +4,9 @@ import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/helper/open_gallary.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -151,7 +152,7 @@ const Map<String, List<String>> brandModels = {
   'Tesla': ['Model 3', 'Model S', 'Model X', 'Model Y', 'Cybertruck', 'Other'],
   'Other': ['Other'],
 };
-late Future<File?> selectedImage;
+ Future<File?>? selectedImage;
 
 class AddVehiclePage extends StatefulWidget {
   const AddVehiclePage({super.key, this.isEditPage = false, this.vehicle});
@@ -230,8 +231,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                 centerTitle: true,
                 title: Text(
                   widget.isEditPage
-                      ? AppConstants.editVehicle
-                      : AppConstants.addVehicle,
+                      ? AppStrings.of(context).editVehicle
+                      : AppStrings.of(context).addVehicle,
                   style: AppStyle.appBarTitle,
                 ),
                 leading: const LeadingIcon(),
@@ -248,7 +249,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration:
-                            BoxDecorationWidget.customBoxDecoration(
+                            BoxDecorationWidget.customBoxDecoration(context,
                               borderRadius: AppFontSize.f12,
                             ).copyWith(
                               gradient: LinearGradient(
@@ -282,8 +283,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                                 children: [
                                   Text(
                                     widget.isEditPage
-                                        ? AppConstants.updateYourVehicle
-                                        : AppConstants.registerVehicle,
+                                        ? AppStrings.of(context).updateYourVehicle
+                                        : AppStrings.of(context).registerVehicle,
                                     style: AppStyle.boldSmallText.copyWith(
                                       color: AppColors.white,
                                       fontSize: AppFontSize.f13,
@@ -292,8 +293,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                                   const SizedBox(height: 2),
                                   Text(
                                     widget.isEditPage
-                                        ? AppConstants.updateYourVehicleHint
-                                        : AppConstants.registerVehicleHint,
+                                        ? AppStrings.of(context).updateYourVehicleHint
+                                        : AppStrings.of(context).registerVehicleHint,
                                     style: AppStyle.containerSubtitle.copyWith(
                                       color: AppColors.white.withValues(
                                         alpha: 0.9,
@@ -308,12 +309,12 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         ),
                       ),
                       SizedBox(height: SizeConfig.height(context) * 0.02),
-                      _FieldLabel(text: AppConstants.brandRequired),
+                      _FieldLabel(text: AppStrings.of(context).brandRequired),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
                         initialValue: _selectedBrand,
                         decoration: InputDecoration(
-                          hintText: "Select Brand",
+                          hintText: AppStrings.of(context).selectBrand,
                           hintStyle: AppStyle.hintStyle,
                           filled: true,
                           fillColor: AppColors.white,
@@ -359,20 +360,20 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return AppConstants.youMust;
+                            return AppStrings.of(context).youMust;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 14),
-                      _FieldLabel(text: AppConstants.modelRequired),
+                      _FieldLabel(text: AppStrings.of(context).modelRequired),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
                         initialValue: _selectedModel,
                         decoration: InputDecoration(
                           hintText: _selectedBrand == null
-                              ? "Select Brand First"
-                              : "Select Model",
+                              ? AppStrings.of(context).selectBrandFirst
+                              : AppStrings.of(context).selectModel,
                           hintStyle: AppStyle.hintStyle,
                           filled: true,
                           fillColor: AppColors.white,
@@ -418,18 +419,18 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                               },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return AppConstants.youMust;
+                            return AppStrings.of(context).youMust;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 14),
-                      _FieldLabel(text: AppConstants.yearRequired),
+                      _FieldLabel(text: AppStrings.of(context).yearRequired),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<int>(
                         initialValue: _selectedYear,
                         decoration: InputDecoration(
-                          hintText: "Select Year",
+                          hintText: AppStrings.of(context).selectYear,
                           hintStyle: AppStyle.hintStyle,
                           prefixIcon: Icon(
                             Icons.calendar_today,
@@ -477,19 +478,19 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         },
                         validator: (value) {
                           if (value == null) {
-                            return AppConstants.youMust;
+                            return AppStrings.of(context).youMust;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 14),
-                      _FieldLabel(text: AppConstants.plateNumberOptional),
+                      _FieldLabel(text: AppStrings.of(context).plateNumberOptional),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: VehicalCubit.get(context).plateController,
                         textCapitalization: TextCapitalization.characters,
                         decoration: InputDecoration(
-                          hintText: AppConstants.plateNumberHint,
+                          hintText: AppStrings.of(context).plateNumberHint,
                           hintStyle: AppStyle.hintStyle,
                           filled: true,
                           fillColor: AppColors.white,
@@ -516,13 +517,13 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return AppConstants.youMust;
+                            return AppStrings.of(context).youMust;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 14),
-                      _FieldLabel(text: AppConstants.currentMileageOptional),
+                      _FieldLabel(text: AppStrings.of(context).currentMileageOptional),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: VehicalCubit.get(context).mileageController,
@@ -531,7 +532,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           FilteringTextInputFormatter.digitsOnly,
                         ],
                         decoration: InputDecoration(
-                          hintText: AppConstants.mileageHint,
+                          hintText: AppStrings.of(context).mileageHint,
                           hintStyle: AppStyle.hintStyle,
                           filled: true,
                           fillColor: AppColors.white,
@@ -560,14 +561,14 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           if (value != null && value.isNotEmpty) {
                             final mileage = double.tryParse(value);
                             if (mileage == null) {
-                              return AppConstants.invalidMileage;
+                              return AppStrings.of(context).invalidMileage;
                             }
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 14),
-                      _FieldLabel(text: AppConstants.vehicleStatus),
+                      _FieldLabel(text: AppStrings.of(context).vehicleStatus),
                       const SizedBox(height: 8),
                       Column(
                         children: [
@@ -622,7 +623,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         onTap: () {
                           selectedImage = OpenGallery.openGallery();
                         },
-                        child: const AddPhotoContainer(),
+                        child: AddPhotoContainer(
+                          isSelected:selectedImage != null?true:false,
+                        ),
                       ),
                       const SizedBox(height: 14),
                       widget.isEditPage
@@ -654,11 +657,11 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           : Container(
                               padding: const EdgeInsets.all(12),
                               decoration:
-                                  BoxDecorationWidget.customBoxDecoration(
+                                  BoxDecorationWidget.customBoxDecoration(context,
                                     borderRadius: AppFontSize.f12,
                                   ).copyWith(color: AppColors.lightBleu),
                               child: Text(
-                                AppConstants.addVehicleNote,
+                                AppStrings.of(context).addVehicleNote,
                                 style: AppStyle.regularSmallText.copyWith(
                                   fontSize: AppFontSize.f11,
                                   color: AppColors.textGrey,
@@ -710,7 +713,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           ),
                         ),
                         child: Text(
-                          widget.isEditPage ? AppConstants.updateVehicle : AppConstants.addVehicle,
+                          widget.isEditPage ? AppStrings.of(context).updateVehicle : AppStrings.of(context).addVehicle,
                           style: AppStyle.boldSmallText.copyWith(
                             color: AppColors.white,
                             fontSize: AppFontSize.f13,

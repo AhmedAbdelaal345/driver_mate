@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart'
@@ -34,8 +35,9 @@ class MaintainanceContainerWidget extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
         borderRadius: 16,
-      ).copyWith(color: AppColors.white),
+      ).copyWith(color: Theme.of(context).cardTheme.color),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -72,14 +74,14 @@ class MaintainanceContainerWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title ?? AppConstants.oilChangeTitle,
+                        title ?? AppStrings.of(context).oilChangeTitle,
                         style: AppStyle.titleOfContainer,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        subTitle ?? AppConstants.due,
+                        subTitle ?? AppStrings.of(context).due,
                         style: AppStyle.containerSubtitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -103,7 +105,7 @@ class MaintainanceContainerWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Text(
-                    statusText ?? AppConstants.soon,
+                    statusText ?? AppStrings.of(context).stayOnTopMaintenance,
                     style: AppStyle.stateContainerStyle.copyWith(
                       color: statusTextColor ?? AppColors.orange,
                       fontWeight: FontWeight.w600,
@@ -124,8 +126,9 @@ class MaintainanceContainerWidget extends StatelessWidget {
               height: 42,
               width: double.infinity,
               child: PrimaryElevatedButtonWidget(
-                buttonText: AppConstants.bookNow,
+                buttonText: AppStrings.of(context).bookNow,
                 onPressed: onTap,
+                
               ),
             ),
           ),

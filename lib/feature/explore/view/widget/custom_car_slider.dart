@@ -14,7 +14,8 @@ class CustomCarSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cars = mockCars.where((c) {
-      final okCategory = filter.category == 'All' || c.category == filter.category;
+      final okCategory =
+          filter.category == 'All' || c.category == filter.category;
       final okPrice = c.price >= filter.minPrice && c.price <= filter.maxPrice;
       return okCategory && okPrice;
     }).toList();
@@ -34,10 +35,7 @@ class CustomCarSlider extends StatelessWidget {
           .map(
             (car) => Padding(
               padding: const EdgeInsets.only(bottom: 18),
-              child: _ExploreCarCard(
-                car: car,
-                onViewDetails: onViewDetails,
-              ),
+              child: _ExploreCarCard(car: car, onViewDetails: onViewDetails),
             ),
           )
           .toList(),
@@ -55,7 +53,9 @@ class _ExploreCarCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: Theme.of(
+          context,
+        ).scaffoldBackgroundColor.withValues(alpha: 0.4), // ← was hardcoded AppColors.white
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -71,7 +71,9 @@ class _ExploreCarCard extends StatelessWidget {
           Stack(
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
                 child: Image.asset(
                   car.image,
                   width: double.infinity,
@@ -84,7 +86,10 @@ class _ExploreCarCard extends StatelessWidget {
                   top: 16,
                   right: 16,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       borderRadius: BorderRadius.circular(24),
@@ -108,8 +113,8 @@ class _ExploreCarCard extends StatelessWidget {
               children: [
                 Text(
                   car.title,
-                  style: const TextStyle(
-                    color: AppColors.veryDarkBlue,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
@@ -117,8 +122,8 @@ class _ExploreCarCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   car.subtitle,
-                  style: const TextStyle(
-                    color: AppColors.cyanColor,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondary,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -126,8 +131,8 @@ class _ExploreCarCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   car.details,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style: TextStyle(
+                    color: Theme.of(context).iconTheme.color,
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
@@ -139,7 +144,7 @@ class _ExploreCarCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () => onViewDetails?.call(car),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.darkBlue,
+                      backgroundColor: Theme.of(context).primaryColor,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),

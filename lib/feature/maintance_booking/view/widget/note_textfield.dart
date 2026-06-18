@@ -13,9 +13,9 @@ class NotesTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecorationWidget.customBoxDecoration(
+      decoration: BoxDecorationWidget.customBoxDecoration(context,
         borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.white),
+      ),
       child: TextField(
         controller: controller,
         maxLines: 4,
@@ -38,7 +38,7 @@ class NotesTextField extends StatelessWidget {
         ),
         style: AppStyle.containerSubtitle.copyWith(
           fontSize: AppFontSize.f12,
-          color: AppColors.textGrey,
+          color: Theme.of(context).textTheme.bodyMedium?.color,
         ),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -36,14 +36,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          AppConstants.changePassword,
-          style: AppStyle.appBarTitle,
+        title: Text(
+          AppStrings.of(context).changePassword,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
         ),
         leading: const LeadingIcon(),
       ),
@@ -61,60 +63,65 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecorationWidget.customBoxDecoration(
+                    context,
                     borderRadius: AppFontSize.f12,
-                  ).copyWith(color: AppColors.white),
+                  ).copyWith(color: Theme.of(context).scaffoldBackgroundColor),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        AppConstants.currentPassword,
+                        AppStrings.of(context).currentPassword,
                         style: AppStyle.labelStyle,
                       ),
                       const SizedBox(height: 8),
                       TextFormFieldWidget(
-                        hintText: AppConstants.enterCurrentPassword,
+                        hintText: AppStrings.of(context).enterCurrentPassword,
                         isPassword: true,
                         controller: _currentController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return AppConstants.currentPasswordRequired;
+                            return AppStrings.of(
+                              context,
+                            ).currentPasswordRequired;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        AppConstants.newPassword,
+                        AppStrings.of(context).newPassword,
                         style: AppStyle.labelStyle,
                       ),
                       const SizedBox(height: 8),
                       TextFormFieldWidget(
-                        hintText: AppConstants.enterNewPassword,
+                        hintText: AppStrings.of(context).enterNewPassword,
                         isPassword: true,
                         controller: _newController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return AppConstants.newPasswordRequired;
+                            return AppStrings.of(context).newPasswordRequired;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        AppConstants.confirmNewPassword,
+                        AppStrings.of(context).confirmNewPassword,
                         style: AppStyle.labelStyle,
                       ),
                       const SizedBox(height: 8),
                       TextFormFieldWidget(
-                        hintText: AppConstants.reEnterNewPassword,
+                        hintText: AppStrings.of(context).reEnterNewPassword,
                         isPassword: true,
                         controller: _confirmController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return AppConstants.confirmNewPasswordRequired;
+                            return AppStrings.of(
+                              context,
+                            ).confirmNewPasswordRequired;
                           }
                           if (value != _newController.text) {
-                            return 'Passwords do not match';
+                            return AppStrings.of(context).passwordsDoNotMatch;
                           }
                           return null;
                         },
@@ -124,7 +131,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.02),
                 Text(
-                  AppConstants.passwordRequirements,
+                  AppStrings.of(context).passwordRequirements,
                   style: AppStyle.containerSubtitle.copyWith(
                     color: AppColors.iconGrey,
                     fontSize: AppFontSize.f11,
@@ -134,14 +141,23 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecorationWidget.customBoxDecoration(
+                    context,
                     borderRadius: AppFontSize.f12,
-                  ).copyWith(color: AppColors.containerGrey),
+                  ).copyWith(color: Theme.of(context).cardTheme.color),
                   child: Column(
-                    children: const [
-                      RequirementRow(text: AppConstants.requirementLength),
-                      RequirementRow(text: AppConstants.requirementUppercase),
-                      RequirementRow(text: AppConstants.requirementLowercase),
-                      RequirementRow(text: AppConstants.requirementNumber),
+                    children: [
+                      RequirementRow(
+                        text: AppStrings.of(context).requirementLength,
+                      ),
+                      RequirementRow(
+                        text: AppStrings.of(context).requirementUppercase,
+                      ),
+                      RequirementRow(
+                        text: AppStrings.of(context).requirementLowercase,
+                      ),
+                      RequirementRow(
+                        text: AppStrings.of(context).requirementNumber,
+                      ),
                     ],
                   ),
                 ),
@@ -166,9 +182,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   },
                   builder: (context, state) {
                     if (state is ChangePasswordLoadingState) {
-                      return const Center(
+                      return Center(
                         child: CircularProgressIndicator(
-                          color: AppColors.darkBlue,
+                          color: Theme.of(  context).colorScheme.primary,
                         ),
                       );
                     }
@@ -182,8 +198,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.boarderWhiteColor,
-                        disabledBackgroundColor: AppColors.boarderWhiteColor,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        disabledBackgroundColor: Theme.of(context).colorScheme.primary,
                         padding: EdgeInsets.symmetric(
                           vertical: SizeConfig.height(context) * 0.018,
                         ),
@@ -192,15 +208,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           borderRadius: BorderRadius.circular(AppFontSize.f12),
                         ),
                       ),
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.lock_outline,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).iconTheme.color,
                         size: 18,
                       ),
                       label: Text(
-                        AppConstants.saveChanges,
+                        AppStrings.of(context).saveChanges,
                         style: AppStyle.boldSmallText.copyWith(
-                          color: AppColors.iconGrey,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                           fontSize: AppFontSize.f13,
                         ),
                       ),

@@ -1,7 +1,7 @@
 import 'package:driver_mate/core/helper/saved_item_function.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
@@ -38,12 +38,17 @@ class CarDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isSaved = false;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: false,
-        title: const Text(AppConstants.carDetails, style: AppStyle.appBarTitle),
+        title: Text(
+          AppStrings.of(context).carDetails,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
         leading: const LeadingIcon(),
       ),
       body: SingleChildScrollView(
@@ -67,6 +72,7 @@ class CarDetailsPage extends StatelessWidget {
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f20,
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -80,10 +86,10 @@ class CarDetailsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    AppConstants.carTagline,
+                    AppStrings.of(context).carTagline,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f11,
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -91,26 +97,26 @@ class CarDetailsPage extends StatelessWidget {
                     carDescription,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f12,
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                       height: 1.5,
                     ),
                   ),
                   SizedBox(height: SizeConfig.height(context) * 0.03),
 
                   // Key Specifications Section
-                  SectionTitle(title: AppConstants.keySpecifications),
+                  SectionTitle(title: AppStrings.of(context).keySpecifications),
                   const SizedBox(height: 16),
                   SpecificationsGrid(),
                   SizedBox(height: SizeConfig.height(context) * 0.03),
 
                   // Highlights Section
-                  SectionTitle(title: AppConstants.highlights),
+                  SectionTitle(title: AppStrings.of(context).highlights),
                   const SizedBox(height: 16),
                   HighlightsList(),
                   SizedBox(height: SizeConfig.height(context) * 0.03),
 
                   // Common Maintenance Section
-                  SectionTitle(title: AppConstants.commonMaintenance),
+                  SectionTitle(title: AppStrings.of(context).commonMaintenance),
                   const SizedBox(height: 16),
                   MaintenanceList(),
                   SizedBox(height: SizeConfig.height(context) * 0.02),
@@ -128,7 +134,7 @@ class CarDetailsPage extends StatelessWidget {
           vertical: SizeConfig.height(context) * 0.015,
         ),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.05),
@@ -152,8 +158,8 @@ class CarDetailsPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         side: BorderSide(
                           color: isSaved
-                              ? AppColors.cyanColor
-                              : AppColors.iconGrey.withValues(alpha: 0.3),
+                              ? Theme.of(context).colorScheme.secondary
+                              : Theme.of(context).iconTheme.color!.withValues(alpha: 0.3),
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(AppFontSize.f12),
@@ -174,16 +180,16 @@ class CarDetailsPage extends StatelessWidget {
                       icon: Icon(
                         Icons.bookmark_border,
                         color: isSaved
-                            ? AppColors.cyanColor
-                            : AppColors.textGrey,
+                            ? Theme.of(context).colorScheme.secondary
+                            : Theme.of(context).iconTheme.color,
                       ),
                       label: Text(
-                        AppConstants.save,
+                        AppStrings.of(context).save,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f13,
                           color: isSaved
-                              ? AppColors.cyanColor
-                              : AppColors.textGrey,
+                              ? Theme.of(context).colorScheme.secondary
+                              : Theme.of(context).iconTheme.color,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -206,15 +212,15 @@ class CarDetailsPage extends StatelessWidget {
                   onPressed: () {
                     // TODO: Implement tips functionality
                   },
-                  icon: const Icon(
+                  icon:  Icon(
                     Icons.menu_book_outlined,
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   label: Text(
-                    AppConstants.tips,
+                    AppStrings.of(context).tips,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f13,
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).iconTheme.color,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

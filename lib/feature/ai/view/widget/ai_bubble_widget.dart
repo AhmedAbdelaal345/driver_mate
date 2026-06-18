@@ -29,8 +29,8 @@ class AiBubbleWidget extends StatelessWidget {
           constraints: BoxConstraints(
             maxWidth: SizeConfig.width(context) * 0.75,
           ), // Allow bubble to grow up to 75%,
-          decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-            color: AppColors.white,
+          decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
+            
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(2),
               bottomLeft: Radius.circular(12),
@@ -46,7 +46,7 @@ class AiBubbleWidget extends StatelessWidget {
                 text,
                 style: AppStyle.containerSubtitle.copyWith(
                   fontSize: 13,
-                  color: AppColors.black,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
               ),
 
@@ -58,7 +58,7 @@ class AiBubbleWidget extends StatelessWidget {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.cyanColor.withValues(alpha: 0.1),
+                    color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: InkWell(
@@ -69,7 +69,7 @@ class AiBubbleWidget extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.location_on_outlined,
-                          color: AppColors.cyanColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                         const SizedBox(width: 6),
                         Text(

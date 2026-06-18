@@ -1,6 +1,6 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/cartips/view/widget/header_image.dart';
@@ -15,12 +15,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CarTipsPage extends StatefulWidget {
   const CarTipsPage({
     super.key,
-    required this.assetName,
+    required this.imagePath,
     this.labelText,
     this.hintText,
   });
 
-  final String assetName;
+  final String imagePath;
   final String? hintText;
   final String? labelText;
 
@@ -31,26 +31,31 @@ class CarTipsPage extends StatefulWidget {
 class _CarTipsPageState extends State<CarTipsPage> {
   bool isBookmarked = false;
   @override
-void didChangeDependencies() {
-  super.didChangeDependencies();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-  final cubit = context.read<SavedItemCubit>();
-  final state = cubit.state;
+    final cubit = context.read<SavedItemCubit>();
+    final state = cubit.state;
 
-  if (state is SavedItemLoaded) {
-    isBookmarked = state.items.any((e) => e.title == widget.labelText);
+    if (state is SavedItemLoaded) {
+      isBookmarked = state.items.any((e) => e.title == widget.labelText);
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF7F8FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        title: const Text(AppConstants.carTips, style: AppStyle.appBarTitle),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: Text(
+          AppStrings.of(context).carTips,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
+        ),
         leading: const LeadingIcon(),
         actions: [
           IconButton(
@@ -62,7 +67,7 @@ void didChangeDependencies() {
                     SavedItemModel(
                       title: widget.labelText ?? "",
                       subtitle: widget.hintText ?? "",
-                      image: widget.assetName,
+                      image: widget.imagePath,
                       type: SavedType.article,
                       readTime: "5 min read",
                     ),
@@ -77,7 +82,7 @@ void didChangeDependencies() {
                     SavedItemModel(
                       title: widget.labelText ?? "",
                       subtitle: widget.hintText ?? "",
-                      image: widget.assetName,
+                      image: widget.imagePath,
                       type: SavedType.article,
                       readTime: "5 min read",
                     ),
@@ -92,13 +97,15 @@ void didChangeDependencies() {
             },
             icon: Icon(
               isBookmarked ? Icons.bookmark : Icons.bookmark_border_outlined,
-              color: isBookmarked ? AppColors.cyanColor : AppColors.iconGrey,
+              color: isBookmarked
+                  ? AppColors.cyanColor
+                  : Theme.of(context).iconTheme.color,
             ),
           ),
           SizedBox(width: 12),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.share, color: AppColors.iconGrey),
+            icon: Icon(Icons.share, color: Theme.of(context).iconTheme.color),
           ),
           SizedBox(width: 12),
         ],
@@ -112,7 +119,7 @@ void didChangeDependencies() {
             children: [
               /// HEADER IMAGE
               HeaderImage(
-                assetName: widget.assetName,
+                imagePath: widget.imagePath,
                 hintText: widget.hintText,
                 labelText: widget.labelText,
               ),
@@ -121,8 +128,8 @@ void didChangeDependencies() {
               ContainerTitle(
                 isAppear: true,
                 onTap: () {},
-                title: AppConstants.relatedTips,
-                subTitle: AppConstants.seeAll,
+                title: AppStrings.of(context).relatedTips,
+                subTitle: AppStrings.of(context).seeAll,
               ),
 
               const SizedBox(height: 12),
@@ -182,8 +189,8 @@ void didChangeDependencies() {
                             ? AppColors.cyanColor
                             : AppColors.iconGrey,
                       ),
-                      label: const Text(
-                        AppConstants.save,
+                      label: Text(
+                        AppStrings.of(context).save,
                         style: AppStyle.viewAll,
                       ),
                     ),
@@ -203,13 +210,15 @@ void didChangeDependencies() {
                         ),
                       ),
                       onPressed: () {},
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.notifications_none,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).iconTheme.color,
                       ),
-                      label: const Text(
-                        AppConstants.setReminder,
-                        style: TextStyle(color: AppColors.iconGrey),
+                      label: Text(
+                        AppStrings.of(context).setReminder,
+                        style: TextStyle(
+                          color: Theme.of(context).iconTheme.color,
+                        ),
                       ),
                     ),
                   ),
@@ -230,9 +239,11 @@ void didChangeDependencies() {
                     ),
                   ),
                   onPressed: () {},
-                  child: const Text(
-                    AppConstants.viewMoreTips,
-                    style: AppStyle.coursalTitleTextStyle,
+                  child: Text(
+                    AppStrings.of(context).viewMoreTips,
+                    style: AppStyle.coursalTitleTextStyle.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                 ),
               ),

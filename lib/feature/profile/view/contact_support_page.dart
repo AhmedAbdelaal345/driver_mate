@@ -1,7 +1,9 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -37,14 +39,16 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
     return BlocProvider(
       create: (context) => ContactUsCubit(repo: EmailRepositoryImpl()),
       child: Scaffold(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            AppConstants.contactSupport,
-            style: AppStyle.appBarTitle,
+          title: Text(
+            AppStrings.of(context).contactSupport,
+            style: AppStyle.appBarTitle.copyWith(
+              color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+            ),
           ),
           leading: const LeadingIcon(),
         ),
@@ -61,41 +65,51 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
                 children: [
                   ContactCard(
                     icon: Icons.email_outlined,
-                    title: AppConstants.email,
+                    title: AppStrings.of(context).email,
                     subtitle: AppConstants.supportEmail,
                     onTap: () {},
                   ),
                   SizedBox(height: SizeConfig.height(context) * 0.015),
                   ContactCard(
                     icon: Icons.phone_outlined,
-                    title: AppConstants.callUs,
+                    title: AppStrings.of(context).callUs,
                     subtitle: AppConstants.supportPhone,
                     onTap: () {},
                   ),
                   SizedBox(height: SizeConfig.height(context) * 0.02),
                   Text(
-                    AppConstants.sendMessage,
+                    AppStrings.of(context).sendMessageButton,
                     style: AppStyle.containerSubtitle.copyWith(
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                       fontSize: AppFontSize.f11,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(AppConstants.subject, style: AppStyle.labelStyle),
+                  Text(
+                    AppStrings.of(context).subject,
+                    style: AppStyle.labelStyle.copyWith(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   TextFormFieldWidget(
-                    hintText: AppConstants.subjectHint,
+                    hintText: AppStrings.of(context).subjectHint,
                     controller: subjectController,
                     validator: (value) {
                       if (value == null) {
-                        return AppConstants.youMust;
+                        return AppStrings.of(context).youMust;
                       } else {
                         return null;
                       }
                     },
                   ),
                   const SizedBox(height: 14),
-                  Text(AppConstants.message, style: AppStyle.labelStyle),
+                  Text(
+                    AppStrings.of(context).message,
+                    style: AppStyle.labelStyle.copyWith(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: messageController,
@@ -103,13 +117,13 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
                     cursorColor: AppColors.cyanColor,
                     validator: (value) {
                       if (value == null) {
-                        return AppConstants.youMust;
+                        return AppStrings.of(context).youMust;
                       } else {
                         return null;
                       }
                     },
                     decoration: InputDecoration(
-                      hintText: AppConstants.messageHint,
+                      hintText: AppStrings.of(context).messageHint,
                       hintStyle: AppStyle.hintStyle,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(AppFontSize.f8),
@@ -132,7 +146,7 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
                       AppConstants.charactersLimit,
                       style: AppStyle.containerSubtitle.copyWith(
                         fontSize: AppFontSize.f10,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                     ),
                   ),
@@ -169,7 +183,9 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
                                 }
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.cyanColor,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.secondary,
                           disabledBackgroundColor: AppColors.boarderWhiteColor,
                           padding: EdgeInsets.symmetric(
                             vertical: SizeConfig.height(context) * 0.018,
@@ -181,15 +197,15 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
                             ),
                           ),
                         ),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.send_outlined,
-                          color: AppColors.iconGrey,
+                          color: Theme.of(context).iconTheme.color,
                           size: 18,
                         ),
                         label: Text(
-                          AppConstants.sendMessageButton,
+                          AppStrings.of(context).sendMessageButton,
                           style: AppStyle.boldSmallText.copyWith(
-                            color: AppColors.iconGrey,
+                            color: Theme.of(context).iconTheme.color,
                             fontSize: AppFontSize.f13,
                           ),
                         ),
@@ -200,15 +216,16 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecorationWidget.customBoxDecoration(
+                      context,
                       borderRadius: AppFontSize.f12,
-                    ).copyWith(color: AppColors.containerGrey),
+                    ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(
+                         Icon(
                           Icons.schedule,
                           size: 18,
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -216,18 +233,18 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                AppConstants.responseTime,
+                                AppStrings.of(context).responseTime,
                                 style: AppStyle.boldSmallText.copyWith(
                                   fontSize: AppFontSize.f12,
-                                  color: AppColors.textGrey,
+                                  color: Theme.of(context).iconTheme.color,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                AppConstants.responseTimeNote,
+                                AppStrings.of(context).responseTimeNote,
                                 style: AppStyle.regularSmallText.copyWith(
                                   fontSize: AppFontSize.f11,
-                                  color: AppColors.iconGrey,
+                                  color: Theme.of(context).iconTheme.color,
                                 ),
                               ),
                             ],

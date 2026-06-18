@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:driver_mate/core/helper/open_gallary.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
@@ -25,14 +26,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  final List<String> _postTypes = const [
-    AppConstants.question,
-    AppConstants.problem,
-    AppConstants.tips,
-    AppConstants.review,
-    AppConstants.marketPlace,
-  ];
+  File? selectedImage;
 
   int _selectedType = 0;
   static const int _maxChars = 1000;
@@ -52,6 +46,13 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
   @override
   Widget build(BuildContext context) {
     final horizontal = SizeConfig.width(context) * 0.05;
+    final List<String> _postTypes = [
+      AppStrings.of(context).question,
+      AppStrings.of(context).problem,
+      AppStrings.of(context).tips,
+      AppStrings.of(context).review,
+      AppStrings.of(context).marketPlace,
+    ];
 
     return BlocConsumer<CommunityPostCubit, CommunityPostState>(
       listener: (context, state) {
@@ -66,14 +67,16 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
       builder: (context, state) {
         final isLoading = state is CommunityPostLoading;
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: AppBar(
-            backgroundColor: AppColors.white,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
             centerTitle: true,
-            title: const Text(
-              AppConstants.newPost,
-              style: AppStyle.appBarTitle,
+            title: Text(
+              AppStrings.of(context).newPost,
+              style: AppStyle.appBarTitle.copyWith(
+                color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+              ),
             ),
             leading: const LeadingIcon(),
           ),
@@ -88,9 +91,9 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    AppConstants.postType.toUpperCase(),
+                    AppStrings.of(context).postType.toUpperCase(),
                     style: AppStyle.containerSubtitle.copyWith(
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).iconTheme.color,
                       fontSize: AppFontSize.f11,
                     ),
                   ),
@@ -106,11 +109,15 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                         selected: isSelected,
                         showCheckmark: false,
                         labelStyle: TextStyle(
-                          color: isSelected ? AppColors.white : AppColors.black,
+                          color: isSelected
+                              ? AppColors.white
+                              : AppColors.boarderWhiteColor,
                           fontWeight: FontWeight.w500,
                         ),
                         selectedColor: AppColors.cyanColor,
-                        backgroundColor: AppColors.containerGrey,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).scaffoldBackgroundColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(999),
                         ),
@@ -120,20 +127,25 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                     }),
                   ),
                   const SizedBox(height: 18),
-                  Text(AppConstants.title, style: AppStyle.labelStyle),
+                  Text(
+                    AppStrings.of(context).title,
+                    style: AppStyle.labelStyle.copyWith(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _titleController,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return AppConstants.youMust;
+                        return AppStrings.of(context).youMust;
                       }
                       return null;
                     },
                     cursorColor: AppColors.cyanColor,
                     onChanged: (_) => setState(() {}),
                     decoration: InputDecoration(
-                      hintText: AppConstants.titleHint,
+                      hintText: AppStrings.of(context).titleHint,
                       hintStyle: AppStyle.hintStyle,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(AppFontSize.f8),
@@ -150,12 +162,15 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                     ),
                   ),
                   const SizedBox(height: 14),
-                  Text(AppConstants.description, style: AppStyle.labelStyle),
+                  Text(
+                    AppStrings.of(context).description,
+                    style: AppStyle.labelStyle,
+                  ),
                   const SizedBox(height: 8),
                   TextFormField(
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return AppConstants.youMust;
+                        return AppStrings.of(context).youMust;
                       }
                       return null;
                     },
@@ -165,7 +180,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                     cursorColor: AppColors.cyanColor,
                     onChanged: (_) => setState(() {}),
                     decoration: InputDecoration(
-                      hintText: AppConstants.descriptionHint,
+                      hintText: AppStrings.of(context).descriptionHint,
                       hintStyle: AppStyle.hintStyle,
                       counterText: '',
                       enabledBorder: OutlineInputBorder(
@@ -189,16 +204,24 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                       '${_descriptionController.text.length}/$_maxChars characters',
                       style: AppStyle.containerSubtitle.copyWith(
                         fontSize: AppFontSize.f10,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                     ),
                   ),
                   const SizedBox(height: 6),
                   InkWell(
-                    onTap: () {
-                      OpenGallery.openGallery();
+                    onTap: () async {
+                      final image = await OpenGallery.openGallery();
+
+                      if (image != null) {
+                        setState(() {
+                          selectedImage = image;
+                        });
+                      }
                     },
-                    child: AddPhotoContainer(),
+                    child: AddPhotoContainer(
+                      isSelected: selectedImage != null ? true : false,
+                    ),
                   ),
                 ],
               ),
@@ -215,7 +238,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                             type: _postTypes[_selectedType],
                             title: _titleController.text.trim(),
                             description: _descriptionController.text.trim(),
-                            image: await OpenGallery.openGallery(),
+                            image: selectedImage,
                           );
                         }
                       }
@@ -232,7 +255,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                   ),
                 ),
                 child: Text(
-                  AppConstants.publishPost,
+                  AppStrings.of(context).publishPost,
                   style: AppStyle.boldSmallText.copyWith(
                     color: _canPublish ? AppColors.white : AppColors.iconGrey,
                     fontSize: AppFontSize.f13,

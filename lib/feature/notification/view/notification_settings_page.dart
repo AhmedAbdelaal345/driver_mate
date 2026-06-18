@@ -1,6 +1,6 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -31,14 +31,14 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
       create: (context) =>
           NotificationSettingsCubit(NotificationSettingsRepo())..loadSettings(),
       child: Scaffold(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            AppConstants.notifications,
-            style: AppStyle.appBarTitle,
+          title:  Text(
+            AppStrings.of(context).notifications,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           leading: const LeadingIcon(),
         ),
@@ -52,17 +52,17 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  AppConstants.notificationPreferences,
+                  AppStrings.of(context).notificationPreferences,
                   style: AppStyle.containerSubtitle.copyWith(
-                    color: AppColors.iconGrey,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                     fontSize: AppFontSize.f11,
                   ),
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.012),
                 Container(
-                  decoration: BoxDecorationWidget.customBoxDecoration(
+                  decoration: BoxDecorationWidget.customBoxDecoration(context,
                     borderRadius: AppFontSize.f12,
-                  ).copyWith(color: AppColors.white),
+                  ),
                   child: Column(
                     children: [
                       BlocBuilder<
@@ -72,8 +72,8 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                         builder: (context, state) {
                           if (state is NotificationSettingsLoaded) {
                             return _NotificationSwitchTile(
-                              title: AppConstants.maintenanceReminders,
-                              subtitle: AppConstants.maintenanceRemindersSub,
+                              title: AppStrings.of(context).maintenanceReminders,
+                              subtitle: AppStrings.of(context).maintenanceRemindersSub,
                               value: state.maintenance,
                               onChanged: (value) {
                                 context
@@ -83,8 +83,8 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                             );
                           }
                           return _NotificationSwitchTile(
-                            title: AppConstants.maintenanceReminders,
-                            subtitle: AppConstants.maintenanceRemindersSub,
+                            title: AppStrings.of(context).maintenanceReminders,
+                            subtitle: AppStrings.of(context).maintenanceRemindersSub,
                             value: _maintenance,
                             onChanged: (value) {
                               value = true;
@@ -92,7 +92,7 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                           );
                         },
                       ),
-                      Divider(color: AppColors.containerGrey),
+                      Divider(color: Theme.of(context).dividerColor),
                       BlocBuilder<
                         NotificationSettingsCubit,
                         NotificationSettingsState
@@ -100,8 +100,8 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                         builder: (context, state) {
                           if (state is NotificationSettingsLoaded) {
                             return _NotificationSwitchTile(
-                              title: AppConstants.offersPromotions,
-                              subtitle: AppConstants.offersPromotionsSub,
+                              title: AppStrings.of(context).offersPromotions,
+                              subtitle: AppStrings.of(context).offersPromotionsSub,
                               value: state.offers,
                               onChanged: (value) {
                                 context
@@ -111,14 +111,14 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                             );
                           }
                           return _NotificationSwitchTile(
-                            title: AppConstants.offersPromotions,
-                            subtitle: AppConstants.offersPromotionsSub,
+                            title: AppStrings.of(context).offersPromotions,
+                            subtitle: AppStrings.of(context).offersPromotionsSub,
                             value: _offers,
                             onChanged: (value) {},
                           );
                         },
                       ),
-                      Divider(color: AppColors.containerGrey),
+                      Divider(color: Theme.of(context).dividerColor),
                       BlocBuilder<
                         NotificationSettingsCubit,
                         NotificationSettingsState
@@ -126,8 +126,8 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                         builder: (context, state) {
                           if (state is NotificationSettingsLoaded) {
                             return _NotificationSwitchTile(
-                              title: AppConstants.aiAlerts,
-                              subtitle: AppConstants.aiAlertsSub,
+                              title: AppStrings.of(context).aiAlerts,
+                              subtitle: AppStrings.of(context).aiAlertsSub,
                               value: state.ai,
                               onChanged: (value) {
                                 context
@@ -137,14 +137,14 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                             );
                           }
                           return _NotificationSwitchTile(
-                            title: AppConstants.aiAlerts,
-                            subtitle: AppConstants.aiAlertsSub,
+                            title: AppStrings.of(context).aiAlerts,
+                            subtitle: AppStrings.of(context).aiAlertsSub,
                             value: _aiAlerts,
                             onChanged: (value) {},
                           );
                         },
                       ),
-                      Divider(color: AppColors.containerGrey),
+                      Divider(color: Theme.of(context).dividerColor),
                       BlocBuilder<
                         NotificationSettingsCubit,
                         NotificationSettingsState
@@ -152,8 +152,8 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                         builder: (context, state) {
                           if (state is NotificationSettingsLoaded) {
                             return _NotificationSwitchTile(
-                              title: AppConstants.emergencyUpdates,
-                              subtitle: AppConstants.emergencyUpdatesSub,
+                              title: AppStrings.of(context).emergencyUpdates,
+                              subtitle: AppStrings.of(context).emergencyUpdatesSub,
                               value: state.emergency,
                               onChanged: (value) {
                                 context
@@ -163,8 +163,8 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                             );
                           }
                           return _NotificationSwitchTile(
-                            title: AppConstants.emergencyUpdates,
-                            subtitle: AppConstants.emergencyUpdatesSub,
+                            title: AppStrings.of(context).emergencyUpdates,
+                            subtitle: AppStrings.of(context).emergencyUpdatesSub,
                             value: _emergency,
                             onChanged: (value) {},
                           );
@@ -175,45 +175,46 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.025),
                 Text(
-                  AppConstants.schedule,
+                  AppStrings.of(context).schedule,
                   style: AppStyle.containerSubtitle.copyWith(
-                    color: AppColors.iconGrey,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                     fontSize: AppFontSize.f11,
                   ),
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.012),
                 Container(
-                  decoration: BoxDecorationWidget.customBoxDecoration(
+                  decoration: BoxDecorationWidget.customBoxDecoration(context,
                     borderRadius: AppFontSize.f12,
-                  ).copyWith(color: AppColors.white),
+                  ).copyWith(color: Theme.of(context).cardColor),
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: AppColors.cyanColor.withValues(
+                      backgroundColor: Theme.of(context).colorScheme.secondary.withValues(
                         alpha: 0.12,
                       ),
-                      child: const Icon(
+                      child:  Icon(
                         Icons.access_time,
-                        color: AppColors.cyanColor,
+                        color:Theme.of(context).colorScheme.secondary,
                         size: 18,
                       ),
                     ),
                     title: Text(
-                      AppConstants.notificationSchedule,
+                      AppStrings.of(context).notificationSchedule,
                       style: AppStyle.boldSmallText.copyWith(
                         fontSize: AppFontSize.f13,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
                     subtitle: Text(
-                      AppConstants.setQuietHours,
+                      AppStrings.of(context).setQuietHours,
                       style: AppStyle.containerSubtitle.copyWith(
                         fontSize: AppFontSize.f11,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                     ),
-                    trailing: const Icon(
+                    trailing:  Icon(
                       Icons.arrow_forward_ios,
                       size: 14,
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                     onTap: () {},
                   ),
@@ -224,15 +225,15 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                     horizontal: 12,
                     vertical: 12,
                   ),
-                  decoration: BoxDecorationWidget.customBoxDecoration(
+                  decoration: BoxDecorationWidget.customBoxDecoration(context,
                     borderRadius: AppFontSize.f12,
-                  ).copyWith(color: AppColors.containerGrey),
+                  ).copyWith(color: Theme.of(context).cardColor),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
+                       Icon(
                         Icons.notifications_none,
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                         size: 18,
                       ),
                       const SizedBox(width: 10),
@@ -241,18 +242,18 @@ class _NotificationSettingPageState extends State<NotificationSettingPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              AppConstants.notificationSettings,
+                              AppStrings.of(context).notificationSettings,
                               style: AppStyle.boldSmallText.copyWith(
                                 fontSize: AppFontSize.f12,
-                                color: AppColors.textGrey,
+                                color: Theme.of(context).textTheme.bodyMedium?.color,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              AppConstants.notificationSettingsSub,
+                              AppStrings.of(context).notificationSettingsSub,
                               style: AppStyle.regularSmallText.copyWith(
                                 fontSize: AppFontSize.f11,
-                                color: AppColors.iconGrey,
+                                color: Theme.of(context).textTheme.bodyMedium?.color,
                               ),
                             ),
                           ],
@@ -296,7 +297,7 @@ class _NotificationSwitchTile extends StatelessWidget {
         subtitle,
         style: AppStyle.containerSubtitle.copyWith(
           fontSize: AppFontSize.f11,
-          color: AppColors.iconGrey,
+          color: Theme.of(context).textTheme.bodyMedium?.color,
         ),
       ),
       trailing: Switch(

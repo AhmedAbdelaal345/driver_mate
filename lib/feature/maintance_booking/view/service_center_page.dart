@@ -2,6 +2,8 @@ import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -13,6 +15,7 @@ import 'package:driver_mate/feature/maintance_booking/view/widget/available_serv
 import 'package:driver_mate/feature/maintance_booking/view/widget/hero_image_section.dart';
 import 'package:driver_mate/feature/maintance_booking/view/widget/info_row_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class ServiceCenterPage extends StatefulWidget {
   const ServiceCenterPage({
@@ -46,8 +49,8 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: false,
-        title: const Text(
-          AppConstants.serviceCenter,
+        title:  Text(
+          AppStrings.of(context).serviceCenter,
           style: AppStyle.appBarTitle,
         ),
         leading: const LeadingIcon(),
@@ -110,7 +113,7 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                   // Address Section
                   InfoRow(
                     icon: Icons.location_on_outlined,
-                    title: AppConstants.address,
+                    title: AppStrings.of(context).address,
                     subtitle: widget.address ?? AppConstants.fullAddress,
                     showAction: true,
                     actionIcon: Icons.navigation,
@@ -120,7 +123,7 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                   // Working Hours Section
                   InfoRow(
                     icon: Icons.access_time,
-                    title: widget.workingHours ?? AppConstants.workingHours,
+                    title: widget.workingHours ?? AppStrings.of(context).workingHours,
                     subtitle: "Holiday : ${widget.holiday}",
                   ),
                   SizedBox(height: SizeConfig.height(context) * 0.02),
@@ -128,17 +131,17 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                   // Phone Section
                   InfoRow(
                     icon: Icons.phone_outlined,
-                    title: AppConstants.phone,
+                    title: AppStrings.of(context).phone,
                     subtitle: widget.phoneNumber ?? AppConstants.phoneNumber,
                     showAction: true,
                     actionIcon: null,
-                    actionText: AppConstants.call,
+                    actionText: AppStrings.of(context).call,
                   ),
                   SizedBox(height: SizeConfig.height(context) * 0.02),
 
                   // Available Services Section
                   Text(
-                    AppConstants.availableServices,
+                    AppStrings.of(context).availableServices,
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f14,
                       fontWeight: FontWeight.bold,
@@ -149,10 +152,10 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                     services:
                         widget.serviceProvided ??
                         [
-                          AppConstants.oilChange,
-                          AppConstants.tirePressure,
-                          AppConstants.batteryStatus,
-                          AppConstants.egTowing,
+                          AppStrings.of(context).oilChangeOnly,
+                          AppStrings.of(context).tirePressure,
+                          AppStrings.of(context).batteryStatus,
+                          AppStrings.of(context).egTowing,
                         ],
                   ),
                   SizedBox(height: SizeConfig.height(context) * 0.02),
@@ -163,7 +166,7 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                       horizontal: 8,
                       vertical: 10,
                     ),
-                    decoration: BoxDecorationWidget.customBoxDecoration()
+                    decoration: BoxDecorationWidget.customBoxDecoration(context)
                         .copyWith(
                           color: AppColors.cyanColor.withValues(alpha: 0.1),
                         ),
@@ -215,18 +218,19 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
               MyNavigation.navigateTo(
                 BookAppointmentPage(
                   serviceCenter: ServiceCenterModel(
-                    address: widget.address,
-                    serviceCenterName: widget.serviceCenterName,
-                    phoneNumber: widget.phoneNumber,
-                    workingHours: widget.workingHours,
-                    holiday: widget.holiday,
-                    price: 50,
-                    servicesOffered: widget.serviceProvided,
+                    imagePath: AppImagePath.bmwCarImagePath,
+                    address: widget.address ?? "",
+                    name: widget.serviceCenterName ?? "",
+                    phone: widget.phoneNumber ?? "",
+                    workingHours: widget.workingHours ?? "",
+                    services: widget.serviceProvided ?? [],
+                    distance: 0,
+                    location: GeoPoint(latitude: 0, longitude: 0),
                   ),
                 ),
               );
             },
-            buttonText: AppConstants.selectDateTime,
+            buttonText: AppStrings.of(context).selectDateTime,
           ),
         ),
       ),

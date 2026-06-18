@@ -1,44 +1,38 @@
 import 'dart:io';
 
 class CommunityPostModel {
-   CommunityPostModel({
-    required this.id,
-    required this.type,
-    required this.title,
-    required this.description,
-     this.image,
-    required this.createdAt,
-    required this.authorName,
-    required this.authorInitials,
-  });
-
   final String id;
-  final String type;
   final String title;
   final String description;
-  final DateTime createdAt;
-   File? image;
   final String authorName;
   final String authorInitials;
+  final DateTime createdAt;
+  final String type;
 
-  CommunityPostModel copyWith({
-    String? id,
-    String? type,
-    String? title,
-    String? description,
-    DateTime? createdAt,
-    String? authorName,
-    String? authorInitials,
-  }) {
-    return CommunityPostModel(
-      id: id ?? this.id,
-      type: type ?? this.type,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      image: image ,
-      createdAt: createdAt ?? this.createdAt,
-      authorName: authorName ?? this.authorName,
-      authorInitials: authorInitials ?? this.authorInitials,
-    );
-  }
+  // Asset image (bundled in app) — used for seed/mock data
+  final String? imageAssetPath;
+
+  // File image (picked by user from gallery/camera)
+  final File? imageFile;
+
+  bool isLiked;
+  bool isSaved;
+  int likesCount;
+  int commentsCount;
+
+  CommunityPostModel({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.authorName,
+    required this.authorInitials,
+    required this.createdAt,
+    required this.type,
+    this.imageAssetPath,
+    this.imageFile,
+    this.isLiked = false,
+    this.isSaved = false,
+    this.likesCount = 0,
+    this.commentsCount = 0,
+  });
 }

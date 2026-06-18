@@ -1,37 +1,22 @@
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+
 class ServiceCenterModel {
-  final String? serviceCenterName;
-  final String? imagePath;
-  final String? address;
-  final String? workingHours;
-  final String? phoneNumber;
-  final String? holiday;
-  final String? distance;
-  final double? price;
-  final List<String>? servicesOffered;
-  ServiceCenterModel({
-    this.serviceCenterName,
-    this.imagePath,
-    this.address,
-    this.workingHours,
-    this.phoneNumber,
-    this.holiday,
-    this.distance,
-    this.price,
-    this.servicesOffered,
+  final String name;
+  final GeoPoint location;
+  final double distance;
+  final String address;
+  final String phone;
+  final List<String> services;
+  final String workingHours;
+  final String imagePath;
+  const ServiceCenterModel({
+    required this.name,
+    required this.location,
+    required this.distance,
+    required this.address,
+    required this.phone,
+    required this.services,
+    required this.workingHours,
+    required this.imagePath,
   });
-  factory ServiceCenterModel.fromJson(Map<String, dynamic> json) {
-    return ServiceCenterModel(
-      serviceCenterName: json['serviceCenterName'] as String?,
-      imagePath: json['imagePath'] as String?,
-      address: json['address'] as String?,
-      workingHours: json['workingHours'] as String?,
-      phoneNumber: json['phoneNumber'] as String?,
-      price: json["price"],
-      holiday: json['holiday'] as String?,
-      distance: json['distance'] as String?,
-      servicesOffered: (json['servicesOffered'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-    );
-  }
 }

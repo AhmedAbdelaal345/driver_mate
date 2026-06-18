@@ -35,8 +35,8 @@ class CustomContainerWidget extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(bottom: SizeConfig.height(context) * 0.015),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-          color: AppColors.white,
+        decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
+          color: Theme.of(context).cardTheme.color, // ← was hardcoded AppColors.white
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +67,7 @@ class CustomContainerWidget extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                      color: AppColors.black,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontSize: AppFontSize.f15,
                       fontWeight: FontWeight.w600,
                     ),
@@ -79,10 +79,10 @@ class CustomContainerWidget extends StatelessWidget {
                   Row(
                     children: [
                       if (isAppear == true || isAppear == null) ...[
-                        const Icon(
+                         Icon(
                           Icons.access_time,
                           size: 16,
-                          color: AppColors.midGrey,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         const SizedBox(width: 6),
                       ],
@@ -92,7 +92,7 @@ class CustomContainerWidget extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                            color: AppColors.textGrey,
+                            color: Theme.of(context).iconTheme.color,
                             fontSize: AppFontSize.f12,
                           ),
                         ),

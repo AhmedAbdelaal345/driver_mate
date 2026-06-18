@@ -2,6 +2,7 @@ import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -109,7 +110,7 @@ class _VehicleAddedSuccessPageState extends State<VehicleAddedSuccessPage>
 
               // Title
               Text(
-                AppConstants.vehicleAddedTitle,
+                AppStrings.of(context).vehicleAddedTitle,
                 style: AppStyle.labelStyle.copyWith(
                   fontSize: AppFontSize.f24,
                   fontWeight: FontWeight.bold,
@@ -122,7 +123,7 @@ class _VehicleAddedSuccessPageState extends State<VehicleAddedSuccessPage>
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                 child: Text(
-                  AppConstants.vehicleAddedSubtitle,
+                  AppStrings.of(context).vehicleAddedSubtitle,
                   textAlign: TextAlign.center,
                   style: AppStyle.hintStyle.copyWith(
                     fontSize: AppFontSize.f14,
@@ -139,7 +140,7 @@ class _VehicleAddedSuccessPageState extends State<VehicleAddedSuccessPage>
 
               // Info Callout
               _InfoCallout(
-                text: AppConstants.vehicleAddedNote,
+                text: AppStrings.of(context).vehicleAddedNote,
               ),
               SizedBox(height: height * 0.04),
 
@@ -160,7 +161,7 @@ class _VehicleAddedSuccessPageState extends State<VehicleAddedSuccessPage>
                     ),
                   ),
                   child: Text(
-                    AppConstants.backToMyCars,
+                    AppStrings.of(context).backToMyCars,
                     style: AppStyle.boldSmallText.copyWith(
                       color: AppColors.white,
                       fontSize: AppFontSize.f15,
@@ -185,13 +186,13 @@ class _VehicleSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brandModel = _getVehicleTitle();
-    final yearText = vehicle.year?.toString() ?? "-";
+    final yearText = vehicle.year.toString();
     final plateText = _valueOrDash(vehicle.plateNumber);
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecorationWidget.customBoxDecoration(
+      decoration: BoxDecorationWidget.customBoxDecoration(context,
         borderRadius: AppFontSize.f16,
       ).copyWith(
         color: AppColors.white,
@@ -265,13 +266,13 @@ class _VehicleSummaryCard extends StatelessWidget {
           // Details
           _DetailItem(
             icon: Icons.calendar_today_outlined,
-            label: AppConstants.manufacturingYear,
+            label: AppStrings.of(context).manufacturingYear,
             value: yearText,
           ),
           const SizedBox(height: 16),
           _DetailItem(
             icon: Icons.confirmation_number_outlined,
-            label: AppConstants.plateNumberLabel,
+            label: AppStrings.of(context).plateNumberLabel,
             value: plateText,
           ),
         ],
@@ -369,7 +370,7 @@ class _InfoCallout extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration(
+      decoration: BoxDecorationWidget.customBoxDecoration(context,
         borderRadius: AppFontSize.f12,
       ).copyWith(
         color: AppColors.cyanColor.withValues(alpha: 0.08),

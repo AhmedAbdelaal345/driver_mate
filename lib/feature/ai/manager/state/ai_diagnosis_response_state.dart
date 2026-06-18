@@ -1,15 +1,19 @@
+import 'package:driver_mate/feature/ai/data/model/ai_diagnosis_response_model.dart';
+
 abstract class AiDiagnosisState {}
 
-class AiInitial extends AiDiagnosisState {}
+class AiDiagnosisInitial extends AiDiagnosisState {}
 
-class AiLoading extends AiDiagnosisState {}
+class AiDiagnosisLoading extends AiDiagnosisState {}
 
-class AiSuccess extends AiDiagnosisState {
-  final String result;
-  AiSuccess(this.result);
+class AiDiagnosisSuccess extends AiDiagnosisState {
+  final AiDiagnosisResponseModel result;
+  AiDiagnosisSuccess(this.result);
 }
 
-class AiError extends AiDiagnosisState {
+class AiDiagnosisError extends AiDiagnosisState {
   final String message;
-  AiError(this.message);
+  AiDiagnosisError(this.message);
 }
+
+

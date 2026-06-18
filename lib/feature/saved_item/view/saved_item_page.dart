@@ -1,11 +1,12 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/car_details/view/car_details_page.dart';
 import 'package:driver_mate/feature/cartips/view/cartips_page.dart';
-import 'package:driver_mate/feature/community/view/community_new_post_page.dart';
+import 'package:driver_mate/feature/community/view/community_page.dart';
 import 'package:driver_mate/feature/profile/view/help_center_page.dart';
 import 'package:driver_mate/feature/saved_item/data/model/saved_item_model.dart';
 import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
@@ -32,7 +33,9 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Saved Items", style: AppStyle.appBarTitle),
+        title:  Text(AppStrings.of(context).savedItem, style: AppStyle.appBarTitle.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        )),
         actions: [
           IconButton(
             onPressed: () {
@@ -50,7 +53,9 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
         child: BlocBuilder<SavedItemCubit, SavedItemState>(
           builder: (context, state) {
             if (state is SavedItemLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return  Center(child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ));
             }
 
             if (state is SavedItemLoaded) {
@@ -80,11 +85,11 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
                   /// Top Info Box
                   Container(
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecorationWidget.customBoxDecoration()
-                        .copyWith(color: AppColors.white),
+                    decoration: BoxDecorationWidget.customBoxDecoration(context)
+                        ,
                     child: Row(
                       children: [
-                        Icon(Icons.bookmark, color: AppColors.cyanColor),
+                        Icon(Icons.bookmark, color: Theme.of(context).primaryColor),
                         SizedBox(width: 12),
                         Text(
                           "You have ${filteredItems.length} saved items",
@@ -126,15 +131,20 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
                     child: items.isEmpty
                         ? Center(
                             child: Text(
-                              "No Saved Item",
-                              style: AppStyle.labelStyle,
+                              AppStrings.of(context).noSavedItems,
+                              style: AppStyle.labelStyle.copyWith(
+                                 color: Theme.of(context).colorScheme.onSurface,
+                              ),
                             ),
                           )
                         : filteredItems.isEmpty
                         ? Center(
                             child: Text(
-                              "No saved $selected yet",
-                              style: AppStyle.labelStyle,
+                              AppStrings.of(context).noSavedItemsInCategory
+                                  .replaceFirst('\$selected', selected),
+                              style: AppStyle.labelStyle.copyWith(
+                                 color: Theme.of(context).colorScheme.onSurface,
+                              ),
                             ),
                           )
                         : ListView.separated(
@@ -160,7 +170,7 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
                                   case SavedType.article:
                                     MyNavigation.navigateTo(
                                       CarTipsPage(
-                                        assetName: filteredItems[index].image,
+                                        imagePath: filteredItems[index].image,
                                       ),
                                     );
                                   case SavedType.service:
@@ -169,7 +179,7 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
                                   case SavedType.post:
                                     //TODO:Here we will replace this page with post details page
                                     MyNavigation.navigateTo(
-                                      CommunityNewPostPage(),
+                                      CommunityPage(),
                                     );
                                     break;
                                 }

@@ -2,6 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -58,7 +59,10 @@ class CarNewsPage extends StatelessWidget {
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(AppConstants.carNews, style: AppStyle.appBarTitle),
+        title: Text(
+          AppStrings.of(context).carNews,
+          style: AppStyle.appBarTitle,
+        ),
         leading: const LeadingIcon(),
       ),
       body: ListView.separated(
@@ -116,8 +120,9 @@ class _NewsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
         borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.white),
+      ),
       child: Row(
         children: [
           ClipRRect(
@@ -138,6 +143,7 @@ class _NewsCard extends StatelessWidget {
                   item.title,
                   style: AppStyle.boldSmallText.copyWith(
                     fontSize: AppFontSize.f12,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -145,7 +151,7 @@ class _NewsCard extends StatelessWidget {
                   item.subtitle,
                   style: AppStyle.containerSubtitle.copyWith(
                     fontSize: AppFontSize.f10,
-                    color: AppColors.iconGrey,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -164,7 +170,7 @@ class _NewsCard extends StatelessWidget {
                         item.tag,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f10,
-                          color: AppColors.cyanColor,
+                          color: Theme.of(context).colorScheme.secondary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -174,7 +180,7 @@ class _NewsCard extends StatelessWidget {
                       item.readTime,
                       style: AppStyle.containerSubtitle.copyWith(
                         fontSize: AppFontSize.f10,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                     ),
                   ],

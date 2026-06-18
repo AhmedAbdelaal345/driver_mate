@@ -1,4 +1,4 @@
-import 'package:driver_mate/feature/ai/data/model/chat_message_model.dart';
+import 'package:driver_mate/feature/ai/data/model/chat_request_model.dart';
 
 abstract class AiChatState {}
 
@@ -7,7 +7,7 @@ class AiChatInitial extends AiChatState {}
 class AiChatLoading extends AiChatState {}
 
 class AiChatUpdated extends AiChatState {
-  final List<ChatMessageModel> messages;
+  final List<ChatRequestModel> messages;
 
   AiChatUpdated(this.messages);
 }

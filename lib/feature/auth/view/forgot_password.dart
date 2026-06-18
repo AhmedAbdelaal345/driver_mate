@@ -1,10 +1,11 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_regexp.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/container_icon.dart';
@@ -47,11 +48,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: LeadingIcon(),
         title: Text(
-          AppConstants.forgotPassword,
-          style: AppStyle.forgetPasswordStyle,
+          AppStrings.of(context).forgotPassword,
+          style: AppStyle.forgetPasswordStyle.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         centerTitle: true,
       ),
@@ -69,37 +73,42 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               SizedBox(height: SizeConfig.height(context) * 0.03),
 
               Text(
-                AppConstants.resetYourPassword,
+                AppStrings.of(context).resetYourPassword,
                 style: AppStyle.signUpTextStyle24.copyWith(
                   fontSize: AppFontSize.f20,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.001),
               Text(
-                AppConstants.resetByEmail,
-                style: AppStyle.hintStyle,
+                AppStrings.of(context).resetByEmail,
+                style: AppStyle.hintStyle.copyWith(
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: SizeConfig.height(context) * 0.048),
               Align(
                 alignment: AlignmentGeometry.centerLeft,
                 child: Text(
-                  AppConstants.emailAddress,
-                  style: AppStyle.labelStyle,
+                  AppStrings.of(context).emailAddress,
+                  style: AppStyle.labelStyle.copyWith(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
                 ),
               ),
               TextFormFieldWidget(
                 controller: emailController,
-                hintText: AppConstants.enterYourEmail,
+                hintText: AppStrings.of(context).enterYourEmail,
                 isPassword: false,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return AppConstants.pleaseEnterYourEmail;
+                    return AppStrings.of(context).pleaseEnterYourEmail;
                   } else if (RegExp(
                         AppRegExp.emailValidationPattern,
                       ).hasMatch(value) ==
                       false) {
-                    return AppConstants.pleaseEnterValidEmail;
+                    return AppStrings.of(context).pleaseEnterValidEmail;
                   }
                   return null;
                 },
@@ -133,9 +142,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   },
                   builder: (context, state) {
                     if (state is ForgetPasswordLoadingState) {
-                      return const Center(
+                      return  Center(
                         child: CircularProgressIndicator(
-                          color: AppColors.darkBlue,
+                          color:Theme.of(context).colorScheme.primary ,
                         ),
                       );
                     }
@@ -153,7 +162,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           );
                         }
                       },
-                      buttonText: AppConstants.continu,
+                      buttonText: AppStrings.of(context).continu,
                     );
                   },
                 ),

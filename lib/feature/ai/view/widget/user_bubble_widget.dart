@@ -1,4 +1,3 @@
-import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +18,8 @@ class UserBubbleWidget extends StatelessWidget {
             end: AlignmentGeometry.bottomRight,
             colors: [
               // AppColors.darkBlue,
-              AppColors.veryDarkBlue,
-              AppColors.blue,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
             ],
           ),
           borderRadius: BorderRadius.only(
@@ -34,7 +33,7 @@ class UserBubbleWidget extends StatelessWidget {
           text,
           style: AppStyle.coursalSubtitleTextStyle.copyWith(
             fontSize: 13,
-            color: AppColors.white,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ),

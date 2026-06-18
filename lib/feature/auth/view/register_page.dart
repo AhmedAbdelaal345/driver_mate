@@ -1,9 +1,10 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_regexp.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/manager/auth/auth_cubit.dart';
@@ -21,16 +22,19 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             MyNavigation.navigateBack();
           },
-          icon: Icon(Icons.arrow_back_ios, size: 18),
+          icon: Icon(Icons.arrow_back_ios, size: 18,color:Theme.of(context).iconTheme.color ,),
         ),
         title: Text(
-          AppConstants.createAccount,
-          style: AppStyle.welcomeTextStyle,
+          AppStrings.of(context).createAccount,
+          style: AppStyle.welcomeTextStyle.copyWith(
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
         ),
         centerTitle: true,
       ),
@@ -44,72 +48,102 @@ class RegisterPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(AppConstants.signup, style: AppStyle.signUpTextStyle24),
-                Text(AppConstants.accountToContinue, style: AppStyle.hintStyle),
+                Text(
+                  AppStrings.of(context).signup,
+                  style: AppStyle.signUpTextStyle24.copyWith(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                ),
+                Text(
+                  AppStrings.of(context).accountToContinue,
+                  style: AppStyle.hintStyle.copyWith(
+                    color:Theme.of(context).textTheme.bodyMedium?.color,
+                  ),
+                ),
                 SizedBox(height: SizeConfig.height(context) * 0.022),
-                Text(AppConstants.fullName, style: AppStyle.labelStyle),
+                Text(
+                  AppStrings.of(context).fullName,
+                  style: AppStyle.labelStyle.copyWith(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                ),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
 
                 TextFormFieldWidget(
                   controller: AuthCubit.get(context).nameController,
-                  hintText: AppConstants.enterYourName,
+                  hintText: AppStrings.of(context).enterYourName,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return AppConstants.pleaseEnterYourName;
+                      return AppStrings.of(context).pleaseEnterYourName;
                     }
                     return null;
                   },
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
-                Text(AppConstants.emailAddress, style: AppStyle.labelStyle),
+                Text(
+                  AppStrings.of(context).emailAddress,
+                  style: AppStyle.labelStyle.copyWith(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                ),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
                 TextFormFieldWidget(
                   controller: AuthCubit.get(context).emailController,
-                  hintText: AppConstants.enterYourEmail,
+                  hintText: AppStrings.of(context).enterYourEmail,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return AppConstants.pleaseEnterYourEmail;
+                      return AppStrings.of(context).pleaseEnterYourEmail;
                     } else if (RegExp(
                           AppRegExp.emailValidationPattern,
                         ).hasMatch(value) ==
                         false) {
-                      return AppConstants.pleaseEnterValidEmail;
+                      return AppStrings.of(context).pleaseEnterValidEmail;
                     }
                     return null;
                   },
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
-                Text(AppConstants.password, style: AppStyle.labelStyle),
+                Text(
+                  AppStrings.of(context).password,
+                  style: AppStyle.labelStyle.copyWith(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                ),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
                 TextFormFieldWidget(
                   controller: AuthCubit.get(context).passwordController,
-                  hintText: AppConstants.enterYourPassword,
+                  hintText: AppStrings.of(context).enterYourPassword,
                   isPassword: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return AppConstants.pleaseEnterYourName;
+                      return AppStrings.of(context).pleaseEnterYourPassword;
                     } else if (RegExp(
                           AppRegExp.passwordValidationPattern,
                         ).hasMatch(value) ==
                         false) {
-                      return AppConstants.pleaseEnterValidPassword;
+                      return AppStrings.of(context).pleaseEnterValidPassword;
                     }
                     return null;
                   },
                 ),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
-                Text(AppConstants.confirmPassword, style: AppStyle.labelStyle),
+                Text(
+                  AppStrings.of(context).confirmPassword,
+                  style: AppStyle.labelStyle.copyWith(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                ),
                 SizedBox(height: SizeConfig.height(context) * 0.01),
                 TextFormFieldWidget(
                   controller: AuthCubit.get(context).confirmPasswordController,
-                  hintText: AppConstants.reEnterYourPassword,
+                  hintText: AppStrings.of(context).reEnterYourPassword,
                   isPassword: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return AppConstants.pleaseEnterYourName;
+                      return AppStrings.of(context).pleaseEnterYourPassword;
                     } else if (AuthCubit.get(context).passwordController.text !=
                         AuthCubit.get(context).confirmPasswordController.text) {
-                      return AppConstants.pleaseEnterValidPassword;
+                      return AppStrings.of(context).pleaseEnterValidPassword;
                     }
                     return null;
                   },
@@ -137,12 +171,17 @@ class RegisterPage extends StatelessWidget {
                         );
                       },
                     ),
-                    Text("Agree with ", style: AppStyle.labelStyle),
                     Text(
-                      "Terms & Conditions",
+                      AppStrings.of(context).agreeWith,
+                      style: AppStyle.labelStyle.copyWith(
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
+                    ),
+                    Text(
+                      AppStrings.of(context).termsAndConditions,
                       style: AppStyle.labelStyle.copyWith(
                         decoration: TextDecoration.underline,
-                        color: AppColors.blue,
+                        color:Theme.of(context).primaryColor,
                       ),
                     ),
                   ],
@@ -172,12 +211,12 @@ class RegisterPage extends StatelessWidget {
                   builder: (context, state) {
                     if (state is RegisterAuthLoading) {
                       return Center(
-                        child: CircularProgressIndicator(color: AppColors.blue),
+                        child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary,),
                       );
                     } else {
                       return PrimaryElevatedButtonWidget(
                         formKey: AuthCubit.get(context).registerFormKey,
-                        buttonText: AppConstants.signup,
+                        buttonText: AppStrings.of(context).signup,
                         onPressed: () {
                           final FormState form =
                               AuthCubit.get(
@@ -189,14 +228,14 @@ class RegisterPage extends StatelessWidget {
 
                             if (!AuthCubit.get(context).isAgreed) {
                               Fluttertoast.showToast(
-                                msg: AppConstants.pleaseAgreeToTerms,
+                                msg: AppStrings.of(context).pleaseAgreeToTerms,
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 timeInSecForIosWeb: 1,
-                                backgroundColor: AppColors.darkBlue.withValues(
+                                backgroundColor: Theme.of(context).colorScheme.primary.withValues(
                                   alpha: 0.7,
                                 ),
-                                textColor: AppColors.white,
+                                textColor: Theme.of(context).colorScheme.onPrimary,
                                 fontSize: AppFontSize.f16,
                               );
                               return;

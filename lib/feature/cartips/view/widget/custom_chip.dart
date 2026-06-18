@@ -11,9 +11,9 @@ class CustomChip extends StatelessWidget {
     return Chip(
       label: Text(
         hintText ?? AppConstants.maintenance,
-        style: AppStyle.mostText.copyWith(color: AppColors.cyanColor),
+        style: AppStyle.mostText.copyWith(color: Theme.of(context).colorScheme.secondary),
       ),
-      backgroundColor: AppColors.cyanColor.withValues(alpha: 0.1),
+      backgroundColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.1),
       side: BorderSide(color: AppColors.white.withValues(alpha: 0.1)),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     );

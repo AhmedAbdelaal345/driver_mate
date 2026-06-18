@@ -2,14 +2,14 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 abstract class BoxDecorationWidget {
-  static BoxDecoration customBoxDecoration({
+  static BoxDecoration customBoxDecoration(context, {
     double borderRadius = 12.0,
     double borderWidth = 1.0,
   }) {
     return BoxDecoration(
-      
+    
       borderRadius: BorderRadius.circular(borderRadius),
-      color: AppColors.boarderWhiteColor,
+      color: Theme.of(context).cardTheme.color,
       boxShadow: [
         BoxShadow(
           blurRadius: 2,

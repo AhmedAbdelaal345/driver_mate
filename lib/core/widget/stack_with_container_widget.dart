@@ -18,7 +18,7 @@ class StackWithContainerWidget extends StatelessWidget {
           bottom: -4,
           right: -4,
           child: CircleAvatar(
-            backgroundColor: AppColors.cyanColor,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             radius: 16,
             child: Icon(icon ?? Icons.check, color: AppColors.white, size: 18),
           ),

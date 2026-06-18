@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -19,10 +20,10 @@ class EmergencyAssistancePage extends StatefulWidget {
 }
 
 class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
-  String _locationText = AppConstants.locationLoading;
   bool _gpsActive = false;
   bool _isFetching = false;
 
+    String _locationText = AppConstants.locationLoading;
   @override
   void initState() {
     super.initState();
@@ -33,14 +34,14 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
     if (_isFetching) return;
     setState(() {
       _isFetching = true;
-      _locationText = AppConstants.locationLoading;
+      _locationText = AppStrings.of(context).locationLoading;
     });
 
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       setState(() {
         _gpsActive = false;
-        _locationText = AppConstants.locationDisabled;
+        _locationText = AppStrings.of(context).locationDisabled;
         _isFetching = false;
       });
       return;
@@ -55,7 +56,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
         permission == LocationPermission.deniedForever) {
       setState(() {
         _gpsActive = false;
-        _locationText = AppConstants.locationPermissionDenied;
+        _locationText = AppStrings.of(context).locationPermissionDenied;
         _isFetching = false;
       });
       return;
@@ -82,8 +83,8 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          AppConstants.emergencyAssistance,
+        title:  Text(
+          AppStrings.of(context).emergencyAssistance,
           style: AppStyle.appBarTitle,
         ),
         leading: const LeadingIcon(),
@@ -99,7 +100,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
             children: [
               Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecorationWidget.customBoxDecoration(
+                decoration: BoxDecorationWidget.customBoxDecoration(context,
                   borderRadius: AppFontSize.f12,
                 ).copyWith(color: AppColors.red.withValues(alpha: 0.1)),
                 child: Row(
@@ -123,7 +124,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppConstants.emergencyModeActive,
+                            AppStrings.of(context).emergencyModeActive,
                             style: AppStyle.boldSmallText.copyWith(
                               fontSize: AppFontSize.f12,
                               color: AppColors.red,
@@ -131,7 +132,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            AppConstants.helpOnTheWay,
+                            AppStrings.of(context).helpOnTheWay,
                             style: AppStyle.containerSubtitle.copyWith(
                               fontSize: AppFontSize.f11,
                               color: AppColors.iconGrey,
@@ -148,13 +149,13 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                 onTap: () => _callNumber(AppConstants.policeNumber),
                 child: Container(
                   padding: const EdgeInsets.all(16),
-                  decoration: BoxDecorationWidget.customBoxDecoration(
+                  decoration: BoxDecorationWidget.customBoxDecoration(context,
                     borderRadius: AppFontSize.f12,
                   ).copyWith(color: AppColors.white),
                   child: Column(
                     children: [
                       Text(
-                        AppConstants.emergencySos,
+                        AppStrings.of(context).emergencySos,
                         style: AppStyle.boldSmallText.copyWith(
                           fontSize: AppFontSize.f12,
                           color: AppColors.textGrey,
@@ -185,7 +186,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                             ),
                             const SizedBox(height: 6),
                             Text(
-                              AppConstants.sos,
+                              AppStrings.of(context).sos,
                               style: AppStyle.boldSmallText.copyWith(
                                 fontSize: AppFontSize.f12,
                                 color: AppColors.white,
@@ -196,7 +197,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        AppConstants.tapToCallEmergency,
+                        AppStrings.of(context).tapToCallEmergency,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f11,
                           color: AppColors.iconGrey,
@@ -204,7 +205,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        AppConstants.emergencyNote,
+                        AppStrings.of(context).emergencyNote,
                         textAlign: TextAlign.center,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f10,
@@ -220,78 +221,78 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                 onTap: _loadLocation,
                 borderRadius: BorderRadius.circular(AppFontSize.f12),
                 child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecorationWidget.customBoxDecoration(
-                  borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 34,
-                      height: 34,
-                      decoration: BoxDecoration(
-                        color: AppColors.green.withValues(alpha: 0.15),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.location_on_outlined,
-                        color: AppColors.green,
-                        size: 18,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppConstants.currentLocation,
-                            style: AppStyle.boldSmallText.copyWith(
-                              fontSize: AppFontSize.f12,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            _locationText,
-                            style: AppStyle.containerSubtitle.copyWith(
-                              fontSize: AppFontSize.f11,
-                              color: AppColors.iconGrey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _gpsActive
-                            ? AppColors.smoothGreen
-                            : AppColors.containerGrey,
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                      child: Text(
-                        _gpsActive
-                            ? AppConstants.gpsActive
-                            : AppConstants.gpsInactive,
-                        style: AppStyle.containerSubtitle.copyWith(
-                          fontSize: AppFontSize.f10,
-                          color: _gpsActive
-                              ? AppColors.green
-                              : AppColors.iconGrey,
-                          fontWeight: FontWeight.bold,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecorationWidget.customBoxDecoration(context,
+                    borderRadius: AppFontSize.f12,
+                  ).copyWith(color: AppColors.white),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 34,
+                        height: 34,
+                        decoration: BoxDecoration(
+                          color: AppColors.green.withValues(alpha: 0.15),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.location_on_outlined,
+                          color: AppColors.green,
+                          size: 18,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppStrings.of(context).currentLocation,
+                              style: AppStyle.boldSmallText.copyWith(
+                                fontSize: AppFontSize.f12,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              _locationText,
+                              style: AppStyle.containerSubtitle.copyWith(
+                                fontSize: AppFontSize.f11,
+                                color: AppColors.iconGrey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _gpsActive
+                              ? AppColors.smoothGreen
+                              : AppColors.containerGrey,
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        child: Text(
+                          _gpsActive
+                              ? AppStrings.of(context).gpsActive
+                              : AppStrings.of(context).gpsInactive,
+                          style: AppStyle.containerSubtitle.copyWith(
+                            fontSize: AppFontSize.f10,
+                            color: _gpsActive
+                                ? AppColors.green
+                                : AppColors.iconGrey,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Text(
-                AppConstants.quickActions,
+                AppStrings.of(context).quickActions,
                 style: AppStyle.containerSubtitle.copyWith(
                   fontSize: AppFontSize.f11,
                   color: AppColors.iconGrey,
@@ -305,25 +306,25 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                 children: [
                   _QuickAction(
                     icon: Icons.local_shipping,
-                    label: AppConstants.towService,
+                    label: AppStrings.of(context).towService,
                     color: AppColors.cyanColor,
                     onTap: () => _showTowOptions(context),
                   ),
                   _QuickAction(
                     icon: Icons.local_hospital,
-                    label: AppConstants.ambulance,
+                    label: AppStrings.of(context).ambulance,
                     color: AppColors.red,
                     onTap: () => _callNumber(AppConstants.ambulanceNumber),
                   ),
                   _QuickAction(
                     icon: Icons.shield_outlined,
-                    label: AppConstants.police,
+                    label: AppStrings.of(context).police,
                     color: AppColors.blue,
                     onTap: () => _callNumber(AppConstants.policeNumber),
                   ),
                   _QuickAction(
                     icon: Icons.local_fire_department_outlined,
-                    label: AppConstants.fireTruck,
+                    label: AppStrings.of(context).fireTruck,
                     color: AppColors.orange,
                     onTap: () => _callNumber(AppConstants.fireTruckNumber),
                   ),
@@ -364,29 +365,29 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                AppConstants.towHelp,
+                AppStrings.of(context).towHelp,
                 style: AppStyle.boldSmallText.copyWith(
                   fontSize: AppFontSize.f14,
                 ),
               ),
               const SizedBox(height: 12),
               _TowOption(
-                title: AppConstants.helpoo,
+                title: AppStrings.of(context).helpoo,
                 number: AppConstants.helpooNumber,
                 onTap: _callNumber,
               ),
               _TowOption(
-                title: AppConstants.egTowing,
+                title: AppStrings.of(context).egTowing,
                 number: AppConstants.egTowingNumber1,
                 onTap: _callNumber,
               ),
               _TowOption(
-                title: AppConstants.egTowing,
+                title: AppStrings.of(context).egTowing,
                 number: AppConstants.egTowingNumber2,
                 onTap: _callNumber,
               ),
               _TowOption(
-                title: AppConstants.mercedesRoadside,
+                title: AppStrings.of(context).mercedesRoadside,
                 number: AppConstants.mercedesNumber,
                 onTap: _callNumber,
               ),

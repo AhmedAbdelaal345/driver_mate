@@ -9,7 +9,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   String? selectedImage;
 
   EditProfileCubit({required this.repo}) : super(InitEditProfile()) {
-    getUserData(); // single call — removed duplicate from initState
+    getUserData();
   }
 
   Future<void> getUserData() async {
@@ -24,9 +24,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   Future<void> changeUser({
     required String fullName,
-    required String emailAddress,
-    required String image,
     required String phoneNumber,
+    required String image,
+    // email removed — read-only field, cannot be changed
   }) async {
     emit(LoadingEditProfile());
     try {
@@ -34,13 +34,12 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
       final EditProfileModel updated = await repo.changeProfile(
         fullName: fullName,
-        emailAddress: emailAddress,
-        image: image,
         phoneNumber: phoneNumber,
+        image: image,
         accessToken: current.accessToken,
       );
 
-      selectedImage = null; // reset picked image after saving
+      selectedImage = null;
 
       emit(
         UpdateProfileSuccess(
@@ -48,7 +47,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           data: updated,
         ),
       );
-      // ✅ Removed getUserData() — it would overwrite with stale server data
     } catch (e) {
       emit(ErrorEditProfile(error: e.toString()));
     }

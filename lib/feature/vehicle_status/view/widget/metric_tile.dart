@@ -5,7 +5,8 @@ import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
 
 class MetricTile extends StatelessWidget {
-  const MetricTile({super.key, 
+  const MetricTile({
+    super.key,
     required this.icon,
     required this.iconColor,
     required this.title,
@@ -26,6 +27,7 @@ class MetricTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
         borderRadius: AppFontSize.f12,
       ).copyWith(color: AppColors.white),
       child: Row(

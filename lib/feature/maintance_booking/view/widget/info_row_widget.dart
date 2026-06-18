@@ -30,7 +30,7 @@ class InfoRow extends StatelessWidget {
       onTap: showAction ? onTap : null,
       child: Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecorationWidget.customBoxDecoration(
+        decoration: BoxDecorationWidget.customBoxDecoration(context,
           borderRadius: AppFontSize.f12,
         ).copyWith(color: AppColors.containerGrey.withValues(alpha: 0.3)),
         child: Row(

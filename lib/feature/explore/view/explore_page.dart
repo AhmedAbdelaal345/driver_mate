@@ -1,6 +1,6 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/car_details/view/car_details_page.dart';
 import 'package:driver_mate/feature/explore/data/explore_filter.dart';
@@ -36,47 +36,46 @@ class _ExplorePageState extends State<ExplorePage> {
       useSafeArea: true,
       builder: (_) => ExploreFilterSheet(initial: _filter),
     );
-
-    if (result != null) {
-      setState(() => _filter = result);
-    }
+    if (result != null) setState(() => _filter = result);
   }
 
-  void _openSearchPage() {
-    MyNavigation.navigateTo(const ExploreSearchPage());
-  }
+  void _openSearchPage() => MyNavigation.navigateTo(const ExploreSearchPage());
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    // ── Scaffold bg: slightly off from card surface for depth ─────────────
+    final scaffoldBg = theme.brightness == Brightness.dark
+        ? theme
+              .scaffoldBackgroundColor // AppColors.black in dark
+        : const Color(0xFFF8FAFC); // keep the light off-white
+
+    final appBarBg =
+        theme.appBarTheme.backgroundColor ?? theme.scaffoldBackgroundColor;
+    final iconColor = theme.iconTheme.color ?? theme.colorScheme.onSurface;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      floatingActionButton: FloatActionButtonWidget(
-        onPressed: () {
-          // here we will add the functionality to go to ai voice assisstance
-        },
-      ),
+      backgroundColor: scaffoldBg,
+      floatingActionButton: FloatActionButtonWidget(onPressed: () {}),
       appBar: AppBar(
         elevation: 0.4,
         scrolledUnderElevation: 0.4,
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
+        backgroundColor: appBarBg,
+        surfaceTintColor: appBarBg,
         title: Text(
-          AppConstants.explore,
+          AppStrings.of(context).explore,
           style: AppStyle.socialButtonTextStyle.copyWith(
             fontSize: AppFontSize.f20,
+            color: theme.colorScheme.onSurface, // white in dark, dark in light
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: Colors.black),
+            icon: Icon(Icons.search, color: iconColor),
             onPressed: _openSearchPage,
           ),
           IconButton(
-            icon: const Icon(Icons.tune, color: Colors.black),
+            icon: Icon(Icons.tune, color: iconColor),
             onPressed: _openFilterSheet,
           ),
         ],
@@ -94,9 +93,8 @@ class _ExplorePageState extends State<ExplorePage> {
               const SizedBox(height: 8),
             CustomCategoryChips(
               selected: _filter.category,
-              onSelected: (cat) {
-                setState(() => _filter = _filter.copyWith(category: cat));
-              },
+              onSelected: (cat) =>
+                  setState(() => _filter = _filter.copyWith(category: cat)),
             ),
             const SizedBox(height: 28),
             ..._buildSections(),
@@ -110,22 +108,20 @@ class _ExplorePageState extends State<ExplorePage> {
     switch (_filter.category) {
       case 'Cars':
         return [
-          const CustomSectionHeader(title: AppConstants.featuredCars),
+          CustomSectionHeader(title: AppStrings.of(context).featuredCars),
           const SizedBox(height: 16),
           CustomCarSlider(
             filter: _filter,
-            onViewDetails: (CarItem carItem) {
-              MyNavigation.navigateTo(
-                CarDetailsPage(
-                  carName: carItem.title,
-                  carYear: carItem.subtitle,
-                  carType: carItem.category,
-                  carDescription: carItem.details,
-                  carImagePath: carItem.image,
-                  isNew: carItem.isNew,
-                ),
-              );
-            },
+            onViewDetails: (CarItem car) => MyNavigation.navigateTo(
+              CarDetailsPage(
+                carName: car.title,
+                carYear: car.subtitle,
+                carType: car.category,
+                carDescription: car.details,
+                carImagePath: car.image,
+                isNew: car.isNew,
+              ),
+            ),
           ),
         ];
       case 'Maintenance':
@@ -135,19 +131,31 @@ class _ExplorePageState extends State<ExplorePage> {
       case 'All':
       default:
         return [
-          const CustomSectionHeader(title: AppConstants.featuredCars),
+          CustomSectionHeader(title: AppStrings.of(context).featuredCars),
           const SizedBox(height: 16),
-          CustomCarSlider(filter: _filter),
+          CustomCarSlider(
+            filter: _filter,
+            onViewDetails: (car) => MyNavigation.navigateTo(
+              CarDetailsPage(
+                carName: car.title,
+                carYear: car.subtitle,
+                carType: car.category,
+                carDescription: car.details,
+                carImagePath: car.image,
+                isNew: car.isNew,
+              ),
+            ),
+          ),
           const SizedBox(height: 12),
-          const CustomSectionHeader(
-            title: AppConstants.maintanenceNearService,
+          CustomSectionHeader(
+            title: AppStrings.of(context).maintanenceNearService,
             showViewAll: false,
           ),
           const SizedBox(height: 16),
           CustomMaintenanceList(filter: _filter),
           const SizedBox(height: 12),
-          const CustomSectionHeader(
-            title: 'Car Tips & News',
+          CustomSectionHeader(
+            title: AppStrings.of(context).carTipsAndNews,
             showViewAll: false,
           ),
           const SizedBox(height: 16),

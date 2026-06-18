@@ -16,10 +16,9 @@ class TipItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
+      ).copyWith(borderRadius: BorderRadius.circular(12)),
 
       child: Row(
         children: [
@@ -29,22 +28,39 @@ class TipItem extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Row(
                   children: [
                     CustomChip(hintText: tag),
                     const SizedBox(width: 8),
-                    const Icon(Icons.access_time, size: 14),
+                    Icon(
+                      Icons.access_time,
+                      size: 14,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                     const SizedBox(width: 4),
-                    Text(time),
+                    Text(
+                      time,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
           ),
-          const Icon(Icons.arrow_forward_ios, size: 16),
+          Icon(
+            Icons.arrow_forward_ios,
+            size: 16,
+            color: Theme.of(context).iconTheme.color,
+          ),
         ],
       ),
     );

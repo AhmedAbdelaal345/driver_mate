@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 class HeaderImage extends StatelessWidget {
   const HeaderImage({
     super.key,
-    required this.assetName,
+    required this.imagePath,
     this.hintText,
     this.labelText,
   });
-  final String assetName;
+  final String imagePath;
   final String? hintText;
   final String? labelText;
 
@@ -27,11 +27,11 @@ class HeaderImage extends StatelessWidget {
           // IMAGE
           Container(
             height: SizeConfig.height(context) * 0.4,
-            decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
+            decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
               image: DecorationImage(
-                image: assetName.startsWith("http")
-                    ? NetworkImage(assetName)
-                    : AssetImage(assetName) as ImageProvider,
+                image: imagePath.startsWith("http")
+                    ? NetworkImage(imagePath)
+                    : AssetImage(imagePath) as ImageProvider,
                 fit: BoxFit.cover,
               ),
             ),
@@ -44,8 +44,7 @@ class HeaderImage extends StatelessWidget {
             right: 16,
             child: Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-                color: Colors.white,
+              decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Column(
@@ -57,19 +56,23 @@ class HeaderImage extends StatelessWidget {
                       //custom chip
                       CustomChip(),
                       const SizedBox(width: 8),
-                      const Icon(
+                       Icon(
                         Icons.access_time,
                         size: 16,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).iconTheme.color ,
                       ),
                       const SizedBox(width: 4),
-                      Text("5 min read", style: AppStyle.hintStyle),
+                      Text("5 min read", style: AppStyle.hintStyle.copyWith(
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      )),
                     ],
                   ),
                   const SizedBox(height: 10),
                   Text(
                     labelText ?? AppConstants.essentialCar,
-                    style: AppStyle.titleForContainer,
+                    style: AppStyle.titleForContainer.copyWith(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
                   ),
                 ],
               ),

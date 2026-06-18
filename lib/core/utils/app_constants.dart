@@ -1,6 +1,8 @@
 abstract class AppConstants {
+
+  
   //------------- Strings -------------
-  static const String driverMate = "Driver Mate";
+  static const String driverMate = "Drive Mate";
   static const String loginText = "Login";
   static const String explore = "Explore";
   static const String questions = "Questions";
@@ -13,6 +15,8 @@ abstract class AppConstants {
   static const String selectVehicle = 'Select Vehicle';
   static const String carDetails = 'Car Details';
   static const String nickname = 'Nickname';
+  static const String postdetails = 'Post Details';
+
   static const String removeVehicle = 'Remove Vehicle';
   static const String batteryHealth = 'battery Health';
   static const String myDailyDriver = 'My Daily Driver';
@@ -38,6 +42,7 @@ abstract class AppConstants {
   static const String bookMaintenanceDescription =
       'Schedule service appointment';
   static const String emergencyHelp = 'Emergency Help';
+  static const String locationError = 'Location Error';
   static const String viewMaintenanceHistory = 'View Maintenance History';
   static const String viewMaintenanceHistoryDescription =
       'See all past services and repairs';
@@ -272,6 +277,7 @@ abstract class AppConstants {
   static const String maintenanceHistory = "Maintenance History";
   static const String pastbookings = "Past bookings";
   static const String preference = "Preferences";
+  static const String recordingTooShort = "Recording must be at least 5 seconds. Please try again.";
   static const String language = "Language";
   static const String englishArbic = "English / العربية";
   static const String theme = "Theme";

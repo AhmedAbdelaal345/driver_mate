@@ -3,7 +3,9 @@ import 'package:driver_mate/core/helper/image_picker.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -27,31 +29,31 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
+
+  // Email is display-only — stored as a plain string, no controller needed
+  String _emailDisplay = '';
 
   @override
   void initState() {
     super.initState();
-    // ✅ Pre-fill controllers if data is already loaded — no double fetch
     final state = context.read<EditProfileCubit>().state;
     if (state is SuccessEditProfile) {
-      _fillControllers(state.data);
+      _fillFields(state.data);
     }
-    // No getUserData() call here — cubit constructor already fetched it
   }
 
-  void _fillControllers(dynamic profile) {
+  void _fillFields(dynamic profile) {
     fullNameController.text = profile.fullName;
-    emailController.text = profile.emailAddress;
     phoneController.text = profile.phoneNumber;
+
+    _emailDisplay = profile.emailAddress;
   }
 
   @override
   void dispose() {
     fullNameController.dispose();
-    emailController.dispose();
     phoneController.dispose();
     super.dispose();
   }
@@ -59,33 +61,33 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: const LeadingIcon(),
-        title: Text(AppConstants.personalInfo, style: AppStyle.appBarTitle),
+        title: Text(
+          AppStrings.of(context).personalInfo,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
+        ),
         centerTitle: true,
       ),
       body: BlocListener<EditProfileCubit, EditProfileState>(
         listener: (context, state) {
-          // ✅ Fill controllers when data loads (handles the async case)
           if (state is SuccessEditProfile) {
-            _fillControllers(state.data);
+            _fillFields(state.data);
+            setState(() => _emailDisplay = state.data.emailAddress);
           }
-
           if (state is UpdateProfileSuccess) {
             AppNotifier.show(
               context,
               state.message,
               type: NotifierType.success,
             );
-            MyNavigation.navigateBack(); // single navigateBack — only here
+            MyNavigation.navigateBack();
           }
-
           if (state is ErrorEditProfile) {
-            AppNotifier.show(
-              context,
-              state.error,
-              type: NotifierType.error,
-            );
+            AppNotifier.show(context, state.error, type: NotifierType.error);
           }
         },
         child: Form(
@@ -96,6 +98,8 @@ class _EditProfileState extends State<EditProfile> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
+
+                // ── Profile photo picker ──────────────────────────────────
                 GestureDetector(
                   onTap: () async {
                     final picked = await ImagePickerHelper.pickImageAsString();
@@ -105,12 +109,10 @@ class _EditProfileState extends State<EditProfile> {
                   },
                   child: Column(
                     children: [
-                      // ✅ EditProfileImageChanged state now handled here
                       BlocBuilder<EditProfileCubit, EditProfileState>(
                         builder: (context, state) {
                           final cubit = context.read<EditProfileCubit>();
                           String imageToShow = AppImagePath.profileIconPath;
-
                           if (cubit.selectedImage != null) {
                             imageToShow = cubit.selectedImage!;
                           } else if (state is SuccessEditProfile) {
@@ -118,28 +120,38 @@ class _EditProfileState extends State<EditProfile> {
                           } else if (state is UpdateProfileSuccess) {
                             imageToShow = state.data.image;
                           }
-
                           return StackWithContainerWidget(
                             iconPath: imageToShow,
                             icon: Icons.camera_alt_outlined,
                           );
                         },
                       ),
-                      const SizedBox(height: 20),
-                      Text(AppConstants.changeImage, style: AppStyle.mostText),
+                      const SizedBox(height: 8),
+                      Text(
+                        AppStrings.of(context).changeImage,
+                        style: AppStyle.mostText.copyWith(
+                          color: Theme.of(context).iconTheme.color,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                SizedBox(height: 0.02 * SizeConfig.height(context)),
+
+                SizedBox(height: SizeConfig.height(context) * 0.02),
+
+                // ── Editable fields ───────────────────────────────────────
                 Container(
-                  decoration: BoxDecorationWidget.customBoxDecoration(),
-                  height: SizeConfig.height(context) * 0.4,
+                  decoration: BoxDecorationWidget.customBoxDecoration(
+                    context,
+                    borderRadius: AppFontSize.f12,
+                  ),
                   padding: const EdgeInsets.all(16),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      LabelTextWidget(title: AppConstants.fullName),
+                      // Full name — editable
+                      LabelTextWidget(title: AppStrings.of(context).fullName),
+                      const SizedBox(height: 6),
                       TextFormFieldWidget(
                         controller: fullNameController,
                         hintText: AppConstants.enterYourName,
@@ -151,57 +163,67 @@ class _EditProfileState extends State<EditProfile> {
                           return null;
                         },
                       ),
-                      LabelTextWidget(title: AppConstants.phone),
+                      const SizedBox(height: 16),
+
+                      // Phone — editable
+                      LabelTextWidget(title: AppStrings.of(context).phone),
+                      const SizedBox(height: 6),
                       TextFormFieldWidget(
                         controller: phoneController,
-                        hintText: AppConstants.phone,
+                        hintText: AppStrings.of(context).phone,
                         isPassword: false,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return AppConstants.youMust;
+                            return AppStrings.of(context).youMust;
                           }
                           return null;
                         },
                       ),
-                      LabelTextWidget(title: AppConstants.emailAddress),
-                      TextFormFieldWidget(
-                        controller: emailController,
-                        hintText: AppConstants.emailAddress,
-                        isPassword: false,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return AppConstants.youMust;
-                          }
-                          return null;
-                        },
+                      const SizedBox(height: 16),
+
+                      // Email — static display only, cannot be changed
+                      LabelTextWidget(
+                        title: AppStrings.of(context).emailAddress,
                       ),
-                      Text(AppConstants.weWillVerfiction, style: AppStyle.hintStyle),
+                      const SizedBox(height: 6),
+                      _StaticEmailField(email: _emailDisplay),
+                      const SizedBox(height: 8),
+                      Text(
+                        AppStrings.of(
+                          context,
+                        ).weWillVerfiction, // e.g. "Email cannot be changed"
+                        style: AppStyle.hintStyle,
+                      ),
                     ],
                   ),
                 ),
+
                 SizedBox(height: SizeConfig.height(context) * 0.015),
                 ContainerWidget(),
                 SizedBox(height: SizeConfig.height(context) * 0.015),
+
+                // ── Save button ───────────────────────────────────────────
                 BlocBuilder<EditProfileCubit, EditProfileState>(
                   builder: (context, state) {
                     if (state is LoadingEditProfile) {
                       return const Center(
-                        child: CircularProgressIndicator(color: AppColors.darkBlue),
+                        child: CircularProgressIndicator(
+                          color: AppColors.darkBlue,
+                        ),
                       );
                     }
                     return PrimaryElevatedButtonWidget(
-                      buttonText: AppConstants.save,
+                      buttonText: AppStrings.of(context).save,
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           final cubit = context.read<EditProfileCubit>();
                           cubit.changeUser(
                             fullName: fullNameController.text.trim(),
-                            emailAddress: emailController.text.trim(),
                             phoneNumber: phoneController.text.trim(),
-                            image: cubit.selectedImage
-                                ?? AppImagePath.defaultProfileImagePath,
+                            image:
+                                cubit.selectedImage ??
+                                AppImagePath.defaultProfileImagePath,
                           );
-                          // ✅ No navigateBack() here — listener handles it
                         }
                       },
                     );
@@ -211,6 +233,40 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+// ── Static email display widget ───────────────────────────────────────────────
+class _StaticEmailField extends StatelessWidget {
+  const _StaticEmailField({required this.email});
+  final String email;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.containerGrey),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              email.isEmpty ? '—' : email,
+              style: AppStyle.hintStyle, // muted style signals non-editable
+            ),
+          ),
+          Icon(
+            Icons.lock_outline,
+            size: 16,
+            color: Theme.of(context).iconTheme.color,
+          ),
+        ],
       ),
     );
   }

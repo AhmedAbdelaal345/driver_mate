@@ -12,9 +12,7 @@ class VehicleStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-                          decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-                            color: AppColors.white
-                          ),
+                          decoration: BoxDecorationWidget.customBoxDecoration(context),
                           padding: const EdgeInsets.all(16),
                           child: Row(
                             children: [
@@ -23,7 +21,7 @@ class VehicleStatusCard extends StatelessWidget {
                                 width: 60,
                                 padding: const EdgeInsets.all(8),
                                 decoration:
-                                    BoxDecorationWidget.customBoxDecoration()
+                                    BoxDecorationWidget.customBoxDecoration(context)
                                         .copyWith(
                                           gradient: const LinearGradient(
                                             begin: Alignment.topCenter,

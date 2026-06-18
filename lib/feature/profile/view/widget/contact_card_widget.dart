@@ -16,16 +16,21 @@ class ContactCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-final void Function()? onTap;
+  final void Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardTheme.color ?? theme.colorScheme.surface;
+
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(AppFontSize.f12),
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecorationWidget.customBoxDecoration(
+        decoration: BoxDecorationWidget.customBoxDecoration(context,
           borderRadius: AppFontSize.f12,
-        ).copyWith(color: AppColors.white),
+        ).copyWith(color: cardColor),
         child: Row(
           children: [
             CircleAvatar(
@@ -41,6 +46,7 @@ final void Function()? onTap;
                     title,
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f13,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 2),

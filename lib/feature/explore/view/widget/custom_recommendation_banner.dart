@@ -1,5 +1,5 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class CustomRecommendationBanner extends StatelessWidget {
@@ -13,14 +13,18 @@ class CustomRecommendationBanner extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
       decoration: BoxDecoration(
-        color: const Color(0xFFEFF9FD),
+        color: Theme.of(
+          context,
+        ).cardTheme.color, // ← was hardcoded AppColors.cyanColor
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: const Color(0xFFA7E3F4)),
       ),
       child: Text(
-        recommdedText ?? AppConstants.recommendedBannerText,
-        style: const TextStyle(
-          color: AppColors.veryDarkBlue,
+        recommdedText ?? AppStrings.of(context).recommendedBannerText,
+        style: TextStyle(
+          color: Theme.of(
+            context,
+          ).colorScheme.onSurface, // ← was hardcoded AppColors.white
           fontSize: 15,
           fontWeight: FontWeight.w500,
         ),

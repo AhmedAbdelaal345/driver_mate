@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -13,12 +14,17 @@ class PrivacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text(AppConstants.privacy, style: AppStyle.appBarTitle),
+        title: Text(
+          AppStrings.of(context).privacy,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
+        ),
         leading: const LeadingIcon(),
       ),
       body: SingleChildScrollView(
@@ -30,31 +36,32 @@ class PrivacyPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _SectionLabel(text: AppConstants.appPermissions),
+              _SectionLabel(text: AppStrings.of(context).appPermissions),
               SizedBox(height: SizeConfig.height(context) * 0.012),
               Container(
                 decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
+                ).copyWith(color: Theme.of(context).cardColor),
                 child: Column(
-                  children: const [
+                  children: [
                     _PermissionTile(
-                      title: AppConstants.location,
-                      subtitle: AppConstants.allowed,
+                      title: AppStrings.of(context).location,
+                      subtitle: AppStrings.of(context).allowed,
                       icon: Icons.location_on_outlined,
                       statusColor: AppColors.cyanColor,
                     ),
-                    Divider(color: AppColors.containerGrey),
+                    Divider(color: Theme.of(context).dividerColor),
                     _PermissionTile(
-                      title: AppConstants.microphone,
-                      subtitle: AppConstants.notAllowed,
+                      title: AppStrings.of(context).microphone,
+                      subtitle: AppStrings.of(context).notAllowed,
                       icon: Icons.mic_none,
                       statusColor: AppColors.iconGrey,
                     ),
-                    Divider(color: AppColors.containerGrey),
+                    Divider(color: Theme.of(context).dividerColor),
                     _PermissionTile(
-                      title: AppConstants.notifications,
-                      subtitle: AppConstants.allowed,
+                      title: AppStrings.of(context).notifications,
+                      subtitle: AppStrings.of(context).allowed,
                       icon: Icons.notifications_none,
                       statusColor: AppColors.cyanColor,
                     ),
@@ -65,62 +72,65 @@ class PrivacyPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.lightBleu),
+                ).copyWith(color: Theme.of(context).cardColor),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppConstants.permissionsInfoTitle,
+                      AppStrings.of(context).permissionsInfoTitle,
                       style: AppStyle.boldSmallText.copyWith(
                         fontSize: AppFontSize.f12,
-                        color: AppColors.textGrey,
+                        color: Theme.of(  context).textTheme.bodyMedium?.color,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      AppConstants.permissionsInfoBody,
+                      AppStrings.of(context).permissionsInfoBody,
                       style: AppStyle.regularSmallText.copyWith(
                         fontSize: AppFontSize.f11,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.025),
-              _SectionLabel(text: AppConstants.yourData),
+              _SectionLabel(text: AppStrings.of(context).yourData),
               SizedBox(height: SizeConfig.height(context) * 0.012),
               Container(
                 decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
+                ).copyWith(color: Theme.of(context).cardColor),
                 child: Column(
-                  children: const [
+                  children: [
                     _SimpleActionTile(
-                      title: AppConstants.clearSearchHistory,
-                      subtitle: AppConstants.clearSearchHistorySub,
+                      title: AppStrings.of(context).clearSearchHistory,
+                      subtitle: AppStrings.of(context).clearSearchHistorySub,
                       icon: Icons.delete_outline,
                     ),
-                    Divider(color: AppColors.containerGrey),
+                    Divider(color: Theme.of(context).dividerColor),
                     _SimpleActionTile(
-                      title: AppConstants.requestDataExport,
-                      subtitle: AppConstants.requestDataExportSub,
+                      title: AppStrings.of(context).requestDataExport,
+                      subtitle: AppStrings.of(context).requestDataExportSub,
                       icon: Icons.download_outlined,
                     ),
                   ],
                 ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.025),
-              _SectionLabel(text: AppConstants.dangerZone),
+              _SectionLabel(text: AppStrings.of(context).dangerZone),
               SizedBox(height: SizeConfig.height(context) * 0.012),
               Container(
                 decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
-                child: const _SimpleActionTile(
-                  title: AppConstants.deleteAccount,
-                  subtitle: AppConstants.deleteAccountSub,
+                ),
+                child: _SimpleActionTile(
+                  title: AppStrings.of(context).deleteAccount,
+                  subtitle: AppStrings.of(context).deleteAccountSub,
                   icon: Icons.warning_amber_rounded,
                   isDanger: true,
                 ),
@@ -143,7 +153,7 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       text,
       style: AppStyle.containerSubtitle.copyWith(
-        color: AppColors.iconGrey,
+        color: Theme.of(context).textTheme.bodyMedium?.color,
         fontSize: AppFontSize.f11,
       ),
     );
@@ -181,10 +191,10 @@ class _PermissionTile extends StatelessWidget {
           color: statusColor,
         ),
       ),
-      trailing: const Icon(
+      trailing: Icon(
         Icons.arrow_forward_ios,
         size: 14,
-        color: AppColors.iconGrey,
+        color: Theme.of(context).iconTheme.color,
       ),
       onTap: () {},
     );
@@ -225,13 +235,13 @@ class _SimpleActionTile extends StatelessWidget {
         subtitle,
         style: AppStyle.containerSubtitle.copyWith(
           fontSize: AppFontSize.f11,
-          color: AppColors.iconGrey,
+          color: Theme.of(context).textTheme.bodyMedium?.color,
         ),
       ),
-      trailing: const Icon(
+      trailing:  Icon(
         Icons.arrow_forward_ios,
         size: 14,
-        color: AppColors.iconGrey,
+        color: Theme.of(context).iconTheme.color,
       ),
       onTap: () {},
     );

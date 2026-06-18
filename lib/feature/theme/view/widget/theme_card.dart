@@ -37,10 +37,10 @@ class ThemeCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppFontSize.f12),
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecorationWidget.customBoxDecoration(
+        decoration: BoxDecorationWidget.customBoxDecoration(context,
           borderRadius: AppFontSize.f12,
         ).copyWith(
-          color: AppColors.white,
+          
           border: Border.all(color: borderColor, width: 1),
         ),
         child: Column(
@@ -63,6 +63,7 @@ class ThemeCard extends StatelessWidget {
                     title,
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f13,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                 ),

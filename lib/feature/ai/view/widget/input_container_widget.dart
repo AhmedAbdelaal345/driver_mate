@@ -12,7 +12,7 @@ class InputContainerWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
             blurRadius: 4,
@@ -26,7 +26,7 @@ class InputContainerWidget extends StatelessWidget {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.containerGrey,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(25),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -56,12 +56,12 @@ class InputContainerWidget extends StatelessWidget {
           SizeConfig.width(context) * 0.025,
         ), // Scaled padding
         decoration: BoxDecoration(
-          color: isWhite ? AppColors.white : AppColors.cyanColor,
+          color: isWhite ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.secondary,
           shape: BoxShape.circle,
         ),
         child: Icon(
           icon,
-          color: isWhite ? AppColors.grey : AppColors.white,
+          color: isWhite ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSecondary,
           size: SizeConfig.width(context) * 0.06,
         ),
       ),

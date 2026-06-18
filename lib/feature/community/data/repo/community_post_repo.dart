@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 
@@ -9,7 +8,7 @@ abstract class CommunityPostRepository {
     required String type,
     required String title,
     required String description,
-    File? image,
+    File? imageFile,
   });
 }
 
@@ -24,14 +23,14 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
       createdAt: DateTime.now().subtract(const Duration(hours: 2)),
       authorName: 'Ahmed Hassan',
       authorInitials: 'AH',
-      image: File(AppImagePath.bmwCarImagePath),
+      imageAssetPath: AppImagePath.bmwCarImagePath, // ✅ asset path, not File
     ),
     CommunityPostModel(
       id: 'seed-2',
       type: 'Tips',
       title: 'Best oil change interval for city driving',
       description:
-          'I recommend changing oil every 5,000 km if you drive mostly in heavy traffic to maintain engine health.',
+          'I recommend changing oil every 5,000 km if you drive mostly in heavy traffic.',
       createdAt: DateTime.now().subtract(const Duration(hours: 5)),
       authorName: 'Sara Ali',
       authorInitials: 'SA',
@@ -48,10 +47,10 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
     required String type,
     required String title,
     required String description,
-    File ?image,
+    File? imageFile,
   }) async {
-    final DateTime now = DateTime.now();
-    final CommunityPostModel post = CommunityPostModel(
+    final now = DateTime.now();
+    final post = CommunityPostModel(
       id: 'post-${now.microsecondsSinceEpoch}',
       type: type,
       title: title,
@@ -59,7 +58,7 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
       createdAt: now,
       authorName: 'User',
       authorInitials: 'US',
-      image: image
+      imageFile: imageFile, // ✅ real file from picker
     );
     _posts.insert(0, post);
     return post;

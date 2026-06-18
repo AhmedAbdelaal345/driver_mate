@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -30,8 +31,10 @@ class ContainerItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-          color: AppColors.white,
+        decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
+          color: Theme.of(
+            context,
+          ).cardTheme.color, // ← was hardcoded AppColors.white
         ),
 
         child: Padding(
@@ -48,19 +51,29 @@ class ContainerItem extends StatelessWidget {
               ),
               SizedBox(height: 12),
               Text(
-                title ?? AppConstants.savedItem,
-                style: AppStyle.titleOfContainer,
+                title ?? AppStrings.of(context).savedItem,
+                style: AppStyle.titleOfContainer.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface, // ← was hardcoded AppColors.black
+                  fontSize: AppFontSize.f14,
+                ),
               ),
               Text(
-                subTitle ?? AppConstants.carservice,
-                style: AppStyle.containerSubtitle,
+                subTitle ?? AppStrings.of(context).carservice,
+                style: AppStyle.containerSubtitle.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSecondary, // ← was hardcoded AppColors.black
+                  fontSize: AppFontSize.f12,
+                ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.025),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    bottom ?? AppConstants.open,
+                    bottom ?? AppStrings.of(context).open,
                     style: AppStyle.viewAll.copyWith(
                       fontWeight: FontWeight.bold,
                       color: iconColor,

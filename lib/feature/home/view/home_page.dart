@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/container_icon.dart';
@@ -28,8 +26,8 @@ import 'package:driver_mate/feature/home/view/widget/recommended_container.dart'
 import 'package:driver_mate/feature/home/view/widget/service_supplied_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/status_container_widget.dart';
 import 'package:driver_mate/feature/home/view/wrapper_page.dart';
-import 'package:driver_mate/feature/maintance_booking/manager/cubit/service_center_cubit.dart';
-import 'package:driver_mate/feature/maintance_booking/manager/state/service_center_state.dart';
+import 'package:driver_mate/feature/maintance_booking/manager/cubit/maintenance_cubit.dart';
+import 'package:driver_mate/feature/maintance_booking/manager/state/maintenance_state.dart';
 import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/maintenance_tip_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
@@ -38,8 +36,6 @@ import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
 import 'package:driver_mate/feature/news/view/car_news_page.dart';
 import 'package:driver_mate/feature/notification/view/notification_page.dart';
 import 'package:driver_mate/feature/profile/data/model/edit_profile_model.dart';
-
-import 'package:driver_mate/feature/profile/data/repo/edit_profile_repo.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_cubit.dart';
 import 'package:driver_mate/feature/profile/manager/edit_profile_manager/edit_profile_state.dart';
 import 'package:driver_mate/feature/recommended_service/view/recommended_service_page.dart';
@@ -51,251 +47,205 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  static final List<MaintainanceContainerWidget> maintanceContainerList = [
-    MaintainanceContainerWidget(
-      onTap: () {
-        MyNavigation.navigateTo(BookMaintenancePage());
-      },
-    ),
-    MaintainanceContainerWidget(
-      imagePath: AppImagePath.calenderIconPath,
-      title: AppConstants.annual,
-      subTitle: AppConstants.due2,
-      statusContainerColor: AppColors.smoothcyanColor,
-      statusText: AppConstants.upcoming,
-      statusTextColor: AppColors.cyanColor,
-      onTap: () {
-        MyNavigation.navigateTo(BookMaintenancePage());
-      },
-    ),
-
-    MaintainanceContainerWidget(
-      imagePath: AppImagePath.stationIconPath,
-      title: AppConstants.filterRepalcement,
-      subTitle: AppConstants.due3,
-      statusContainerColor: AppColors.containerGrey,
-      statusText: AppConstants.later,
-      statusTextColor: AppColors.midGrey,
-      onTap: () {
-        MyNavigation.navigateTo(BookMaintenancePage());
-      },
-    ),
-  ];
-
-  static final List<AiContainerWidget> aiAlerts = [
-    AiContainerWidget(onTap: () {}),
-    AiContainerWidget(
-      title: AppConstants.tirePressureLow,
-      action: AppConstants.findNearby,
-      containerColor: AppColors.smoothcyanColor,
-      iconColor: AppColors.babyBleu,
-      icon: AppImagePath.warringIconPath,
-      onTap: () {},
-    ),
-  ];
-  static final List<CustomContainerWidget> carTips = [
-    CustomContainerWidget(
-      title: AppConstants.carNews,
-      subtitle: AppConstants.electricVehicles,
-      imagePath: AppImagePath.newsImagePath,
-      isAppear: false,
-      onTap: () {
-        MyNavigation.navigateTo(CarNewsPage());
-      },
-    ),
-    CustomContainerWidget(
-      title: AppConstants.recommendedService,
-      subtitle: AppConstants.oilChangeDue,
-      imagePath: AppImagePath.container1ImagePath,
-      isAppear: false,
-      onTap: () {
-        MyNavigation.navigateTo(RecommendedServicePage());
-      },
-    ),
-    CustomContainerWidget(
-      title: AppConstants.aiMaintenance,
-      subtitle: AppConstants.checkTirePressure,
-      imagePath: AppImagePath.container2ImagePath,
-      isAppear: false,
-      onTap: () {
-        MyNavigation.navigateTo(MaintenanceTipPage());
-      },
-    ),
-  ];
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   @override
-  void initState() {
-    final cubit = EditProfileCubit(repo: EditProfileRepo());
-    cubit.getUserData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final List<CustomContainerWidget> carTips = [
-      CustomContainerWidget(
-        title: AppConstants.essentialCar,
-        subtitle: AppConstants.minRead,
-        imagePath: AppImagePath.firstImagePath,
-        isAppear: true,
-        readMore: AppConstants.readMore,
-        width: SizeConfig.width(context) * 0.213,
-        height: SizeConfig.height(context) * 0.10,
-        onTap: () {
-          MyNavigation.navigateTo(
-            CarTipsPage(
-              assetName: AppImagePath.firstImagePath,
-              hintText: AppConstants.maintenance,
-              labelText: AppConstants.essentialCar,
-            ),
-          );
-        },
+    final s = AppStrings.of(context); // ← resolves fresh on every rebuild
+
+    // ── Maintenance list (was static, now inside build) ──────────────────
+    final List<MaintainanceContainerWidget> maintanceContainerList = [
+      MaintainanceContainerWidget(
+        onTap: () => MyNavigation.navigateTo(BookMaintenancePage()),
       ),
-      CustomContainerWidget(
-        title: AppConstants.howToExtend,
-        subtitle: AppConstants.minRead,
-        imagePath: AppImagePath.secondImagePath,
-        isAppear: true,
-        readMore: AppConstants.readMore,
-        width: SizeConfig.width(context) * 0.213,
-        height: SizeConfig.height(context) * 0.10,
-        onTap: () {
-          MyNavigation.navigateTo(
-            CarTipsPage(
-              assetName: AppImagePath.secondImagePath,
-              hintText: AppConstants.maintenance,
-              labelText: AppConstants.howToExtend,
-            ),
-          );
-        },
+      MaintainanceContainerWidget(
+        imagePath: AppImagePath.calenderIconPath,
+        title: s.annual,
+        subTitle: s.due2,
+        statusContainerColor: AppColors.smoothcyanColor,
+        statusText: s.upcoming,
+        statusTextColor: AppColors.cyanColor,
+        onTap: () => MyNavigation.navigateTo(BookMaintenancePage()),
       ),
-      CustomContainerWidget(
-        title: AppConstants.completeGuide,
-        subtitle: AppConstants.minRead,
-        imagePath: AppImagePath.thirdImagePath,
-        isAppear: true,
-        readMore: AppConstants.readMore,
-        width: SizeConfig.width(context) * 0.213,
-        height: SizeConfig.height(context) * 0.10,
-        onTap: () {
-          MyNavigation.navigateTo(
-            CarTipsPage(
-              assetName: AppImagePath.thirdImagePath,
-              hintText: AppConstants.maintenance,
-              labelText: AppConstants.completeGuide,
-            ),
-          );
-        },
+      MaintainanceContainerWidget(
+        imagePath: AppImagePath.stationIconPath,
+        title: s.filterReplacement,
+        subTitle: s.due3,
+        statusContainerColor: AppColors.containerGrey,
+        statusText: s.later,
+        statusTextColor: AppColors.midGrey,
+        onTap: () => MyNavigation.navigateTo(BookMaintenancePage()),
       ),
     ];
 
+    // ── AI alerts (was static) ────────────────────────────────────────────
+    final List<AiContainerWidget> aiAlerts = [
+      AiContainerWidget(onTap: () {}),
+      AiContainerWidget(
+        title: s.tirePressureLow,
+        action: s.findNearby,
+        containerColor: AppColors.smoothcyanColor,
+        iconColor: AppColors.babyBleu,
+        icon: AppImagePath.warringIconPath,
+        onTap: () {},
+      ),
+    ];
+
+    // ── Horizontal car tips (was static) ─────────────────────────────────
+    final List<CustomContainerWidget> homeTips = [
+      CustomContainerWidget(
+        title: s.carNews,
+        subtitle: s.oilChangeDue,
+        imagePath: AppImagePath.newsImagePath,
+        isAppear: false,
+        onTap: () => MyNavigation.navigateTo(CarNewsPage()),
+      ),
+      CustomContainerWidget(
+        title: s.recommendedService,
+        subtitle: s.oilChangeDue,
+        imagePath: AppImagePath.container1ImagePath,
+        isAppear: false,
+        onTap: () => MyNavigation.navigateTo(RecommendedServicePage()),
+      ),
+      CustomContainerWidget(
+        title: s.aiMaintenance,
+        subtitle: s.checkTirePressure,
+        imagePath: AppImagePath.container2ImagePath,
+        isAppear: false,
+        onTap: () => MyNavigation.navigateTo(MaintenanceTipPage()),
+      ),
+    ];
+
+    // ── Vertical car tips (was already in build, keep here) ──────────────
+    final List<CustomContainerWidget> carTips = [
+      CustomContainerWidget(
+        title: s.essentialCar,
+        subtitle: s.minRead,
+        imagePath: AppImagePath.firstImagePath,
+        isAppear: true,
+        readMore: s.readMore,
+        width: SizeConfig.width(context) * 0.213,
+        height: SizeConfig.height(context) * 0.10,
+        onTap: () => MyNavigation.navigateTo(
+          CarTipsPage(
+            imagePath: AppImagePath.firstImagePath,
+            hintText: s.maintenance,
+            labelText: s.essentialCar,
+          ),
+        ),
+      ),
+      CustomContainerWidget(
+        title: s.howToExtend,
+        subtitle: s.minRead,
+        imagePath: AppImagePath.secondImagePath,
+        isAppear: true,
+        readMore: s.readMore,
+        width: SizeConfig.width(context) * 0.213,
+        height: SizeConfig.height(context) * 0.10,
+        onTap: () => MyNavigation.navigateTo(
+          CarTipsPage(
+            imagePath: AppImagePath.secondImagePath,
+            hintText: s.maintenance,
+            labelText: s.howToExtend,
+          ),
+        ),
+      ),
+      CustomContainerWidget(
+        title: s.completeGuide,
+        subtitle: s.minRead,
+        imagePath: AppImagePath.thirdImagePath,
+        isAppear: true,
+        readMore: s.readMore,
+        width: SizeConfig.width(context) * 0.213,
+        height: SizeConfig.height(context) * 0.10,
+        onTap: () => MyNavigation.navigateTo(
+          CarTipsPage(
+            imagePath: AppImagePath.thirdImagePath,
+            hintText: s.maintenance,
+            labelText: s.completeGuide,
+          ),
+        ),
+      ),
+    ];
+
+    // ── Quick action grid ─────────────────────────────────────────────────
     final List<ContainerIconWidget> options = [
       ContainerIconWidget(
         icon: AppImagePath.micIconPath,
-        text: AppConstants.aiVoice,
-        onTap: () {
-          MyNavigation.navigateTo(AiVoiceDiagnosisPage());
-        },
-        // here we will add onTap functionality later
+        text: s.aiVoice,
+        onTap: () => MyNavigation.navigateTo(AiVoiceDiagnosisPage()),
       ),
       ContainerIconWidget(
         icon: AppImagePath.repairIconPath,
-        text: AppConstants.maintanence,
-        onTap: () {
-          MyNavigation.navigateTo(ServiceCenterPage());
-        },
+        text: s.maintenanceHistory,
+        onTap: () => MyNavigation.navigateTo(ServiceCenterPage()),
       ),
       ContainerIconWidget(
         icon: AppImagePath.phoneIconPath,
-        text: AppConstants.emergencyCall,
-        onTap: () {
-          MyNavigation.navigateTo(EmergencyAssistancePage());
-        },
+        text: s.emergencyCall,
+        onTap: () => MyNavigation.navigateTo(EmergencyAssistancePage()),
       ),
-
       ContainerIconWidget(
         icon: AppImagePath.plusIconPath,
-        text: AppConstants.add,
-        onTap: () {
-          MyNavigation.navigateTo(
-            BlocProvider.value(
-              value: context.read<VehicalCubit>(),
-              child: AddVehiclePage(),
-            ),
-          );
-        },
+        text: s.addVehicle,
+        onTap: () => MyNavigation.navigateTo(
+          BlocProvider.value(
+            value: context.read<VehicalCubit>(),
+            child: AddVehiclePage(),
+          ),
+        ),
       ),
     ];
 
     return Scaffold(
       floatingActionButton: FloatActionButtonWidget(
-        onPressed: () {
-          // showModalBottomSheet(
-          //   context: context,
-          //   backgroundColor: AppColors.white,
-          //   isScrollControlled: true,
-          //   shape: const RoundedRectangleBorder(
-          //     borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          //   ),
-          //   builder: (_) => const WrapperPage(initialIndex: 1,),
-          // );
-          MyNavigation.navigateTo(WrapperPage(initialIndex: 1));
-        },
+        onPressed: () => MyNavigation.navigateTo(WrapperPage(initialIndex: 1)),
       ),
       appBar: AppBar(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         automaticallyImplyLeading: false,
         title: Text(
-          AppConstants.driverMate,
+          s.driverMate,
           style: AppStyle.socialButtonTextStyle.copyWith(
             fontSize: AppFontSize.f18,
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface, // ← was hardcoded AppColors.black
           ),
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              MyNavigation.navigateTo(ExploreSearchPage());
-            },
-            icon: Icon(Icons.search_outlined, color: AppColors.textGrey),
+            onPressed: () => MyNavigation.navigateTo(ExploreSearchPage()),
+            icon: Icon(Icons.search_outlined),
           ),
-
           const SizedBox(width: 8),
-
           IconButton(
-            onPressed: () {
-              MyNavigation.navigateTo(NotificationPage());
-            },
-            icon: const Icon(Icons.notifications, color: AppColors.textGrey),
+            onPressed: () => MyNavigation.navigateTo(NotificationPage()),
+            icon: const Icon(Icons.notifications),
           ),
           const SizedBox(width: 8),
           BlocBuilder<EditProfileCubit, EditProfileState>(
             builder: (context, state) {
               EditProfileModel? profile;
-
-              if (state is SuccessEditProfile) {
+              if (state is SuccessEditProfile)
                 profile = state.data;
-              } else if (state is UpdateProfileSuccess) {
+              else if (state is UpdateProfileSuccess)
                 profile = state.data;
-              }
 
-              if (profile != null) {
-                return SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: ContainerForIcon(iconPath: profile.image),
-                );
-              } else {
-                return SizedBox(
-                  width: SizeConfig.width(context) * 0.0485,
-                  height: SizeConfig.height(context) * 0.071,
-                  child: ContainerForIcon(
-                    iconPath: AppImagePath.profileIconPath,
-                  ),
-                );
-              }
+              return SizedBox(
+                width: profile != null
+                    ? 50
+                    : SizeConfig.width(context) * 0.0485,
+                height: profile != null
+                    ? 50
+                    : SizeConfig.height(context) * 0.071,
+                child: ContainerForIcon(
+                  iconPath: profile?.image ?? AppImagePath.profileIconPath,
+                ),
+              );
             },
           ),
           const SizedBox(width: 8),
@@ -313,7 +263,7 @@ class _HomePageState extends State<HomePage> {
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.zero, // REMOVE default padding
+                padding: EdgeInsets.zero,
                 itemCount: options.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -325,130 +275,107 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               StatusContainerWidget(
-                onTap: () {
-                  MyNavigation.navigateTo(VehicleStatusPage());
-                },
+                onTap: () => MyNavigation.navigateTo(VehicleStatusPage()),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ListView.separated(
-                padding: EdgeInsets.zero, // REMOVE default padding
+                padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: HomePage.carTips.length,
-                separatorBuilder: (context, index) =>
+                itemCount: homeTips.length, // ← was HomePage.carTips
+                separatorBuilder: (_, __) =>
                     SizedBox(height: SizeConfig.height(context) * 0.015),
-                itemBuilder: (context, index) => HomePage.carTips[index],
+                itemBuilder: (_, index) => homeTips[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ContainerTitle(),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return HomePage.maintanceContainerList[index];
-                },
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: SizeConfig.height(context) * 0.015);
-                },
-                itemCount: HomePage.maintanceContainerList.length,
+                itemCount: maintanceContainerList
+                    .length, // ← was HomePage.maintanceContainerList
+                separatorBuilder: (_, __) =>
+                    SizedBox(height: SizeConfig.height(context) * 0.015),
+                itemBuilder: (_, index) => maintanceContainerList[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.015),
               ContainerTitle(
-                onTap: () {
-                  //here  we will add the functionality for the item
-                  MyNavigation.navigateTo(BookMaintenancePage());
-                },
-                title: AppConstants.nearByService,
-                subTitle: AppConstants.seeMap,
+                onTap: () => MyNavigation.navigateTo(BookMaintenancePage()),
+                title: s.nearByService,
+                subTitle: s.seeMap,
               ),
               SizedBox(height: SizeConfig.height(context) * 0.015),
-
               SizedBox(
-                // Adjust this height based on your card design (usually between 250-300)
-                height: SizeConfig.height(context) * 0.25,
-                child: BlocBuilder<ServiceCenterCubit, ServiceCenterState>(
+                height: SizeConfig.height(context) * 0.29,
+                child: BlocBuilder<MaintenanceCubit, MaintenanceState>(
                   builder: (context, state) {
-                    log(state.toString());
-                    if (state is ServiceCenterLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state is ServiceCenterLoaded) {
-                      return ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.serviceCenters.length,
-                        // Add some spacing between cards
-                        separatorBuilder: (context, index) =>
-                            SizedBox(width: SizeConfig.width(context) * 0.02),
-                        itemBuilder: (context, index) => ServiceSuppliedWidget(
-                          distance: state.serviceCenters[index].distance,
-                          title: state.serviceCenters[index].serviceCenterName,
-                          first: "Tair Repaire",
-                          second: "help1",
-                          third: "help3",
-                          onTap: () {
-                            MyNavigation.navigateTo(
-                              BlocProvider.value(
-                                value: context.read<ServiceCenterCubit>(),
-                                child: ServiceCenterPage(
-                                  address: state.serviceCenters[index].address,
-                                  holiday: state.serviceCenters[index].holiday,
-                                  imagePath:
-                                      state.serviceCenters[index].imagePath,
-                                  phoneNumber:
-                                      state.serviceCenters[index].phoneNumber,
-                                  serviceCenterName: state
-                                      .serviceCenters[index]
-                                      .serviceCenterName,
-                                  workingHours:
-                                      state.serviceCenters[index].workingHours,
-                                  serviceProvided: state
-                                      .serviceCenters[index]
-                                      .servicesOffered,
-                                ),
-                              ),
-                            );
-                          },
+                    if (state is MaintenanceLoading) {
+                      return  Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).colorScheme.onSurface, // ← was hardcoded AppColors.black
                         ),
                       );
-                    } else if (state is ServiceCenterError) {
-                      return Center(child: Text(state.message));
-                    } else {
-                      return const SizedBox(); // Empty state
+                    } else if (state is MaintenanceLoaded) {
+                      return ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.centers.length,
+                        separatorBuilder: (_, __) =>
+                            SizedBox(width: SizeConfig.width(context) * 0.02),
+                        itemBuilder: (_, index) => ServiceSuppliedWidget(
+                          distance: state.centers[index].distance.toString(),
+                          title: state.centers[index].name,
+                          first: s.tireService,
+                          second: s.acService,
+                          third: s.lastService,
+                          onTap: () => MyNavigation.navigateTo(
+                            BlocProvider.value(
+                              value: context.read<MaintenanceCubit>(),
+                              child: ServiceCenterPage(
+                                address: state.centers[index].address,
+                                imagePath: state.centers[index].imagePath,
+                                phoneNumber: state.centers[index].phone,
+                                serviceCenterName: state.centers[index].name,
+                                workingHours: state.centers[index].workingHours,
+                                serviceProvided: state.centers[index].services,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    } else if (state is MaintenanceError) {
+                      return Center(child: Text(state.error));
                     }
+                    return const SizedBox();
                   },
                 ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
-              ContainerTitle(title: AppConstants.aiAlerts, isAppear: false),
+              ContainerTitle(title: s.aiAlerts, isAppear: false),
               SizedBox(height: SizeConfig.height(context) * 0.02),
-
               ListView.separated(
                 padding: EdgeInsets.zero,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-
-                itemCount: HomePage.aiAlerts.length,
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: SizeConfig.height(context) * 0.015);
-                },
-                itemBuilder: (context, index) => HomePage.aiAlerts[index],
+                itemCount: aiAlerts.length, // ← was HomePage.aiAlerts
+                separatorBuilder: (_, __) =>
+                    SizedBox(height: SizeConfig.height(context) * 0.015),
+                itemBuilder: (_, index) => aiAlerts[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.015),
               Row(
                 children: [
                   Expanded(
                     child: ContainerItem(
-                      onTap: () {
-                        MyNavigation.navigateTo(SavedItemsPage());
-                      },
+                      onTap: () => MyNavigation.navigateTo(SavedItemsPage()),
                     ),
                   ),
                   SizedBox(width: SizeConfig.width(context) * 0.04),
                   Expanded(
                     child: ContainerItem(
-                      title: AppConstants.recentlyViewed,
-                      subTitle: AppConstants.continueWhere,
-                      bottom: AppConstants.open,
+                      title: s.recommendedMaintenance,
+                      subTitle: s.continueWhere,
+                      bottom: s.open,
                       containerColor: AppColors.purple.withValues(alpha: 0.1),
                       iconColor: AppColors.purple,
                       iconPath: AppImagePath.timingIconPath,
@@ -459,32 +386,25 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ContainerTitle(
-                title: AppConstants.carTips,
-                subTitle: AppConstants.viewAll,
+                title: s.carTips,
+                subTitle: s.viewAll,
                 isAppear: true,
-                onTap: () {
-                  MyNavigation.navigateTo(CarTipsListPage());
-                },
+                onTap: () => MyNavigation.navigateTo(CarTipsListPage()),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: SizeConfig.height(context) * 0.015);
-                },
-                itemBuilder: (context, index) {
-                  return carTips[index];
-                },
                 itemCount: carTips.length,
+                separatorBuilder: (_, __) =>
+                    SizedBox(height: SizeConfig.height(context) * 0.015),
+                itemBuilder: (_, index) => carTips[index],
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               ContainerTitle(
-                title: AppConstants.recommendedForYou,
-                subTitle: AppConstants.viewAll,
-                onTap: () {
-                  // here we will added the functionality
-                },
+                title: s.recommendedForYou,
+                subTitle: s.viewAll,
+                onTap: () {},
               ),
               SizedBox(height: SizeConfig.height(context) * 0.031),
               SizedBox(
@@ -494,41 +414,37 @@ class _HomePageState extends State<HomePage> {
                     if (state is CarDetailsLoading) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is CarDetailsLoaded) {
-                      final recommendedCars = state.carDetails;
                       return ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        itemCount: recommendedCars.length,
-                        separatorBuilder: (context, index) =>
+                        itemCount: state.carDetails.length,
+                        separatorBuilder: (_, __) =>
                             SizedBox(width: SizeConfig.width(context) * 0.04),
-                        itemBuilder: (context, index) => RecommendedContainer(
-                          title: recommendedCars[index].carName,
-                          price: "\$${recommendedCars[index].price}",
-                          image: recommendedCars[index].carImagePath,
-                          subTitle: recommendedCars[index].carType,
-                          onTap: () {
-                            MyNavigation.navigateTo(
-                              BlocProvider.value(
-                                value: context.read<CarDetailsCubit>(),
-                                child: CarDetailsPage(
-                                  carName: recommendedCars[index].carName,
-                                  carType: recommendedCars[index].carType,
-                                  carDescription:
-                                      recommendedCars[index].carDescription,
-                                  carImagePath:
-                                      recommendedCars[index].carImagePath,
-                                  carYear: recommendedCars[index].carYear,
-                                  isNew: recommendedCars[index].isNew,
-                                ),
+                        itemBuilder: (_, index) => RecommendedContainer(
+                          title: state.carDetails[index].carName,
+                          price: "\$${state.carDetails[index].price}",
+                          image: state.carDetails[index].carImagePath,
+                          subTitle: state.carDetails[index].carType,
+                          onTap: () => MyNavigation.navigateTo(
+                            BlocProvider.value(
+                              value: context.read<CarDetailsCubit>(),
+                              child: CarDetailsPage(
+                                carName: state.carDetails[index].carName,
+                                carType: state.carDetails[index].carType,
+                                carDescription:
+                                    state.carDetails[index].carDescription,
+                                carImagePath:
+                                    state.carDetails[index].carImagePath,
+                                carYear: state.carDetails[index].carYear,
+                                isNew: state.carDetails[index].isNew,
                               ),
-                            );
-                          },
+                            ),
+                          ),
                         ),
                       );
                     } else if (state is CarDetailsError) {
                       return Center(child: Text(state.message));
-                    } else {
-                      return const SizedBox(); // Empty state
                     }
+                    return const SizedBox();
                   },
                 ),
               ),

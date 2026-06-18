@@ -14,26 +14,27 @@ class ServiceCenterInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration(
+      decoration: BoxDecorationWidget.customBoxDecoration(context,
         borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.white),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            serviceCenter.serviceCenterName ?? "No Name",
+            serviceCenter.name ?? "No Name",
             style: AppStyle.boldSmallText.copyWith(
               fontSize: AppFontSize.f14,
               fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              const Icon(
+               Icon(
                 Icons.location_on_outlined,
                 size: 14,
-                color: AppColors.iconGrey,
+                color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 4),
               Expanded(
@@ -41,7 +42,7 @@ class ServiceCenterInfoCard extends StatelessWidget {
                   serviceCenter.address ?? "No Address",
                   style: AppStyle.containerSubtitle.copyWith(
                     fontSize: AppFontSize.f11,
-                    color: AppColors.iconGrey,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

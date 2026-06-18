@@ -14,14 +14,18 @@ class RequirementRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          const Icon(Icons.cancel, size: 16, color: AppColors.iconGrey),
+          Icon(
+            Icons.cancel,
+            size: 16,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               text,
               style: AppStyle.containerSubtitle.copyWith(
                 fontSize: AppFontSize.f11,
-                color: AppColors.iconGrey,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),
           ),

@@ -31,7 +31,7 @@ class CustomCategoryChips extends StatelessWidget {
               duration: const Duration(milliseconds: 180),
               padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 15),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.cyanColor : AppColors.white,
+                color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(color: AppColors.boarderWhiteColor),
                 boxShadow: [
@@ -45,7 +45,7 @@ class CustomCategoryChips extends StatelessWidget {
               child: Text(
                 cat,
                 style: TextStyle(
-                  color: isSelected ? AppColors.white : AppColors.veryDarkBlue,
+                  color: isSelected ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurface,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),

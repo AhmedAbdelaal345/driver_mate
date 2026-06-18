@@ -4,10 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 
 class ContainerForIcon extends StatelessWidget {
-  const ContainerForIcon({
-    super.key,
-    required this.iconPath,
-  });
+  const ContainerForIcon({super.key, required this.iconPath});
 
   final String iconPath;
 
@@ -15,7 +12,9 @@ class ContainerForIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: 35,
-      backgroundColor: AppColors.cyanColor.withValues(alpha: .1),
+      backgroundColor: Theme.of(
+        context,
+      ).colorScheme.secondary.withValues(alpha: .1),
       backgroundImage: _getImageProvider(),
       child: _showChildIfNeeded(),
     );
@@ -39,11 +38,7 @@ class ContainerForIcon extends StatelessWidget {
 
   Widget? _showChildIfNeeded() {
     if (iconPath.endsWith(".svg")) {
-      return SvgPicture.asset(
-        iconPath,
-        width: 30,
-        height: 30,
-      );
+      return SvgPicture.asset(iconPath, width: 30, height: 30);
     }
 
     return null;

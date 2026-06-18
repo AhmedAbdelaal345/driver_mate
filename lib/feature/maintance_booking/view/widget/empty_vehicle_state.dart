@@ -14,21 +14,22 @@ class EmptyVehicleState extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
         borderRadius: AppFontSize.f8,
-      ).copyWith(color: AppColors.white),
+      ),
       child: Column(
         children: [
           Icon(
             Icons.directions_car_outlined,
             size: 48,
-            color: AppColors.iconGrey.withValues(alpha: 0.5),
+            color: Theme.of(context).iconTheme.color!.withValues(alpha: 0.5),
           ),
           const SizedBox(height: 12),
           Text(
             AppConstants.noVehiclesFound,
             style: AppStyle.containerSubtitle.copyWith(
               fontSize: AppFontSize.f12,
-              color: AppColors.iconGrey,
+              color: Theme.of(context).iconTheme.color,
             ),
           ),
           const SizedBox(height: 8),

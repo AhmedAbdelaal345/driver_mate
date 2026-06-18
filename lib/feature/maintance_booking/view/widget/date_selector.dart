@@ -39,7 +39,9 @@ class DateSelector extends StatelessWidget {
                 width: 70,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.cyanColor : AppColors.white,
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(AppFontSize.f12),
                   border: Border.all(
                     color: isSelected
@@ -56,7 +58,7 @@ class DateSelector extends StatelessWidget {
                         fontSize: AppFontSize.f10,
                         color: isSelected
                             ? AppColors.white
-                            : AppColors.iconGrey,
+                            : Theme.of(context).iconTheme.color,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -66,7 +68,7 @@ class DateSelector extends StatelessWidget {
                         fontSize: AppFontSize.f16,
                         color: isSelected
                             ? AppColors.white
-                            : AppColors.textGrey,
+                            : Theme.of(context).iconTheme.color,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -77,7 +79,7 @@ class DateSelector extends StatelessWidget {
                         fontSize: AppFontSize.f10,
                         color: isSelected
                             ? AppColors.white
-                            : AppColors.iconGrey,
+                            : Theme.of(context).iconTheme.color,
                       ),
                     ),
                   ],

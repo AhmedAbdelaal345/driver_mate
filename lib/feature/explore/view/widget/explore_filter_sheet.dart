@@ -1,5 +1,6 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/explore/data/explore_filter.dart';
 import 'package:flutter/material.dart';
@@ -188,7 +189,7 @@ class _ExploreFilterSheetState extends State<ExploreFilterSheet> {
               ),
 
               // Category
-              Text(AppConstants.category, style: AppStyle.labelStyle),
+              Text(AppStrings.of(context).category, style: AppStyle.labelStyle),
               const SizedBox(height: 12),
               Wrap(
                 spacing: 10,
@@ -199,7 +200,7 @@ class _ExploreFilterSheetState extends State<ExploreFilterSheet> {
               const SizedBox(height: 20),
 
               // Sort by
-              Text('Sort By', style: AppStyle.labelStyle),
+              Text(AppStrings.of(context).sortBy, style: AppStyle.labelStyle),
               const SizedBox(height: 12),
               Column(
                 children: [
@@ -216,7 +217,7 @@ class _ExploreFilterSheetState extends State<ExploreFilterSheet> {
               const SizedBox(height: 20),
 
               // Location
-              Text(AppConstants.location, style: AppStyle.labelStyle),
+              Text(AppStrings.of(context).location, style: AppStyle.labelStyle),
               const SizedBox(height: 12),
               _buildLocationTile(),
 
@@ -236,7 +237,7 @@ class _ExploreFilterSheetState extends State<ExploreFilterSheet> {
                       ),
                       onPressed: _reset,
                       child: Text(
-                        AppConstants.reset,
+                        AppStrings.of(context).reset,
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -253,8 +254,8 @@ class _ExploreFilterSheetState extends State<ExploreFilterSheet> {
                         ),
                       ),
                       onPressed: _apply,
-                      child: const Text(
-                        AppConstants.apply,
+                      child:  Text(
+                        AppStrings.of(context).apply,
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ),

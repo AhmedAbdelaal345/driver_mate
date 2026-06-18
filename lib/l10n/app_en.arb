@@ -1,0 +1,1483 @@
+{
+  "@@locale": "en",
+
+  "driverMate": "Drive Mate",
+  "@driverMate": { "description": "App name" },
+
+  "loginText": "Login",
+  "@loginText": {},
+
+  "explore": "Explore",
+  "@explore": {},
+
+  "questions": "Questions",
+  "@questions": {},
+
+  "question": "Question",
+  "@question": {},
+
+  "problems": "Problems",
+  "@problems": {},
+
+  "verifyOTP": "Verify OTP",
+  "@verifyOTP": {},
+
+  "problem": "Problem",
+  "@problem": {},
+
+  "enterBrandCar": "Enter a Brand Car",
+  "@enterBrandCar": {},
+
+  "search": "Search",
+  "@search": {},
+
+  "selectVehicle": "Select Vehicle",
+  "@selectVehicle": {},
+
+  "carDetails": "Car Details",
+  "@carDetails": {},
+
+  "nickname": "Nickname",
+  "@nickname": {},
+
+  "postdetails": "Post Details",
+  "@postdetails": {},
+
+  "removeVehicle": "Remove Vehicle",
+  "@removeVehicle": {},
+
+  "batteryHealth": "Battery Health",
+  "@batteryHealth": {},
+
+  "myDailyDriver": "My Daily Driver",
+  "@myDailyDriver": {},
+
+  "lastService": "LAST SERVICE",
+  "@lastService": {},
+
+  "currentPasswordRequired": "Current password is required",
+  "@currentPasswordRequired": {},
+
+  "newPasswordRequired": "New password is required",
+  "@newPasswordRequired": {},
+
+  "confirmNewPasswordRequired": "Confirm new password is required",
+  "@confirmNewPasswordRequired": {},
+
+  "editVehicle": "EDIT VEHICLE",
+  "@editVehicle": {},
+
+  "nextService": "NEXT SERVICE",
+  "@nextService": {},
+
+  "updateVehicle": "UPDATE VEHICLE",
+  "@updateVehicle": {},
+
+  "mileage": "MILEAGE",
+  "@mileage": {},
+
+  "inactive": "INACTIVE",
+  "@inactive": {},
+
+  "confirmLogout": "Confirm Logout",
+  "@confirmLogout": {},
+
+  "logoutConfirmation": "Are you sure you want to logout?",
+  "@logoutConfirmation": {},
+
+  "runAIScan": "Run AI Scan",
+  "@runAIScan": {},
+
+  "runAIScanDescription": "Diagnose issues with AI technology",
+  "@runAIScanDescription": {},
+
+  "bookMaintenance": "Book Maintenance",
+  "@bookMaintenance": {},
+
+  "bookMaintenanceDescription": "Schedule service appointment",
+  "@bookMaintenanceDescription": {},
+
+  "emergencyHelp": "Emergency Help",
+  "@emergencyHelp": {},
+
+  "locationError": "Location Error",
+  "@locationError": {},
+
+  "viewMaintenanceHistory": "View Maintenance History",
+  "@viewMaintenanceHistory": {},
+
+  "viewMaintenanceHistoryDescription": "See all past services and repairs",
+  "@viewMaintenanceHistoryDescription": {},
+
+  "emergencyHelpDescription": "Get immediate roadside assistance",
+  "@emergencyHelpDescription": {},
+
+  "removeVehicleTitle": "Remove Vehicle",
+  "@removeVehicleTitle": {},
+
+  "removeVehicleMessage": "Are you sure you want to remove this vehicle from your garage? This action cannot be undone.",
+  "@removeVehicleMessage": {},
+
+  "remove": "Remove",
+  "@remove": {},
+
+  "duplicateCarError": "A car with the same brand, model, and year already exists.",
+  "@duplicateCarError": {},
+
+  "year": "Year",
+  "@year": {},
+
+  "duplicatePlateError": "A car with the same plate number already exists.",
+  "@duplicatePlateError": {},
+
+  "currentMileage": "Current Mileage",
+  "@currentMileage": {},
+
+  "currentMileageHint": "Enter current mileage",
+  "@currentMileageHint": {},
+
+  "nicknameHint": "e.g., My Camry",
+  "@nicknameHint": {},
+
+  "addToMyCars": "Add to My Cars",
+  "@addToMyCars": {},
+
+  "newLabel": "New",
+  "@newLabel": {},
+
+  "engine": "Engine",
+  "@engine": {},
+
+  "transmission": "Transmission",
+  "@transmission": {},
+
+  "fuelType": "Fuel Type",
+  "@fuelType": {},
+
+  "drivetrain": "Drivetrain",
+  "@drivetrain": {},
+
+  "seating": "Seating",
+  "@seating": {},
+
+  "mpg": "MPG",
+  "@mpg": {},
+
+  "invalidMileage": "Invalid mileage format",
+  "@invalidMileage": {},
+
+  "additionalNotesHint": "Add any special requests or notes about your service...",
+  "@additionalNotesHint": {},
+
+  "confirmBooking": "Confirm Booking",
+  "@confirmBooking": {},
+
+  "viewMoreTips": "View More Tips",
+  "@viewMoreTips": {},
+
+  "additionalNotes": "Additional Notes (Optional)",
+  "@additionalNotes": {},
+
+  "seeAll": "See All",
+  "@seeAll": {},
+
+  "bookAppointment": "Book Appointment",
+  "@bookAppointment": {},
+
+  "selectYourVehicle": "Select your vehicle",
+  "@selectYourVehicle": {},
+
+  "noVehiclesFound": "No vehicles found",
+  "@noVehiclesFound": {},
+
+  "avoidCommonMistakes": "Avoid Common Mistakes",
+  "@avoidCommonMistakes": {},
+
+  "whyItMatters": "Why It Matters",
+  "@whyItMatters": {},
+
+  "howToSteps": "How To Steps",
+  "@howToSteps": {},
+
+  "whatYouNeed": "What You Need",
+  "@whatYouNeed": {},
+
+  "relatedTips": "Related Tips",
+  "@relatedTips": {},
+
+  "support": "Support",
+  "@support": {},
+
+  "enterYearCar": "Enter The Year for a Car",
+  "@enterYearCar": {},
+
+  "carAddedSuccefully": "Car Added Successfully",
+  "@carAddedSuccefully": {},
+
+  "recent": "Recent",
+  "@recent": {},
+
+  "selectServiceCenter": "Select Service Center",
+  "@selectServiceCenter": {},
+
+  "model": "Model",
+  "@model": {},
+
+  "loading": "Loading",
+  "@loading": {},
+
+  "clearAll": "Clear all",
+  "@clearAll": {},
+
+  "security": "Security",
+  "@security": {},
+
+  "logout": "Log Out",
+  "@logout": {},
+
+  "suggestions": "Suggestions",
+  "@suggestions": {},
+
+  "results": "Results",
+  "@results": {},
+
+  "changedSuccefully": "Your Data Changed Successfully",
+  "@changedSuccefully": {},
+
+  "loadedSuccefully": "Your Data Loaded Successfully",
+  "@loadedSuccefully": {},
+
+  "noResults": "No results found",
+  "@noResults": {},
+
+  "noRecentSearches": "No recent searches",
+  "@noRecentSearches": {},
+
+  "maxDist": "Max distance (km)",
+  "@maxDist": {},
+
+  "priceRange": "Price Range",
+  "@priceRange": {},
+
+  "post": "Post",
+  "@post": {},
+
+  "reset": "Reset",
+  "@reset": {},
+
+  "apply": "Apply",
+  "@apply": {},
+
+  "filter": "Filter",
+  "@filter": {},
+
+  "filters": "Filters",
+  "@filters": {},
+
+  "applyFilters": "Apply Filters",
+  "@applyFilters": {},
+
+  "cancel": "Cancel",
+  "@cancel": {},
+
+  "sortBy": "Sort By",
+  "@sortBy": {},
+
+  "brand": "Brand",
+  "@brand": {},
+
+  "maintenanceTip": "Maintenance Tip",
+  "@maintenanceTip": {},
+
+  "rating": "Rating",
+  "@rating": {},
+
+  "newest": "Newest",
+  "@newest": {},
+
+  "nearest": "Nearest",
+  "@nearest": {},
+
+  "highestRated": "Highest Rated",
+  "@highestRated": {},
+
+  "lowestPrice": "Lowest Price",
+  "@lowestPrice": {},
+
+  "highestPrice": "Highest Price",
+  "@highestPrice": {},
+
+  "newPost": "New Post",
+  "@newPost": {},
+
+  "postType": "Post Type",
+  "@postType": {},
+
+  "title": "Title",
+  "@title": {},
+
+  "description": "Description",
+  "@description": {},
+
+  "titleHint": "What''s your question or topic?",
+  "@titleHint": {},
+
+  "descriptionHint": "Add details, context, or what you''ve tried...",
+  "@descriptionHint": {},
+
+  "publishPost": "Publish Post",
+  "@publishPost": {},
+
+  "category": "Category",
+  "@category": {},
+
+  "minRating": "Min rating",
+  "@minRating": {},
+
+  "selectCategory": "Select category",
+  "@selectCategory": {},
+
+  "saveChanges": "Save Changes",
+  "@saveChanges": {},
+
+  "restartLanguage": "App will restart to apply language changes",
+  "@restartLanguage": {},
+
+  "arabic": "Arabic",
+  "@arabic": {},
+
+  "privacy": "Privacy",
+  "@privacy": {},
+
+  "personalInfo": "Personal Info",
+  "@personalInfo": {},
+
+  "open": "Open",
+  "@open": {},
+
+  "helpCenter": "Help Center",
+  "@helpCenter": {},
+
+  "searchHelp": "Search help...",
+  "@searchHelp": {},
+
+  "maintenance": "Maintenance",
+  "@maintenance": {},
+
+  "cars": "Cars",
+  "@cars": {},
+
+  "faqTitle": "FREQUENTLY ASKED QUESTIONS",
+  "@faqTitle": {},
+
+  "faqAddVehicle": "How do I add a new vehicle?",
+  "@faqAddVehicle": {},
+
+  "faqAiDiagnosis": "How does AI diagnostics work?",
+  "@faqAiDiagnosis": {},
+
+  "faqBookService": "How do I book a service?",
+  "@faqBookService": {},
+
+  "faqCancelBooking": "Can I cancel or reschedule a booking?",
+  "@faqCancelBooking": {},
+
+  "faqEmergency": "What if I have an emergency?",
+  "@faqEmergency": {},
+
+  "faqChangePassword": "How do I change my password?",
+  "@faqChangePassword": {},
+
+  "faqVehicleSecure": "Are my vehicle details secure?",
+  "@faqVehicleSecure": {},
+
+  "carDeletedSuccessfully": "Vehicle deleted successfully!",
+  "@carDeletedSuccessfully": {},
+
+  "faqAiAccuracy": "How accurate is the AI diagnostic?",
+  "@faqAiAccuracy": {},
+
+  "contactSupport": "Contact Support",
+  "@contactSupport": {},
+
+  "about": "About DriveMate",
+  "@about": {},
+
+  "aboutSubtitle": "Your intelligent car maintenance companion. AI-powered diagnostics and seamless service booking.",
+  "@aboutSubtitle": {},
+
+  "versionNumber": "Version 1.0.0",
+  "@versionNumber": {},
+
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {},
+
+  "termsOfServiceSub": "Read our terms and conditions",
+  "@termsOfServiceSub": {},
+
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {},
+
+  "privacyPolicySub": "How we handle your data",
+  "@privacyPolicySub": {},
+
+  "contactUs": "Contact Us",
+  "@contactUs": {},
+
+  "madeWithLove": "Made with FCI Student IT Department for car owners",
+  "@madeWithLove": {},
+
+  "copyright": "© 2026 DriveMate. All rights reserved.",
+  "@copyright": {},
+
+  "changePassword": "Change Password",
+  "@changePassword": {},
+
+  "email": "Email",
+  "@email": {},
+
+  "callUs": "Call Us",
+  "@callUs": {},
+
+  "subject": "Subject",
+  "@subject": {},
+
+  "subjectHint": "What do you need help with?",
+  "@subjectHint": {},
+
+  "message": "Message",
+  "@message": {},
+
+  "messageHint": "Describe your issue in detail...",
+  "@messageHint": {},
+
+  "sendMessageButton": "Send Message",
+  "@sendMessageButton": {},
+
+  "responseTime": "Response Time",
+  "@responseTime": {},
+
+  "responseTimeNote": "Our support team typically responds within 24 hours. For urgent issues, please use live chat.",
+  "@responseTimeNote": {},
+
+  "location": "Location",
+  "@location": {},
+
+  "microphone": "Microphone",
+  "@microphone": {},
+
+  "allowed": "Allowed",
+  "@allowed": {},
+
+  "notAllowed": "Not allowed",
+  "@notAllowed": {},
+
+  "permissionsInfoTitle": "Why we need permissions:",
+  "@permissionsInfoTitle": {},
+
+  "permissionsInfoBody": "Location helps find nearby services, microphone enables voice commands, and notifications keep you updated on maintenance.",
+  "@permissionsInfoBody": {},
+
+  "clearSearchHistory": "Clear Search History",
+  "@clearSearchHistory": {},
+
+  "clearSearchHistorySub": "Remove all search records",
+  "@clearSearchHistorySub": {},
+
+  "requestDataExport": "Request Data Export",
+  "@requestDataExport": {},
+
+  "requestDataExportSub": "Download your data as JSON",
+  "@requestDataExportSub": {},
+
+  "deleteAccount": "Delete Account",
+  "@deleteAccount": {},
+
+  "deleteAccountSub": "Permanently remove your account",
+  "@deleteAccountSub": {},
+
+  "currentPassword": "Current Password",
+  "@currentPassword": {},
+
+  "enterCurrentPassword": "Enter current password",
+  "@enterCurrentPassword": {},
+
+  "newPassword": "New Password",
+  "@newPassword": {},
+
+  "enterNewPassword": "Enter new password",
+  "@enterNewPassword": {},
+
+  "confirmNewPassword": "Confirm New Password",
+  "@confirmNewPassword": {},
+
+  "reEnterNewPassword": "Re-enter new password",
+  "@reEnterNewPassword": {},
+
+  "requirementLength": "At least 8 characters",
+  "@requirementLength": {},
+
+  "requirementUppercase": "One uppercase letter",
+  "@requirementUppercase": {},
+
+  "requirementLowercase": "One lowercase letter",
+  "@requirementLowercase": {},
+
+  "requirementNumber": "One number",
+  "@requirementNumber": {},
+
+  "changeYourPassword": "Change Your Password",
+  "@changeYourPassword": {},
+
+  "settings": "Settings",
+  "@settings": {},
+
+  "createAccount": "Create Account",
+  "@createAccount": {},
+
+  "saved": "Saved",
+  "@saved": {},
+
+  "addAllYourVehical": "Add all your vehicles to track maintenance, get AI diagnostics, and book services easily.",
+  "@addAllYourVehical": {},
+
+  "call": "Call",
+  "@call": {},
+
+  "edit": "Edit",
+  "@edit": {},
+
+  "english": "English",
+  "@english": {},
+
+  "active": "Active",
+  "@active": {},
+
+  "noMoreScans":"no more Scan",
+  "@noMoreScans": {},
+  
+  "yourVechical": "Your Vehicles",
+  "@yourVechical": {},
+  "currentLanguageEnglish": "current Language : English",
+  "@currentLanguageEnglish": {},
+
+  "continueWhere":"Continue where you left off",
+  "@continueWhere": {},
+  "recommendedMaintenance":"Recommended Maintenance",
+  "@recommendedMaintenance": {},
+  "recommendedForYou":"Recommended for you",
+  "@recommendedForYou":{},
+  "changeImage": "Change Photo",
+  "@changeImage": {},
+
+  "profile": "Profile",
+  "@profile": {},
+
+  "phone": "Phone Number",
+  "@phone": {},
+
+  "share": "Share",
+  "@share": {},
+
+  "tips": "Tips",
+  "@tips": {},
+
+  "booking": "Booking",
+  "@booking": {},
+
+  "myCars": "My Cars",
+  "@myCars": {},
+
+  "all": "All",
+  "@all": {},
+
+  "reviews": "Reviews",
+  "@reviews": {},
+
+  "youMust": "You Must Enter Value",
+  "@youMust": {},
+
+  "marketPlace": "Marketplace",
+  "@marketPlace": {},
+
+  "maintenanceHistory": "Maintenance History",
+  "@maintenanceHistory": {},
+
+  "pastbookings": "Past bookings",
+  "@pastbookings": {},
+
+  "recordingTooShort": "Recording must be at least 5 seconds. Please try again.",
+  "@recordingTooShort": {},
+
+  "language": "Language",
+  "@language": {},
+
+  "theme": "Theme",
+  "@theme": {},
+
+  "lightMode": "Light Mode",
+  "@lightMode": {},
+
+  "darkMode": "Dark Mode",
+  "@darkMode": {},
+
+  "systemDefault": "System Default",
+  "@systemDefault": {},
+
+  "notifications": "Notifications",
+  "@notifications": {},
+
+  "maintenanceReminders": "Maintenance Reminders",
+  "@maintenanceReminders": {},
+
+  "maintenanceRemindersSub": "Get notified about upcoming services",
+  "@maintenanceRemindersSub": {},
+
+  "offersPromotions": "Offers & Promotions",
+  "@offersPromotions": {},
+
+  "offersPromotionsSub": "Receive special deals and discounts",
+  "@offersPromotionsSub": {},
+
+  "aiAlerts": "AI Alerts",
+  "@aiAlerts": {},
+
+  "aiAlertsSub": "Intelligent diagnostic notifications",
+  "@aiAlertsSub": {},
+
+  "emergencyUpdates": "Emergency Updates",
+  "@emergencyUpdates": {},
+
+  "emergencyUpdatesSub": "Critical alerts and safety recalls",
+  "@emergencyUpdatesSub": {},
+
+  "community": "Community",
+  "@community": {},
+
+  "bookNow": "Book Now",
+  "@bookNow": {},
+
+  "aiAssistant": "AI Assistant",
+  "@aiAssistant": {},
+
+  "readMore": "Read More",
+  "@readMore": {},
+
+  "save": "Save",
+  "@save": {},
+
+  "addReview": "Write a Review",
+  "@addReview": {},
+
+  "checkNow": "Check Now",
+  "@checkNow": {},
+
+  "oilChangeOnly": "Oil Change",
+  "@oilChangeOnly": {},
+
+  "upcoming": "Up Coming",
+  "@upcoming": {},
+
+  "viewAll": "View All",
+  "@viewAll": {},
+
+  "carTips": "Car Tips & Guides",
+  "@carTips": {},
+
+  "savedItem": "Saved Items",
+  "@savedItem": {},
+
+  "seeMap": "See map",
+  "@seeMap": {},
+
+  "findNearby": "Find Nearby Station",
+  "@findNearby": {},
+
+  "viewDetails": "View Details",
+  "@viewDetails": {},
+
+  "listView": "List View",
+  "@listView": {},
+
+  "mapView": "Map View",
+  "@mapView": {},
+
+  "openNow": "Open Now",
+  "@openNow": {},
+
+  "closed": "Closed",
+  "@closed": {},
+
+  "openInMaps": "Open in Google Maps",
+  "@openInMaps": {},
+
+  "openingMaps": "Opening maps...",
+  "@openingMaps": {},
+  "codeExpiresIn10Minutes":"code Expires In 10 Minutes",
+  "@codeExpiresIn10Minutese":{},
+  "weSentACode":"we Sent a Code",
+  "@weSentACode":{},
+  "openMapsFailed": "Unable to open maps",
+  "@openMapsFailed": {},
+
+  "welcomeToDriveMate": "Welcome to DriveMate",
+  "@welcomeToDriveMate": {},
+
+  "pleaseLogin": "Please log in the form below.",
+  "@pleaseLogin": {},
+
+  "emailAddress": "Email Address",
+  "@emailAddress": {},
+
+  "nearByService": "Nearby Service Centers",
+  "@nearByService": {},
+
+  "checkYourEmail": "Enter verification code",
+  "@checkYourEmail": {},
+
+  "upcomingMaintence": "Upcoming Maintenance",
+  "@upcomingMaintence": {},
+
+  "enterYourEmail": "Enter your email address",
+  "@enterYourEmail": {},
+
+  "enterYourName": "Enter your name",
+  "@enterYourName": {},
+
+  "pleaseEnterYourName": "Please, enter your name",
+  "@pleaseEnterYourName": {},
+
+  "enterYourPassword": "Enter your password",
+  "@enterYourPassword": {},
+
+  "password": "Password",
+  "@password": {},
+
+  "maintenanceBooking": "Maintenance Booking",
+  "@maintenanceBooking": {},
+
+  "serviceDetails": "Service Details",
+  "@serviceDetails": {},
+
+  "serviceType": "Service Type",
+  "@serviceType": {},
+
+  "estimatedDuration": "Estimated Duration",
+  "@estimatedDuration": {},
+
+  "estimatedCost": "Estimated Cost",
+  "@estimatedCost": {},
+
+  "selectDate": "Select Date",
+  "@selectDate": {},
+
+  "selectTime": "Select Time",
+  "@selectTime": {},
+
+  "confirm": "Confirm",
+  "@confirm": {},
+
+  "featuredCars": "Featured Cars",
+  "@featuredCars": {},
+
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {},
+
+  "doesntMatch": "The password doesn''t match",
+  "@doesntMatch": {},
+
+  "fullName": "Full Name",
+  "@fullName": {},
+
+  "continu": "Continue",
+  "@continu": {},
+
+  "normal": "Normal",
+  "@normal": {},
+
+  "vehicleStatus": "Vehicle Status",
+  "@vehicleStatus": {},
+
+  "healthMetrics": "HEALTH METRICS",
+  "@healthMetrics": {},
+
+  "engineHealthSub": "Engine running smoothly. No issues detected.",
+  "@engineHealthSub": {},
+
+  "batteryHealthSub": "Battery voltage lower than optimal. Consider replacement soon.",
+  "@batteryHealthSub": {},
+
+  "tirePressure": "Tire Pressure",
+  "@tirePressure": {},
+
+  "tirePressureSub": "All tires at optimal pressure: 32 PSI average.",
+  "@tirePressureSub": {},
+
+  "oilLife": "Oil Life",
+  "@oilLife": {},
+
+  "oilLifeSub": "Oil change recommended in 500 miles.",
+  "@oilLifeSub": {},
+
+  "engineHealth": "Engine Health",
+  "@engineHealth": {},
+
+  "latestCarNews": "Latest Car News",
+  "@latestCarNews": {},
+
+  "recommendedService": "Recommended Service",
+  "@recommendedService": {},
+
+  "forgotPassword": "Forgot Password",
+  "@forgotPassword": {},
+
+  "resetYourPassword": "Reset your password",
+  "@resetYourPassword": {},
+
+  "pleaseEnterYourEmail": "Please enter your email",
+  "@pleaseEnterYourEmail": {},
+
+  "pleaseEnterYourPassword": "Please enter your password",
+  "@pleaseEnterYourPassword": {},
+
+  "pleaseEnterValidEmail": "Please enter valid email",
+  "@pleaseEnterValidEmail": {},
+
+  "pleaseEnterValidPassword": "Please enter valid password",
+  "@pleaseEnterValidPassword": {},
+
+  "continueWithGoogle": "Login with Google",
+  "@continueWithGoogle": {},
+
+  "continueWithApple": "Login with Apple",
+  "@continueWithApple": {},
+
+  "dontHaveAccount": "Don''t have an account? ",
+  "@dontHaveAccount": {},
+
+  "signup": "Sign Up",
+  "@signup": {},
+
+  "aiVoiceDiagnosis": "AI Voice Diagnosis",
+  "@aiVoiceDiagnosis": {},
+
+  "recordCarSound": "Record Your Car Sound",
+  "@recordCarSound": {},
+
+  "recordHint": "Our AI will analyze engine sounds to detect potential issues",
+  "@recordHint": {},
+
+  "tapToStart": "Tap to Start Recording",
+  "@tapToStart": {},
+
+  "max30Seconds": "Max 30 seconds",
+  "@max30Seconds": {},
+
+  "uploadAudio": "Upload Audio",
+  "@uploadAudio": {},
+
+  "recentScans": "Recent Scans",
+  "@recentScans": {},
+
+  "low": "Low",
+  "@low": {},
+
+  "high": "High",
+  "@high": {},
+
+  "recordStop": "Stop Recording",
+  "@recordStop": {},
+
+  "uploading": "Uploading audio...",
+  "@uploading": {},
+
+  "uploadFromDevice": "Upload from device",
+  "@uploadFromDevice": {},
+
+  "noRecordingFound": "No recording found",
+  "@noRecordingFound": {},
+
+  "pickAudioFailed": "Unable to pick audio file",
+  "@pickAudioFailed": {},
+
+  "micPermissionDenied": "Microphone permission denied",
+  "@micPermissionDenied": {},
+
+  "good": "Good",
+  "@good": {},
+
+  "addVehicle": "Add Vehicle",
+  "@addVehicle": {},
+
+  "vehicleAddedTitle": "Vehicle Added!",
+  "@vehicleAddedTitle": {},
+
+  "vehicleAddedSubtitle": "Your vehicle has been successfully registered to your account",
+  "@vehicleAddedSubtitle": {},
+
+  "manufacturingYear": "Manufacturing Year",
+  "@manufacturingYear": {},
+
+  "plateNumberLabel": "Plate Number",
+  "@plateNumberLabel": {},
+
+  "backToMyCars": "Back to My Cars",
+  "@backToMyCars": {},
+
+  "registerVehicle": "Register Your Vehicle",
+  "@registerVehicle": {},
+
+  "registerVehicleHint": "Track maintenance and service history",
+  "@registerVehicleHint": {},
+
+  "brandRequired": "Brand  *",
+  "@brandRequired": {},
+
+  "modelRequired": "Model  *",
+  "@modelRequired": {},
+
+  "yearRequired": "Year  *",
+  "@yearRequired": {},
+
+  "plateNumberOptional": "Plate Number *",
+  "@plateNumberOptional": {},
+
+  "currentMileageOptional": "Current Mileage (Optional)",
+  "@currentMileageOptional": {},
+
+  "modelHint": "e.g., Camry, Accord, X5",
+  "@modelHint": {},
+
+  "plateNumberHint": "E.g., ABC-1234",
+  "@plateNumberHint": {},
+
+  "mileageHint": "e.g., 45000",
+  "@mileageHint": {},
+
+  "km": "km",
+  "@km": {},
+
+  "updatePassword": "Update password",
+  "@updatePassword": {},
+
+  "resetByEmail": "Enter your email and we''ll send you a reset link.",
+  "@resetByEmail": {},
+
+  "pleaseEnterTheCode": "Please enter the code",
+  "@pleaseEnterTheCode": {},
+
+  "verifyCode": "Verify code",
+  "@verifyCode": {},
+
+  "resendCode": "Resend Code",
+  "@resendCode": {},
+
+  "dontGotEmail": "Haven''t got the email? ",
+  "@dontGotEmail": {},
+
+  "passwordRest": "Password reset",
+  "@passwordRest": {},
+
+  "emergencyCall": "Emergency Call",
+  "@emergencyCall": {},
+
+  "emergencyAssistance": "Emergency Assistance",
+  "@emergencyAssistance": {},
+
+  "emergencySos": "Emergency SOS",
+  "@emergencySos": {},
+
+  "sos": "SOS",
+  "@sos": {},
+
+  "tapToCallEmergency": "Tap to call emergency",
+  "@tapToCallEmergency": {},
+
+  "emergencyNote": "This will immediately alert emergency services and share your location",
+  "@emergencyNote": {},
+
+  "currentLocation": "Current Location",
+  "@currentLocation": {},
+
+  "gpsActive": "GPS Active",
+  "@gpsActive": {},
+
+  "gpsInactive": "GPS Off",
+  "@gpsInactive": {},
+
+  "locationLoading": "Getting your location...",
+  "@locationLoading": {},
+
+  "locationDisabled": "Location services are off",
+  "@locationDisabled": {},
+
+  "locationPermissionDenied": "Location permission denied",
+  "@locationPermissionDenied": {},
+
+  "quickActions": "Quick Actions",
+  "@quickActions": {},
+
+  "towService": "Tow Service",
+  "@towService": {},
+
+  "ambulance": "Ambulance",
+  "@ambulance": {},
+
+  "police": "Police",
+  "@police": {},
+
+  "fireTruck": "Firetruck",
+  "@fireTruck": {},
+
+  "serviceCenter": "Service Center",
+  "@serviceCenter": {},
+
+  "address": "Address",
+  "@address": {},
+
+  "workingHours": "Working Hours",
+  "@workingHours": {},
+
+  "availableServices": "Available Services",
+  "@availableServices": {},
+
+  "brakeService": "Brake Service",
+  "@brakeService": {},
+
+  "diagnostics": "Diagnostics",
+  "@diagnostics": {},
+
+  "engineRepair": "Engine Repair",
+  "@engineRepair": {},
+
+  "tireService": "Tire Service",
+  "@tireService": {},
+
+  "acService": "AC Service",
+  "@acService": {},
+
+  "batteryReplacement": "Battery Replacement",
+  "@batteryReplacement": {},
+
+  "wheelAlignment": "Wheel Alignment",
+  "@wheelAlignment": {},
+
+  "selectDateTime": "Select Date & Time",
+  "@selectDateTime": {},
+
+  "registrationSuccessful": "Registration Successful",
+  "@registrationSuccessful": {},
+
+  "loginSuccessful": "Login Successful",
+  "@loginSuccessful": {},
+
+  "passwordResetSuccessful": "Password Reset Successful",
+  "@passwordResetSuccessful": {},
+  "accountToContinue":"Please log in to continue",
+  "@accountToContinue":{},
+  "agreeWith":"Agree with ",
+  "@agreeWith":{},
+  "termsAndConditions":"termsAndConditions",
+  "@termsAndConditions":{},
+  "reEnterYourPassword":"reEnterNewPassword",
+  "@reEnterYourPassword":{},
+  "setNewPasswordHintText":"Your new password must be at least 8 characters long and include a mix of uppercase letters, lowercase letters, numbers, and special characters.",
+  "@setNewPasswordHintText":{},
+  "setNewPassword":"Set New Password",
+  "@setNewPassword":{},
+  "success":"Success",
+  "@success":{},
+  "commonMaintenance":"commonMaintenance",
+  "@commonMaintenance":{},
+
+  "keySpecifications":"Key Specifications",
+  "@keySpecifications":{},
+  "highlights":"highlights",
+  "@highlights":{},
+  "carTagline":"carTagline",
+  "@carTagline":{},
+  "passwordChangedMessage":"passwordChangedMessage",
+  "@passwordChangedMessage":{},
+
+  "pleaseAgreeToTerms": "You must agree to the Terms & Conditions",
+  "@pleaseAgreeToTerms": {},
+
+  "pressBackAgainToExit": "Press again to exit the app",
+  "@pressBackAgainToExit": {},
+  "updateYourVehicleHint": "Keep your vehicle information up to date",
+  "@updateYourVehicleHint": {},
+
+  "updateYourVehicle": "UPDATE YOUR VEHICLE",
+  "@updateYourVehicle": {},
+
+  "reviewDetails": "REVIEW DETAILS",
+  "@reviewDetails": {},
+
+  "keySpecificationsLabel": "KEY SPECIFICATIONS",
+  "@keySpecificationsLabel": {},
+
+  "ownershipDetails": "OWNERSHIP DETAILS",
+  "@ownershipDetails": {},
+
+  "purchaseDate": "Purchase Date",
+  "@purchaseDate": {},
+
+  "purchaseDateHint": "mm/dd/yyyy",
+  "@purchaseDateHint": {},
+
+  "serviceReminders": "Service Reminders",
+  "@serviceReminders": {},
+
+  "serviceRemindersDescription": "Get notified when it's time for oil changes, tire rotations, and other maintenance",
+  "@serviceRemindersDescription": {},
+
+  "oilChangeInterval": "Every 6 months",
+  "@oilChangeInterval": {},
+
+  "tireRotation": "Tire Rotation",
+  "@tireRotation": {},
+
+  "tireRotationInterval": "Every 10,000 km",
+  "@tireRotationInterval": {},
+
+  "brakeInspection": "Brake Inspection",
+  "@brakeInspection": {},
+
+  "brakeInspectionInterval": "Every 12 months",
+  "@brakeInspectionInterval": {},
+
+  "searchExploreHint": "Search cars, parts, services...",
+  "@searchExploreHint": {},
+
+  "manageYourFleet": "Manage your fleet",
+  "@manageYourFleet": {},
+
+  "manageVehicls": "Manage vehicles",
+  "@manageVehicls": {},
+
+  "preference": "Preferences",
+  "@preference": {},
+
+  "inService": "In Service",
+  "@inService": {},
+
+  "medium": "Medium",
+  "@medium": {},
+
+  "stayOnTopMaintenance": "Stay on Top of Maintenance",
+  "@stayOnTopMaintenance": {},
+
+  "stayOnTopMaintenanceDescription": "Enable reminders to receive notifications for upcoming service intervals based on your car's schedule.",
+  "@stayOnTopMaintenanceDescription": {},
+
+  "tirePressureLow": "Pressure May Be Low",
+  "@tirePressureLow": {},
+
+  "aiMaintenance": "AI Maintenance Tip",
+  "@aiMaintenance": {},
+
+  "batteryStatus": "Your battery voltage is slightly below optimal. Consider getting it checked soon.",
+  "@batteryStatus": {},
+
+  "checkTirePressure": "Check tire pressure before long trips",
+  "@checkTirePressure": {},
+
+  "annual": "Annual Inspection",
+  "@annual": {},
+
+  "vehicleAddedNote": "You can now track maintenance history and get personalized service recommendations for your vehicle!",
+  "@vehicleAddedNote": {},
+
+  "addVehicleNote": "Adding your vehicle helps us provide personalized maintenance recommendations and service reminders.",
+  "@addVehicleNote": {},
+
+  "recommendedBannerText": "Recommended for you based on your car & usages",
+  "@recommendedBannerText": {},
+
+  "due": "Due in 500 km",
+  "@due": {},
+
+  "due2": "Due in 7 days",
+  "@due2": {},
+
+  "due3": "Due in 2 weeks",
+  "@due3": {},
+
+  "askQuestion": "Ask a question or share a tip...",
+  "@askQuestion": {},
+
+  "shareService": "Share your service center experience",
+  "@shareService": {},
+
+  "weWillVerfiction": "We'll send verification emails to this address",
+  "@weWillVerfiction": {},
+
+  "informationHelp": "This information helps service providers contact you and deliver better service.",
+  "@informationHelp": {},
+
+  "keepYourInfo": "Keep your info up to date",
+  "@keepYourInfo": {},
+
+  "notMatch": "No cars match your filters.",
+  "@notMatch": {},
+
+  "carservice": "Cars & services you bookmarked",
+  "@carservice": {},
+
+  "recentlyViewed": "Recently Viewed",
+  "@recentlyViewed": {},
+
+  "later": "Later",
+  "@later": {},
+
+  "review": "Review",
+  "@review": {},
+
+  "oilChangeDue": "Oil change due in 500 miles",
+  "@oilChangeDue": {},
+
+  "aiBasedRecommendation": "AI-Based Recommendation",
+  "@aiBasedRecommendation": {},
+
+  "recommendedServiceNote": "Based on your current mileage and driving patterns, we recommend scheduling an oil change soon. Regular oil changes help maintain engine health and prevent costly repairs.",
+  "@recommendedServiceNote": {},
+
+  "confidenceLevel": "Confidence Level",
+  "@confidenceLevel": {},
+
+  "findNearestCenter": "Find Nearest Center",
+  "@findNearestCenter": {},
+
+  "findNearestCenterSub": "Locate service centers near you",
+  "@findNearestCenterSub": {},
+
+  "bookNowSub": "Schedule your oil change today",
+  "@bookNowSub": {},
+
+  "setReminder": "Set Reminder",
+  "@setReminder": {},
+
+  "setReminderSub": "Get notified when it's time",
+  "@setReminderSub": {},
+
+  "filterReplacement": "Filter Replacement",
+  "@filterReplacement": {},
+
+  "oilChangeTitle": "Oil Change",
+  "@oilChangeTitle": {},
+
+  "seeTips": "See Tips",
+  "@seeTips": {},
+
+  "runAiScan": "Run AI Scan",
+  "@runAiScan": {},
+
+  "book": "Book",
+  "@book": {},
+
+  "oilhealth": "Oil Health",
+  "@oilhealth": {},
+
+  "mapPreview": "Map view (mock)",
+  "@mapPreview": {},
+
+  "notificationSchedule": "Notification Schedule",
+  "@notificationSchedule": {},
+
+  "setQuietHours": "Set quiet hours",
+  "@setQuietHours": {},
+
+  "notificationSettings": "Notification Settings",
+  "@notificationSettings": {},
+
+  "notificationSettingsSub": "You can customize your notification preferences at any time. Emergency updates are highly recommended for safety.",
+  "@notificationSettingsSub": {},
+
+  "reminder": "Reminders & offers",
+  "@reminder": {},
+
+  "autoSaveEnabled": "Auto-save Enabled",
+  "@autoSaveEnabled": {},
+
+  "autoSaveThemeNote": "Your theme preference is saved automatically and syncs across all your devices.",
+  "@autoSaveThemeNote": {},
+
+  "lightDark": "Light / Dark",
+  "@lightDark": {},
+
+  "englishArabic": "English / العربية",
+  "@englishArabic": {},
+
+  "notificationPreferences": "NOTIFICATION PREFERENCES",
+  "@notificationPreferences": {},
+
+  "schedule": "SCHEDULE",
+  "@schedule": {},
+
+  "appPermissions": "APP PERMISSIONS",
+  "@appPermissions": {},
+
+  "yourData": "YOUR DATA",
+  "@yourData": {},
+
+  "dangerZone": "DANGER ZONE",
+  "@dangerZone": {},
+
+  "legal": "LEGAL",
+  "@legal": {},
+
+  "contact": "CONTACT",
+  "@contact": {},
+
+  "passwordRequirements": "PASSWORD REQUIREMENTS",
+  "@passwordRequirements": {},
+
+  "account": "ACCOUNT",
+  "@account": {},
+
+  "allVehicles": "All Vehicles",
+  "@allVehicles": {},
+
+  "manageFleet": "Manage your fleet",
+  "@manageFleet": {},
+
+  "namePhone": "Name, phone, email",
+  "@namePhone": {},
+
+  "towHelp": "Choose Tow Service",
+  "@towHelp": {},
+
+  "helpoo": "Helpoo Roadside Assistance",
+  "@helpoo": {},
+
+  "egTowing": "EG Towing",
+  "@egTowing": {},
+
+  "mercedesRoadside": "Mercedes-Benz Roadside",
+  "@mercedesRoadside": {},
+
+  "coursalTitle": "AI Diagnose Your Car",
+  "@coursalTitle": {},
+  "currentLanguageLabel": "Current language",
+  "@currentLanguageLabel": {},
+  "coursalSubtitle": "Voice-based sound analysis",
+  "@coursalSubtitle": {},
+  "carNews":"Car News",
+  "@carNews":{},
+
+
+  "essentialCar":"Essential Car",
+  "@essentialCar":{},
+  "howToExtend":"How To Extend",
+  "@howToExtend":{},
+  "minRead":"Min Read : 5 Min",
+  "@minRead":{},
+  "completeGuide":"Complete Guide",
+  "@completeGuide":{},
+  "emergencyModeActive": "Emergency Mode Active",
+  "@emergencyModeActive": {},
+  "home": "Home",
+  "@home": {},
+  "selectBrand":"Select Brand",
+  "@selectBrand":{},
+  "selectBrandFirst":"Select Brand First",
+  "@selectBrand":{},
+  "selectModel":"Select Model",
+  "@selectModel":{},
+  "selectYear":"Select Year",
+  "@selectYear":{},
+  "pleaseSelectDateAndTime":"Please Select Date And Time",
+  "@pleaseSelectDateAndTime":{},
+  "bookingRescheduled":"Booking Rescheduled",
+  "@bookingRescheduled":{},
+  "passwordsDoNotMatch":"Password DoNot Match",
+  "@passwordsDoNotMatch":{},
+  "carTipsAndNews":"carTipsAndNews",
+  "@carTipsAndNews":{},
+  "noSavedItems":"noSavedItems",
+  "@noSavedItems":{},
+  "carTipsSubtitle":"carTipsSubtitle",
+  "@carTipsSubtitle":{},
+  "emergency":"emergency",
+  "@emergency":{},
+  "brakes":"Brakes",
+  "@Brakes":{},
+  "tires":"Tires",
+  "@tires":{},
+  "fuelEconomy":"Fuel Economy",
+  "@fuelEconomy":{},
+  "safety":"Safety",
+  "@safety":{},
+   "articleIntroduction": "Whether you're buying your first car or switching providers, these tips will ensure you get the best coverage at the right price.",
+  "articleSaved": "Article Saved",
+  "keyConsideration": "Key Consideration",
+  "keyTakeAway": "Key Take Away",
+  "lastUpdated": "Last Updated",
+  "markAllRead": "Mark All Read",
+  "noNotification": "No Notification",
+  "oilPercent": "Oil Percent",
+  "shareOptionOpened": "Share Option Opened",
+  "system": "System",
+  "theBestCar": "The best car insurance balances comprehensive coverage with affordable premiums. Always read the fine print and understand what's covered before signing up.",
+  "vehicleName": "Vehicle Name",
+  "vehicleStatusSummary": "Vehicle Status Summary",
+  "weatherYou": "Whether you're buying your first car or switching providers, these tips will ensure you get the best coverage at the right price.",
+  "noSavedItemsInCategory":"noSavedItemsInCategory",
+  "@noSavedItemsInCategory":{},
+  "maintanenceNearService":"maintanenceNearService",
+  "@maintanenceNearService":{},
+  "rescheduleBooking":"Reschedule Booking",
+  "@rescheduleBooking":{},
+  "currentBookingDetails":"Current Booking Details",
+  "@currentBookingDetails":{},
+  "rescheduleBookingNote":"Reschedule Booking Note",
+  "@rescheduleBookingNote":{},
+  "selectNewDate":"Select New Date",
+  "@selectNewDate":{},
+  "selectNewTime":"Select New Time",
+  "@selectNewTime":{},
+  "reasonForRescheduling":"Reason For Rescheduling",
+  "@reasonForRescheduling":{},
+  
+  "rescheduleReasonHint":"rescheduleReasonHint",
+  "@rescheduleReasonHint":{},
+  "newAppointmentDetails":"New Appointment Details",
+  "@newAppointmentDetails":{},
+  "newDate":"New Date",
+  "@newDate":{},
+  "newTime":"New Time",
+  "@newTime":{},
+  "vehicle":"vehicle",
+  "@vehicle":{},
+  "confirmReschedule":"Confirm Reschedule",
+  "@confirmReschedule":{},
+  "noAdditionalCharges":"noAdditionalCharges",
+  "@noAdditionalCharges":{},
+
+  "helpOnTheWay": "Help is on the way",
+  "@helpOnTheWay": {},
+
+  "aiVoice": "AI Voice Diagnosis",
+  "@aiVoice": {},
+
+  "startScan": "Start Scan",
+  "@startScan": {},
+
+  "recordStart": "Start Recording",
+  "@recordStart": {},
+
+  "uploadSuccess": "Audio uploaded successfully",
+  "@uploadSuccess": {},
+
+  "uploadFailed": "Audio upload failed",
+  "@uploadFailed": {},
+
+  "analyzingSound": "Analyzing your sound...",
+  "@analyzingSound": {},
+
+  "tryAgain": "Please try again",
+  "@tryAgain": {},
+
+  "close": "Close",
+  "@close": {}
+}

@@ -20,49 +20,48 @@ class DeleteVehicleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    // Red tint adapts: lighter in light, darker in dark
+    final bgColor = theme.brightness == Brightness.dark
+        ? AppColors.red.withValues(alpha: 0.08)
+        : const Color(0xffFEF2F2);
+    final borderColor = theme.brightness == Brightness.dark
+        ? AppColors.red.withValues(alpha: 0.3)
+        : const Color(0xffFECACA);
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecorationWidget.customBoxDecoration(
-        borderRadius: 16,
-      ).copyWith(
-        color: const Color(0xffFEF2F2),
-        border: Border.all(
-          color: const Color(0xffFECACA),
-          width: 1,
-        ),
+      decoration: BoxDecorationWidget.customBoxDecoration(context, borderRadius: 16)
+          .copyWith(
+        color: bgColor,
+        border: Border.all(color: borderColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Top Row
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.warning_amber_rounded,
-                color: Colors.red,
-                size: 24,
-              ),
+              const Icon(Icons.warning_amber_rounded, color: AppColors.red, size: 24),
               const SizedBox(width: 12),
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title ?? "Delete Vehicle",
+                      title ?? 'Delete Vehicle',
                       style: AppStyle.boldSmallText.copyWith(
                         fontSize: AppFontSize.f16,
-                        color: AppColors.black,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       subTitle ??
-                          "This will permanently remove this vehicle and all its maintenance history.",
+                          'This will permanently remove this vehicle and all its maintenance history.',
                       style: AppStyle.containerSubtitle.copyWith(
-                        color: AppColors.textGrey,
+                        color: theme.textTheme.bodyMedium?.color,
                         fontSize: AppFontSize.f13,
                       ),
                     ),
@@ -71,33 +70,21 @@ class DeleteVehicleWidget extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 18),
-
-          /// Button
           OutlinedButton.icon(
             onPressed: onTap,
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 18,
-                vertical: 14,
-              ),
-              side: const BorderSide(
-                color: Colors.redAccent,
-                width: 1,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+              side: const BorderSide(color: AppColors.red, width: 1),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
             ),
-            icon: const Icon(
-              Icons.delete_outline,
-              color: Colors.redAccent,
-            ),
+            icon: const Icon(Icons.delete_outline, color: AppColors.red),
             label: Text(
-              buttonText ?? "Delete Vehicle",
+              buttonText ?? 'Delete Vehicle',
               style: AppStyle.boldSmallText.copyWith(
-                color: Colors.redAccent,
+                color: AppColors.red,
                 fontSize: AppFontSize.f14,
               ),
             ),

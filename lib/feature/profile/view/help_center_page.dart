@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -16,37 +17,40 @@ class HelpCenterPage extends StatefulWidget {
 
 class _HelpCenterPageState extends State<HelpCenterPage> {
   int _selectedChip = 0;
-  final List<String> _chips = const [
-    AppConstants.all,
-    AppConstants.account,
-    AppConstants.maintenance,
-  ];
+  
 
-  final List<String> _questions = const [
-    AppConstants.faqAddVehicle,
-    AppConstants.faqAiDiagnosis,
-    AppConstants.faqBookService,
-    AppConstants.faqCancelBooking,
-    AppConstants.faqEmergency,
-    AppConstants.faqChangePassword,
-    AppConstants.faqVehicleSecure,
-    AppConstants.faqAiAccuracy,
-  ];
-
+ 
   @override
   Widget build(BuildContext context) {
+    final List<String> _chips =  [
+    AppStrings.of(context).all,
+    AppStrings.of(context).account,
+    AppStrings.of(context).maintenance,
+  ];
+
+   final List<String> _questions =  [
+    AppStrings.of(context).faqAddVehicle,
+    AppStrings.of(context).faqAiDiagnosis,
+    AppStrings.of(context).faqBookService,
+    AppStrings.of(context).faqCancelBooking,
+    AppStrings.of(context).faqEmergency,
+    AppStrings.of(context).faqChangePassword,
+    AppStrings.of(context).faqVehicleSecure,
+    AppStrings.of(context).faqAiAccuracy,
+  ];
+
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text(AppConstants.helpCenter, style: AppStyle.appBarTitle),
+        title:  Text(AppStrings.of(context).helpCenter, style: AppStyle.appBarTitle.copyWith(color: Theme.of(context).appBarTheme.titleTextStyle?.color)),
         leading: const LeadingIcon(),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.chat_bubble_outline, color: AppColors.cyanColor),
+            icon:  Icon(Icons.chat_bubble_outline, color: Theme.of(context).appBarTheme.iconTheme?.color),
           ),
         ],
       ),
@@ -64,9 +68,9 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
                 decoration: InputDecoration(
                   hintText: AppConstants.searchHelp,
                   hintStyle: AppStyle.hintStyle,
-                  prefixIcon: const Icon(Icons.search, color: AppColors.iconGrey),
+                  prefixIcon:  Icon(Icons.search, color: Theme.of(context).iconTheme.color),
                   filled: true,
-                  fillColor: AppColors.white,
+                  fillColor: Theme.of(context).cardColor,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppFontSize.f12),
                     borderSide: BorderSide(color: AppColors.boarderWhiteColor),
@@ -90,7 +94,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
                     label: Text(
                       _chips[index],
                       style: AppStyle.containerSubtitle.copyWith(
-                        color: isSelected ? AppColors.white : AppColors.textGrey,
+                        color: isSelected ?Theme.of(context).appBarTheme.titleTextStyle?.color : Theme.of(context).textTheme.bodyMedium?.color,
                         fontSize: AppFontSize.f11,
                       ),
                     ),
@@ -110,17 +114,17 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Text(
-                AppConstants.faqTitle,
+                AppStrings.of(context).faqTitle,
                 style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.iconGrey,
+                  color: Theme.of(context).iconTheme.color,
                   fontSize: AppFontSize.f11,
                 ),
               ),
               const SizedBox(height: 8),
               Container(
-                decoration: BoxDecorationWidget.customBoxDecoration(
+                decoration: BoxDecorationWidget.customBoxDecoration(context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
+                ).copyWith(color: Theme.of(context).cardColor),
                 child: Column(
                   children: List.generate(_questions.length, (index) {
                     final isLast = index == _questions.length - 1;
@@ -133,13 +137,13 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
                               fontSize: AppFontSize.f12,
                             ),
                           ),
-                          trailing: const Icon(
+                          trailing:  Icon(
                             Icons.keyboard_arrow_down,
-                            color: AppColors.iconGrey,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           onTap: () {},
                         ),
-                        if (!isLast) Divider(color: AppColors.containerGrey),
+                        if (!isLast) Divider(color: Theme.of(context).dividerColor),
                       ],
                     );
                   }),

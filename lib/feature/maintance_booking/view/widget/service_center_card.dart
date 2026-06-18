@@ -6,7 +6,7 @@ import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
 
 class ServiceCenterCard extends StatelessWidget {
-  const ServiceCenterCard({super.key,  required this.center});
+  const ServiceCenterCard({super.key, required this.center});
 
   final ServiceCenter center;
   @override
@@ -17,8 +17,9 @@ class ServiceCenterCard extends StatelessWidget {
       onTap: center.onTap,
       child: Container(
         decoration: BoxDecorationWidget.customBoxDecoration(
+          context,
           borderRadius: AppFontSize.f12,
-        ).copyWith(color: AppColors.white),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Column(
@@ -31,6 +32,7 @@ class ServiceCenterCard extends StatelessWidget {
                       center.name,
                       style: AppStyle.boldSmallText.copyWith(
                         fontSize: AppFontSize.f13,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),
@@ -57,17 +59,17 @@ class ServiceCenterCard extends StatelessWidget {
               const SizedBox(height: 6),
               Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.location_on_outlined,
                     size: 14,
-                    color: AppColors.iconGrey,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     center.distance,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f11,
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -77,7 +79,7 @@ class ServiceCenterCard extends StatelessWidget {
                     "${center.rating} ${center.reviews}",
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f11,
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                 ],
@@ -94,14 +96,14 @@ class ServiceCenterCard extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.containerGrey,
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(999),
                         ),
                         child: Text(
                           service,
                           style: AppStyle.containerSubtitle.copyWith(
                             fontSize: AppFontSize.f10,
-                            color: AppColors.textGrey,
+                            color: Theme.of(context).textTheme.bodyMedium?.color,
                           ),
                         ),
                       ),
@@ -116,10 +118,10 @@ class ServiceCenterCard extends StatelessWidget {
                     style: AppStyle.viewAll.copyWith(fontSize: AppFontSize.f12),
                   ),
                   const Spacer(),
-                  const Icon(
+                   Icon(
                     Icons.arrow_forward_ios,
                     size: 14,
-                    color: AppColors.iconGrey,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                 ],
               ),
@@ -130,6 +132,7 @@ class ServiceCenterCard extends StatelessWidget {
     );
   }
 }
+
 class ServiceCenter {
   const ServiceCenter({
     required this.name,

@@ -1,34 +1,35 @@
-import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
 
 class MaintenanceList extends StatelessWidget {
   const MaintenanceList({super.key});
-  final List<Map<String, String>> _maintenanceItems = const [
-    {
-      'service': AppConstants.oilChange,
-      'interval': AppConstants.oilChangeInterval,
-    },
-    {
-      'service': AppConstants.tireRotation,
-      'interval': AppConstants.tireRotationInterval,
-    },
-    {
-      'service': AppConstants.brakeInspection,
-      'interval': AppConstants.brakeInspectionInterval,
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, String>> _maintenanceItems = [
+      {
+        'service': AppStrings.of(context).oilChangeDue,
+        'interval': AppStrings.of(context).oilChangeInterval,
+      },
+      {
+        'service': AppStrings.of(context).tireRotation,
+        'interval': AppStrings.of(context).tireRotationInterval,
+      },
+      {
+        'service': AppStrings.of(context).brakeInspection,
+        'interval': AppStrings.of(context).brakeInspectionInterval,
+      },
+    ];
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
         borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.white),
+      ),
       child: Column(
         children: List.generate(_maintenanceItems.length, (index) {
           final item = _maintenanceItems[index];
@@ -43,14 +44,14 @@ class MaintenanceList extends StatelessWidget {
                     item['service']!,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f12,
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                   Text(
                     item['interval']!,
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f12,
-                      color: AppColors.cyanColor,
+                      color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

@@ -37,6 +37,7 @@ class QuickActionItemWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
           )
         : BoxDecorationWidget.customBoxDecoration(
+            context,
             borderRadius: 14,
             borderWidth: 1,
           ).copyWith(

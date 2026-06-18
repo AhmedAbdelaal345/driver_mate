@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/booking_details/view/booking_details_page.dart';
@@ -38,7 +39,7 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
                 children: [
                   Expanded(
                     child: _buildSummaryCard(
-                      label: "UPCOMING",
+                      label: AppStrings.of(context).upcoming,
                       count: upcoming.toString(),
                       dotColor: Colors.blue,
                     ),
@@ -130,7 +131,7 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
       appBar: AppBar(
         leading: const LeadingIcon(),
         title: Text(
-          AppConstants.maintenanceHistory,
+          AppStrings.of(context).maintenanceHistory,
           style: AppStyle.appBarTitle,
         ),
         centerTitle: true,

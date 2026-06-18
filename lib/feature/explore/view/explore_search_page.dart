@@ -1,6 +1,6 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/explore/data/explore_mock.dart';
@@ -84,9 +84,7 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
   List<ServiceCenterItem> get _serviceResults {
     if (_query.isEmpty) return const <ServiceCenterItem>[];
     final q = _query.toLowerCase();
-    return mockServices
-        .where((s) => s.name.toLowerCase().contains(q))
-        .toList();
+    return mockServices.where((s) => s.name.toLowerCase().contains(q)).toList();
   }
 
   Widget _sectionHeader(String title, {Widget? action}) {
@@ -96,7 +94,9 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
         Text(
           title,
           style: AppStyle.containerSubtitle.copyWith(
-            color: AppColors.iconGrey,
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface, // ← was hardcoded AppColors.textGrey
             fontSize: AppFontSize.f11,
           ),
         ),
@@ -108,10 +108,18 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
   Widget _buildRecentTile(String title) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: const Icon(Icons.history, color: AppColors.iconGrey),
+      leading: Icon(
+        Icons.history,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       title: Text(
         title,
-        style: AppStyle.boldSmallText.copyWith(fontSize: AppFontSize.f13),
+        style: AppStyle.boldSmallText.copyWith(
+          fontSize: AppFontSize.f13,
+          color: Theme.of(
+            context,
+          ).colorScheme.onSurface, // ← was hardcoded AppColors.textGrey
+        ),
       ),
       onTap: () => _applyQuery(title),
     );
@@ -124,7 +132,7 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
   }) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: Icon(icon, color: AppColors.cyanColor),
+      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
       title: Text(
         title,
         style: AppStyle.boldSmallText.copyWith(fontSize: AppFontSize.f13),
@@ -143,18 +151,24 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
     final canClearRecent = _recent.isNotEmpty;
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          AppConstants.search,
+          AppStrings.of(context).search,
           style: AppStyle.socialButtonTextStyle.copyWith(
             fontSize: AppFontSize.f20,
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface, // white in dark, dark in light
           ),
         ),
       ),
@@ -176,21 +190,26 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
                 onChanged: _onChanged,
                 onSubmitted: _applyQuery,
                 decoration: InputDecoration(
-                  hintText: AppConstants.searchExploreHint,
+                  hintText: AppStrings.of(context).searchExploreHint,
                   hintStyle: AppStyle.hintStyle,
-                  prefixIcon:
-                      const Icon(Icons.search, color: AppColors.iconGrey),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: AppColors.iconGrey,
+                  ),
                   suffixIcon: _query.isEmpty
-                      ? const Icon(Icons.tune, color: AppColors.iconGrey)
+                      ? Icon(
+                          Icons.tune,
+                          color: Theme.of(context).iconTheme.color,
+                        )
                       : IconButton(
                           onPressed: _clearQuery,
-                          icon: const Icon(
+                          icon:  Icon(
                             Icons.close,
-                            color: AppColors.iconGrey,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                         ),
                   filled: true,
-                  fillColor: AppColors.white,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppFontSize.f12),
                     borderSide: BorderSide(color: AppColors.boarderWhiteColor),
@@ -208,14 +227,15 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
               SizedBox(height: SizeConfig.height(context) * 0.02),
               if (_query.isEmpty) ...[
                 _sectionHeader(
-                  AppConstants.recent,
+                  AppStrings.of(context).recent,
                   action: TextButton(
                     onPressed: canClearRecent ? _clearRecent : null,
                     child: Text(
-                      AppConstants.clearAll,
+                      AppStrings.of(context).clearAll,
                       style: AppStyle.viewAll.copyWith(
-                        color:
-                            canClearRecent ? AppColors.cyanColor : AppColors.iconGrey,
+                        color: canClearRecent
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).iconTheme.color,
                       ),
                     ),
                   ),
@@ -223,15 +243,13 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
                 const SizedBox(height: 4),
                 if (_recent.isEmpty)
                   Text(
-                    AppConstants.noRecentSearches,
+                    AppStrings.of(context).noRecentSearches,
                     style: AppStyle.hintStyle,
                   )
                 else
-                  Column(
-                    children: _recent.map(_buildRecentTile).toList(),
-                  ),
+                  Column(children: _recent.map(_buildRecentTile).toList()),
                 const SizedBox(height: 12),
-                _sectionHeader(AppConstants.suggestions),
+                _sectionHeader(AppStrings.of(context).suggestions),
                 const SizedBox(height: 8),
                 Wrap(
                   spacing: 8,
@@ -241,10 +259,10 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
                         (item) => ActionChip(
                           label: Text(item),
                           labelStyle: AppStyle.containerSubtitle.copyWith(
-                            color: AppColors.textGrey,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontSize: AppFontSize.f11,
                           ),
-                          backgroundColor: AppColors.containerGrey,
+                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                           shape: StadiumBorder(
                             side: BorderSide(
                               color: AppColors.boarderWhiteColor,
@@ -256,11 +274,11 @@ class _ExploreSearchPageState extends State<ExploreSearchPage> {
                       .toList(),
                 ),
               ] else ...[
-                _sectionHeader(AppConstants.results),
+                _sectionHeader(AppStrings.of(context).results),
                 const SizedBox(height: 4),
                 if (resultsEmpty)
                   Text(
-                    AppConstants.noResults,
+                    AppStrings.of(context).noResults,
                     style: AppStyle.hintStyle,
                   )
                 else ...[

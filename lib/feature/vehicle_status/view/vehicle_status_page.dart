@@ -1,7 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_fonts.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -16,13 +16,13 @@ class VehicleStatusPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          AppConstants.vehicleStatus,
+        title: Text(
+          AppStrings.of(context).vehicleStatus,
           style: AppStyle.appBarTitle,
         ),
         leading: const LeadingIcon(),
@@ -39,15 +39,17 @@ class VehicleStatusPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppConstants.vehicleName,
+                      AppStrings.of(context).vehicleName,
                       style: AppStyle.boldSmallText.copyWith(
                         fontSize: AppFontSize.f13,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -63,15 +65,15 @@ class VehicleStatusPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(999),
                           ),
                           child: Row(
-                            children: const [
-                              Icon(
+                            children: [
+                              const Icon(
                                 Icons.circle,
                                 size: 6,
                                 color: AppColors.green,
                               ),
-                              SizedBox(width: 4),
+                              const SizedBox(width: 4),
                               Text(
-                                AppConstants.good,
+                                AppStrings.of(context).good,
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -84,20 +86,22 @@ class VehicleStatusPage extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          AppConstants.lastUpdated,
+                          AppStrings.of(context).lastUpdated,
                           style: AppStyle.containerSubtitle.copyWith(
                             fontSize: AppFontSize.f10,
-                            color: AppColors.iconGrey,
+                            color: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.color,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      AppConstants.vehicleStatusSummary,
+                      AppStrings.of(context).vehicleStatusSummary,
                       style: AppStyle.containerSubtitle.copyWith(
                         fontSize: AppFontSize.f11,
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                     ),
                   ],
@@ -105,9 +109,9 @@ class VehicleStatusPage extends StatelessWidget {
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Text(
-                AppConstants.healthMetrics,
+                AppStrings.of(context).healthMetrics,
                 style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.iconGrey,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                   fontSize: AppFontSize.f11,
                 ),
               ),
@@ -115,64 +119,64 @@ class VehicleStatusPage extends StatelessWidget {
               MetricTile(
                 icon: Icons.monitor_heart,
                 iconColor: AppColors.green,
-                title: AppConstants.engineHealth,
-                status: AppConstants.good,
+                title: AppStrings.of(context).engineHealth,
+                status: AppStrings.of(context).good,
                 statusColor: AppColors.green,
-                subtitle: AppConstants.engineHealthSub,
+                subtitle: AppStrings.of(context).engineHealthSub,
               ),
               const SizedBox(height: 10),
               MetricTile(
                 icon: Icons.battery_charging_full,
                 iconColor: AppColors.orange,
-                title: AppConstants.batteryHealth,
-                status: AppConstants.normal,
+                title: AppStrings.of(context).batteryHealth,
+                status: AppStrings.of(context).normal,
                 statusColor: AppColors.orange,
-                subtitle: AppConstants.batteryHealthSub,
+                subtitle: AppStrings.of(context).batteryHealthSub,
               ),
               const SizedBox(height: 10),
               MetricTile(
                 icon: Icons.tire_repair,
                 iconColor: AppColors.babyBleu,
-                title: AppConstants.tirePressure,
-                status: AppConstants.good,
+                title: AppStrings.of(context).tirePressure,
+                status: AppStrings.of(context).good,
                 statusColor: AppColors.green,
-                subtitle: AppConstants.tirePressureSub,
+                subtitle: AppStrings.of(context).tirePressureSub,
               ),
               const SizedBox(height: 10),
               MetricTile(
                 icon: Icons.local_gas_station,
                 iconColor: AppColors.yellow,
-                title: AppConstants.oilLife,
-                status: AppConstants.oilPercent,
+                title: AppStrings.of(context).oilLife,
+                status: AppStrings.of(context).oilPercent,
                 statusColor: AppColors.orange,
-                subtitle: AppConstants.oilLifeSub,
+                subtitle: AppStrings.of(context).oilLifeSub,
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Text(
-                AppConstants.quickActions,
+                AppStrings.of(context).quickActions,
                 style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.iconGrey,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                   fontSize: AppFontSize.f11,
                 ),
               ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
+                children: [
                   QuickAction(
                     icon: Icons.auto_awesome,
-                    label: AppConstants.runAiScan,
-                    color: AppColors.purple,
+                    label: AppStrings.of(context).runAiScan,
+                    color: Theme.of(context).textTheme.bodyMedium?.color??AppColors.grey,
                   ),
                   QuickAction(
                     icon: Icons.build,
-                    label: AppConstants.book,
-                    color: AppColors.babyBleu,
+                    label: AppStrings.of(context).book,
+                    color: Theme.of(context).textTheme.bodyMedium?.color??AppColors.grey,
                   ),
                   QuickAction(
                     icon: Icons.lightbulb_outline,
-                    label: AppConstants.seeTips,
-                    color: AppColors.green,
+                    label: AppStrings.of(context).seeTips,
+                    color: Theme.of(context).textTheme.bodyMedium?.color??AppColors.grey,
                   ),
                 ],
               ),
@@ -183,5 +187,3 @@ class VehicleStatusPage extends StatelessWidget {
     );
   }
 }
-
-

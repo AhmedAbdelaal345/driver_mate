@@ -250,7 +250,7 @@ class _SavedItemCardState extends State<SavedItemCard> {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
+      decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
         color: AppColors.white,
       ),
       child: Row(

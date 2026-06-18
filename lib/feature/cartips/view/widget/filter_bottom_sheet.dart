@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 void showFilterBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
-    backgroundColor: AppColors.white,
+    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
@@ -48,7 +48,10 @@ void showFilterBottomSheet(BuildContext context) {
                 Expanded(
                   child: TextButton(
                     onPressed: () {},
-                    child: Text("Reset"),
+                    child: Text(
+                      "Reset",
+                      style: TextStyle(color: AppColors.blue),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -57,11 +60,14 @@ void showFilterBottomSheet(BuildContext context) {
                       backgroundColor: AppColors.darkCyanColor,
                     ),
                     onPressed: () {},
-                    child: Text("Apply Filters"),
+                    child: Text(
+                      "Apply Filters",
+                      style: TextStyle(color: AppColors.white),
+                    ),
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       );
@@ -90,9 +96,7 @@ Widget _difficultyChip(String text, bool selected) {
     ),
     child: Text(
       text,
-      style: TextStyle(
-        color: selected ? AppColors.white : AppColors.black,
-      ),
+      style: TextStyle(color: selected ? AppColors.white : AppColors.black),
     ),
   );
 }

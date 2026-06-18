@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
-import 'package:driver_mate/feature/car_details/view/car_details_page.dart';
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
@@ -25,7 +25,7 @@ class MyCars extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const LeadingIcon(),
-        title: Text(AppConstants.myCars, style: AppStyle.appBarTitle),
+        title: Text(AppStrings.of(context).myCars, style: AppStyle.appBarTitle),
         actions: [
           IconButton(
             onPressed: () {
@@ -91,7 +91,7 @@ class MyCars extends StatelessWidget {
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          AppConstants.yourVechical,
+                          AppStrings.of(context).yourVechical,
                           style: AppStyle.hintStyle.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -138,8 +138,8 @@ class MyCars extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {},
                         child: ContainerWidget(
-                          firstText: AppConstants.manageYourFleet,
-                          secondText: AppConstants.addAllYourVehical,
+                          firstText: AppStrings.of(context).manageYourFleet,
+                          secondText: AppStrings.of(context).addAllYourVehical,
                         ),
                       ),
                     ),

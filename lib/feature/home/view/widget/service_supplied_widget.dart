@@ -34,12 +34,14 @@ class ServiceSuppliedWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: SizeConfig.width(context) * 0.78,
+
         margin: const EdgeInsets.only(right: 14),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecorationWidget.customBoxDecoration(
+          context,
           borderRadius: 16,
         ).copyWith(
-          color: AppColors.white
+          color: Theme.of(context).cardTheme.color
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,16 +54,16 @@ class ServiceSuppliedWidget extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-
+      
             const SizedBox(height: 6),
-
+      
             /// 🔹 DISTANCE
             Row(
               children: [
-                const Icon(
+                 Icon(
                   Icons.location_on_outlined,
                   size: 16,
-                  color: AppColors.cyanColor,
+                  color: Theme.of(context).iconTheme.color,
                 ),
                 const SizedBox(width: 4),
                 Expanded(
@@ -75,9 +77,9 @@ class ServiceSuppliedWidget extends StatelessWidget {
                 ),
               ],
             ),
-
+      
             const SizedBox(height: 8),
-
+      
             /// 🔹 RATING
             Row(
               children: [
@@ -99,9 +101,9 @@ class ServiceSuppliedWidget extends StatelessWidget {
                 ),
               ],
             ),
-
+      
             const SizedBox(height: 10),
-
+      
             /// 🔹 SERVICES TAGS
             Wrap(
               spacing: 6,
@@ -125,9 +127,9 @@ class ServiceSuppliedWidget extends StatelessWidget {
                   )
                   .toList(),
             ),
-
+      
             const SizedBox(height: 12),
-
+      
             /// 🔹 BUTTON
             SizedBox(
               height: 40,

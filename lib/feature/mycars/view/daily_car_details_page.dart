@@ -2,6 +2,7 @@ import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
@@ -34,8 +35,8 @@ class DailyCarDetailsPage extends StatelessWidget {
           backgroundColor: AppColors.white,
           elevation: 0,
           centerTitle: false,
-          title: const Text(
-            AppConstants.myDailyDriver,
+          title: Text(
+            AppStrings.of(context).myDailyDriver,
             style: AppStyle.appBarTitle,
           ),
           leading: const LeadingIcon(),
@@ -72,7 +73,7 @@ class DailyCarDetailsPage extends StatelessWidget {
                     SizedBox(height: SizeConfig.height(context) * 0.03),
 
                     // Quick Actions Section
-                    _SectionTitle(title: AppConstants.quickActions),
+                    _SectionTitle(title: AppStrings.of(context).quickActions),
                     const SizedBox(height: 16),
                     _QuickActionsSection(),
                     SizedBox(height: SizeConfig.height(context) * 0.03),
@@ -84,7 +85,7 @@ class DailyCarDetailsPage extends StatelessWidget {
                     SizedBox(height: SizeConfig.height(context) * 0.03),
 
                     // Danger Zone
-                    const _SectionTitle(title: AppConstants.dangerZone),
+                    _SectionTitle(title: AppStrings.of(context).dangerZone),
                     const SizedBox(height: 16),
                     DangerZoneWidget(
                       onRemoveVehicle: () {
@@ -107,11 +108,11 @@ class DailyCarDetailsPage extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          AppConstants.removeVehicleTitle,
+          AppStrings.of(context).removeVehicleTitle,
           style: AppStyle.boldSmallText.copyWith(fontSize: AppFontSize.f16),
         ),
         content: Text(
-          AppConstants.removeVehicleMessage,
+          AppStrings.of(context).removeVehicleMessage,
           style: AppStyle.containerSubtitle.copyWith(
             fontSize: AppFontSize.f13,
             color: AppColors.textGrey,
@@ -121,7 +122,7 @@ class DailyCarDetailsPage extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              AppConstants.cancel,
+              AppStrings.of(context).cancel,
               style: AppStyle.containerSubtitle.copyWith(
                 fontSize: AppFontSize.f13,
                 color: AppColors.textGrey,
@@ -135,7 +136,7 @@ class DailyCarDetailsPage extends StatelessWidget {
               Navigator.pop(context); // Go back to previous screen
             },
             child: Text(
-              AppConstants.remove,
+              AppStrings.of(context).remove,
               style: AppStyle.boldSmallText.copyWith(
                 fontSize: AppFontSize.f13,
                 color: AppColors.red,
@@ -161,7 +162,7 @@ class _ServiceInfoSection extends StatelessWidget {
           child: ServiceInfoCard(
             icon: Icons.calendar_today_outlined,
             iconColor: AppColors.cyanColor,
-            label: AppConstants.lastService,
+            label: AppStrings.of(context).lastService,
             value: AppConstants.lastServiceDate,
           ),
         ),
@@ -170,7 +171,7 @@ class _ServiceInfoSection extends StatelessWidget {
           child: ServiceInfoCard(
             icon: Icons.warning_amber_outlined,
             iconColor: AppColors.orange,
-            label: AppConstants.nextService,
+            label: AppStrings.of(context).nextService,
             value: AppConstants.nextServiceDate,
           ),
         ),
@@ -179,7 +180,7 @@ class _ServiceInfoSection extends StatelessWidget {
           child: ServiceInfoCard(
             icon: Icons.speed_outlined,
             iconColor: AppColors.green,
-            label: AppConstants.mileage,
+            label: AppStrings.of(context).mileage,
             value: '${vehicle.millAge?.toStringAsFixed(0) ?? '0'} km',
           ),
         ),
@@ -196,8 +197,8 @@ class _QuickActionsSection extends StatelessWidget {
         QuickActionItem(
           icon: Icons.qr_code_scanner_outlined,
           iconColor: AppColors.cyanColor,
-          title: AppConstants.runAIScan,
-          subtitle: AppConstants.runAIScanDescription,
+          title: AppStrings.of(context).runAIScan,
+          subtitle: AppStrings.of(context).runAIScanDescription,
           trailing: Icons.show_chart,
           onTap: () {
             // TODO: Navigate to AI Scan
@@ -208,8 +209,8 @@ class _QuickActionsSection extends StatelessWidget {
         QuickActionItem(
           icon: Icons.event_note_outlined,
           iconColor: AppColors.veryDarkBlue,
-          title: AppConstants.bookMaintenance,
-          subtitle: AppConstants.bookMaintenanceDescription,
+          title: AppStrings.of(context).bookMaintenance,
+          subtitle: AppStrings.of(context).bookMaintenanceDescription,
           trailing: Icons.build_outlined,
           onTap: () {
             // TODO: Navigate to Book Maintenance
@@ -220,8 +221,8 @@ class _QuickActionsSection extends StatelessWidget {
         QuickActionItem(
           icon: Icons.phone_outlined,
           iconColor: AppColors.red,
-          title: AppConstants.emergencyHelp,
-          subtitle: AppConstants.emergencyHelpDescription,
+          title: AppStrings.of(context).emergencyHelp,
+          subtitle: AppStrings.of(context).emergencyHelpDescription,
           trailing: Icons.warning_amber_outlined,
           onTap: () {
             // TODO: Navigate to Emergency Help
@@ -232,8 +233,8 @@ class _QuickActionsSection extends StatelessWidget {
         QuickActionItem(
           icon: Icons.history_outlined,
           iconColor: AppColors.iconGrey,
-          title: AppConstants.viewMaintenanceHistory,
-          subtitle: AppConstants.viewMaintenanceHistoryDescription,
+          title: AppStrings.of(context).viewMaintenanceHistory,
+          subtitle: AppStrings.of(context).viewMaintenanceHistoryDescription,
           trailing: Icons.description_outlined,
           onTap: () {
             // TODO: Navigate to Full Maintenance History
@@ -251,13 +252,13 @@ class _RecentHistoryHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const _SectionTitle(title: AppConstants.recentHistory),
+        _SectionTitle(title: AppStrings.of(context).recent),
         TextButton(
           onPressed: () {
             // TODO: Navigate to full history
           },
           child: Text(
-            AppConstants.viewAll,
+            AppStrings.of(context).viewAll,
             style: AppStyle.viewAll.copyWith(fontSize: AppFontSize.f12),
           ),
         ),

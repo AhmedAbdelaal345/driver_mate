@@ -26,6 +26,7 @@ class LanguageCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecorationWidget.customBoxDecoration(
+          context,
           borderRadius: AppFontSize.f12,
         ).copyWith(color: AppColors.white),
         child: Row(

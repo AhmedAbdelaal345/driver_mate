@@ -1,6 +1,6 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/helper/app_notifier.dart';
@@ -89,19 +89,28 @@ class BookingDetailsPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Cancel Booking', style: AppStyle.titleForContainer),
+        title: Text(
+          'Cancel Booking',
+          style: AppStyle.titleForContainer.copyWith(
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+        ),
         content: Text(
           'Are you sure you want to cancel this booking?',
-          style: AppStyle.containerSubtitle,
+          style: AppStyle.containerSubtitle.copyWith(
+            color: Theme.of(context).iconTheme.color,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              AppConstants.cancel,
-              style: AppStyle.viewAll.copyWith(color: AppColors.midGrey),
+              AppStrings.of(context).cancel,
+              style: AppStyle.viewAll.copyWith(
+                color: Theme.of(context).textTheme.bodyMedium?.color,
+              ),
             ),
           ),
           TextButton(
@@ -130,12 +139,17 @@ class BookingDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.containerGrey,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text('Booking Details', style: AppStyle.appBarTitle),
+        title: Text(
+          'Booking Details',
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
+        ),
         leading: const LeadingIcon(),
       ),
       body: BlocListener<MaintenceHistoryCubit, MaintenceHistoryState>(
@@ -155,12 +169,17 @@ class BookingDetailsPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(booking.centerName, style: AppStyle.titleForContainer),
+                    Text(
+                      booking.centerName,
+                      style: AppStyle.titleForContainer.copyWith(
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     Text(
                       booking.typeOfService,
                       style: AppStyle.containerSubtitle.copyWith(
-                        color: AppColors.midGrey,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -200,7 +219,7 @@ class BookingDetailsPage extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 16),
-                    const Divider(color: AppColors.boarderWhiteColor),
+                    Divider(color: Theme.of(context).dividerColor),
                     const SizedBox(height: 12),
 
                     // Date & Time
@@ -246,7 +265,7 @@ class BookingDetailsPage extends StatelessWidget {
                       'Complete ${booking.typeOfService.toLowerCase()} service '
                       'including a comprehensive multi-point inspection.',
                       style: AppStyle.containerSubtitle.copyWith(
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).iconTheme.color,
                         height: 1.5,
                       ),
                     ),

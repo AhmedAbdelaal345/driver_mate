@@ -2,6 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -26,8 +27,8 @@ class RecommendedContainer extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-          color: AppColors.white,
+        decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
+          color: Theme.of(context).cardTheme.color,
         ),
         width: SizeConfig.width(context) * 0.75, // Responsive width
         // height: SizeConfig.height(context) * 0.35, // Let content define height or use flexible
@@ -60,11 +61,17 @@ class RecommendedContainer extends StatelessWidget {
                 children: [
                   Text(
                     title ?? AppConstants.toyotaCamry,
-                    style: AppStyle.titleOfContainer,
+                    style: AppStyle.titleOfContainer.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: AppFontSize.f14,
+                    ),
                   ),
                   Text(
                     subTitle ?? AppConstants.sedan,
-                    style: AppStyle.containerSubtitle,
+                    style: AppStyle.containerSubtitle.copyWith(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                      fontSize: AppFontSize.f12,
+                    ),
                   ),
                   SizedBox(height: SizeConfig.height(context) * 0.031),
                   Row(
@@ -78,7 +85,7 @@ class RecommendedContainer extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        AppConstants.viewDetails,
+                        AppStrings.of(context).viewDetails,
                         style: AppStyle.containerBlodSubtitle,
                       ),
                       const Icon(

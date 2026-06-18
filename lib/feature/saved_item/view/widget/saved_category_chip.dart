@@ -21,14 +21,16 @@ class SavedCategoryChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         decoration: BoxDecoration(
           color: selected
-              ? AppColors.cyanColor
-              : AppColors.containerGrey,
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: selected ? AppColors.white : AppColors.textGrey,
+            color: selected
+                ? AppColors.white
+                : Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
       ),

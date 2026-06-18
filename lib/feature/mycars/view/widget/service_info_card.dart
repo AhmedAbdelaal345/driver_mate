@@ -20,18 +20,17 @@ class ServiceInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardTheme.color ?? theme.colorScheme.surface;
+
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecorationWidget.customBoxDecoration(
+      decoration: BoxDecorationWidget.customBoxDecoration(context,
         borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.white),
+      ).copyWith(color: cardColor),
       child: Column(
         children: [
-          Icon(
-            icon,
-            size: 24,
-            color: iconColor,
-          ),
+          Icon(icon, size: 24, color: iconColor),
           const SizedBox(height: 8),
           Text(
             label,
@@ -49,6 +48,7 @@ class ServiceInfoCard extends StatelessWidget {
             style: AppStyle.boldSmallText.copyWith(
               fontSize: AppFontSize.f12,
               fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onSurface,
             ),
             textAlign: TextAlign.center,
             maxLines: 1,

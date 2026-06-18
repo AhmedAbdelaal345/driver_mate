@@ -6,4 +6,6 @@ abstract class AppRoutes {
   static const String checkPasswordPage = "/check_password_page";
   static const String confirmPasswordPage = "/confirm_password_page";
   static const String setNewPassword = "/set_new_password";
+
+  static get setNewPasswordPage => null;
 }

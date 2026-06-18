@@ -1,5 +1,6 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/feature/auth/manager/auth/auth_cubit.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class ShowDialogWidget extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                buttonText: AppConstants.cancel,
+                buttonText: AppStrings.of(context).cancel,
               ),
             ),
             const SizedBox(width: 10),
@@ -45,7 +46,7 @@ class ShowDialogWidget extends StatelessWidget {
                   Navigator.pop(context);
                   context.read<AuthCubit>().logout(context);
                 },
-                buttonText: AppConstants.logout,
+                buttonText: AppStrings.of(context).logout,
               ),
             ),
           ],

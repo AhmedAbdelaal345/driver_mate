@@ -1,5 +1,7 @@
+import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
@@ -100,7 +102,7 @@ class ArticleDetailPage extends StatelessWidget {
 
                   // Article Introduction
                   Text(
-                    'Choosing the right car insurance can save you thousands of dollars and provide peace of mind on the road. This comprehensive guide will help you understand your options and make an informed decision.',
+                    AppStrings.of(context).articleIntroduction,
                     style: AppStyle.regularSmallText.copyWith(
                       fontSize: AppFontSize.f13,
                       color: AppColors.textGrey,
@@ -110,7 +112,7 @@ class ArticleDetailPage extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   Text(
-                    'Whether you\'re buying your first car or switching providers, these tips will ensure you get the best coverage at the right price.',
+                    AppStrings.of(context).weatherYou,
                     style: AppStyle.regularSmallText.copyWith(
                       fontSize: AppFontSize.f13,
                       color: AppColors.textGrey,
@@ -121,7 +123,7 @@ class ArticleDetailPage extends StatelessWidget {
 
                   // Key Considerations Section
                   Text(
-                    'Key Considerations',
+                    AppStrings.of(context).keyConsideration,
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f16,
                     ),
@@ -162,7 +164,7 @@ class ArticleDetailPage extends StatelessWidget {
                       color: AppColors.cyanColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: AppColors.cyanColor.withValues(alpha:  0.3),
+                        color: AppColors.cyanColor.withValues(alpha: 0.3),
                         width: 1,
                       ),
                     ),
@@ -187,7 +189,7 @@ class ArticleDetailPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Key Takeaway',
+                                AppStrings.of(context).keyTakeAway,
                                 style: AppStyle.boldSmallText.copyWith(
                                   fontSize: AppFontSize.f14,
                                   color: AppColors.cyanColor,
@@ -195,7 +197,7 @@ class ArticleDetailPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                'The best car insurance balances comprehensive coverage with affordable premiums. Always read the fine print and understand what\'s covered before signing up.',
+                                AppStrings.of(context).theBestCar,
                                 style: AppStyle.regularSmallText.copyWith(
                                   fontSize: AppFontSize.f12,
                                   color: AppColors.black,
@@ -216,11 +218,10 @@ class ArticleDetailPage extends StatelessWidget {
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Article saved!'),
-                                duration: Duration(seconds: 1),
-                              ),
+                            AppNotifier.show(
+                              context,
+                              AppStrings.of(context).articleSaved,
+                              type: NotifierType.success,
                             );
                           },
                           icon: const Icon(Icons.bookmark_outline, size: 18),
@@ -239,15 +240,14 @@ class ArticleDetailPage extends StatelessWidget {
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Share options opened'),
-                                duration: Duration(seconds: 1),
-                              ),
+                            AppNotifier.show(
+                              context,
+                              AppStrings.of(context).shareOptionOpened,
+                              type: NotifierType.success,
                             );
                           },
                           icon: const Icon(Icons.share, size: 18),
-                          label: const Text('Share'),
+                          label: Text(AppStrings.of(context).share),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: AppColors.black,
                             side: BorderSide(color: AppColors.grey),
@@ -275,7 +275,7 @@ class ArticleDetailPage extends StatelessWidget {
                         );
                       },
                       icon: const Icon(Icons.calendar_today, size: 18),
-                      label: const Text('Book Maintenance'),
+                      label: Text(AppStrings.of(context).maintenanceBooking),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.darkBlue,
                         foregroundColor: AppColors.white,

@@ -29,9 +29,9 @@ class ServiceHistoryItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppFontSize.f12),
       child: Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecorationWidget.customBoxDecoration(
+        decoration: BoxDecorationWidget.customBoxDecoration(context,
           borderRadius: AppFontSize.f12,
-        ).copyWith(color: AppColors.white),
+        ).copyWith(color:Theme.of(context).cardTheme.color),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,17 +56,17 @@ class ServiceHistoryItem extends StatelessWidget {
             // Date
             Row(
               children: [
-                const Icon(
+                 Icon(
                   Icons.calendar_today_outlined,
                   size: 14,
-                  color: AppColors.iconGrey,
+                  color: Theme.of(context).iconTheme.color, // ← was hardcoded AppColors.iconGrey
                 ),
                 const SizedBox(width: 6),
                 Text(
                   date,
                   style: AppStyle.containerSubtitle.copyWith(
                     fontSize: AppFontSize.f11,
-                    color: AppColors.iconGrey,
+                    color: Theme.of(context).iconTheme.color, // ← was hardcoded AppColors.iconGrey
                   ),
                 ),
               ],
@@ -75,10 +75,10 @@ class ServiceHistoryItem extends StatelessWidget {
             // Service Center
             Row(
               children: [
-                const Icon(
+                 Icon(
                   Icons.build_outlined,
                   size: 14,
-                  color: AppColors.iconGrey,
+                  color: Theme.of(context).iconTheme.color, // ← was hardcoded AppColors.iconGrey
                 ),
                 const SizedBox(width: 6),
                 Expanded(
@@ -86,7 +86,7 @@ class ServiceHistoryItem extends StatelessWidget {
                     serviceCenter,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f11,
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).iconTheme.color, // ← was hardcoded AppColors.iconGrey
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -95,7 +95,7 @@ class ServiceHistoryItem extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            const Divider(height: 1, color: AppColors.containerGrey),
+             Divider(height: 1, color: Theme.of(context).dividerTheme.color),
             const SizedBox(height: 12),
             // Cost
             Row(
@@ -105,14 +105,14 @@ class ServiceHistoryItem extends StatelessWidget {
                   'Cost',
                   style: AppStyle.containerSubtitle.copyWith(
                     fontSize: AppFontSize.f11,
-                    color: AppColors.iconGrey,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                 ),
                 Text(
                   cost,
                   style: AppStyle.boldSmallText.copyWith(
                     fontSize: AppFontSize.f13,
-                    color: AppColors.cyanColor,
+                    color: Theme.of(context).colorScheme.secondary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

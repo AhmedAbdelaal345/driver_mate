@@ -1,6 +1,6 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
@@ -111,8 +111,8 @@ class _NotificationPageState extends State<NotificationPage> {
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          AppConstants.notifications,
+        title:  Text(
+          AppStrings.of(context).notifications,
           style: AppStyle.appBarTitle,
         ),
         leading: const LeadingIcon(),
@@ -122,7 +122,7 @@ class _NotificationPageState extends State<NotificationPage> {
               setState(() {});
             },
             child: Text(
-              'Mark all read',
+              AppStrings.of(context).markAllRead,
               style: AppStyle.containerSubtitle.copyWith(
                 color: AppColors.cyanColor,
                 fontSize: AppFontSize.f12,
@@ -141,7 +141,7 @@ class _NotificationPageState extends State<NotificationPage> {
             child: grouped.isEmpty
                 ? Center(
                     child: Text(
-                      'No notifications',
+                      AppStrings.of(context).noNotification,
                       style: AppStyle.containerSubtitle.copyWith(
                         color: AppColors.iconGrey,
                       ),
@@ -164,11 +164,11 @@ class _NotificationPageState extends State<NotificationPage> {
 
   Widget _buildFilterTabs() {
     final categories = [
-      (NotificationCategory.all, 'All'),
-      (NotificationCategory.maintenance, 'Maintenance'),
-      (NotificationCategory.emergency, 'Emergency'),
-      (NotificationCategory.tips, 'Tips'),
-      (NotificationCategory.system, 'System'),
+      (NotificationCategory.all, AppStrings.of(context).all),
+      (NotificationCategory.maintenance, AppStrings.of(context).maintenance),
+      (NotificationCategory.emergency, AppStrings.of(context).emergency),
+      (NotificationCategory.tips, AppStrings.of(context).tips),
+      (NotificationCategory.system, AppStrings.of(context).system),
     ];
 
     return SingleChildScrollView(

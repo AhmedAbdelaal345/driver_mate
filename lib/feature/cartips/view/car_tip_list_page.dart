@@ -2,6 +2,8 @@ import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/helper/saved_item_function.dart';
 import 'package:driver_mate/core/helper/saved_type_helper.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
+import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/cartips/data/repo/car_tip_list_repo.dart';
 import 'package:driver_mate/feature/cartips/manager/cubit/car_tip_list_cubit.dart';
@@ -37,26 +39,34 @@ class _CarTipsListBody extends StatefulWidget {
 class _CarTipsListBodyState extends State<_CarTipsListBody> {
   String selectedCategory = "All";
 
-  final List<String> categories = [
-    "All",
-    "Maintenance",
-    "Safety",
-    "Fuel Economy",
-    "Tires",
-    "Brakes",
-    "Engine",
-    "Emergency",
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<String> categories = [
+      AppStrings.of(context).all,
+      AppStrings.of(context).maintenance,
+      AppStrings.of(context).safety,
+      AppStrings.of(context).fuelEconomy,
+      AppStrings.of(context).tires,
+      AppStrings.of(context).brakes,
+      AppStrings.of(context).engine,
+      AppStrings.of(context).emergency,
+    ];
+
     return Scaffold(
       // 👈 هنا مكانه الصح
       appBar: AppBar(
-        title: const Text("Car Tips"),
+        title: Text(
+          AppStrings.of(context).carTips,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list),
+            icon: Icon(
+              Icons.filter_list,
+              color: Theme.of(context).iconTheme.color,
+            ),
             onPressed: () => showFilterBottomSheet(context),
           ),
         ],
@@ -64,7 +74,11 @@ class _CarTipsListBodyState extends State<_CarTipsListBody> {
       body: BlocBuilder<CarTipListCubit, CarTipState>(
         builder: (context, state) {
           if (state is CarTipLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              ),
+            );
           }
 
           if (state is CarTipError) {
@@ -92,22 +106,24 @@ class _CarTipsListBodyState extends State<_CarTipsListBody> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.veryDarkBlue,
+                      color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Toyota Camry 2024",
                           style: TextStyle(
-                            color: AppColors.white,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          "Tips and maintenance guidance for your car",
-                          style: TextStyle(color: AppColors.white),
+                          AppStrings.of(context).carTipsSubtitle,
+                          style: TextStyle(
+                            color: Theme.of(context).iconTheme.color,
+                          ),
                         ),
                       ],
                     ),
@@ -151,7 +167,7 @@ class _CarTipsListBodyState extends State<_CarTipsListBody> {
                               child: CarTipsPage(
                                 labelText: filteredTips[index].title,
                                 hintText: filteredTips[index].description,
-                                assetName: filteredTips[index].image,
+                                imagePath: filteredTips[index].image,
                               ),
                             ),
                           );

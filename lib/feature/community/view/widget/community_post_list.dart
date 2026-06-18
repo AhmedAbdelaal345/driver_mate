@@ -30,7 +30,7 @@ class CommunityPostList extends StatelessWidget {
             child: Text(
               'No posts yet.',
               style: AppStyle.containerSubtitle.copyWith(
-                color: AppColors.iconGrey,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),
           );
@@ -69,7 +69,7 @@ class _CommunityPostCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration(),
+      decoration: BoxDecorationWidget.customBoxDecoration(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -77,10 +77,10 @@ class _CommunityPostCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 18,
-                backgroundColor: AppColors.cyanColor,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
                 child: Text(
                   post.authorInitials,
-                  style: const TextStyle(color: AppColors.white, fontSize: 12),
+                  style:  TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 12),
                 ),
               ),
               const SizedBox(width: 10),
@@ -91,12 +91,13 @@ class _CommunityPostCard extends StatelessWidget {
                     post.authorName,
                     style: AppStyle.socialButtonTextStyle.copyWith(
                       fontSize: AppFontSize.f13,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                   Text(
                     _timeAgo(post.createdAt),
                     style: AppStyle.containerSubtitle.copyWith(
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                       fontSize: AppFontSize.f10,
                     ),
                   ),
@@ -112,19 +113,20 @@ class _CommunityPostCard extends StatelessWidget {
             style: AppStyle.titleOfContainer.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: AppFontSize.f16,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             post.description,
-            style: AppStyle.containerSubtitle.copyWith(height: 1.4),
+            style: AppStyle.containerSubtitle.copyWith(height: 1.4 ,color: Theme.of(context).textTheme.bodyMedium?.color, fontSize: AppFontSize.f12),
           ),
-          if (post.image != null) ...[
+          if (post.imageFile != null) ...[
             const SizedBox(height: 12),
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.file(
-                post.image!,
+                post.imageFile!,
                 width: double.infinity,
                 height: 180,
                 fit: BoxFit.cover,
@@ -154,13 +156,13 @@ class _TypeTag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.cyanColor.withValues(alpha: 0.1),
+        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         type,
-        style: const TextStyle(
-          color: AppColors.cyanColor,
+        style:  TextStyle(
+          color: Theme.of(context).colorScheme.secondary,
           fontSize: 11,
           fontWeight: FontWeight.bold,
         ),

@@ -24,9 +24,7 @@ class _TipCardState extends State<TipCard> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-        color: AppColors.white,
-      ),
+      decoration: BoxDecorationWidget.customBoxDecoration(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -36,26 +34,40 @@ class _TipCardState extends State<TipCard> {
               Text(widget.tip.title, style: AppStyle.titleOfContainer),
               IconButton(
                 onPressed: widget.onPressed,
-                icon: Icon(widget.icon, color: AppColors.cyanColor),
+                icon: Icon(widget.icon, color: Theme.of(context).primaryColor),
               ),
             ],
           ),
           SizedBox(height: 6),
-          Text(widget.tip.description, style: AppStyle.containerSubtitle),
+          Text(
+            widget.tip.description,
+            style: AppStyle.containerSubtitle.copyWith(
+              color: Theme.of(context).textTheme.bodyMedium?.color,
+            ),
+          ),
           SizedBox(height: 12),
           Row(
             children: [
-              Icon(Icons.access_time, size: 16, color: AppColors.midGrey),
+              Icon(
+                Icons.access_time,
+                size: 16,
+                color: Theme.of(context).iconTheme.color,
+              ),
               SizedBox(width: 6),
               Text(
                 "${widget.tip.minutes} min read",
-                style: TextStyle(color: AppColors.midGrey),
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                ),
               ),
               Spacer(),
               if (widget.tip.isUpdated)
                 Text(
                   "Updated recently",
-                  style: TextStyle(color: AppColors.cyanColor, fontSize: 12),
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 12,
+                  ),
                 ),
             ],
           ),

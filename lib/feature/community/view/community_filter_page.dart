@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
@@ -13,40 +14,30 @@ class CommunityFilterPage extends StatefulWidget {
 }
 
 class _CommunityFilterPageState extends State<CommunityFilterPage> {
-  final List<String> _categories = const [
-    AppConstants.all,
-    AppConstants.cars,
-    AppConstants.maintenance,
-    AppConstants.tips,
-    AppConstants.community,
-    AppConstants.marketPlace,
-  ];
-
   final List<String> _locations = const [
     'Riyadh',
     'Jeddah',
     'Dammam',
     'Madinah',
   ];
-
-  final List<String> _sortOptions = const [
-    AppConstants.newest,
-    AppConstants.nearest,
-    AppConstants.highestRated,
-    AppConstants.lowestPrice,
-    AppConstants.highestPrice,
-  ];
-
-  String _selectedCategory = AppConstants.all;
   String _selectedLocation = 'Riyadh';
-  String _selectedSort = AppConstants.newest;
   int _selectedRating = 3;
   RangeValues _price = const RangeValues(0, 500000);
+  late String _selectedSort;
+  late String _selectedCategory;
+  @override
+  void initState() {
+    super.initState();
+    _selectedSort = AppStrings.of(context).newest;
+    _selectedCategory = AppStrings.of(context).all;
+  }
 
-  final TextEditingController _minPriceController =
-      TextEditingController(text: '0');
-  final TextEditingController _maxPriceController =
-      TextEditingController(text: '500000');
+  final TextEditingController _minPriceController = TextEditingController(
+    text: '0',
+  );
+  final TextEditingController _maxPriceController = TextEditingController(
+    text: '500000',
+  );
 
   @override
   void dispose() {
@@ -57,9 +48,9 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
 
   void _reset() {
     setState(() {
-      _selectedCategory = AppConstants.all;
+      _selectedCategory = AppStrings.of(context).all;
       _selectedLocation = 'Riyadh';
-      _selectedSort = AppConstants.newest;
+      _selectedSort = AppStrings.of(context).newest;
       _selectedRating = 3;
       _price = const RangeValues(0, 500000);
       _minPriceController.text = '0';
@@ -85,26 +76,46 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
   @override
   Widget build(BuildContext context) {
     final horizontal = SizeConfig.width(context) * 0.05;
+    final List<String> _categories = [
+      AppStrings.of(context).all,
+      AppStrings.of(context).cars,
+      AppStrings.of(context).maintenance,
+      AppStrings.of(context).tips,
+      AppStrings.of(context).community,
+      AppStrings.of(context).marketPlace,
+    ];
+    final List<String> _sortOptions = [
+      AppStrings.of(context).newest,
+      AppStrings.of(context).nearest,
+      AppStrings.of(context).highestRated,
+      AppStrings.of(context).lowestPrice,
+      AppStrings.of(context).highestPrice,
+    ];
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).iconTheme.color,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          AppConstants.filters,
-          style: AppStyle.appBarTitle,
+          AppStrings.of(context).filters,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: _reset,
             child: Text(
-              AppConstants.reset,
+              AppStrings.of(context).reset,
               style: AppStyle.viewAll.copyWith(fontWeight: FontWeight.w600),
             ),
           ),
@@ -118,7 +129,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
         child: Column(
           children: [
             _SectionCard(
-              title: AppConstants.category,
+              title: AppStrings.of(context).category,
               child: Wrap(
                 spacing: 10,
                 runSpacing: 10,
@@ -129,11 +140,13 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
                     selected: isSelected,
                     showCheckmark: false,
                     labelStyle: TextStyle(
-                      color: isSelected ? AppColors.white : AppColors.black,
+                      color: isSelected
+                          ? AppColors.white
+                          : Theme.of(context).textTheme.bodyLarge?.color,
                       fontWeight: FontWeight.w500,
                     ),
                     selectedColor: AppColors.cyanColor,
-                    backgroundColor: AppColors.containerGrey,
+                    backgroundColor: Theme.of(context).cardTheme.color,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(999),
                     ),
@@ -146,7 +159,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
             ),
             const SizedBox(height: 14),
             _SectionCard(
-              title: AppConstants.priceRange,
+              title: AppStrings.of(context).priceRange,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -163,10 +176,10 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
                     onChanged: (value) {
                       setState(() {
                         _price = value;
-                        _minPriceController.text =
-                            value.start.toStringAsFixed(0);
-                        _maxPriceController.text =
-                            value.end.toStringAsFixed(0);
+                        _minPriceController.text = value.start.toStringAsFixed(
+                          0,
+                        );
+                        _maxPriceController.text = value.end.toStringAsFixed(0);
                       });
                     },
                   ),
@@ -202,14 +215,16 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
             ),
             const SizedBox(height: 14),
             _SectionCard(
-              title: AppConstants.location,
+              title: AppStrings.of(context).location,
               child: DropdownButtonFormField<String>(
                 initialValue: _selectedLocation,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: AppColors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: AppColors.boarderWhiteColor),
@@ -220,8 +235,9 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
                   ),
                 ),
                 items: _locations
-                    .map((loc) =>
-                        DropdownMenuItem(value: loc, child: Text(loc)))
+                    .map(
+                      (loc) => DropdownMenuItem(value: loc, child: Text(loc)),
+                    )
                     .toList(),
                 onChanged: (value) {
                   if (value == null) return;
@@ -231,7 +247,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
             ),
             const SizedBox(height: 14),
             _SectionCard(
-              title: AppConstants.rating,
+              title: AppStrings.of(context).rating,
               child: Column(
                 children: [5, 4, 3].map((stars) {
                   final isSelected = _selectedRating == stars;
@@ -283,7 +299,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
             ),
             const SizedBox(height: 14),
             _SectionCard(
-              title: AppConstants.sortBy,
+              title: AppStrings.of(context).sortBy,
               child: Column(
                 children: _sortOptions.map((option) {
                   final isSelected = _selectedSort == option;
@@ -347,9 +363,10 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
                     ),
                   ),
                   child: Text(
-                    AppConstants.cancel,
+                    AppStrings.of(context).cancel,
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f13,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                 ),
@@ -366,7 +383,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
                     ),
                   ),
                   child: Text(
-                    AppConstants.applyFilters,
+                    AppStrings.of(context).applyFilters,
                     style: AppStyle.buttonTextStyle.copyWith(
                       fontSize: AppFontSize.f13,
                     ),
@@ -392,7 +409,7 @@ class _SectionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.boarderWhiteColor),
         boxShadow: [
@@ -413,12 +430,13 @@ class _SectionCard extends StatelessWidget {
                   title,
                   style: AppStyle.boldSmallText.copyWith(
                     fontSize: AppFontSize.f13,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.keyboard_arrow_up,
-                color: AppColors.iconGrey,
+                color: Theme.of(context).iconTheme.color,
               ),
             ],
           ),
@@ -443,7 +461,7 @@ class _PriceField extends StatelessWidget {
         Text(
           label,
           style: AppStyle.containerSubtitle.copyWith(
-            color: AppColors.iconGrey,
+            color: Theme.of(context).iconTheme.color,
             fontSize: AppFontSize.f11,
           ),
         ),
@@ -453,9 +471,11 @@ class _PriceField extends StatelessWidget {
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.white,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            fillColor: Theme.of(context).scaffoldBackgroundColor,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 10,
+            ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: AppColors.boarderWhiteColor),

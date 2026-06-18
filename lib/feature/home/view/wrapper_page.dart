@@ -1,7 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/feature/Ai/view/ai_page.dart';
 import 'package:driver_mate/feature/car_details/manager/cubit/car_details_cubit.dart';
 import 'package:driver_mate/feature/community/view/community_page.dart';
@@ -15,7 +15,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class WrapperPage extends StatefulWidget {
   final int initialIndex;
-
   const WrapperPage({super.key, this.initialIndex = 2});
 
   @override
@@ -25,7 +24,6 @@ class WrapperPage extends StatefulWidget {
 class _WrapperPageState extends State<WrapperPage> {
   late int _currentIndex;
 
-  // Build once & keep state for each tab via IndexedStack
   late final List<Widget> _pages = const [
     ExplorePage(),
     AiPage(),
@@ -33,6 +31,7 @@ class _WrapperPageState extends State<WrapperPage> {
     CommunityPage(),
     ProfilePage(),
   ];
+
   @override
   void initState() {
     super.initState();
@@ -40,23 +39,32 @@ class _WrapperPageState extends State<WrapperPage> {
   }
 
   Widget _navIcon(String path, {bool active = false}) {
+    // ── Use theme color so inactive icons adapt in dark mode ─────────────
+    final inactiveColor =
+        Theme.of(context).bottomNavigationBarTheme.unselectedItemColor ??
+        AppColors.iconGrey;
+
     return SvgPicture.asset(
       path,
-      colorFilter: active
-          ? const ColorFilter.mode(AppColors.cyanColor, BlendMode.srcIn)
-          : null,
+      colorFilter: ColorFilter.mode(
+        active ? AppColors.cyanColor : inactiveColor,
+        BlendMode.srcIn,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final navBarTheme = theme.bottomNavigationBarTheme;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<ServiceCenterCubit>(
-          create: (context) => ServiceCenterCubit()..loadServiceCenters(),
+          create: (_) => ServiceCenterCubit()..loadServiceCenters(),
         ),
         BlocProvider<CarDetailsCubit>(
-          create: (context) => CarDetailsCubit()..loadCarDetails(),
+          create: (_) => CarDetailsCubit()..loadCarDetails(),
         ),
       ],
       child: PopScope(
@@ -70,11 +78,18 @@ class _WrapperPageState extends State<WrapperPage> {
               type: BottomNavigationBarType.fixed,
               currentIndex: _currentIndex,
               onTap: (index) => setState(() => _currentIndex = index),
-              backgroundColor: AppColors.white,
-              selectedItemColor: AppColors.cyanColor,
-              unselectedItemColor: AppColors.iconGrey,
+
+              // ── All colors from theme — no hardcoding ─────────────────
+              backgroundColor:
+                  navBarTheme.backgroundColor ?? theme.scaffoldBackgroundColor,
+              selectedItemColor:
+                  navBarTheme.selectedItemColor ?? AppColors.cyanColor,
+              unselectedItemColor:
+                  navBarTheme.unselectedItemColor ?? AppColors.iconGrey,
+
               selectedFontSize: AppFontSize.f12,
               unselectedFontSize: AppFontSize.f11,
+              showUnselectedLabels: true,
               unselectedLabelStyle: const TextStyle(
                 overflow: TextOverflow.visible,
               ),
@@ -82,7 +97,6 @@ class _WrapperPageState extends State<WrapperPage> {
                 overflow: TextOverflow.visible,
                 fontWeight: FontWeight.w600,
               ),
-              showUnselectedLabels: true,
               items: [
                 BottomNavigationBarItem(
                   icon: _navIcon(AppImagePath.compassIconPath),
@@ -90,7 +104,7 @@ class _WrapperPageState extends State<WrapperPage> {
                     AppImagePath.compassIconPath,
                     active: true,
                   ),
-                  label: AppConstants.explore, // موجودة عندك
+                  label: AppStrings.of(context).explore,
                 ),
                 BottomNavigationBarItem(
                   icon: _navIcon(AppImagePath.repboteIconPath),
@@ -98,17 +112,20 @@ class _WrapperPageState extends State<WrapperPage> {
                     AppImagePath.repboteIconPath,
                     active: true,
                   ),
-                  label: 'AI Assistant', // لو عايزها constants ضيفها
+                  label: AppStrings.of(context).aiAssistant,
                 ),
                 BottomNavigationBarItem(
                   icon: _navIcon(AppImagePath.homeIconPath),
                   activeIcon: _navIcon(AppImagePath.homeIconPath, active: true),
-                  label: 'Home', // لو عايزها constants ضيفها
+                  label: AppStrings.of(context).home,
                 ),
                 BottomNavigationBarItem(
                   icon: _navIcon(AppImagePath.peopleIconPath),
-                  activeIcon: _navIcon(AppImagePath.peopleIconPath, active: true),
-                  label: 'Community', // لو عايزها constants ضيفها
+                  activeIcon: _navIcon(
+                    AppImagePath.peopleIconPath,
+                    active: true,
+                  ),
+                  label: AppStrings.of(context).community,
                 ),
                 BottomNavigationBarItem(
                   icon: _navIcon(AppImagePath.profileIconPath),
@@ -116,12 +133,11 @@ class _WrapperPageState extends State<WrapperPage> {
                     AppImagePath.profileIconPath,
                     active: true,
                   ),
-                  label: 'Profile', // لو عايزها constants ضيفها
+                  label: AppStrings.of(context).profile,
                 ),
               ],
             ),
           ),
-          // floatingActionButton: FloatActionButtonWidget(onPressed: () {}),
         ),
       ),
     );

@@ -1,4 +1,6 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/feature/cartips/view/cartips_page.dart';
 import 'package:driver_mate/feature/explore/data/model/explore_model.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +43,10 @@ class TipPostCard extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFE6F7FD),
                         borderRadius: BorderRadius.circular(999),
@@ -87,7 +92,15 @@ class TipPostCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 18),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    MyNavigation.navigateTo(
+                      CarTipsPage(
+                        imagePath: item.image,
+                        hintText: item.readTime,
+                        labelText: item.title,
+                      ),
+                    );
+                  },
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,

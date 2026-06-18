@@ -17,12 +17,20 @@ abstract class ApiKeys {
   static const String refreshToken = "refreshToken";
 
   // the keys for the response body for the profile endpoint
-  static const String phone = "phone";
-  static const String image = "image";
+  static const String phone = "phoneNumber";
+  static const String image = "profileImageUrl";
+  static const String editImageProfile = "ProfileImage";
   // the keys for the response body for the add cars endpoint
   static const String brandId = "brandId";
   static const String modelId = "modelId";
   static const String year = "year";
   static const String plateNumber = "plateNumber";
   static const String currentMileage = "currentMileage";
+  static const String file = "file";
+  // this is for ai voice diagnosis endpoint
+  static const String audioPath = "audioPath";
+  static const String result = "result";
+  static const String severity = "severity";
+  static const String confidence = "confidence";
+  static const String createdAt = "createdAt";
 }

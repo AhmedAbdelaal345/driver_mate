@@ -2,7 +2,7 @@ abstract class ApiConstants {
   static const String baseUrl = "http://drivermate.runasp.net/api/";
   static const String loginEndpoint = "Auth/login";
   static const String registerEndpoint = "Auth/register";
-  static const String profileEndpoint = "User/profile";
+  static const String profileEndpoint = "user/profile";
   static const String resetPasswordEndpoint = "Auth/reset-password";
   static const String requestOTPEndpoint = "Auth/request-otp";
   static const String verifiyOTPEndpoint = "Auth/verify-otp";

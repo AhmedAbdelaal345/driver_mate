@@ -5,6 +5,8 @@ import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
+
 import 'package:driver_mate/core/widget/show_dialoge_widget.dart';
 import 'package:driver_mate/feature/home/view/wrapper_page.dart';
 import 'package:driver_mate/feature/languge/view/language_page.dart';
@@ -55,19 +57,24 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.settings, color: AppColors.black),
+          icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color),
         ),
         actions: [
           IconButton(
             onPressed: () {
               MyNavigation.navigateTo(WrapperPage(initialIndex: 2));
             },
-            icon: const Icon(Icons.arrow_back_ios),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Theme.of(context).iconTheme.color,
+            ),
           ),
         ],
-        title: const Text(
-          AppConstants.profile,
-          style: AppStyle.titleForContainer,
+        title: Text(
+          AppStrings.of(context).profile,
+          style: AppStyle.titleForContainer.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -94,11 +101,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       image: profile.image,
                       onPressed: () {
                         MyNavigation.navigateTo(
-                        BlocProvider.value(
-                          value: context.read<EditProfileCubit>(),
-                          child: const EditProfile(),
-                        ),
-                      );
+                          BlocProvider.value(
+                            value: context.read<EditProfileCubit>(),
+                            child: const EditProfile(),
+                          ),
+                        );
                       },
                     );
                   }
@@ -147,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     builder: (context, state) {
                       if (state is MaintenceHistorySuccessState) {
                         return ItemContainer(
-                          title: AppConstants.booking,
+                          title: AppStrings.of(context).booking,
                           onTap: () {
                             MyNavigation.navigateTo(MaintenanceHistory());
                           },
@@ -155,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         );
                       } else {
                         return ItemContainer(
-                          title: AppConstants.booking,
+                          title: AppStrings.of(context).booking,
                           onTap: () {
                             MyNavigation.navigateTo(MaintenanceHistory());
                           },
@@ -170,7 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     builder: (context, state) {
                       if (state is SavedItemLoaded) {
                         return ItemContainer(
-                          title: AppConstants.saved,
+                          title: AppStrings.of(context).saved,
                           count: state.items.length,
                           onTap: () {
                             MyNavigation.navigateTo(SavedItemsPage());
@@ -178,7 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         );
                       }
                       return ItemContainer(
-                        title: AppConstants.saved,
+                        title: AppStrings.of(context).saved,
                         count: 0,
                         onTap: () {
                           MyNavigation.navigateTo(SavedItemsPage());
@@ -190,10 +197,13 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
 
-              Text(AppConstants.account, style: AppStyle.containerSubtitle),
+              Text(
+                AppStrings.of(context).account,
+                style: AppStyle.containerSubtitle,
+              ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Container(
-                decoration: BoxDecorationWidget.customBoxDecoration(),
+                decoration: BoxDecorationWidget.customBoxDecoration(context),
                 child: Column(
                   children: [
                     DetailsContainerWidget(
@@ -208,7 +218,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Divider(color: AppColors.containerGrey),
                     DetailsContainerWidget(
-                      title: AppConstants.myCars,
+                      title: AppStrings.of(context).myCars,
                       onTap: () {
                         BlocProvider.value(value: context.read<VehicalCubit>());
                         MyNavigation.navigateTo(
@@ -218,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         );
                       },
-                      subTitle: AppConstants.manageVehicls,
+                      subTitle: AppStrings.of(context).manageVehicls,
                       iconpath: AppImagePath.carIconPath,
                     ),
                     Divider(color: AppColors.containerGrey),
@@ -226,8 +236,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       onTap: () {
                         MyNavigation.navigateTo(MaintenanceHistory());
                       },
-                      title: AppConstants.maintenanceHistory,
-                      subTitle: AppConstants.pastbookings,
+                      title: AppStrings.of(context).maintenanceHistory,
+                      subTitle: AppStrings.of(context).pastbookings,
                       iconpath: AppImagePath.calenderIconPath,
                     ),
                   ],
@@ -238,14 +248,16 @@ class _ProfilePageState extends State<ProfilePage> {
               Text(AppConstants.preference, style: AppStyle.containerSubtitle),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Container(
-                decoration: BoxDecorationWidget.customBoxDecoration(),
+                decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
+                ).copyWith(color: Theme.of(context).cardTheme.color),
                 child: Column(
                   children: [
                     DetailsContainerWidget(
                       onTap: () {
                         MyNavigation.navigateTo(LanguagePage());
                       },
-                      title: AppConstants.language,
+                      title: AppStrings.of(context).language,
                       subTitle: AppConstants.englishArbic,
                       iconpath: AppImagePath.languageIconPath,
                     ),
@@ -255,8 +267,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       onTap: () {
                         MyNavigation.navigateTo(ThemePage());
                       },
-                      title: AppConstants.theme,
-                      subTitle: AppConstants.lightDark,
+                      title: AppStrings.of(context).theme,
+                      subTitle: AppStrings.of(context).lightDark,
                       iconpath: AppImagePath.themeIconPath,
                     ),
                     Divider(color: AppColors.containerGrey),
@@ -264,8 +276,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       onTap: () {
                         MyNavigation.navigateTo(NotificationSettingPage());
                       },
-                      title: AppConstants.notifications,
-                      subTitle: AppConstants.reminder,
+                      title: AppStrings.of(context).notifications,
+                      subTitle: AppStrings.of(context).reminder,
                       iconpath: AppImagePath.notificationIconPath,
                     ),
                   ],
@@ -274,10 +286,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
               SizedBox(height: SizeConfig.height(context) * 0.02),
 
-              Text(AppConstants.secuirty, style: AppStyle.containerSubtitle),
+              Text(
+                AppStrings.of(context).security,
+                style: AppStyle.containerSubtitle,
+              ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Container(
-                decoration: BoxDecorationWidget.customBoxDecoration(),
+                decoration: BoxDecorationWidget.customBoxDecoration(context),
                 child: Column(
                   children: [
                     DetailsContainerWidget(
@@ -289,8 +304,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         );
                       },
-                      title: AppConstants.changePassword,
-                      subTitle: AppConstants.changeYourPassword,
+                      title: AppStrings.of(context).changePassword,
+                      subTitle: AppStrings.of(context).changeYourPassword,
                       iconpath: AppImagePath.changePasswordIconPath,
                     ),
                     Divider(color: AppColors.containerGrey),
@@ -299,8 +314,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       onTap: () {
                         MyNavigation.navigateTo(PrivacyPage());
                       },
-                      title: AppConstants.privacy,
-                      subTitle: AppConstants.permession,
+                      title: AppStrings.of(context).privacy,
+                      subTitle: AppStrings.of(context).appPermissions,
                       iconpath: AppImagePath.privacyIconPath,
                     ),
                     Divider(color: AppColors.containerGrey),
@@ -308,18 +323,23 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
-              Text(AppConstants.support, style: AppStyle.containerSubtitle),
+              Text(
+                AppStrings.of(context).support,
+                style: AppStyle.containerSubtitle,
+              ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Container(
-                decoration: BoxDecorationWidget.customBoxDecoration(),
+                decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
+                ).copyWith(color: Theme.of(context).cardTheme.color),
                 child: Column(
                   children: [
                     DetailsContainerWidget(
                       onTap: () {
                         MyNavigation.navigateTo(HelpCenterPage());
                       },
-                      title: AppConstants.helpCenter,
-                      subTitle: AppConstants.reminder,
+                      title: AppStrings.of(context).helpCenter,
+                      subTitle: AppStrings.of(context).reminder,
                       iconpath: AppImagePath.helpCenterIconPath,
                     ),
 
@@ -328,8 +348,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       onTap: () {
                         MyNavigation.navigateTo(ContactSupportPage());
                       },
-                      title: AppConstants.contactSupport,
-                      subTitle: AppConstants.reminder,
+                      title: AppStrings.of(context).contactSupport,
+                      subTitle: AppStrings.of(context).reminder,
                       iconpath: AppImagePath.conatactSupportIconPath,
                     ),
 
@@ -338,24 +358,28 @@ class _ProfilePageState extends State<ProfilePage> {
                       onTap: () {
                         MyNavigation.navigateTo(AboutPage());
                       },
-                      title: AppConstants.about,
-                      subTitle: AppConstants.reminder,
+                      title: AppStrings.of(context).about,
+                      subTitle: AppStrings.of(context).reminder,
                       iconpath: AppImagePath.aboutIconPath,
                     ),
                     SizedBox(height: SizeConfig.height(context) * 0.02),
                     Container(
-                      decoration: BoxDecorationWidget.customBoxDecoration(),
+                      decoration: BoxDecorationWidget.customBoxDecoration(
+                        context,
+                      ),
                       child: DetailsContainerWidget(
                         isSvg: false,
                         icon: Icons.logout_outlined,
-                        title: AppConstants.logout,
+                        title: AppStrings.of(context).logout,
                         onTap: () {
                           showDialog(
                             context: context,
                             builder: (context) {
                               return ShowDialogWidget(
-                                title: AppConstants.confirmLogout,
-                                content: AppConstants.logoutConfirmation,
+                                title: AppStrings.of(context).confirmLogout,
+                                content: AppStrings.of(
+                                  context,
+                                ).logoutConfirmation,
                               );
                             },
                           );

@@ -4,7 +4,8 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:flutter/material.dart';
 
 class ToggleButton extends StatelessWidget {
-  const ToggleButton({super.key, 
+  const ToggleButton({
+    super.key,
     required this.text,
     required this.icon,
     required this.isActive,
@@ -23,7 +24,9 @@ class ToggleButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: isActive ? AppColors.cyanColor : Colors.transparent,
+          color: isActive
+              ? Theme.of(context).colorScheme.secondary
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(AppFontSize.f12),
         ),
         child: Row(
@@ -32,14 +35,16 @@ class ToggleButton extends StatelessWidget {
             Icon(
               icon,
               size: 16,
-              color: isActive ? AppColors.white : AppColors.textGrey,
+              color: isActive
+                  ? Theme.of(context).colorScheme.onSurface
+                  : Theme.of(context).textTheme.bodyMedium?.color,
             ),
             const SizedBox(width: 6),
             Text(
               text,
               style: AppStyle.boldSmallText.copyWith(
                 fontSize: AppFontSize.f12,
-                color: isActive ? AppColors.white : AppColors.textGrey,
+                color: isActive ? Theme.of(context).colorScheme.onSurface : Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),
           ],

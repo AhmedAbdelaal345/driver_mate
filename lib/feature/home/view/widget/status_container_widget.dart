@@ -1,6 +1,6 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -15,9 +15,11 @@ class StatusContainerWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppConstants.vehicleStatus,
+          AppStrings.of(context).vehicleStatus,
           style: AppStyle.coursalSubtitleTextStyle.copyWith(
-            color: AppColors.black,
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface, // ← was hardcoded AppColors.textGrey
             fontSize: AppFontSize.f16,
             fontWeight: FontWeight.w600,
           ),
@@ -27,9 +29,9 @@ class StatusContainerWidget extends StatelessWidget {
           onTap: onTap,
           child: Container(
             padding: EdgeInsets.all(SizeConfig.width(context) * 0.06),
-            decoration: BoxDecorationWidget.customBoxDecoration(
+            decoration: BoxDecorationWidget.customBoxDecoration(context,
               borderRadius: 12,
-            ).copyWith(color: AppColors.white),
+            ).copyWith(color: Theme.of(context).cardTheme.color),
             child: Row(
               children: [
                 Expanded(
@@ -54,17 +56,21 @@ class StatusContainerWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              AppConstants.engineHealth,
+                              AppStrings.of(context).engineHealth,
                               style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                                color: AppColors.textGrey,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface, // ← was hardcoded AppColors.textGrey
                                 fontSize: AppFontSize.f12,
                                 fontWeight: FontWeight.normal,
                               ),
                             ),
                             Text(
-                              AppConstants.good,
+                              AppStrings.of(context).good,
                               style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                                color: AppColors.black,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface, // ← was hardcoded AppColors.black
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -99,18 +105,23 @@ class StatusContainerWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              AppConstants.oilhealth,
+                              AppStrings.of(context).oilhealth,
                               style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                                color: AppColors.textGrey,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface, // ← was hardcoded AppColors.textGrey
                                 fontSize: AppFontSize.f12,
                                 fontWeight: FontWeight.normal,
                               ),
                             ),
                             Text(
-                              AppConstants
-                                  .normal, // Should ideally be "Normal" or based on data
+                              AppStrings.of(
+                                context,
+                              ).normal, // Should ideally be "Normal" or based on data
                               style: AppStyle.coursalSubtitleTextStyle.copyWith(
-                                color: AppColors.black,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface, // ← was hardcoded AppColors.black
                                 fontWeight: FontWeight.w600,
                               ),
                             ),

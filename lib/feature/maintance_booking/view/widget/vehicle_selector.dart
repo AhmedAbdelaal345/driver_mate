@@ -22,9 +22,9 @@ class VehicleSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecorationWidget.customBoxDecoration(
+      decoration: BoxDecorationWidget.customBoxDecoration(context,
         borderRadius: AppFontSize.f8,
-      ).copyWith(color: AppColors.white),
+      ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<VechicleModel>(
           isExpanded: true,
@@ -32,13 +32,13 @@ class VehicleSelector extends StatelessWidget {
             AppConstants.selectYourVehicle,
             style: AppStyle.containerSubtitle.copyWith(
               fontSize: AppFontSize.f12,
-              color: AppColors.iconGrey,
+              color: Theme.of(context).iconTheme.color,
             ),
           ),
           value: selectedVehicle,
-          icon: const Icon(
+          icon:  Icon(
             Icons.keyboard_arrow_down,
-            color: AppColors.iconGrey,
+            color: Theme.of(context).iconTheme.color,
           ),
           items: vehicles.map((vehicle) {
             return DropdownMenuItem<VechicleModel>(
@@ -47,7 +47,7 @@ class VehicleSelector extends StatelessWidget {
                 '${vehicle.brand} ${vehicle.model} ${vehicle.year}',
                 style: AppStyle.containerSubtitle.copyWith(
                   fontSize: AppFontSize.f12,
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             );

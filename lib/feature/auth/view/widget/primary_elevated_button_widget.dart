@@ -40,7 +40,8 @@ class PrimaryElevatedButtonWidget extends StatelessWidget {
           padding:
               padding ??
               const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          backgroundColor: backgroundColor ?? AppColors.darkBlue,
+          backgroundColor:
+              backgroundColor ?? Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppFontSize.f8),
           ),

@@ -22,12 +22,12 @@ void showSavedSortSheet(BuildContext context) {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text("Sort & Filter",
-                    style: TextStyle(fontSize: 18)),
+                const Text("Sort & Filter", style: TextStyle(fontSize: 18)),
 
                 const SizedBox(height: 20),
 
                 _radioTile(
+                  context: context,
                   title: "Most Recent",
                   value: SavedSortType.mostRecent,
                   groupValue: selected,
@@ -37,6 +37,7 @@ void showSavedSortSheet(BuildContext context) {
                 ),
 
                 _radioTile(
+                  context: context,
                   title: "Oldest First",
                   value: SavedSortType.oldestFirst,
                   groupValue: selected,
@@ -47,6 +48,7 @@ void showSavedSortSheet(BuildContext context) {
 
                 _radioTile(
                   title: "By Type",
+                  context: context,
                   value: SavedSortType.byType,
                   groupValue: selected,
                   onChanged: (val) {
@@ -60,7 +62,7 @@ void showSavedSortSheet(BuildContext context) {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.darkBlue,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
                       cubit.changeSort(selected);
@@ -68,7 +70,7 @@ void showSavedSortSheet(BuildContext context) {
                     },
                     child: const Text("Apply"),
                   ),
-                )
+                ),
               ],
             ),
           );
@@ -83,11 +85,12 @@ Widget _radioTile({
   required SavedSortType value,
   required SavedSortType groupValue,
   required Function(SavedSortType?) onChanged,
+  required BuildContext context,
 }) {
   return Container(
     margin: const EdgeInsets.only(bottom: 12),
     decoration: BoxDecoration(
-      color: AppColors.containerGrey,
+      color: Theme.of(context).cardColor,
       borderRadius: BorderRadius.circular(12),
     ),
     child: RadioListTile<SavedSortType>(

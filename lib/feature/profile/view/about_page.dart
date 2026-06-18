@@ -1,7 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -16,12 +16,15 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text(AppConstants.about, style: AppStyle.appBarTitle),
+        title: Text(
+          AppStrings.of(context).about,
+          style: Theme.of(context).appBarTheme.titleTextStyle,
+        ),
         leading: const LeadingIcon(),
       ),
       body: SingleChildScrollView(
@@ -36,15 +39,16 @@ class AboutPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
+                ).copyWith(color: Theme.of(context).cardTheme.color),
                 child: Column(
                   children: [
                     Container(
                       width: 70,
                       height: 70,
                       decoration: BoxDecoration(
-                        color: AppColors.darkCyanColor,
+                        color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(AppFontSize.f16),
                       ),
                       child: Center(
@@ -61,16 +65,19 @@ class AboutPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      AppConstants.driverMate,
-                      style: AppStyle.titleForContainer,
+                      AppStrings.of(context).driverMate,
+                      style: AppStyle.titleForContainer.copyWith(
+                        color: Theme.of(context).textTheme.titleLarge?.color,
+                        fontSize: AppFontSize.f18,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      AppConstants.aboutSubtitle,
+                      AppStrings.of(context).aboutSubtitle,
                       textAlign: TextAlign.center,
                       style: AppStyle.containerSubtitle.copyWith(
                         fontSize: AppFontSize.f11,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -81,7 +88,7 @@ class AboutPage extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.containerGrey,
+                        color: Theme.of(context).cardTheme.color,
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Row(
@@ -90,17 +97,19 @@ class AboutPage extends StatelessWidget {
                           Container(
                             width: 6,
                             height: 6,
-                            decoration: const BoxDecoration(
-                              color: AppColors.cyanColor,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.secondary,
                               shape: BoxShape.circle,
                             ),
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            AppConstants.versionNumber,
+                            AppStrings.of(context).versionNumber,
                             style: AppStyle.containerSubtitle.copyWith(
                               fontSize: AppFontSize.f10,
-                              color: AppColors.textGrey,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.color,
                             ),
                           ),
                         ],
@@ -110,24 +119,25 @@ class AboutPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.025),
-              _SectionLabel(text: AppConstants.legal),
+              _SectionLabel(text: AppStrings.of(context).legal),
               SizedBox(height: SizeConfig.height(context) * 0.012),
               Container(
                 decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
+                ).copyWith(color: Theme.of(context).cardTheme.color),
                 child: Column(
-                  children: const [
+                  children: [
                     DetailsContainerWidget(
-                      title: AppConstants.termsOfService,
-                      subTitle: AppConstants.termsOfServiceSub,
+                      title: AppStrings.of(context).termsOfService,
+                      subTitle: AppStrings.of(context).termsOfServiceSub,
                       icon: Icons.description_outlined,
                       isSvg: false,
                     ),
-                    Divider(color: AppColors.containerGrey),
+                    Divider(color: Theme.of(context).dividerColor),
                     DetailsContainerWidget(
-                      title: AppConstants.privacyPolicy,
-                      subTitle: AppConstants.privacyPolicySub,
+                      title: AppStrings.of(context).privacyPolicy,
+                      subTitle: AppStrings.of(context).privacyPolicySub,
                       icon: Icons.shield_outlined,
                       isSvg: false,
                     ),
@@ -135,16 +145,17 @@ class AboutPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: SizeConfig.height(context) * 0.025),
-              _SectionLabel(text: AppConstants.contact),
+              _SectionLabel(text: AppStrings.of(context).contact),
               SizedBox(height: SizeConfig.height(context) * 0.012),
               Container(
                 decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
-                child: const DetailsContainerWidget(
-                  title: AppConstants.contactUs,
+                ).copyWith(color: Theme.of(context).cardTheme.color),
+                child: DetailsContainerWidget(
+                  title: AppStrings.of(context).contactUs,
                   isSvg: false,
-                  subTitle: AppConstants.supportEmail,
+                  subTitle: "ahmeed.abdeelaal@gmail.com",
                   icon: Icons.mail_outline,
                 ),
               ),
@@ -152,19 +163,19 @@ class AboutPage extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    AppConstants.madeWithLove,
+                    AppStrings.of(context).madeWithLove,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f10,
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    AppConstants.copyright,
+                    AppStrings.of(context).copyright,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f10,
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
@@ -188,7 +199,7 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       text,
       style: AppStyle.containerSubtitle.copyWith(
-        color: AppColors.iconGrey,
+        color: Theme.of(context).textTheme.bodyMedium?.color,
         fontSize: AppFontSize.f11,
       ),
     );

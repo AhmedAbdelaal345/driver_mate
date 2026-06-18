@@ -25,10 +25,10 @@ class EditProfileModel {
   Map<String, dynamic> toJson() {
     return {
       ApiKeys.fullname: fullName,
-      ApiKeys.email: emailAddress,
+      // ApiKeys.email: emailAddress,
       ApiKeys.image: image,
       ApiKeys.phone: phoneNumber,
-      ApiKeys.accessToken: accessToken,
+      // ApiKeys.accessToken: accessToken,
     };
   }
 }

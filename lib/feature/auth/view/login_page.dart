@@ -1,9 +1,10 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/service/local_notification_service.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_regexp.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/manager/auth/auth_cubit.dart';
@@ -35,7 +36,7 @@ class LoginPage extends StatelessWidget {
                 const Duration(seconds: 2)) {
           AuthCubit.get(context).lastBackPressed = now;
           Fluttertoast.showToast(
-            msg: AppConstants.pressBackAgainToExit,
+            msg: AppStrings.of(context).pressBackAgainToExit,
             gravity: ToastGravity.BOTTOM,
             textColor: AppColors.white,
             backgroundColor: AppColors.darkBlue.withValues(alpha: 0.7),
@@ -45,6 +46,7 @@ class LoginPage extends StatelessWidget {
         }
       },
       child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SingleChildScrollView(
           child: Form(
             key: AuthCubit.get(context).loginFormKey,
@@ -69,19 +71,19 @@ class LoginPage extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          AppConstants.welcomeToDriveMate,
+                          AppStrings.of(context).welcomeToDriveMate,
                           style: AppStyle.welcomeTextStyle,
                         ),
                         SizedBox(height: SizeConfig.height(context) * 0.019),
                         Text(
-                          AppConstants.pleaseLogin,
+                          AppStrings.of(context).pleaseLogin,
                           style: AppStyle.hintStyle,
                         ),
                         SizedBox(height: SizeConfig.height(context) * 0.049),
                         Align(
                           alignment: AlignmentGeometry.centerLeft,
                           child: Text(
-                            AppConstants.emailAddress,
+                            AppStrings.of(context).emailAddress,
                             style: AppStyle.labelStyle,
                           ),
                         ),
@@ -90,22 +92,26 @@ class LoginPage extends StatelessWidget {
                           controller: AuthCubit.get(context).emailController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return AppConstants.pleaseEnterYourEmail;
+                              return AppStrings.of(
+                                context,
+                              ).pleaseEnterYourEmail;
                             } else if (RegExp(
                                   AppRegExp.emailValidationPattern,
                                 ).hasMatch(value) ==
                                 false) {
-                              return AppConstants.pleaseEnterValidEmail;
+                              return AppStrings.of(
+                                context,
+                              ).pleaseEnterValidEmail;
                             }
                             return null;
                           },
-                          hintText: AppConstants.enterYourEmail,
+                          hintText: AppStrings.of(context).enterYourEmail,
                         ),
                         SizedBox(height: SizeConfig.height(context) * 0.025),
                         Align(
                           alignment: AlignmentGeometry.centerLeft,
                           child: Text(
-                            AppConstants.password,
+                            AppStrings.of(context).password,
                             style: AppStyle.labelStyle,
                           ),
                         ),
@@ -114,16 +120,20 @@ class LoginPage extends StatelessWidget {
                           controller: AuthCubit.get(context).passwordController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return AppConstants.pleaseEnterYourPassword;
+                              return AppStrings.of(
+                                context,
+                              ).pleaseEnterYourPassword;
                             } else if (RegExp(
                                   AppRegExp.passwordValidationPattern,
                                 ).hasMatch(value) ==
                                 false) {
-                              return AppConstants.pleaseEnterValidPassword;
+                              return AppStrings.of(
+                                context,
+                              ).pleaseEnterValidPassword;
                             }
                             return null;
                           },
-                          hintText: AppConstants.enterYourPassword,
+                          hintText: AppStrings.of(context).enterYourPassword,
                         ),
                         SizedBox(height: SizeConfig.height(context) * 0.012),
                         Row(
@@ -135,7 +145,7 @@ class LoginPage extends StatelessWidget {
                               ),
                               child: TextButton(
                                 child: Text(
-                                  AppConstants.forgotPassword,
+                                  AppStrings.of(context).forgotPassword,
                                   style: AppStyle.forgetPasswordStyle,
                                 ),
                                 onPressed: () {
@@ -198,13 +208,13 @@ class LoginPage extends StatelessWidget {
                             if (state is LoginAuthLoading) {
                               return Center(
                                 child: CircularProgressIndicator(
-                                  color: AppColors.blue,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               );
                             } else {
                               return PrimaryElevatedButtonWidget(
                                 formKey: AuthCubit.get(context).loginFormKey,
-                                buttonText: AppConstants.loginText,
+                                buttonText: AppStrings.of(context).loginText,
                                 onPressed: () {
                                   final form = AuthCubit.get(
                                     context,
@@ -223,7 +233,7 @@ class LoginPage extends StatelessWidget {
                         DividerWidget(),
                         SizedBox(height: SizeConfig.height(context) * 0.042),
                         SocialButtonWidget(
-                          textButton: AppConstants.continueWithApple,
+                          textButton: AppStrings.of(context).continueWithApple,
                           icon: ImageIcon(
                             AssetImage(AppImagePath.applePath),
                             color: Colors.black,
@@ -232,7 +242,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         SizedBox(height: SizeConfig.height(context) * 0.042),
                         SocialButtonWidget(
-                          textButton: AppConstants.continueWithGoogle,
+                          textButton: AppStrings.of(context).continueWithGoogle,
                           icon: Image.asset(
                             AppImagePath.googlePath,
                             width: 24, // Adjust size to match your design

@@ -1,4 +1,3 @@
-import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +11,9 @@ class SectionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
         borderRadius: 16,
-      ).copyWith(color: AppColors.white),
+      ).copyWith(color: Theme.of(context).cardColor),
       child: child,
     );
   }

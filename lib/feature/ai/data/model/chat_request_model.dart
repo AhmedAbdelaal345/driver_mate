@@ -1,14 +1,32 @@
-import 'package:driver_mate/feature/ai/data/model/chat_message_model.dart';
-import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
-
 class ChatRequestModel {
+  final String id;
   final String message;
-  final VechicleModel vehicle;
-  final List<ChatMessageModel> history;
+  final bool? isUserMessage;
+  final String? createdAt;
 
   ChatRequestModel({
+    required this.id,
     required this.message,
-    required this.vehicle,
-    required this.history,
+    this.isUserMessage,
+    this.createdAt,
   });
+
+
+  factory ChatRequestModel.fromJson(Map<String, dynamic> json) {
+    return ChatRequestModel(
+      id: json['id']?.toString() ?? '',
+      message: json['message']?.toString() ?? '',
+      isUserMessage: json['isUserMessage'] as bool?,
+      createdAt: json['createdAt']?.toString(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'message': message,
+      'isUserMessage': isUserMessage,
+      'createdAt': createdAt,
+    };
+  }
 }

@@ -37,7 +37,7 @@ class RecommendedServicePage extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecorationWidget.customBoxDecoration(
+                decoration: BoxDecorationWidget.customBoxDecoration(context,
                   borderRadius: AppFontSize.f12,
                 ).copyWith(color: AppColors.white),
                 child: Column(
@@ -190,7 +190,7 @@ class _ActionCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecorationWidget.customBoxDecoration(
+        decoration: BoxDecorationWidget.customBoxDecoration(context,
           borderRadius: AppFontSize.f12,
         ).copyWith(color: isPrimary ? AppColors.cyanColor : AppColors.white),
         child: Row(

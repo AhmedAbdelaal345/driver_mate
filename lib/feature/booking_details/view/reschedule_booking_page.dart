@@ -1,7 +1,8 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
@@ -31,9 +32,15 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
   final TextEditingController _reasonController = TextEditingController();
 
   final List<String> _timeSlots = const [
-    '09:00 AM', '10:00 AM', '11:00 AM',
-    '12:00 PM', '01:00 PM', '02:00 PM',
-    '03:00 PM', '04:00 PM', '05:00 PM',
+    '09:00 AM',
+    '10:00 AM',
+    '11:00 AM',
+    '12:00 PM',
+    '01:00 PM',
+    '02:00 PM',
+    '03:00 PM',
+    '04:00 PM',
+    '05:00 PM',
   ];
 
   // Generate next 7 days starting today
@@ -43,7 +50,9 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
   }
 
   bool get _canConfirm =>
-      _selectedDate != null && _selectedTime != null && _selectedVehicle != null;
+      _selectedDate != null &&
+      _selectedTime != null &&
+      _selectedVehicle != null;
 
   @override
   void initState() {
@@ -68,24 +77,57 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
 
   String _formatMonthName(DateTime d) {
     const months = [
-      '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return months[d.month];
   }
 
   String _fullMonthName(DateTime d) {
     const months = [
-      '', 'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
+      '',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return months[d.month];
   }
 
   String _formatCurrentDate(DateTime d) {
     const months = [
-      '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${months[d.month]} ${d.day}, ${d.year}';
   }
@@ -96,7 +138,7 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
     if (!_canConfirm) {
       AppNotifier.show(
         context,
-        'Please select date, time, and vehicle',
+        AppStrings.of(context).pleaseSelectDateAndTime,
         type: NotifierType.warning,
       );
       return;
@@ -109,7 +151,7 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
       state: 'Upcoming',
       date: _selectedDate!,
       price: widget.booking.price,
-      time: _selectedTime??"",
+      time: _selectedTime ?? "",
       phone: widget.booking.phone,
     );
 
@@ -118,7 +160,9 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
 
     AppNotifier.show(
       context,
-      'Booking rescheduled successfully!',
+
+      // 'Booking rescheduled successfully!'
+      AppStrings.of(context).bookingRescheduled,
       type: NotifierType.success,
     );
     // Pop twice — back past BookingDetailsPage to history
@@ -131,12 +175,17 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.containerGrey,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text('Reschedule Booking', style: AppStyle.appBarTitle),
+        title: Text(
+          AppStrings.of(context).rescheduleBooking,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
+        ),
         leading: const LeadingIcon(),
       ),
       body: SingleChildScrollView(
@@ -151,7 +200,9 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.cyanColor.withValues(alpha: 0.06),
+                color: Theme.of(
+                  context,
+                ).colorScheme.secondary.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: AppColors.cyanColor.withValues(alpha: 0.25),
@@ -162,30 +213,31 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                 children: [
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.info_outline,
-                        color: AppColors.cyanColor,
+                        color: Theme.of(context).colorScheme.secondary,
                         size: 18,
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Current Booking',
+                        AppStrings.of(context).currentBookingDetails,
                         style: AppStyle.titleOfContainer.copyWith(
-                          color: AppColors.cyanColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    "You're rescheduling your appointment. Select a new date and time below.",
+                    // "You're rescheduling your appointment. Select a new date and time below."
+                    AppStrings.of(context).rescheduleBookingNote,
                     style: AppStyle.containerSubtitle.copyWith(
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).iconTheme.color,
                       height: 1.5,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Divider(color: AppColors.boarderWhiteColor),
+                  Divider(color: Theme.of(context).dividerColor),
                   const SizedBox(height: 10),
                   BookingInfoRow(
                     label: 'Service Center',
@@ -205,7 +257,7 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                   const SizedBox(height: 8),
                   BookingInfoRow(
                     label: 'Current Time',
-                    value: widget.booking.time ,
+                    value: widget.booking.time,
                     valueColor: AppColors.red,
                   ),
                   const SizedBox(height: 8),
@@ -226,15 +278,17 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                 children: [
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.calendar_month_outlined,
-                        color: AppColors.cyanColor,
+                        color: Theme.of(context).colorScheme.secondary,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Select New Date',
-                        style: AppStyle.titleOfContainer,
+                        AppStrings.of(context).selectNewDate,
+                        style: AppStyle.titleOfContainer.copyWith(
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
+                        ),
                       ),
                     ],
                   ),
@@ -243,7 +297,8 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: _dates.map((date) {
-                        final isSelected = _selectedDate != null &&
+                        final isSelected =
+                            _selectedDate != null &&
                             _selectedDate!.day == date.day &&
                             _selectedDate!.month == date.month;
                         return GestureDetector(
@@ -255,8 +310,8 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? AppColors.cyanColor
-                                  : AppColors.white,
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Theme.of(context).scaffoldBackgroundColor,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: isSelected
@@ -281,8 +336,12 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                                   '${date.day}',
                                   style: AppStyle.titleOfContainer.copyWith(
                                     color: isSelected
-                                        ? AppColors.white
-                                        : AppColors.black,
+                                        ? Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface
+                                        : Theme.of(
+                                            context,
+                                          ).textTheme.bodyLarge?.color,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -317,15 +376,17 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                 children: [
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.access_time,
-                        color: AppColors.cyanColor,
+                        color: Theme.of(context).colorScheme.secondary,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Select New Time',
-                        style: AppStyle.titleOfContainer,
+                        AppStrings.of(context).selectNewTime,
+                        style: AppStyle.titleOfContainer.copyWith(
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
+                        ),
                       ),
                     ],
                   ),
@@ -337,11 +398,11 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                     itemCount: _timeSlots.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 2.6,
-                    ),
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 2.6,
+                        ),
                     itemBuilder: (context, index) {
                       final slot = _timeSlots[index];
                       final isSelected = _selectedTime == slot;
@@ -391,15 +452,17 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                 children: [
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.directions_car_outlined,
-                        color: AppColors.cyanColor,
+                        color: Theme.of(context).colorScheme.secondary,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        AppConstants.selectVehicle,
-                        style: AppStyle.titleOfContainer,
+                        AppStrings.of(context).selectVehicle,
+                        style: AppStyle.titleOfContainer.copyWith(
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
+                        ),
                       ),
                     ],
                   ),
@@ -407,13 +470,14 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                   BlocBuilder<VehicalCubit, VehicalState>(
                     builder: (context, state) {
                       if (state is LoadingVehicalState) {
-                        return const Center(
+                        return Center(
                           child: CircularProgressIndicator(
-                            color: AppColors.cyanColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                         );
                       }
-                      if (state is SuccessVehicalState && state.data.isNotEmpty) {
+                      if (state is SuccessVehicalState &&
+                          state.data.isNotEmpty) {
                         final vehicles = state.data;
                         // Auto-select first if none chosen
                         if (_selectedVehicle == null) {
@@ -432,6 +496,7 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
                             border: Border.all(
                               color: AppColors.boarderWhiteColor,
                             ),
@@ -441,16 +506,19 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                             child: DropdownButton<String>(
                               isExpanded: true,
                               value: _selectedVehicle,
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.keyboard_arrow_down,
-                                color: AppColors.iconGrey,
+                                color: Theme.of(context).iconTheme.color,
                               ),
-                              style: AppStyle.titleOfContainer,
+                              style: AppStyle.titleOfContainer.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.color,
+                              ),
                               onChanged: (val) =>
                                   setState(() => _selectedVehicle = val),
                               items: vehicles.map((v) {
-                                final label =
-                                    '${v.brand} ${v.model} ${v.year}';
+                                final label = '${v.brand} ${v.model} ${v.year}';
                                 return DropdownMenuItem(
                                   value: label,
                                   child: Text(label),
@@ -461,8 +529,10 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                         );
                       }
                       return Text(
-                        AppConstants.noVehiclesFound,
-                        style: AppStyle.containerSubtitle,
+                        AppStrings.of(context).noVehiclesFound,
+                        style: AppStyle.containerSubtitle.copyWith(
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                        ),
                       );
                     },
                   ),
@@ -479,15 +549,17 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                 children: [
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.description_outlined,
-                        color: AppColors.cyanColor,
+                        color: Theme.of(context).colorScheme.secondary,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Reason for Rescheduling (Optional)',
-                        style: AppStyle.titleOfContainer,
+                        AppStrings.of(context).reasonForRescheduling,
+                        style: AppStyle.titleOfContainer.copyWith(
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
+                        ),
                       ),
                     ],
                   ),
@@ -497,11 +569,12 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                     maxLines: 3,
                     style: AppStyle.titleOfContainer,
                     decoration: InputDecoration(
-                      hintText: 'e.g., schedule conflict, emergency...',
-                      hintStyle: AppStyle.containerSubtitle
-                          .copyWith(color: AppColors.iconGrey),
+                      hintText: AppStrings.of(context).rescheduleReasonHint,
+                      hintStyle: AppStyle.containerSubtitle.copyWith(
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
                       filled: true,
-                      fillColor: AppColors.containerGrey,
+                      fillColor: Theme.of(context).scaffoldBackgroundColor,
                       contentPadding: const EdgeInsets.all(14),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -520,7 +593,7 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.smoothGreen.withValues(alpha: 0.5),
+                  color: Theme.of(context).cardColor.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: AppColors.green.withValues(alpha: 0.3),
@@ -530,27 +603,27 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'New Appointment Details',
+                      AppStrings.of(context).newAppointmentDetails,
                       style: AppStyle.titleOfContainer.copyWith(
                         color: AppColors.green,
                       ),
                     ),
                     const SizedBox(height: 12),
                     BookingInfoRow(
-                      label: 'New Date',
+                      label: AppStrings.of(context).newDate,
                       value:
                           '${_fullMonthName(_selectedDate!)} ${_selectedDate!.day}, ${_selectedDate!.year}',
                       valueColor: AppColors.green,
                     ),
                     const SizedBox(height: 8),
                     BookingInfoRow(
-                      label: 'New Time',
+                      label: AppStrings.of(context).newTime,
                       value: _selectedTime!,
                       valueColor: AppColors.green,
                     ),
                     const SizedBox(height: 8),
                     BookingInfoRow(
-                      label: 'Vehicle',
+                      label: AppStrings.of(context).vehicle,
                       value: _selectedVehicle!,
                       valueColor: AppColors.green,
                     ),
@@ -562,15 +635,15 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
 
             // ── 7. Confirm Button ──────────────────────────────────────────
             PrimaryElevatedButtonWidget(
-              buttonText: 'Confirm Reschedule',
+              buttonText: AppStrings.of(context).confirmReschedule,
               onPressed: _canConfirm ? _confirmReschedule : null,
             ),
             const SizedBox(height: 10),
             Center(
               child: Text(
-                'No additional charges for rescheduling',
+                AppStrings.of(context).noAdditionalCharges,
                 style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.iconGrey,
+                  color: Theme.of(context).iconTheme.color,
                   fontSize: 12,
                 ),
               ),
@@ -582,5 +655,3 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
     );
   }
 }
-
-

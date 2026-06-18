@@ -21,10 +21,10 @@ class CustomSectionHeader extends StatelessWidget {
       children: [
         Text(
           title ?? 'Featured Cars',
-          style: const TextStyle(
+          style:  TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w700,
-            color: AppColors.veryDarkBlue,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         if (showViewAll)

@@ -14,9 +14,9 @@ class ViewToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecorationWidget.customBoxDecoration(
+      decoration: BoxDecorationWidget.customBoxDecoration(context,
         borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.containerGrey),
+      ),
       child: Row(
         children: [
           Expanded(

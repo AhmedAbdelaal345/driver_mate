@@ -18,9 +18,9 @@ const HighlightsList({super.key});
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration(
+      decoration: BoxDecorationWidget.customBoxDecoration(context,
         borderRadius: AppFontSize.f12,
-      ).copyWith(color: AppColors.white),
+      ),
       child: Column(
         children: List.generate(_highlights.length, (index) {
           final highlight = _highlights[index];

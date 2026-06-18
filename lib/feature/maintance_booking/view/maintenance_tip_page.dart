@@ -1,3 +1,4 @@
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/feature/home/view/widget/container_title.dart';
 import 'package:driver_mate/feature/maintance_booking/data/model/maintenance_tip_model.dart';
@@ -11,7 +12,7 @@ import 'package:driver_mate/feature/maintance_booking/view/widget/what_you_need_
 import 'package:driver_mate/feature/maintance_booking/view/widget/why_mattar_section.dart';
 import 'package:flutter/material.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/cartips/view/widget/tip_item.dart';
@@ -31,8 +32,8 @@ class MaintenanceTipPage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.white,
-          title: const Text(
-            AppConstants.maintenanceTip,
+          title:  Text(
+            AppStrings.of(context).maintenanceTip,
             style: AppStyle.appBarTitle,
           ),
           leading: const LeadingIcon(),
@@ -92,7 +93,7 @@ class MaintenanceTipPage extends StatelessWidget {
                       Column(
                         children: [
                           PrimaryElevatedButtonWidget(
-                            buttonText: AppConstants.setReminder,
+                            buttonText: AppStrings.of(context).setReminder,
                             onPressed: () {},
                           ),
                           const SizedBox(height: 12),
@@ -115,8 +116,8 @@ class MaintenanceTipPage extends StatelessWidget {
                       ContainerTitle(
                         isAppear: true,
                         onTap: () {},
-                        title: AppConstants.relatedTips,
-                        subTitle: AppConstants.seeAll,
+                        title: AppStrings.of(context).relatedTips,
+                        subTitle: AppStrings.of(context).seeAll,
                       ),
 
                       const TipItem(
@@ -135,8 +136,8 @@ class MaintenanceTipPage extends StatelessWidget {
                       ContainerTitle(
                         isAppear: true,
                         onTap: () {},
-                        title: AppConstants.relatedTips,
-                        subTitle: AppConstants.seeAll,
+                        title: AppStrings.of(context).relatedTips,
+                        subTitle: AppStrings.of(context).seeAll,
                       ),
 
                       const TipItem(

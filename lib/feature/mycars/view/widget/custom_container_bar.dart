@@ -2,6 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class CustomContainerBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24.0),
       decoration:
-          BoxDecorationWidget.customBoxDecoration(
+          BoxDecorationWidget.customBoxDecoration(context,
             borderRadius: AppFontSize.f24,
           ).copyWith(
             gradient: LinearGradient(
@@ -42,7 +43,7 @@ class CustomContainerBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    AppConstants.allVehical,
+                    AppStrings.of(context).allVehicles,
                     style: AppStyle.coursalSubtitleTextStyle,
                   ),
                   const SizedBox(height: 8),
@@ -77,9 +78,9 @@ class CustomContainerBar extends StatelessWidget {
           const SizedBox(height: 32),
           Row(
             children: [
-              _buildStatusColumn(AppConstants.active, numOfActive ?? "0"),
+              _buildStatusColumn(AppStrings.of(context).active, numOfActive ?? "0"),
               const SizedBox(width: 80), // Spacing between stats
-              _buildStatusColumn(AppConstants.inService, numOfInService ?? "0"),
+              _buildStatusColumn(AppStrings.of(context).inService, numOfInService ?? "0"),
             ],
           ),
         ],

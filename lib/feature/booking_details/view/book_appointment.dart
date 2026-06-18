@@ -1,7 +1,8 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
@@ -75,19 +76,17 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
       // TODO: Implement booking confirmation logic
       context.read<MaintenceHistoryCubit>().addItem(
         MaintanceHistoryModel(
-          centerName: widget.serviceCenter.serviceCenterName ?? " No Data",
-          typeOfService:
-              widget.serviceCenter.servicesOffered?.join(", ") ??
-              "General Service",
-          location: widget.serviceCenter.address ?? "No Data",
+          centerName: widget.serviceCenter.name,
+          typeOfService: widget.serviceCenter.services.join(", "),
+          location: widget.serviceCenter.address,
           state: _selectedDate!.isAfter(DateTime.now())
               ? "Upcoming"
               : "Completed",
           date: _selectedDate ?? DateTime.now(),
-          time: _selectedTime??"No Time",
-          price: widget.serviceCenter.price ?? 10,
+          time: _selectedTime ?? "No Time",
+          price: 10,
           notes: _notesController.text.trim(),
-          phone: widget.serviceCenter.phoneNumber ?? "010000000",
+          phone: widget.serviceCenter.phone,
         ),
       );
       AppNotifier.show(
@@ -108,14 +107,16 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: false,
-        title: const Text(
-          AppConstants.bookAppointment,
-          style: AppStyle.appBarTitle,
+        title: Text(
+          AppStrings.of(context).bookAppointment,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
         ),
         leading: const LeadingIcon(),
       ),
@@ -135,7 +136,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
               // Select Date Section
               SectionHeader(
                 icon: Icons.calendar_month_outlined,
-                title: AppConstants.selectDate,
+                title: AppStrings.of(context).selectDate,
               ),
               const SizedBox(height: 12),
               DateSelector(
@@ -151,7 +152,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
               // Select Time Section
               SectionHeader(
                 icon: Icons.access_time,
-                title: AppConstants.selectTime,
+                title: AppStrings.of(context).selectTime,
               ),
               const SizedBox(height: 12),
               TimeSelector(
@@ -168,15 +169,15 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
               // Select Vehicle Section
               SectionHeader(
                 icon: Icons.directions_car_outlined,
-                title: AppConstants.selectVehicle,
+                title: AppStrings.of(context).selectVehicle,
               ),
               const SizedBox(height: 12),
               BlocBuilder<VehicalCubit, VehicalState>(
                 builder: (context, state) {
                   if (state is LoadingVehicalState) {
-                    return const Center(
+                    return Center(
                       child: CircularProgressIndicator(
-                        color: AppColors.cyanColor,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     );
                   }
@@ -202,7 +203,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
               // Additional Notes Section
               SectionHeader(
                 icon: Icons.description_outlined,
-                title: AppConstants.additionalNotes,
+                title: AppStrings.of(context).additionalNotes,
               ),
               const SizedBox(height: 12),
               NotesTextField(controller: _notesController),
@@ -217,7 +218,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
           vertical: SizeConfig.height(context) * 0.015,
         ),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.05),
@@ -229,7 +230,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
         child: SafeArea(
           child: PrimaryElevatedButtonWidget(
             onPressed: _canConfirmBooking ? _confirmBooking : null,
-            buttonText: AppConstants.confirmBooking,
+            buttonText: AppStrings.of(context).confirmBooking,
           ),
         ),
       ),

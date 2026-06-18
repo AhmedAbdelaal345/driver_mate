@@ -1,15 +1,11 @@
-enum MessageType { user, ai, voice }
+// enum MessageType { user, ai, voice }
 
 class ChatMessageModel {
   final String message;
-  final MessageType type;
-  final DateTime time;
-  final String? intent;
 
-  ChatMessageModel({
-    required this.message,
-    required this.type,
-    required this.time,
-    this.intent,
-  });
+  ChatMessageModel({required this.message});
+  factory ChatMessageModel.fromJson(Map<String, dynamic> json) {
+    return ChatMessageModel(message: json['data']["aiResponse"]);
+  }
+  Map<String, dynamic> toMap() => {'message': message};
 }

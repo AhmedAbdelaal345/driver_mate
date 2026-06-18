@@ -33,7 +33,7 @@ class CommunityPostCubit extends Cubit<CommunityPostState> {
         type: type,
         title: title,
         description: description,
-        image: image ,
+        imageFile: image ,
       );
       final updated = [post, ...state.posts];
       emit(CommunityPostSuccess(updated, 'Post published'));

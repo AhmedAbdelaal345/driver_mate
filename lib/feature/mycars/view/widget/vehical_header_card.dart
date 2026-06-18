@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
@@ -58,7 +59,7 @@ class VehicleHeaderCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _getVehicleTitle(),
+                  _getVehicleTitle(context),
                   style: AppStyle.boldSmallText.copyWith(
                     fontSize: AppFontSize.f18,
                     color: AppColors.white,
@@ -115,10 +116,10 @@ class VehicleHeaderCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         vehicle.status == VehicleStatus.active
-                            ? AppConstants.active
+                            ? AppStrings.of(context).active
                             : vehicle.status == VehicleStatus.inactive
-                            ? AppConstants.inactive
-                            : AppConstants.inService,
+                            ? AppStrings.of(context).inactive
+                            : AppStrings.of(context).inService,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f11,
                           color: vehicle.status == VehicleStatus.active
@@ -140,11 +141,11 @@ class VehicleHeaderCard extends StatelessWidget {
     );
   }
 
-  String _getVehicleTitle() {
+  String _getVehicleTitle(BuildContext context) {
     final brand = (vehicle.brand).trim();
     final model = (vehicle.model).trim();
     if (brand.isEmpty && model.isEmpty) {
-      return AppConstants.yourVehicle;
+      return AppStrings.of(context).yourVechical;
     }
     if (brand.isEmpty) return model;
     if (model.isEmpty) return brand;

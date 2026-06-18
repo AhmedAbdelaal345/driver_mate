@@ -24,17 +24,19 @@ class QuickActionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardTheme.color ?? theme.colorScheme.surface;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppFontSize.f12),
       child: Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecorationWidget.customBoxDecoration(
+        decoration: BoxDecorationWidget.customBoxDecoration(context,
           borderRadius: AppFontSize.f12,
-        ).copyWith(color: AppColors.white),
+        ).copyWith(color: cardColor),
         child: Row(
           children: [
-            // Icon Container
             Container(
               width: 48,
               height: 48,
@@ -42,14 +44,9 @@ class QuickActionItem extends StatelessWidget {
                 color: iconColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(
-                icon,
-                color: iconColor,
-                size: 24,
-              ),
+              child: Icon(icon, color: iconColor, size: 24),
             ),
             const SizedBox(width: 14),
-            // Title and Subtitle
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,6 +56,7 @@ class QuickActionItem extends StatelessWidget {
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f13,
                       fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -75,12 +73,7 @@ class QuickActionItem extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            // Trailing Icon
-            Icon(
-              trailing,
-              color: AppColors.iconGrey,
-              size: 20,
-            ),
+            Icon(trailing, color: AppColors.iconGrey, size: 20),
           ],
         ),
       ),

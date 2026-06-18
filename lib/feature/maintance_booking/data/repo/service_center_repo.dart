@@ -1,5 +1,6 @@
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/feature/maintance_booking/data/model/service_center_model.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class ServiceCenterRepo {
   ServiceCenterRepo._privateConstructor();
@@ -12,29 +13,29 @@ class ServiceCenterRepo {
     await Future.delayed(const Duration(seconds: 2));
     return [
       ServiceCenterModel(
-        serviceCenterName: 'BMW Service Center',
-        imagePath: AppImagePath.bmwCarImagePath,
-        address: '123 Main St, City, Country',
-        workingHours: 'Mon-Fri: 8am - 6pm',
-        phoneNumber: '+1234567890',
-        holiday: 'Sunday',
-        distance: "2.5",
-        servicesOffered: [
-          'Oil Change',
-          'Tire Rotation',
-          'Brake Inspection',
-          'Battery Check',
-        ],
-      ),
-      ServiceCenterModel(
-        serviceCenterName: 'Audi Service Center',
+        name: 'Audi Service Center',
         imagePath: AppImagePath.camryCarImagePath,
         address: '456 Elm St, City, Country',
         workingHours: 'Mon-Fri: 9am - 5pm',
-        phoneNumber: '+0987654321',
-        holiday: 'Saturday',
-        distance: "3.0",
-        servicesOffered: [
+        phone: '+0987654321',
+        location: GeoPoint(latitude: 0, longitude: 200),
+        distance: 3.0,
+        services: [
+          'Engine Diagnostics',
+          'Transmission Repair',
+          'Wheel Alignment',
+          'Air Conditioning Service',
+        ],
+      ),
+      ServiceCenterModel(
+        name: 'Audi Service Center',
+        imagePath: AppImagePath.camryCarImagePath,
+        address: '456 Elm St, City, Country',
+        workingHours: 'Mon-Fri: 9am - 5pm',
+        phone: '+0987654321',
+        location: GeoPoint(latitude: 0, longitude: 200),
+        distance: 3.0,
+        services: [
           'Engine Diagnostics',
           'Transmission Repair',
           'Wheel Alignment',

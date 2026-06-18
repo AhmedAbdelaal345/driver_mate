@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:driver_mate/core/local/api_keys.dart';
-import 'package:driver_mate/core/network/api_response.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_routes.dart';
 import 'package:driver_mate/feature/auth/data/model/auth_model.dart';
@@ -34,10 +33,10 @@ class AuthCubit extends Cubit<AuthState> {
       ),
     );
     result.fold((String error) => emit(RegisterAuthFailure(error)), (success) {
-      EditProfileRepo.instance.saveProfile(
-        name: nameController.text,
-        email: emailController.text,
-        phone: "01000000000",
+      EditProfileRepo.instance.changeProfile(
+        fullName: nameController.text,
+        // email: emailController.text,
+        phoneNumber: "01000000000",
         image: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
         accessToken: "",
       );
@@ -80,41 +79,45 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthInitial());
   }
 
- Future<void> onLoginPress() async {
-  print("STEP 1: start login");
-  emit(LoginAuthLoading());
+  Future<void> onLoginPress() async {
+    print("STEP 1: start login");
+    emit(LoginAuthLoading());
 
-  try {
-    final response = await authRepo.login(
-      email: emailController.text,
-      password: passwordController.text,
-    );
+    try {
+      final response = await authRepo.login(
+        email: emailController.text,
+        password: passwordController.text,
+      );
 
-    print("STEP 2: response returned");
+      print("STEP 2: response returned");
 
-    response.fold(
-      (failure) {
-        print("STEP 3: failure => ${failure.message}");
-        emit(LoginAuthFailure(failure.message));
-      },
-      (success) async {
-        print("STEP 4: success");
+      response.fold(
+        (failure) {
+          print("STEP 3: failure => ${failure.message}");
+          emit(LoginAuthFailure(failure.message));
+        },
+        (success) async {
+          print("STEP 4: success");
 
-        await EditProfileRepo.instance.saveProfile(
-          name: success.data[ApiKeys.fullname] ?? "Unknown",
-          email: success.data[ApiKeys.email],
-          phone: "01000000000",
-          image: AppImagePath.defaultProfileImagePath,
-          accessToken: success.data[ApiKeys.accessToken] ?? "",
-        );
+          await EditProfileRepo.instance.changeProfile(
+            fullName: success.data[ApiKeys.fullname] ?? "Unknown",
+            // email: success.data[ApiKeys.email],
+            phoneNumber: "01000000000",
+            image: AppImagePath.defaultProfileImagePath,
+            accessToken: success.data[ApiKeys.accessToken] ?? "",
+          );
 
-        print("STEP 5: saved");
+          print("STEP 5: saved");
 
-        emit(LoginAuthSuccess(message: success.message));
-      },
-    );
-  } catch (e) {
-    print("STEP ERROR: $e");
-    emit(LoginAuthFailure(e.toString()));
+          emit(LoginAuthSuccess(message: success.message));
+        },
+      );
+    } catch (e) {
+      print("STEP ERROR: $e");
+      emit(LoginAuthFailure(e.toString()));
+    }
   }
-}}
+
+
+
+}

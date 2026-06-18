@@ -1,6 +1,7 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/community/view/widget/community_filter_row.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
@@ -13,98 +14,203 @@ class ReviewsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: const [
-        // 1. Dark "Write a Review" Card
+      children: [
         ReviewHeader(),
-
-        // 2. Secondary Filters
         CommunityFilterRow(
-          filters: ["All ratings", "5.0 ★", "4.0 ★+", "Nearby", "Most Recent"],
+          filters: ['All ratings', '5.0 ★', '4.0 ★+', 'Nearby', 'Most Recent'],
         ),
-
         SizedBox(height: 8),
-
-        // 3. The Feed
-        CommunityPostList(filterType: AppConstants.review, showEmptyState: false),
-        ReviewCard(),
-        ReviewCard(),
-        ReviewCard(),
+        CommunityPostList(
+          filterType: AppStrings.of(context).review,
+          showEmptyState: true,
+        ),
       ],
     );
   }
 }
 
-class ReviewCard extends StatelessWidget {
-  const ReviewCard({super.key});
+class ReviewCard extends StatefulWidget {
+  const ReviewCard({
+    super.key,
+    this.shopName = 'Auto Care Center',
+    this.reviewerName = 'Ahmed Hassan',
+    this.reviewerInitials = 'AH',
+    this.reviewText =
+        'Excellent service! Quick oil change and thorough inspection. Staff was very professional.',
+    this.location = 'Downtown Plaza',
+    this.timeAgo = '2 days ago',
+    this.rating = 5,
+  });
+
+  final String shopName;
+  final String reviewerName;
+  final String reviewerInitials;
+  final String reviewText;
+  final String location;
+  final String timeAgo;
+  final int rating;
+
+  @override
+  State<ReviewCard> createState() => _ReviewCardState();
+}
+
+class _ReviewCardState extends State<ReviewCard> {
+  bool _isLiked = false;
+  int _likesCount = 0;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration(),
+      decoration: BoxDecorationWidget.customBoxDecoration(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Auto Care Center", style: AppStyle.titleOfContainer),
-          const SizedBox(height: 6),
-          Row(
-            children:
-                List.generate(
-                    5,
-                    (index) =>
-                        const Icon(Icons.star, color: Colors.amber, size: 18),
-                  )
-                  ..add(const SizedBox(width: 8))
-                  ..add(
-                    const Text(
-                      "5.0",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "Excellent service! Quick oil change and thorough inspection. Staff was very professional and...",
-            style: AppStyle.containerSubtitle,
-          ),
-          const SizedBox(height: 16),
-          Divider(color: AppColors.grey),
+          // ── Shop name ─────────────────────────────────────────
+          Text(widget.shopName, style: AppStyle.titleOfContainer),
 
+          const SizedBox(height: 8),
+
+          // ── Star rating — fixed overflow ───────────────────────
           Row(
             children: [
-              const CircleAvatar(
-                radius: 15,
-                backgroundColor: AppColors.cyanColor,
-
-                child: Text(
-                  "AH",
-                  style: TextStyle(fontSize: 10, color: AppColors.white),
+              ...List.generate(
+                5,
+                (i) => Icon(
+                  i < widget.rating ? Icons.star : Icons.star_border,
+                  color: Colors.amber,
+                  size: 18,
                 ),
               ),
               const SizedBox(width: 8),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Ahmed Hassan",
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              Text(
+                widget.rating.toStringAsFixed(1),
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          // ── Review text ───────────────────────────────────────
+          Text(widget.reviewText, style: AppStyle.containerSubtitle),
+
+          const SizedBox(height: 16),
+
+          Divider(color: Theme.of(context).dividerColor),
+
+          // ── Reviewer row — overflow fixed with Flexible ────────
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 15,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                child: Text(
+                  widget.reviewerInitials,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Theme.of(context).colorScheme.surface,
                   ),
-                  Text(
-                    "2 days ago",
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
-                  ),
-                ],
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // Wrap in Flexible so long names don't overflow
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.reviewerName,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      widget.timeAgo,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(width: 8),
+
+              // Location — also Flexible to prevent overflow
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+
+                  children: [
+                    Icon(
+                      Icons.location_on_outlined,
+                      size: 14,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    Flexible(
+                      child: Text(
+                        ' ${widget.location}',
+                        style: TextStyle(
+                          color: Theme.of(context).iconTheme.color,
+                          fontSize: 11,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          // ── Like + share ──────────────────────────────────────
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isLiked = !_isLiked;
+                    _likesCount += _isLiked ? 1 : -1;
+                  });
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      _isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
+                      size: 18,
+                      color: _isLiked
+                          ? Theme.of(context).colorScheme.secondary
+                          : Theme.of(context).iconTheme.color,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      _likesCount > 0 ? '$_likesCount helpful' : 'Helpful?',
+                      style: TextStyle(
+                        color: _isLiked
+                            ? Theme.of(context).colorScheme.secondary
+                            : Theme.of(context).iconTheme.color,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const Spacer(),
-              Icon(
-                Icons.location_on_outlined,
-                size: 14,
-                color: Colors.grey[600],
-              ),
-              Text(
-                " Downtown Plaza",
-                style: TextStyle(color: Colors.grey[600], fontSize: 11),
+              IconButton(
+                onPressed: () {},
+                icon:  Icon(
+                  Icons.share_outlined,
+                  size: 18,
+                  color:Theme.of(context).iconTheme.color,
+                ),
               ),
             ],
           ),

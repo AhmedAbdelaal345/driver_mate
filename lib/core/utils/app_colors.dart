@@ -2,7 +2,7 @@ import 'dart:ui';
 
 abstract class AppColors {
   //------------- Colors -------------
-  static const Color white = Color(0xffffffff);
+  static const Color white =      Color(0xffffffff);
   static const Color cyanColor = Color(0xff0891B2);
   static const Color darkCyanColor = Color(0xff0E7490);
   static const Color smoothcyanColor = Color(0xffDBEAFE);

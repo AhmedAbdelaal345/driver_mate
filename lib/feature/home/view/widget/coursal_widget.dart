@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
@@ -22,22 +22,26 @@ class CoursalWidget extends StatefulWidget {
 class CoursalWidgetState extends State<CoursalWidget> {
   int _currentIndex = 0;
 
-  static final List<_CarouselItem> _items = [
+  
+  @override
+  Widget build(BuildContext context) {
+    final cardHeight = SizeConfig.height(context) * 0.23;
+ final List<_CarouselItem> _items = [
     _CarouselItem(
-      badge: 'Fast response',
-      title: 'Emergency Assist',
-      subtitle: 'Send your location instantly to get help',
-      buttonText: 'Get Help',
+      badge: AppStrings.of(context).emergencyHelp,
+      title: AppStrings.of(context).emergencyAssistance,
+      subtitle: AppStrings.of(context).emergencyHelpDescription,
+      buttonText: AppStrings.of(context).emergencySos,
       image: AppImagePath.carImagePath,
       onPressed: () {
         MyNavigation.navigateTo(EmergencyAssistancePage());
       },
     ),
     _CarouselItem(
-      badge: 'Due in 500 km',
-      title: 'Maintenance Reminder',
-      subtitle: 'Oil change due soon based on your mileage',
-      buttonText: 'Book Now',
+      badge: AppStrings.of(context).due,
+      title: AppStrings.of(context).maintenanceReminders,
+      subtitle: AppStrings.of(context).maintenanceTip,
+      buttonText: AppStrings.of(context).bookNow,
       image: AppImagePath.loginImagePath,
       onPressed: () {
         MyNavigation.navigateTo(BookMaintenancePage());
@@ -45,19 +49,15 @@ class CoursalWidgetState extends State<CoursalWidget> {
     ),
     _CarouselItem(
       badge: null,
-      title: AppConstants.coursalTitle,
-      subtitle: AppConstants.coursalSubtitle,
-      buttonText: AppConstants.startScan,
+      title: AppStrings.of(context).coursalTitle,
+      subtitle: AppStrings.of(context).coursalSubtitle,
+      buttonText: AppStrings.of(context).startScan,
       image: AppImagePath.camryCarImagePath,
       onPressed: () {
         MyNavigation.navigateTo(AiVoiceDiagnosisPage());
       },
     ),
   ];
-
-  @override
-  Widget build(BuildContext context) {
-    final cardHeight = SizeConfig.height(context) * 0.23;
 
     return Stack(
       alignment: Alignment.bottomCenter,

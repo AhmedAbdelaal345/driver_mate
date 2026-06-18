@@ -17,44 +17,63 @@ class ApiHelper {
     return instance;
   }
 
-Future<ApiResponse> postRequest({
-  required String endpoint,
-  Map<String, dynamic>? data,
-  bool isAuthorized = true,
-  bool isForm = true,
-}) async {
-  try {
-    final body = isForm
-        ? FormData.fromMap(data ?? {})
-        : data;
+  Future<ApiResponse> postRequest({
+    required String endpoint,
+    Map<String, dynamic>? data,
+    bool isAuthorized = true,
+    bool isForm = true,
+  }) async {
+    try {
+      final body = isForm ? FormData.fromMap(data ?? {}) : data;
 
-    final response = await dio.post(
-      endpoint,
-      data: body,
+      final response = await dio.post(
+        endpoint,
+        data: body,
+        options: Options(
+          headers: {
+            if (isAuthorized)
+              ApiConstants.authorization: "Bearer ${ApiConstants.accessToken}",
+
+            "Accept": "application/json",
+
+            if (!isForm) "Content-Type": "application/json",
+          },
+        ),
+      );
+
+      return ApiResponse.fromResponse(response);
+    } catch (e) {
+      return ApiResponse.fromError(e);
+    }
+  }
+
+  Future<Response> rawPostRequest({
+    required String fullUrl,
+    dynamic data,
+    Map<String, dynamic>? headers,
+  }) async {
+    return await dio.post(
+      fullUrl,
+      data: data,
       options: Options(
-        headers: {
-          if (isAuthorized)
-            ApiConstants.authorization:
-                "Bearer ${ApiConstants.accessToken}",
+        headers: headers,
+        responseType: ResponseType.plain,
 
-          "Accept": "application/json",
+        /// مهم جدًا
+        contentType: Headers.formUrlEncodedContentType,
 
-          if (!isForm)
-            "Content-Type": "application/json",
-        },
+        /// عشان مايرميش exception
+        validateStatus: (status) => true,
       ),
     );
-
-    return ApiResponse.fromResponse(response);
-  } catch (e) {
-    return ApiResponse.fromError(e);
   }
-}
+
   Future<ApiResponse> getRequest({
     required String endpoint,
     Map<String, dynamic>? data,
     bool isForm = true,
     bool isAuthorized = true,
+    Map<String, dynamic>? queryParameters,
   }) async {
     try {
       Response response = await dio.get(
@@ -66,6 +85,7 @@ Future<ApiResponse> postRequest({
               ApiConstants.authorization: "Bearer ${ApiConstants.accessToken}",
           },
         ),
+        queryParameters: queryParameters,
       );
       return ApiResponse.fromResponse(response);
     } on Exception catch (e) {

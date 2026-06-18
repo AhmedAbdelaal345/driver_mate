@@ -2,6 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
@@ -32,8 +33,8 @@ class AiContainerWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecorationWidget.customBoxDecoration().copyWith(
-          color: AppColors.white,
+        decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
+          color: Theme.of(context).cardTheme.color,
           border: BoxBorder.fromLTRB(
             left: BorderSide(
               color: iconColor ?? AppColors.orange,
@@ -65,13 +66,20 @@ class AiContainerWidget extends StatelessWidget {
                 ),
               ),
               title: Text(
-                title ?? AppConstants.batteryHealth,
-                style: AppStyle.titleOfContainer,
+                title ?? AppStrings.of(context).batteryHealth,
+                style: AppStyle.titleOfContainer.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface, // ← was hardcoded AppColors.black
+                  fontSize: AppFontSize.f14,
+                ),
               ),
               subtitle: Text(
-                subTitle ?? AppConstants.batteryStatus,
+                subTitle ?? AppStrings.of(context).batteryStatus,
                 style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.midGrey,
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface, // ← was hardcoded AppColors.black
                 ),
               ),
             ),
@@ -83,7 +91,7 @@ class AiContainerWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    action ?? AppConstants.checkNow,
+                    action ?? AppStrings.of(context).checkNow,
                     style: AppStyle.viewAll.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
