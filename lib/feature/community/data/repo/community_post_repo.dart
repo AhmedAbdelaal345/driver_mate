@@ -1,66 +1,206 @@
 import 'dart:io';
+import 'package:dartz/dartz.dart';
+import 'package:driver_mate/core/network/api_helper.dart';
+import 'package:driver_mate/core/network/api_response.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
-import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
+import 'package:driver_mate/feature/community/data/model/community_comment_model.dart';
+import 'package:driver_mate/feature/community/data/model/community_create_post_model.dart';
+import 'package:driver_mate/feature/community/data/model/community_fetch_post_model.dart';
 
 abstract class CommunityPostRepository {
-  Future<List<CommunityPostModel>> fetchPosts();
-  Future<CommunityPostModel> createPost({
+  Future<Either<String, List<CommunityFetchPostModel>>> fetchPosts({
+    required int page,
+    required int limit,
+  });
+  Future<Either<String, ApiResponse>> createPost({
     required String type,
     required String title,
     required String description,
     File? imageFile,
   });
+  Future<Either<String, String>> deletePost(String postId);
+  Future<Either<String, LikeModel>> likeComment({required String postId});
 }
 
 class InMemoryCommunityPostRepository implements CommunityPostRepository {
-  final List<CommunityPostModel> _posts = [
-    CommunityPostModel(
+  final List<CommunityFetchPostModel> _posts = [
+    CommunityFetchPostModel(
       id: 'seed-1',
-      type: 'Question',
+      postType: 0,
+      commentCount: 0,
+      isLikedByCurrentUser: false,
+      likeCount: 0,
+      isSaved: false,
+      authorImageUrl: AppImagePath.profilePersonIconPath,
+      imagesCount: 2,
       title: 'Strange clicking sound when turning',
-      description:
+      content:
           'My car makes a clicking noise when I turn the steering wheel. It only happens at low speeds.',
-      createdAt: DateTime.now().subtract(const Duration(hours: 2)),
+      createdAt: DateTime.now().subtract(const Duration(hours: 2)).toString(),
       authorName: 'Ahmed Hassan',
-      authorInitials: 'AH',
-      imageAssetPath: AppImagePath.bmwCarImagePath, // ✅ asset path, not File
+      imageUrls: [AppImagePath.bmwCarImagePath, AppImagePath.bmwCarImagePath],
     ),
-    CommunityPostModel(
+    CommunityFetchPostModel(
       id: 'seed-2',
-      type: 'Tips',
+      postType: 1,
+      commentCount: 0,
+      isLikedByCurrentUser: false,
+      likeCount: 0,
+      isSaved: false,
+      authorImageUrl: AppImagePath.profilePersonIconPath,
+      imagesCount: 2,
       title: 'Best oil change interval for city driving',
-      description:
+      content:
           'I recommend changing oil every 5,000 km if you drive mostly in heavy traffic.',
-      createdAt: DateTime.now().subtract(const Duration(hours: 5)),
+      createdAt: DateTime.now().subtract(const Duration(hours: 5)).toString(),
       authorName: 'Sara Ali',
-      authorInitials: 'SA',
     ),
   ];
 
   @override
-  Future<List<CommunityPostModel>> fetchPosts() async {
-    return List<CommunityPostModel>.from(_posts);
+  Future<Either<String, List<CommunityFetchPostModel>>> fetchPosts({
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      ApiResponse response = await ApiHelper().getRequest(
+        endpoint: "community",
+        isAuthorized: true,
+        queryParameters: {"pageNumber": page, "pageSize": limit},
+      );
+
+      if (response.statusCode != 200) {
+        return left(
+          "fetchPosts failed [${response.statusCode}]: ${response.message}",
+        );
+      }
+
+      // response.data is body["data"], which the backend sends as a List.
+      final rawList = response.data;
+      if (rawList == null) {
+        return left("fetchPosts: response.data is null");
+      }
+      if (rawList is! List) {
+        return left(
+          "fetchPosts: expected List but got ${rawList.runtimeType}. "
+          "Raw value: $rawList",
+        );
+      }
+
+      final posts = <CommunityFetchPostModel>[];
+      for (int i = 0; i < rawList.length; i++) {
+        try {
+          posts.add(
+            CommunityFetchPostModel.fromJson(
+              rawList[i] as Map<String, dynamic>,
+            ),
+          );
+        } catch (parseError) {
+          // Surface exactly which item and which field broke.
+          return left(
+            "fetchPosts: failed to parse item[$i]: $parseError\n"
+            "Raw item: ${rawList[i]}",
+          );
+        }
+      }
+
+      _posts
+        ..clear()
+        ..addAll(posts);
+
+      return Right(List.unmodifiable(_posts));
+    } catch (e, stack) {
+      // Rethrow-style: surface the REAL error so nothing is silently swallowed.
+      return left("fetchPosts unexpected error: $e\n$stack");
+    }
   }
 
   @override
-  Future<CommunityPostModel> createPost({
+  Future<Either<String, String>> deletePost(String postId) async {
+    try {
+      ApiResponse response = await ApiHelper().deleteRequest(
+        endpoint: "community/$postId",
+        isAuthorized: true,
+      );
+      if (response.statusCode != 200) {
+        return left(
+          "The problem occurred deleting the post: ${response.message}",
+        );
+      }
+      fetchPosts(page: 1, limit: 10);
+      _posts.removeWhere((e) => e.id == postId);
+      return Right("Post deleted successfully");
+    } catch (e) {
+      return left("There is an Error occured when processing your request");
+    }
+  }
+
+  @override
+  Future<Either<String, ApiResponse>> createPost({
     required String type,
     required String title,
     required String description,
     File? imageFile,
   }) async {
     final now = DateTime.now();
-    final post = CommunityPostModel(
-      id: 'post-${now.microsecondsSinceEpoch}',
-      type: type,
-      title: title,
-      description: description,
-      createdAt: now,
-      authorName: 'User',
-      authorInitials: 'US',
-      imageFile: imageFile, // ✅ real file from picker
-    );
-    _posts.insert(0, post);
-    return post;
+    try {
+      final ApiResponse response = await ApiHelper().postRequest(
+        endpoint: "community",
+        isAuthorized: true,
+        isForm: true,
+        data: CommunityCreatePostModel(
+          title: title,
+          content: description,
+          postType: type,
+          imagePost: imageFile,
+        ).toJson(),
+      );
+      final post = CommunityFetchPostModel(
+        id: 'post-${now.microsecondsSinceEpoch}',
+        postType: 0,
+        commentCount: 0,
+        isLikedByCurrentUser: false,
+        likeCount: 0,
+        isSaved: false,
+        authorImageUrl: AppImagePath.profilePersonIconPath,
+        imagesCount: 2,
+        title: title,
+        content: description,
+        createdAt: now.toString(),
+        authorName: 'User',
+        imageUrls: [imageFile.toString()],
+      );
+      _posts.insert(0, post);
+
+      if (response.statusCode == 200) {
+        return Right(response);
+      } else {
+        return left(
+          "The problem occurred creating the post: ${response.message}",
+        );
+      }
+    } catch (e) {
+      return left("The problem occurred creating the post:${e.toString()}");
+    }
+  }
+
+  @override
+  Future<Either<String, LikeModel>> likeComment({
+    required String postId,
+  }) async {
+    try {
+      ApiResponse response = await ApiHelper().postRequest(
+        endpoint: "Community/$postId/like",
+        isAuthorized: true,
+        isForm: false,
+      );
+      if (response.statusCode != 200) {
+        return left("There is an Error occured when processing your request");
+      }
+      final result = LikeModel.fromJson(json: response.data);
+      return Right(result);
+    } catch (e) {
+      return left("There is an Error occured when processing your request");
+    }
   }
 }

@@ -1,4 +1,3 @@
-import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
@@ -44,7 +43,7 @@ class VehicleSelector extends StatelessWidget {
             return DropdownMenuItem<VechicleModel>(
               value: vehicle,
               child: Text(
-                '${vehicle.brand} ${vehicle.model} ${vehicle.year}',
+                '${vehicle.brandName} ${vehicle.modelName} ${vehicle.year}',
                 style: AppStyle.containerSubtitle.copyWith(
                   fontSize: AppFontSize.f12,
                   color: Theme.of(context).textTheme.bodyMedium?.color,

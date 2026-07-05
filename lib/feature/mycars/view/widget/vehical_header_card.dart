@@ -142,8 +142,8 @@ class VehicleHeaderCard extends StatelessWidget {
   }
 
   String _getVehicleTitle(BuildContext context) {
-    final brand = (vehicle.brand).trim();
-    final model = (vehicle.model).trim();
+    final brand = (vehicle.brandName).trim();
+    final model = (vehicle.modelName).trim();
     if (brand.isEmpty && model.isEmpty) {
       return AppStrings.of(context).yourVechical;
     }

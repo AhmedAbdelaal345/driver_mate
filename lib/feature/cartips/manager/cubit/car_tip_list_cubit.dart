@@ -11,7 +11,14 @@ class CarTipListCubit extends Cubit<CarTipState> {
     emit(CarTipLoading());
     try {
       final tip = await repo.getTip();
-      emit(CarTipLoaded(tip));
+      tip.fold(
+        (l) {
+          emit(CarTipError(l));
+        },
+        (r) {
+          emit(CarTipLoaded(r));
+        },
+      );
     } catch (e) {
       emit(CarTipError(e.toString()));
     }

@@ -152,7 +152,7 @@ const Map<String, List<String>> brandModels = {
   'Tesla': ['Model 3', 'Model S', 'Model X', 'Model Y', 'Cybertruck', 'Other'],
   'Other': ['Other'],
 };
- Future<File?>? selectedImage;
+Future<File?>? selectedImage;
 
 class AddVehiclePage extends StatefulWidget {
   const AddVehiclePage({super.key, this.isEditPage = false, this.vehicle});
@@ -191,14 +191,14 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
     }
 
     if (widget.isEditPage && widget.vehicle != null) {
-      _selectedBrand = widget.vehicle!.brand;
-      _selectedModel = widget.vehicle!.model;
+      _selectedBrand = widget.vehicle!.brandName;
+      _selectedModel = widget.vehicle!.modelName;
       _selectedYear = widget.vehicle!.year;
-      cubit.brandController.text = widget.vehicle!.brand;
-      cubit.modelController.text = widget.vehicle!.model;
+      cubit.brandController.text = widget.vehicle!.brandName;
+      cubit.modelController.text = widget.vehicle!.modelName;
       cubit.yearController.text = widget.vehicle!.year.toString();
       cubit.plateController.text = widget.vehicle!.plateNumber;
-      cubit.mileageController.text = widget.vehicle!.millAge.toString();
+      cubit.mileageController.text = widget.vehicle!.currentMileage.toString();
     }
   }
 
@@ -213,6 +213,18 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
           );
         }
 
+        if (state is UpdateVehicalSuccessState) {
+          AppNotifier.show(context, state.message, type: NotifierType.success);
+          Navigator.of(context).pop(); // pops AddVehiclePage
+          Navigator.of(context).pop(); // pops DailyCarDetailsPage
+        }
+
+        if (state is DeleteVehicalSuccessState) {
+          AppNotifier.show(context, state.message, type: NotifierType.success);
+          Navigator.of(context).pop(); // pops AddVehiclePage
+          Navigator.of(context).pop(); // pops DailyCarDetailsPage
+        }
+
         if (state is ErrorVehicalState) {
           AppNotifier.show(context, state.error, type: NotifierType.error);
         }
@@ -224,16 +236,18 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
           child: SafeArea(
             top: false,
             child: Scaffold(
-              backgroundColor: AppColors.white,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               appBar: AppBar(
-                backgroundColor: AppColors.white,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 elevation: 0,
                 centerTitle: true,
                 title: Text(
                   widget.isEditPage
                       ? AppStrings.of(context).editVehicle
                       : AppStrings.of(context).addVehicle,
-                  style: AppStyle.appBarTitle,
+                  style: AppStyle.appBarTitle.copyWith(
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
                 ),
                 leading: const LeadingIcon(),
               ),
@@ -249,7 +263,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration:
-                            BoxDecorationWidget.customBoxDecoration(context,
+                            BoxDecorationWidget.customBoxDecoration(
+                              context,
                               borderRadius: AppFontSize.f12,
                             ).copyWith(
                               gradient: LinearGradient(
@@ -267,12 +282,12 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                               width: 36,
                               height: 36,
                               decoration: BoxDecoration(
-                                color: AppColors.white.withValues(alpha: 0.15),
+                                color: Theme.of(context).cardColor,
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.directions_car,
-                                color: AppColors.white,
+                                color: Theme.of(context).iconTheme.color,
                                 size: 18,
                               ),
                             ),
@@ -283,22 +298,32 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                                 children: [
                                   Text(
                                     widget.isEditPage
-                                        ? AppStrings.of(context).updateYourVehicle
-                                        : AppStrings.of(context).registerVehicle,
+                                        ? AppStrings.of(
+                                            context,
+                                          ).updateYourVehicle
+                                        : AppStrings.of(
+                                            context,
+                                          ).registerVehicle,
                                     style: AppStyle.boldSmallText.copyWith(
-                                      color: AppColors.white,
+                                      color: Theme.of(
+                                        context,
+                                      ).textTheme.bodyLarge?.color,
                                       fontSize: AppFontSize.f13,
                                     ),
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
                                     widget.isEditPage
-                                        ? AppStrings.of(context).updateYourVehicleHint
-                                        : AppStrings.of(context).registerVehicleHint,
+                                        ? AppStrings.of(
+                                            context,
+                                          ).updateYourVehicleHint
+                                        : AppStrings.of(
+                                            context,
+                                          ).registerVehicleHint,
                                     style: AppStyle.containerSubtitle.copyWith(
-                                      color: AppColors.white.withValues(
-                                        alpha: 0.9,
-                                      ),
+                                      color: Theme.of(
+                                        context,
+                                      ).textTheme.bodyLarge?.color,
                                       fontSize: AppFontSize.f11,
                                     ),
                                   ),
@@ -317,10 +342,12 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           hintText: AppStrings.of(context).selectBrand,
                           hintStyle: AppStyle.hintStyle,
                           filled: true,
-                          fillColor: AppColors.white,
+                          fillColor: Theme.of(context).colorScheme.surface,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).iconTheme.color!,
+                            ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
@@ -344,7 +371,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                             value: brand,
                             child: Text(
                               brand,
-                              style: AppStyle.regularSmallText,
+                              style: AppStyle.regularSmallText.copyWith(
+                                color: Theme.of(context).textTheme.bodyLarge?.color,
+                              ),
                             ),
                           );
                         }).toList(),
@@ -376,10 +405,12 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                               : AppStrings.of(context).selectModel,
                           hintStyle: AppStyle.hintStyle,
                           filled: true,
-                          fillColor: AppColors.white,
+                          fillColor: Theme.of(context).colorScheme.surface,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).iconTheme.color!,
+                            ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
@@ -403,7 +434,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                             value: model,
                             child: Text(
                               model,
-                              style: AppStyle.regularSmallText,
+                              style: AppStyle.regularSmallText.copyWith(
+                                color: Theme.of(context).textTheme.bodyLarge?.color,
+                              ),
                             ),
                           );
                         }).toList(),
@@ -431,17 +464,21 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         initialValue: _selectedYear,
                         decoration: InputDecoration(
                           hintText: AppStrings.of(context).selectYear,
-                          hintStyle: AppStyle.hintStyle,
+                          hintStyle: AppStyle.hintStyle.copyWith(
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
+                          ),
                           prefixIcon: Icon(
                             Icons.calendar_today,
                             size: 20,
-                            color: AppColors.iconGrey,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           filled: true,
-                          fillColor: AppColors.white,
+                          fillColor: Theme.of(context).colorScheme.surface,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).iconTheme.color!,
+                            ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
@@ -465,7 +502,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                             value: year,
                             child: Text(
                               year.toString(),
-                              style: AppStyle.regularSmallText,
+                              style: AppStyle.regularSmallText.copyWith(
+                                color: Theme.of(context).textTheme.bodyLarge?.color,
+                              ),
                             ),
                           );
                         }).toList(),
@@ -484,7 +523,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         },
                       ),
                       const SizedBox(height: 14),
-                      _FieldLabel(text: AppStrings.of(context).plateNumberOptional),
+                      _FieldLabel(
+                        text: AppStrings.of(context).plateNumberOptional,
+                      ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: VehicalCubit.get(context).plateController,
@@ -493,10 +534,12 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           hintText: AppStrings.of(context).plateNumberHint,
                           hintStyle: AppStyle.hintStyle,
                           filled: true,
-                          fillColor: AppColors.white,
+                          fillColor: Theme.of(context).colorScheme.surface,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).iconTheme.color!,
+                            ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
@@ -523,7 +566,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         },
                       ),
                       const SizedBox(height: 14),
-                      _FieldLabel(text: AppStrings.of(context).currentMileageOptional),
+                      _FieldLabel(
+                        text: AppStrings.of(context).currentMileageOptional,
+                      ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: VehicalCubit.get(context).mileageController,
@@ -535,10 +580,12 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           hintText: AppStrings.of(context).mileageHint,
                           hintStyle: AppStyle.hintStyle,
                           filled: true,
-                          fillColor: AppColors.white,
+                          fillColor: Theme.of(context).colorScheme.surface,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).iconTheme.color!,
+                            ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppFontSize.f8),
@@ -605,7 +652,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                             title: "Inactive",
                             subtitle: "Not currently in use",
                             icon: Icons.block,
-                            color: AppColors.iconGrey,
+                            color: Theme.of(context).iconTheme.color!,
                             isSelected:
                                 selectedStatus == VehicleStatus.inactive,
                             onTap: () {
@@ -624,7 +671,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           selectedImage = OpenGallery.openGallery();
                         },
                         child: AddPhotoContainer(
-                          isSelected:selectedImage != null?true:false,
+                          isSelected: selectedImage != null ? true : false,
                         ),
                       ),
                       const SizedBox(height: 14),
@@ -635,21 +682,25 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                                 cubit.deleteVehicle(
                                   vehicle: VechicleModel(
                                     image: await selectedImage,
-                                    brand: cubit.brandController.text,
-                                    model: cubit.modelController.text,
+                                    brandName: cubit.brandController.text,
+                                    modelName: cubit.modelController.text,
                                     status: selectedStatus,
+                                    brandId: widget.vehicle?.brandId ?? 0,
+                                    modelId: widget.vehicle?.modelId ?? 0,
+                                    id: widget.vehicle?.id ?? "0",
+                                    userId: widget.vehicle?.userId ?? "0",
                                     year:
                                         int.tryParse(
                                           cubit.yearController.text,
                                         ) ??
                                         0,
                                     plateNumber: cubit.plateController.text,
-                                    millAge:
-                                        double.tryParse(
-                                          cubit.mileageController.text,
-                                        ) ??
-                                        0,
-                                    date: DateTime.now(),
+                                    currentMileage:
+                                        (double.tryParse(
+                                                  cubit.mileageController.text,
+                                                ) ??
+                                                0)
+                                            .toInt(),
                                   ),
                                 );
                               },
@@ -657,7 +708,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           : Container(
                               padding: const EdgeInsets.all(12),
                               decoration:
-                                  BoxDecorationWidget.customBoxDecoration(context,
+                                  BoxDecorationWidget.customBoxDecoration(
+                                    context,
                                     borderRadius: AppFontSize.f12,
                                   ).copyWith(color: AppColors.lightBleu),
                               child: Text(
@@ -676,18 +728,22 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           if (cubit.formKey.currentState!.validate()) {
                             final updatedVehicle = VechicleModel(
                               image: await selectedImage,
-                              brand: cubit.brandController.text,
-                              model: cubit.modelController.text,
+                              brandName: cubit.brandController.text,
+                              modelName: cubit.modelController.text,
                               status: selectedStatus,
                               year:
                                   int.tryParse(cubit.yearController.text) ?? 0,
                               plateNumber: cubit.plateController.text,
-                              millAge:
-                                  double.tryParse(
-                                    cubit.mileageController.text,
-                                  ) ??
-                                  0,
-                              date: widget.vehicle?.date ?? DateTime.now(),
+                              currentMileage:
+                                  (double.tryParse(
+                                            cubit.mileageController.text,
+                                          ) ??
+                                          0)
+                                      .toInt(),
+                              brandId: widget.vehicle?.brandId ?? 0,
+                              modelId: widget.vehicle?.modelId ?? 0,
+                              userId: widget.vehicle?.userId ?? "0",
+                              id: widget.vehicle?.id ?? "0",
                             );
 
                             if (widget.isEditPage && widget.vehicle != null) {
@@ -713,9 +769,13 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           ),
                         ),
                         child: Text(
-                          widget.isEditPage ? AppStrings.of(context).updateVehicle : AppStrings.of(context).addVehicle,
+                          widget.isEditPage
+                              ? AppStrings.of(context).updateVehicle
+                              : AppStrings.of(context).addVehicle,
                           style: AppStyle.boldSmallText.copyWith(
-                            color: AppColors.white,
+                            color: Theme.of(
+                              context,
+                            ).textTheme.labelLarge?.color,
                             fontSize: AppFontSize.f13,
                           ),
                         ),
@@ -741,7 +801,10 @@ class _FieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: AppStyle.labelStyle.copyWith(fontSize: AppFontSize.f12),
+      style: AppStyle.labelStyle.copyWith(
+        color: Theme.of(context).textTheme.bodyLarge?.color,
+        fontSize: AppFontSize.f12,
+      ),
     );
   }
 }

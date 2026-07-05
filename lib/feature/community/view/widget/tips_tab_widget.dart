@@ -2,13 +2,17 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
+// import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
-import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
+import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/community/data/model/community_fetch_post_model.dart';
+// import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/manager/community_comment_manager/community_comment_cubit.dart';
 import 'package:driver_mate/feature/community/view/community_comment_page.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_header.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
+import 'package:driver_mate/feature/community/view/widget/post_type_tag_widget.dart';
 import 'package:driver_mate/feature/saved_item/data/model/saved_item_model.dart';
 import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
@@ -22,8 +26,8 @@ class TipsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        CommunityPostHeader(postType: AppStrings.of(context).tips),
-        CommunityPostList(filterType: AppStrings.of(context).tips, showEmptyState: true),
+        CommunityPostHeader(postType: AppConstants.tips),
+        CommunityPostList(filterType: AppConstants.tips, showEmptyState: true),
       ],
     );
   }
@@ -31,7 +35,7 @@ class TipsTab extends StatelessWidget {
 
 class TipCard extends StatefulWidget {
   const TipCard({super.key, required this.post});
-  final CommunityPostModel post;
+  final CommunityFetchPostModel post;
 
   @override
   State<TipCard> createState() => _TipCardState();
@@ -44,8 +48,8 @@ class _TipCardState extends State<TipCard> {
   @override
   void initState() {
     super.initState();
-    _isSaved = widget.post.isSaved;
-    _savedCount = widget.post.likesCount; // reuse likesCount as save count
+    _isSaved = widget.post.isSaved ?? false;
+    _savedCount = widget.post.likeCount ?? 0; // reuse likesCount as save count
   }
 
   void _handleSave() {
@@ -54,12 +58,11 @@ class _TipCardState extends State<TipCard> {
       _savedCount += _isSaved ? 1 : -1;
     });
     widget.post.isSaved = _isSaved;
-    widget.post.likesCount = _savedCount;
 
     final item = SavedItemModel(
       title: widget.post.title,
-      subtitle: widget.post.description,
-      image: widget.post.imageFile?.path ?? widget.post.imageAssetPath ?? '',
+      subtitle: widget.post.content,
+      image: widget.post.imageUrls?.first ?? '',
       type: SavedType.post,
     );
 
@@ -74,13 +77,28 @@ class _TipCardState extends State<TipCard> {
     MyNavigation.navigateTo(
       BlocProvider(
         create: (_) => CommunityCommentCubit(),
-        child: CommunityCommentPage(post: widget.post),
+        child: CommunityCommentPage(
+          post: CommunityFetchPostModel(
+            id: widget.post.id,
+            title: widget.post.title,
+            content: widget.post.content,
+            postType: 1,
+            authorName: widget.post.authorName,
+            createdAt: widget.post.createdAt.toString(),
+            imagesCount: 0,
+            likeCount: widget.post.likeCount,
+            commentCount: widget.post.commentCount,
+            isLikedByCurrentUser: widget.post.isLikedByCurrentUser,
+          ),
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final double w = SizeConfig.width(context);
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
@@ -90,40 +108,61 @@ class _TipCardState extends State<TipCard> {
         children: [
           // ── Header ────────────────────────────────────────────
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 16,
-                backgroundColor: Color(0xFFE0F2F1),
-                child: Icon(
-                  Icons.lightbulb_outline,
-                  color: Colors.teal,
-                  size: 18,
-                ),
+              // Avatar
+              CircleAvatar(
+                radius: w * 0.05,
+                backgroundColor: const Color(0xFF1B7F9B),
+                backgroundImage: widget.post.authorImageUrl != null
+                    ? NetworkImage(widget.post.authorImageUrl!)
+                    : null,
+                child: widget.post.authorImageUrl == null
+                    ? Text(
+                        widget.post.authorInitials,
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: w * 0.03,
+                        ),
+                      )
+                    : null,
               ),
-              const SizedBox(width: 10),
+
+              SizedBox(width: w * 0.03),
+
+              // Author + date — MUST be Expanded to prevent overflow
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Maintenance Tip',
-                      style: TextStyle(
-                        color: Colors.teal,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
                     Text(
                       widget.post.authorName,
-                      style: const TextStyle(color: Colors.grey, fontSize: 11),
+                      style: AppStyle.socialButtonTextStyle.copyWith(
+                        fontSize: AppFontSize.f14,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis, // ✅
+                    ),
+                    Text(
+                      widget.post.createdAt.length >= 10
+                          ? widget.post.createdAt.substring(0, 10)
+                          : widget.post.createdAt,
+                      style: TextStyle(
+                        color: AppColors.iconGrey,
+                        fontSize: AppFontSize.f11,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis, // ✅
                     ),
                   ],
                 ),
               ),
-              Text(
-                widget.post.createdAt.toString().substring(0, 16),
-                style: const TextStyle(color: Colors.grey, fontSize: 11),
-              ),
+
+              SizedBox(width: w * 0.02),
+
+              // Tag — only takes what it needs
+              PostTypeTag(label: AppStrings.of(context).tips),
             ],
           ),
 
@@ -142,29 +181,36 @@ class _TipCardState extends State<TipCard> {
 
           // ── Description ───────────────────────────────────────
           Text(
-            widget.post.description,
+            widget.post.content,
             style: AppStyle.containerSubtitle.copyWith(height: 1.4),
           ),
 
-          // ── Image ─────────────────────────────────────────────
-          if (widget.post.imageFile != null ||
-              widget.post.imageAssetPath != null) ...[
+          // ── Image ──────────────────────────────────────────
+          if (widget.post.imageUrls.isNotEmpty) ...[
             const SizedBox(height: 12),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: widget.post.imageFile != null
-                  ? Image.file(
-                      widget.post.imageFile!,
-                      width: double.infinity,
+            SizedBox(
+              height: 180,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.post.imageUrls.length,
+                itemBuilder: (context, index) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      widget.post.imageUrls[index],
+                      width: 280,
                       height: 180,
                       fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      widget.post.imageAssetPath!,
-                      width: double.infinity,
-                      height: 180,
-                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const SizedBox(
+                        width: 280,
+                        height: 180,
+                        child: Icon(Icons.broken_image, color: Colors.grey),
+                      ),
                     ),
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(width: 12),
+              ),
             ),
           ],
 
@@ -175,9 +221,9 @@ class _TipCardState extends State<TipCard> {
             onTap: _handleSave,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
-                color: AppColors.cyanColor.withValues(alpha: 0.08),
-              ),
+              decoration: BoxDecorationWidget.customBoxDecoration(
+                context,
+              ).copyWith(color: AppColors.cyanColor.withValues(alpha: 0.08)),
               child: Row(
                 children: [
                   Icon(
@@ -215,7 +261,7 @@ class _TipCardState extends State<TipCard> {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      '${widget.post.commentsCount} comments',
+                      '${widget.post.commentCount} comments',
                       style: TextStyle(
                         color: AppColors.iconGrey,
                         fontSize: AppFontSize.f13,

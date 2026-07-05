@@ -23,7 +23,10 @@ class AddVehicalSuccessState extends VehicalState {
   final VechicleModel vehicle;
   AddVehicalSuccessState({required this.vehicle, required this.message});
 }
-
+class UpdateVehicalSuccessState extends VehicalState {
+  final String message;
+  UpdateVehicalSuccessState({required this.message});
+}
 class ErrorVehicalState extends VehicalState {
   final String error;
   ErrorVehicalState({required this.error});

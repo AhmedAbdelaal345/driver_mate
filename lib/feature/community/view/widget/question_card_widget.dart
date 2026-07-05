@@ -2,14 +2,17 @@ import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
-import 'package:driver_mate/core/utils/app_strings.dart';
+// import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
-import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
+import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/community/data/model/community_fetch_post_model.dart';
 import 'package:driver_mate/feature/community/manager/community_comment_manager/community_comment_cubit.dart';
+import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_cubit.dart';
 import 'package:driver_mate/feature/community/view/community_comment_page.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_header.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
+import 'package:driver_mate/feature/community/view/widget/post_type_tag_widget.dart';
 import 'package:driver_mate/feature/saved_item/data/model/saved_item_model.dart';
 import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
 import 'package:flutter/material.dart';
@@ -22,23 +25,25 @@ class QuestionTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        CommunityPostHeader(postType: AppStrings.of(context).question),
+        CommunityPostHeader(postType: AppConstants.question),
         CommunityPostList(
-          filterType: AppStrings.of(context).question,
+          filterType: AppConstants.question,
           showEmptyState: true,
         ),
         CommunityPostList(
-          filterType: AppStrings.of(context).question,
+          filterType: AppConstants.question,
           showEmptyState: true,
-        ),
+        ), // ❌ duplicate
       ],
     );
   }
 }
 
+
+
 class QuestionCard extends StatefulWidget {
   const QuestionCard({super.key, required this.post});
-  final CommunityPostModel post;
+  final CommunityFetchPostModel post;
 
   @override
   State<QuestionCard> createState() => _QuestionCardState();
@@ -52,9 +57,9 @@ class _QuestionCardState extends State<QuestionCard> {
   @override
   void initState() {
     super.initState();
-    _isLiked = widget.post.isLiked;
-    _likesCount = widget.post.likesCount;
-    _isSaved = widget.post.isSaved;
+    _isLiked = widget.post.isLikedByCurrentUser;
+    _likesCount = widget.post.likeCount;
+    _isSaved = widget.post.isSaved ?? false;
   }
 
   void _handleLike() {
@@ -62,21 +67,18 @@ class _QuestionCardState extends State<QuestionCard> {
       _isLiked = !_isLiked;
       _likesCount += _isLiked ? 1 : -1;
     });
-    widget.post.isLiked = _isLiked;
-    widget.post.likesCount = _likesCount;
+    context.read<CommunityPostCubit>().toggleLike(postId: widget.post.id);
   }
 
   void _handleSave() {
     setState(() => _isSaved = !_isSaved);
     widget.post.isSaved = _isSaved;
-
     final item = SavedItemModel(
       title: widget.post.title,
-      subtitle: widget.post.description,
-      image: widget.post.imageFile?.path ?? widget.post.imageAssetPath ?? '',
+      subtitle: widget.post.content,
+      image: widget.post.firstImageUrl ?? '',
       type: SavedType.post,
     );
-
     if (_isSaved) {
       context.read<SavedItemCubit>().addItem(item);
     } else {
@@ -95,25 +97,49 @@ class _QuestionCardState extends State<QuestionCard> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardTheme.color ?? theme.colorScheme.surface;
+    final w = SizeConfig.width(context);
+    final h = SizeConfig.height(context);
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration(context),
+      margin: EdgeInsets.symmetric(
+        horizontal: w * 0.04,
+        vertical: h * 0.008,
+      ),
+      padding: EdgeInsets.all(w * 0.04),
+      decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
+        borderRadius: AppFontSize.f14,
+      ).copyWith(color: cardColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Header ────────────────────────────────────────────
+          // ── Header ────────────────────────────────────────────────
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Avatar
               CircleAvatar(
-                radius: 20,
+                radius: w * 0.05,
                 backgroundColor: const Color(0xFF1B7F9B),
-                child: Text(
-                  widget.post.authorInitials,
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
-                ),
+                backgroundImage: widget.post.authorImageUrl != null
+                    ? NetworkImage(widget.post.authorImageUrl!)
+                    : null,
+                child: widget.post.authorImageUrl == null
+                    ? Text(
+                        widget.post.authorInitials,
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: w * 0.03,
+                        ),
+                      )
+                    : null,
               ),
-              const SizedBox(width: 12),
+
+              SizedBox(width: w * 0.03),
+
+              // Author + date — MUST be Expanded to prevent overflow
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,109 +147,148 @@ class _QuestionCardState extends State<QuestionCard> {
                     Text(
                       widget.post.authorName,
                       style: AppStyle.socialButtonTextStyle.copyWith(
-                        fontSize: 15,
+                        fontSize: AppFontSize.f14,
+                        color: theme.colorScheme.onSurface,
                       ),
-                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis, // ✅
                     ),
                     Text(
-                      widget.post.createdAt.toString().substring(0, 16),
-                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      widget.post.createdAt.length >= 10
+                          ? widget.post.createdAt.substring(0, 10)
+                          : widget.post.createdAt,
+                      style: TextStyle(
+                        color: AppColors.iconGrey,
+                        fontSize: AppFontSize.f11,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis, // ✅
                     ),
                   ],
                 ),
               ),
-              _buildCategoryTag(),
+
+              SizedBox(width: w * 0.02),
+ 
+              // Tag — only takes what it needs
+              PostTypeTag(label: AppConstants.question),
             ],
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: h * 0.015),
 
-          // ── Title ─────────────────────────────────────────────
+          // ── Title ─────────────────────────────────────────────────
           Text(
             widget.post.title,
             style: AppStyle.titleOfContainer.copyWith(
               fontWeight: FontWeight.bold,
-              fontSize: AppFontSize.f16,
+              fontSize: AppFontSize.f15,
+              color: theme.colorScheme.onSurface,
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis, // ✅
           ),
 
-          const SizedBox(height: 8),
+          SizedBox(height: h * 0.008),
 
-          // ── Description ───────────────────────────────────────
+          // ── Content ───────────────────────────────────────────────
           Text(
-            widget.post.description,
-            style: AppStyle.containerSubtitle.copyWith(height: 1.4),
+            widget.post.content,
+            style: AppStyle.containerSubtitle.copyWith(
+              height: 1.4,
+              color: theme.textTheme.bodyMedium?.color,
+            ),
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis, // ✅
           ),
 
-          // ── Post image ────────────────────────────────────────
-          if (widget.post.imageFile != null ||
-              widget.post.imageAssetPath != null) ...[
-            const SizedBox(height: 12),
+          // ── Image ─────────────────────────────────────────────────
+          if (widget.post.firstImageUrl != null) ...[
+            SizedBox(height: h * 0.012),
             ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: widget.post.imageFile != null
-                  ? Image.file(
-                      widget.post.imageFile!,
-                      width: double.infinity,
-                      height: 180,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      widget.post.imageAssetPath!,
-                      width: double.infinity,
-                      height: 180,
-                      fit: BoxFit.cover,
-                    ),
+              borderRadius: BorderRadius.circular(AppFontSize.f12),
+              child: Image.network(
+                widget.post.firstImageUrl!,
+                width: double.infinity,
+                height: h * 0.22,
+                fit: BoxFit.cover,
+                loadingBuilder: (_, child, progress) => progress == null
+                    ? child
+                    : Container(
+                        width: double.infinity,
+                        height: h * 0.22,
+                        color: theme.colorScheme.surface,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.cyanColor,
+                          ),
+                        ),
+                      ),
+                errorBuilder: (_, __, ___) => Container(
+                  width: double.infinity,
+                  height: h * 0.22,
+                  color: theme.colorScheme.surface,
+                  child: const Icon(Icons.broken_image_outlined,
+                      color: AppColors.iconGrey),
+                ),
+              ),
             ),
           ],
 
-          const SizedBox(height: 16),
+          SizedBox(height: h * 0.015),
 
-          Divider(color: AppColors.midGrey.withValues(alpha: 0.4)),
+          Divider(
+            color: theme.colorScheme.outline.withValues(alpha: 0.3),
+            height: 1,
+          ),
 
-          // ── Actions ───────────────────────────────────────────
+          SizedBox(height: h * 0.005),
+
+          // ── Actions ───────────────────────────────────────────────
           Row(
             children: [
               // Like
               GestureDetector(
                 onTap: _handleLike,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       _isLiked ? Icons.favorite : Icons.favorite_border,
-                      size: 20,
+                      size: w * 0.05,
                       color: _isLiked ? Colors.red : AppColors.iconGrey,
                     ),
-                    const SizedBox(width: 6),
+                    SizedBox(width: w * 0.01),
                     Text(
-                      _likesCount.toString(),
+                      '$_likesCount',
                       style: TextStyle(
                         color: AppColors.iconGrey,
-                        fontSize: AppFontSize.f13,
+                        fontSize: AppFontSize.f12,
                       ),
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(width: 20),
+              SizedBox(width: w * 0.04),
 
               // Comments
               GestureDetector(
                 onTap: _handleOpenComments,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.chat_bubble_outline,
-                      size: 20,
+                      size: w * 0.05,
                       color: AppColors.iconGrey,
                     ),
-                    const SizedBox(width: 6),
+                    SizedBox(width: w * 0.01),
                     Text(
-                      '${widget.post.commentsCount} answers',
+                      '${widget.post.commentCount} answers',
                       style: TextStyle(
                         color: AppColors.iconGrey,
-                        fontSize: AppFontSize.f13,
+                        fontSize: AppFontSize.f12,
                       ),
                     ),
                   ],
@@ -233,45 +298,26 @@ class _QuestionCardState extends State<QuestionCard> {
               const Spacer(),
 
               // Share
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.share_outlined,
-                  size: 20,
-                  color: AppColors.iconGrey,
-                ),
+              GestureDetector(
+                onTap: () {},
+                child: Icon(Icons.share_outlined,
+                    size: w * 0.05, color: AppColors.iconGrey),
               ),
 
+              SizedBox(width: w * 0.03),
+
               // Bookmark
-              IconButton(
-                onPressed: _handleSave,
-                icon: Icon(
+              GestureDetector(
+                onTap: _handleSave,
+                child: Icon(
                   _isSaved ? Icons.bookmark : Icons.bookmark_border,
-                  size: 20,
+                  size: w * 0.05,
                   color: _isSaved ? AppColors.cyanColor : AppColors.iconGrey,
                 ),
               ),
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryTag() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppColors.cyanColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Text(
-        AppConstants.question,
-        style: TextStyle(
-          color: AppColors.cyanColor,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-        ),
       ),
     );
   }

@@ -32,6 +32,7 @@ class _CommunityPageState extends State<CommunityPage> {
   @override
   void initState() {
     super.initState();
+    context.read<CommunityPostCubit>().loadPosts();
   }
 
   @override
@@ -80,10 +81,13 @@ class _CommunityPageState extends State<CommunityPage> {
         backgroundColor: AppColors.cyanColor,
         child: const Icon(Icons.add, color: AppColors.white),
         onPressed: () {
-          MyNavigation.navigateTo(
-            BlocProvider.value(
-              value: context.read<CommunityPostCubit>(),
-              child: const CommunityNewPostPage(),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlocProvider.value(
+                value: context.read<CommunityPostCubit>(),
+                child: const CommunityNewPostPage(),
+              ),
             ),
           );
         },

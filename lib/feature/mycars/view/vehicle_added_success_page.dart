@@ -58,12 +58,12 @@ class _VehicleAddedSuccessPageState extends State<VehicleAddedSuccessPage>
     final height = SizeConfig.height(context);
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
           onPressed: () => MyNavigation.navigateBack(),
         ),
       ),
@@ -97,10 +97,10 @@ class _VehicleAddedSuccessPageState extends State<VehicleAddedSuccessPage>
                   child: Center(
                     child: FadeTransition(
                       opacity: _checkAnimation,
-                      child: const Icon(
+                      child:  Icon(
                         Icons.check_rounded,
                         size: 60,
-                        color: AppColors.white,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                     ),
                   ),
@@ -114,7 +114,7 @@ class _VehicleAddedSuccessPageState extends State<VehicleAddedSuccessPage>
                 style: AppStyle.labelStyle.copyWith(
                   fontSize: AppFontSize.f24,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.black,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
               SizedBox(height: height * 0.012),
@@ -127,7 +127,7 @@ class _VehicleAddedSuccessPageState extends State<VehicleAddedSuccessPage>
                   textAlign: TextAlign.center,
                   style: AppStyle.hintStyle.copyWith(
                     fontSize: AppFontSize.f14,
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).textTheme.bodyMedium!.color,
                     height: 1.5,
                   ),
                 ),
@@ -195,7 +195,7 @@ class _VehicleSummaryCard extends StatelessWidget {
       decoration: BoxDecorationWidget.customBoxDecoration(context,
         borderRadius: AppFontSize.f16,
       ).copyWith(
-        color: AppColors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
             color: AppColors.black.withValues(alpha: 0.06),
@@ -225,9 +225,9 @@ class _VehicleSummaryCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                child: const Icon(
+                child:  Icon(
                   Icons.directions_car_rounded,
-                  color: AppColors.white,
+                  color: Theme.of(context).iconTheme.color,
                   size: 32,
                 ),
               ),
@@ -248,7 +248,7 @@ class _VehicleSummaryCard extends StatelessWidget {
                       _getVehicleSubtitle(),
                       style: AppStyle.hintStyle.copyWith(
                         fontSize: AppFontSize.f13,
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).textTheme.bodyMedium!.color,
                       ),
                     ),
                   ],
@@ -258,7 +258,7 @@ class _VehicleSummaryCard extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Divider(
-            color: AppColors.containerGrey,
+            color: Theme.of(context).dividerColor,
             thickness: 1,
           ),
           const SizedBox(height: 16),
@@ -281,8 +281,8 @@ class _VehicleSummaryCard extends StatelessWidget {
   }
 
   String _getVehicleTitle() {
-    final brand = (vehicle.brand ?? "").trim();
-    final model = (vehicle.model ?? "").trim();
+    final brand = (vehicle.brandName ).trim();
+    final model = (vehicle.modelName ).trim();
     if (brand.isEmpty && model.isEmpty) {
       return AppConstants.yourVehicle;
     }
@@ -292,7 +292,7 @@ class _VehicleSummaryCard extends StatelessWidget {
   }
 
   String _getVehicleSubtitle() {
-    if (vehicle.year == null) {
+    if (vehicle.year == 0) {
       return AppConstants.model;
     }
     return "${vehicle.year} ${AppConstants.model}";
@@ -341,7 +341,7 @@ class _DetailItem extends StatelessWidget {
                 label,
                 style: AppStyle.hintStyle.copyWith(
                   fontSize: AppFontSize.f12,
-                  color: AppColors.iconGrey,
+                  color: Theme.of(context).iconTheme.color,
                 ),
               ),
               const SizedBox(height: 4),

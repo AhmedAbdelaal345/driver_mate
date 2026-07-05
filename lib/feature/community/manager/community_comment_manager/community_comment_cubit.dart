@@ -8,10 +8,11 @@ class CommunityCommentCubit extends Cubit<CommunityCommentState> {
 
   final CommunityCommentsRepo _repo = CommunityCommentsRepo();
 
-  // Single source of truth — never re-fetch after mutations
-  final List<CommunityCommentModel> _comments = [];
+  // ✅ Flat list is the single source of truth — matches how the API
+  // actually models replies (parentCommentId, not nesting). The tree is
+  // rebuilt from this flat list every time we emit.
+  final List<CommunityGetCommentModel> _comments = [];
 
-  // ── Fetch (only called once on page open) ─────────────────────────────────
   Future<void> fetchCommentsForPost(String postId) async {
     emit(CommunityCommentLoading());
     try {
@@ -25,21 +26,60 @@ class CommunityCommentCubit extends Cubit<CommunityCommentState> {
     }
   }
 
-  // ── Add comment (optimistic: update local list, no re-fetch) ──────────────
- void addComment(String postId, String content) {
+  // ✅ Now actually calls the repo/API instead of only touching local state.
+  // Previously the network call was commented out, so anything added here
+  // vanished the next time fetchCommentsForPost ran.
+  Future<void> addComment(String postId, String content) async {
     try {
-      final newComment = CommunityCommentModel(
-        commentId: 'comment-${DateTime.now().millisecondsSinceEpoch}',
-        postId: postId,
-        authorName: 'Current User',
-        authorInitials: 'CU',
-        content: content,
-        createdAt: DateTime.now(),
-        numberOfLikes: 0,
+      await _repo.addCommentToPost(postId: postId, content: content);
+      _comments.add(
+        CommunityGetCommentModel(
+          commentId: 'comment-${DateTime.now().millisecondsSinceEpoch}',
+          postId: postId,
+          authorName: 'Current User',
+          content: content,
+          createdAt: DateTime.now(),
+          parentCommentId: null,
+        ),
       );
+      _emitLoaded();
+    } catch (e) {
+      emit(CommunityCommentError(e.toString()));
+    }
+  }
 
-      // ❌ remove: _repo.addCommentToPost(postId, content);
-      _comments.add(newComment);
+  Future<void> addReply(String postId, String commentId, String content) async {
+    // Guard against replying to a comment that isn't in the flat list.
+    final parentExists = _comments.any((c) => c.commentId == commentId);
+    if (!parentExists) return;
+
+    try {
+      await _repo.addReplyToComment(
+        postId: postId,
+        commentId: commentId,
+        content: content,
+      );
+      _comments.add(
+        CommunityGetCommentModel(
+          commentId:
+              '$commentId-reply-${DateTime.now().millisecondsSinceEpoch}',
+          postId: postId,
+          authorName: 'Current User',
+          content: content,
+          parentCommentId: commentId, // ✅ this is what makes it a reply
+          createdAt: DateTime.now(),
+        ),
+      );
+      _emitLoaded();
+    } catch (e) {
+      emit(CommunityCommentError(e.toString()));
+    }
+  }
+
+  Future<void> removeReply(String postId, String replyId) async {
+    try {
+      await _repo.removeReply(postId: postId, replyId: replyId);
+      _comments.removeWhere((c) => c.commentId == replyId);
       _emitLoaded();
     } catch (e) {
       emit(CommunityCommentError(e.toString()));
@@ -47,96 +87,54 @@ class CommunityCommentCubit extends Cubit<CommunityCommentState> {
   }
 
   void likeComment(String postId, String commentId) {
-    try {
-      final target = _findComment(_comments, commentId);
-      if (target == null) return;
+    // ✅ Purely local UI toggle — comments are never liked through the API.
+    final target = _findFlat(commentId);
+    if (target == null) return;
 
-      target.isLiked = !target.isLiked;
-      target.numberOfLikes += target.isLiked ? 1 : -1;
+    target.isLiked = !target.isLiked;
+    target.likeCount += target.isLiked ? 1 : -1;
 
-      // ❌ remove: _repo.likeComment(commentId);
-      _emitLoaded();
-    } catch (e) {
-      emit(CommunityCommentError(e.toString()));
-    }
+    _emitLoaded();
   }
 
-  void addReply(String postId, String commentId, String content) {
-    try {
-      final parent = _findComment(_comments, commentId);
-      if (parent == null) return;
-
-      parent.replies.add(
-        CommunityCommentModel(
-          commentId:
-              '$commentId-reply-${DateTime.now().millisecondsSinceEpoch}',
-          postId: postId,
-          authorName: 'Current User',
-          authorInitials: 'CU',
-          content: content,
-          createdAt: DateTime.now(),
-          numberOfLikes: 0,
-        ),
-      );
-
-      // ❌ remove: _repo.addReplyToComment(postId, commentId, content);
-      _emitLoaded();
-    } catch (e) {
-      emit(CommunityCommentError(e.toString()));
-    }
-  }
-
-  void removeReply(String postId, String commentId, String replyId) {
-    try {
-      final parent = _findComment(_comments, commentId);
-      if (parent == null) return;
-
-      parent.replies.removeWhere((r) => r.commentId == replyId);
-
-      // ❌ remove: _repo.removeReply(commentId, replyId);
-      _emitLoaded();
-    } catch (e) {
-      emit(CommunityCommentError(e.toString()));
-    }
-  }
-
-  void editReply(
-    String postId,
-    String commentId,
-    String replyId,
-    String newContent,
-  ) {
-    try {
-      final target = _findComment(_comments, replyId);
-      if (target == null) return;
-
-      target.content = newContent;
-
-      // ❌ remove: _repo.editReplay(commentId, replyId, newContent);
-      _emitLoaded();
-    } catch (e) {
-      emit(CommunityCommentError(e.toString()));
-    }
-  }
-  // ── Helpers ───────────────────────────────────────────────────────────────
-
-  /// Recursively finds a comment/reply by ID at any nesting depth
-  CommunityCommentModel? _findComment(
-    List<CommunityCommentModel> list,
-    String id,
-  ) {
-    for (final comment in list) {
-      if (comment.commentId == id) return comment;
-      if (comment.replies.isNotEmpty) {
-        final found = _findComment(comment.replies, id);
-        if (found != null) return found;
-      }
+  // Finds a comment/reply in the flat source-of-truth list by id.
+  CommunityGetCommentModel? _findFlat(String commentId) {
+    for (final c in _comments) {
+      if (c.commentId == commentId) return c;
     }
     return null;
   }
+  // ── Tree building ──────────────────────────────────────────────────────
+  // The API gives us a flat list where each comment/reply carries
+  // parentCommentId. A top-level comment has parentCommentId == null; a
+  // reply's parentCommentId points at the commentId it replies to (and a
+  // reply-to-a-reply just chains further). We rebuild the nested structure
+  // from that flat list on every emit, rather than mutating objects that
+  // came back from a previous build.
 
-  /// Emits a shallow-copied list so BlocBuilder always detects the change
+  List<CommunityGetCommentModel> _buildTree() {
+    final topLevel = _comments.where((c) => c.parentCommentId == null).toList();
+    for (final comment in topLevel) {
+      comment.replies
+        ..clear()
+        ..addAll(_repliesOf(comment.commentId));
+    }
+    return topLevel;
+  }
+
+  List<CommunityGetCommentModel> _repliesOf(String parentId) {
+    final children = _comments
+        .where((c) => c.parentCommentId == parentId)
+        .toList();
+    for (final child in children) {
+      child.replies
+        ..clear()
+        ..addAll(_repliesOf(child.commentId));
+    }
+    return children;
+  }
+
   void _emitLoaded() {
-    emit(CommunityCommentLoaded(comments: List.from(_comments)));
+    emit(CommunityCommentLoaded(comments: _buildTree()));
   }
 }

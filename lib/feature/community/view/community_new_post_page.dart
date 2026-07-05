@@ -59,7 +59,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
         if (state is CommunityPostFailure) {
           AppNotifier.show(context, state.error, type: NotifierType.error);
         }
-        if (state is CommunityPostSuccess) {
+        if (state is CommunityCreatePostSuccess) {
           AppNotifier.show(context, state.message, type: NotifierType.success);
           Navigator.pop(context);
         }

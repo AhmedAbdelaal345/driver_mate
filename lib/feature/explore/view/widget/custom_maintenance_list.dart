@@ -21,8 +21,10 @@ class CustomMaintenanceList extends StatelessWidget {
     return BlocBuilder<MaintenanceCubit, MaintenanceState>(
       builder: (context, state) {
         if (state is MaintenanceLoading) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColors.cyanColor),
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
           );
         } else if (state is MaintenanceLoaded) {
           final items = state.centers
@@ -36,7 +38,7 @@ class CustomMaintenanceList extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 18),
                     padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
                     decoration: BoxDecoration(
-                      color: AppColors.white,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
@@ -54,8 +56,10 @@ class CustomMaintenanceList extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 s.name,
-                                style: const TextStyle(
-                                  color: AppColors.veryDarkBlue,
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.bodyLarge?.color,
                                   fontSize: 17,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -63,8 +67,10 @@ class CustomMaintenanceList extends StatelessWidget {
                             ),
                             Text(
                               '${s.distance.toStringAsFixed(1)} km',
-                              style: const TextStyle(
-                                color: AppColors.blueText,
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.color,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -87,8 +93,10 @@ class CustomMaintenanceList extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               "4.5",
-                              style: const TextStyle(
-                                color: AppColors.veryDarkBlue,
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.color,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -121,7 +129,7 @@ class CustomMaintenanceList extends StatelessWidget {
                                 ),
                               );
                             },
-                            child:  Text(
+                            child: Text(
                               AppStrings.of(context).bookNow,
                               style: TextStyle(
                                 color: Colors.white,

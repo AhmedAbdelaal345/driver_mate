@@ -1,5 +1,6 @@
 // feature/community/view/widget/all_tab_widget.dart
-import 'package:driver_mate/core/utils/app_strings.dart';
+import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/feature/community/view/widget/all_post_widget.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_header.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +10,17 @@ class AllTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children:  [
-        CommunityPostHeader(
-          postType: AppStrings.of(context).all,
-        ), // The "Ask a question" header we built
-        AllPostsList(),
-
+    // Use CustomScrollView to avoid ListView-inside-ListView scroll conflicts.
+    // AllPostsList uses shrinkWrap + NeverScrollableScrollPhysics internally,
+    // so it must live inside a single scrollable that owns the viewport.
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: CommunityPostHeader(postType: AppConstants.all),
+        ),
+        const SliverToBoxAdapter(
+          child: AllPostsList(),
+        ),
       ],
     );
   }

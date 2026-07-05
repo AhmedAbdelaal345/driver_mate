@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:driver_mate/core/utils/app_colors.dart';
+// import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_cubit.dart';
@@ -71,9 +71,10 @@ class _CommunityPostHeaderState extends State<CommunityPostHeader> {
       // Only listen when a terminal state is reached so we don't fire the
       // side-effect on intermediate Loading emits.
       listenWhen: (_, current) =>
-          current is CommunityPostSuccess || current is CommunityPostFailure,
+          current is CommunityPostLoaded || current is CommunityPostFailure||
+          current is CommunityCreatePostSuccess,
       listener: (context, state) {
-        if (state is CommunityPostSuccess) {
+        if (state is CommunityCreatePostSuccess) {
           // Clear local form state on confirmed success from the cubit.
           _controller.clear();
           setState(() => _pickedImage = null);

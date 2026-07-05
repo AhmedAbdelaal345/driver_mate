@@ -30,14 +30,16 @@ class DailyCarDetailsPage extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Scaffold(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0,
           centerTitle: false,
           title: Text(
             AppStrings.of(context).myDailyDriver,
-            style: AppStyle.appBarTitle,
+            style: AppStyle.appBarTitle.copyWith(
+              color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+            ),
           ),
           leading: const LeadingIcon(),
           actions: [
@@ -48,7 +50,10 @@ class DailyCarDetailsPage extends StatelessWidget {
                   AddVehiclePage(isEditPage: true, vehicle: vehicle),
                 );
               },
-              icon: const Icon(Icons.edit_outlined, color: AppColors.iconGrey),
+              icon: Icon(
+                Icons.edit_outlined,
+                color: Theme.of(context).iconTheme.color,
+              ),
             ),
           ],
         ),
@@ -115,7 +120,7 @@ class DailyCarDetailsPage extends StatelessWidget {
           AppStrings.of(context).removeVehicleMessage,
           style: AppStyle.containerSubtitle.copyWith(
             fontSize: AppFontSize.f13,
-            color: AppColors.textGrey,
+            color: Theme.of(context).iconTheme.color,
           ),
         ),
         actions: [
@@ -125,7 +130,7 @@ class DailyCarDetailsPage extends StatelessWidget {
               AppStrings.of(context).cancel,
               style: AppStyle.containerSubtitle.copyWith(
                 fontSize: AppFontSize.f13,
-                color: AppColors.textGrey,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),
@@ -181,7 +186,7 @@ class _ServiceInfoSection extends StatelessWidget {
             icon: Icons.speed_outlined,
             iconColor: AppColors.green,
             label: AppStrings.of(context).mileage,
-            value: '${vehicle.millAge?.toStringAsFixed(0) ?? '0'} km',
+            value: '${vehicle.currentMileage.toStringAsFixed(0)} km',
           ),
         ),
       ],
@@ -208,7 +213,7 @@ class _QuickActionsSection extends StatelessWidget {
         const SizedBox(height: 12),
         QuickActionItem(
           icon: Icons.event_note_outlined,
-          iconColor: AppColors.veryDarkBlue,
+          iconColor: Theme.of(context).colorScheme.primary,
           title: AppStrings.of(context).bookMaintenance,
           subtitle: AppStrings.of(context).bookMaintenanceDescription,
           trailing: Icons.build_outlined,
@@ -232,7 +237,7 @@ class _QuickActionsSection extends StatelessWidget {
         const SizedBox(height: 12),
         QuickActionItem(
           icon: Icons.history_outlined,
-          iconColor: AppColors.iconGrey,
+          iconColor: Theme.of(context).iconTheme.color ?? AppColors.iconGrey,
           title: AppStrings.of(context).viewMaintenanceHistory,
           subtitle: AppStrings.of(context).viewMaintenanceHistoryDescription,
           trailing: Icons.description_outlined,
@@ -326,7 +331,7 @@ class _SectionTitle extends StatelessWidget {
       title,
       style: AppStyle.boldSmallText.copyWith(
         fontSize: AppFontSize.f11,
-        color: AppColors.iconGrey,
+        color: Theme.of(context).iconTheme.color,
         letterSpacing: 0.5,
         fontWeight: FontWeight.w600,
       ),

@@ -1,10 +1,14 @@
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
-import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
+import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/feature/community/data/model/community_fetch_post_model.dart';
 import 'package:driver_mate/feature/community/manager/community_comment_manager/community_comment_cubit.dart';
 import 'package:driver_mate/feature/community/manager/community_comment_manager/community_comment_state.dart';
+import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_cubit.dart';
+import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_state.dart';
+import 'package:driver_mate/feature/community/view/community_comment_page.dart';
 import 'package:driver_mate/feature/saved_item/data/model/saved_item_model.dart';
 import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class QuestionDetailsCardWidget extends StatefulWidget {
   const QuestionDetailsCardWidget({super.key, required this.post});
 
-  final CommunityPostModel post;
+  final CommunityFetchPostModel post;
 
   @override
   State<QuestionDetailsCardWidget> createState() =>
@@ -21,8 +25,7 @@ class QuestionDetailsCardWidget extends StatefulWidget {
 }
 
 class _QuestionDetailsCardWidgetState extends State<QuestionDetailsCardWidget> {
-  // Local UI state — mirrors model values as initial values,
-  // then owned by this widget so setState works correctly
+  // Local UI copy — synced back to model after each mutation
   late bool _isLiked;
   late int _likesCount;
   late bool _isSaved;
@@ -30,247 +33,306 @@ class _QuestionDetailsCardWidgetState extends State<QuestionDetailsCardWidget> {
   @override
   void initState() {
     super.initState();
-    _isLiked = widget.post.isLiked;
-    _likesCount = widget.post.likesCount;
-    _isSaved = widget.post.isSaved;
+    _isLiked = widget.post.isLikedByCurrentUser;
+    _likesCount = widget.post.likeCount;
+    _isSaved = widget.post.isSaved ?? false;
   }
 
-  // ── Like ──────────────────────────────────────────────────────────────────
+  // ── Like — optimistic via CommunityPostCubit ────────────────────
   void _handleLike() {
     setState(() {
       _isLiked = !_isLiked;
       _likesCount += _isLiked ? 1 : -1;
     });
 
-    // Keep model in sync for when this widget is rebuilt from parent
-    widget.post.isLiked = _isLiked;
-    widget.post.likesCount = _likesCount;
+    context.read<CommunityPostCubit>().toggleLike(postId: widget.post.id);
   }
 
-  // ── Bookmark ──────────────────────────────────────────────────────────────
   void _handleSave() {
     setState(() => _isSaved = !_isSaved);
     widget.post.isSaved = _isSaved;
 
-    final savedItem = SavedItemModel(
+    final item = SavedItemModel(
       title: widget.post.title,
-      subtitle: widget.post.description,
-      // prefer file path, fall back to asset path, then empty
-      image: widget.post.imageFile?.path ?? widget.post.imageAssetPath ?? '',
+      subtitle: widget.post.content,
+      image: widget.post.firstImageUrl ?? '',
       type: SavedType.post,
     );
 
     if (_isSaved) {
-      context.read<SavedItemCubit>().addItem(savedItem);
+      context.read<SavedItemCubit>().addItem(item);
     } else {
-      context.read<SavedItemCubit>().removeItem(savedItem);
+      context.read<SavedItemCubit>().removeItem(item);
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).iconTheme.color!.withValues(alpha: 0.3),
-            width: 1,
-          ),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ── Header ────────────────────────────────────────────
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                child: Text(
-                  widget.post.authorInitials,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.surface,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.post.authorName,
-                    style: AppStyle.socialButtonTextStyle.copyWith(
-                      fontSize: 15,
-                      color: Theme.of(context).textTheme.bodyLarge?.color,
-                    ),
-                  ),
-                  Text(
-                    widget.post.createdAt.toString().substring(0, 16),
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.bodySmall?.color,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              _buildCategoryTag(),
-            ],
-          ),
-
-          const SizedBox(height: 16),
-
-          // ── Title ─────────────────────────────────────────────
-          Text(
-            widget.post.title,
-            style: AppStyle.titleOfContainer.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: AppFontSize.f16,
-              color: Theme.of(context).textTheme.bodyLarge?.color,
-            ),
-          ),
-
-          const SizedBox(height: 8),
-
-          // ── Description ───────────────────────────────────────
-          Text(
-            widget.post.description,
-            style: AppStyle.containerSubtitle.copyWith(
-              color: Theme.of(context).textTheme.bodyMedium?.color,
-              height: 1.4,
-            ),
-          ),
-
-          // ── Image ─────────────────────────────────────────────
-          if (widget.post.imageAssetPath != null ||
-              widget.post.imageFile != null) ...[
-            const SizedBox(height: 12),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: widget.post.imageFile != null
-                  ? Image.file(
-                      // real file from gallery/camera
-                      widget.post.imageFile!,
-                      width: double.infinity,
-                      height: 180,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      // bundled asset for seed data
-                      widget.post.imageAssetPath!,
-                      width: double.infinity,
-                      height: 180,
-                      fit: BoxFit.cover,
-                    ),
-            ),
-          ],
-          const SizedBox(height: 16),
-
-          Divider(
-            color: Theme.of(context).dividerColor,
-            radius: BorderRadius.circular(12),
-          ),
-
-          // ── Actions ───────────────────────────────────────────
-          Row(
-            children: [
-              // Like
-              GestureDetector(
-                onTap: _handleLike,
-                child: Row(
-                  children: [
-                    Icon(
-                      _isLiked ? Icons.favorite : Icons.favorite_border,
-                      size: 20,
-                      color: _isLiked ? Colors.red : AppColors.iconGrey,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      _likesCount.toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodySmall?.color,
-                        fontSize: AppFontSize.f13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(width: 20),
-
-              // Comment count — navigates to comments page
-              BlocBuilder<CommunityCommentCubit, CommunityCommentState>(
-                builder: (context, state) {
-                  // Derive count from loaded state, fall back to model value
-                  final count = state is CommunityCommentLoaded
-                      ? state.comments.length
-                      : widget.post.commentsCount;
-
-                  return Row(
-                    children: [
-                      Icon(
-                        Icons.chat_bubble_outline,
-                        size: 20,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        '$count answers',
-                        style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyMedium?.color,
-                          fontSize: AppFontSize.f13,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              const Spacer(),
-
-              // Share
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.share_outlined,
-                  size: 20,
-                  color: Theme.of(context).iconTheme.color,
-                ),
-              ),
-
-              // Bookmark
-              IconButton(
-                onPressed: _handleSave,
-                icon: Icon(
-                  _isSaved ? Icons.bookmark : Icons.bookmark_border,
-                  size: 20,
-                  color: _isSaved
-                      ? Theme.of(context).colorScheme.secondary
-                      : Theme.of(context).iconTheme.color,
-                ),
-              ),
-            ],
-          ),
-        ],
+  void _handleOpenComments() {
+    MyNavigation.navigateTo(
+      BlocProvider(
+        create: (_) => CommunityCommentCubit(),
+        child: CommunityCommentPage(post: widget.post),
       ),
     );
   }
 
-  Widget _buildCategoryTag() {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardTheme.color ?? theme.colorScheme.surface;
+
+    return BlocListener<CommunityPostCubit, CommunityPostState>(
+      listenWhen: (_, current) =>
+          current is CommunityLikeToggleSuccess ||
+          current is CommunityPostFailure,
+      listener: (context, state) {
+        if (state is CommunityLikeToggleSuccess) {
+          setState(() {
+            _isLiked = state.isLiked;
+            _likesCount = state
+                .numberoflikes; // match actual field name in your state class
+          });
+        } else if (state is CommunityPostFailure) {
+          setState(() {
+            _isLiked = widget.post.isLikedByCurrentUser;
+            _likesCount = widget.post.likeCount;
+          });
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecorationWidget.customBoxDecoration(context).copyWith(
+          color: cardColor,
+          border: Border(
+            bottom: BorderSide(
+              color: theme.colorScheme.outline.withValues(alpha: 0.3),
+              width: 1,
+            ),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Header ─────────────────────────────────────────────────
+            Row(
+              children: [
+                // Avatar — real photo if available
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: const Color(0xFF1B7F9B),
+                  backgroundImage: widget.post.authorImageUrl != null
+                      ? NetworkImage(widget.post.authorImageUrl!)
+                      : null,
+                  child: widget.post.authorImageUrl == null
+                      ? Text(
+                          widget.post.authorInitials,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        )
+                      : null,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.post.authorName,
+                        style: AppStyle.socialButtonTextStyle.copyWith(
+                          fontSize: 15,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        widget.post.createdAt.substring(0, 10),
+                        style: TextStyle(
+                          color: AppColors.iconGrey,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                _CategoryTag(postType: widget.post.postType),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+
+            // ── Title ───────────────────────────────────────────────────
+            Text(
+              widget.post.title,
+              style: AppStyle.titleOfContainer.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: AppFontSize.f16,
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            // ── Content ─────────────────────────────────────────────────
+            Text(
+              widget.post.content,
+              style: AppStyle.containerSubtitle.copyWith(
+                height: 1.4,
+                color: theme.textTheme.bodyMedium?.color,
+              ),
+            ),
+
+            // ── Post image (real network image) ─────────────────────────
+            if (widget.post.firstImageUrl != null) ...[
+              const SizedBox(height: 12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  widget.post.firstImageUrl!,
+                  width: double.infinity,
+                  height: 200,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (_, child, progress) => progress == null
+                      ? child
+                      : Container(
+                          width: double.infinity,
+                          height: 200,
+                          color: theme.colorScheme.surface,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.cyanColor,
+                            ),
+                          ),
+                        ),
+                  errorBuilder: (_, __, ___) => Container(
+                    width: double.infinity,
+                    height: 200,
+                    color: theme.colorScheme.surface,
+                    child: const Icon(
+                      Icons.broken_image_outlined,
+                      color: AppColors.iconGrey,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+
+            const SizedBox(height: 16),
+
+            Divider(color: theme.colorScheme.outline.withValues(alpha: 0.3)),
+
+            // ── Actions ─────────────────────────────────────────────────
+            Row(
+              children: [
+                // Like
+                GestureDetector(
+                  onTap: _handleLike,
+                  child: Row(
+                    children: [
+                      Icon(
+                        _isLiked ? Icons.favorite : Icons.favorite_border,
+                        size: 20,
+                        color: _isLiked ? Colors.red : AppColors.iconGrey,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        _likesCount.toString(),
+                        style: TextStyle(
+                          color: AppColors.iconGrey,
+                          fontSize: AppFontSize.f13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(width: 20),
+
+                // Comments — live count from cubit
+                GestureDetector(
+                  onTap: _handleOpenComments,
+                  child:
+                      BlocBuilder<CommunityCommentCubit, CommunityCommentState>(
+                        builder: (context, commentState) {
+                          final count = commentState is CommunityCommentLoaded
+                              ? commentState.comments.length
+                              : widget.post.commentCount;
+                          return Row(
+                            children: [
+                              const Icon(
+                                Icons.chat_bubble_outline,
+                                size: 20,
+                                color: AppColors.iconGrey,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                '$count answers',
+                                style: TextStyle(
+                                  color: AppColors.iconGrey,
+                                  fontSize: AppFontSize.f13,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                ),
+
+                const Spacer(),
+
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.share_outlined,
+                    size: 20,
+                    color: AppColors.iconGrey,
+                  ),
+                ),
+
+                IconButton(
+                  onPressed: _handleSave,
+                  icon: Icon(
+                    _isSaved ? Icons.bookmark : Icons.bookmark_border,
+                    size: 20,
+                    color: _isSaved ? AppColors.cyanColor : AppColors.iconGrey,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Category tag — derived from postType int ──────────────────────────────
+class _CategoryTag extends StatelessWidget {
+  const _CategoryTag({required this.postType});
+  final int postType;
+
+  static const _labels = {
+    0: 'Question',
+    1: 'Tip',
+    2: 'Review',
+    3: 'Marketplace',
+    4: 'Problem',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final label = _labels[postType] ?? 'Post';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.1),
+        color: AppColors.cyanColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
-      child:  Text(
-        AppConstants.question,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: AppColors.cyanColor,
           fontSize: 12,
           fontWeight: FontWeight.bold,
         ),

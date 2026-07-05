@@ -1,22 +1,24 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
+import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/community/data/model/community_comment_model.dart';
 import 'package:driver_mate/feature/community/manager/community_comment_manager/community_comment_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CommentCard extends StatefulWidget {
-  const CommentCard({super.key, required this.comment});
+  const CommentCard({super.key, required this.comment, required this.postId});
 
-  final CommunityCommentModel comment;
+  final CommunityGetCommentModel comment;
+  final String postId;
 
   @override
   State<CommentCard> createState() => _CommentCardState();
 }
 
 class _CommentCardState extends State<CommentCard> {
-  // Local UI-only state (NOT synced to Cubit — only controls field visibility)
+  // Local UI-only — does NOT need to go through cubit
   bool _showReplyField = false;
   final TextEditingController _replyController = TextEditingController();
 
@@ -26,68 +28,63 @@ class _CommentCardState extends State<CommentCard> {
     super.dispose();
   }
 
-  // ── Actions — all go through Cubit, no setState for data ─────────────────
-
-  void _handleLike() {
-    // context.read: fire-and-forget, no rebuild needed here
-    // The Cubit emits CommunityCommentLoaded → BlocBuilder in parent rebuilds
-    context.read<CommunityCommentCubit>().likeComment(
-      widget.comment.postId,
-      widget.comment.commentId,
-    );
-  }
-
   void _handleAddReply() {
     final text = _replyController.text.trim();
     if (text.isEmpty) return;
 
     context.read<CommunityCommentCubit>().addReply(
-      widget.comment.postId,
+      widget.postId,
       widget.comment.commentId,
       text,
     );
 
     _replyController.clear();
-    setState(() => _showReplyField = false); // only local UI toggle
+    setState(() => _showReplyField = false);
   }
 
-  void _handleDelete() {
-    context.read<CommunityCommentCubit>().removeReply(
-      widget.comment.postId,
-      widget.comment.commentId,
-      widget.comment.commentId,
-    );
+  String _formatDate(DateTime dt) {
+    final now = DateTime.now();
+    final diff = now.difference(dt);
+    if (diff.inMinutes < 1) return 'just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return '${diff.inHours}h ago';
+    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    return '${dt.day}/${dt.month}/${dt.year}';
   }
 
-  void _handleEdit() {
-    _showEditDialog(context);
+  String _initials(String name) {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return '?';
+    if (trimmed.length == 1) return trimmed.toUpperCase();
+    return trimmed.substring(0, 2).toUpperCase();
   }
-
-  // ─────────────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardTheme.color ?? theme.colorScheme.surface;
+
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.midGrey.withValues(alpha: 0.15)),
-      ),
+      decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
+        borderRadius: AppFontSize.f12,
+      ).copyWith(color: cardColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Header ────────────────────────────────────────────
+          // ── Header ────────────────────────────────────────────────
           Row(
             children: [
               CircleAvatar(
                 radius: 18,
-                backgroundColor: Theme.of(context).colorScheme.secondary,
+                backgroundColor: AppColors.cyanColor,
                 child: Text(
-                  widget.comment.authorInitials,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
+                  _initials(widget.comment.authorName),
+                  style: const TextStyle(
+                    color: AppColors.white,
                     fontWeight: FontWeight.bold,
+                    fontSize: 13,
                   ),
                 ),
               ),
@@ -100,83 +97,87 @@ class _CommentCardState extends State<CommentCard> {
                       widget.comment.authorName,
                       style: AppStyle.socialButtonTextStyle.copyWith(
                         fontSize: AppFontSize.f14,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                     Text(
-                      widget.comment.createdAt.toString().substring(0, 16),
-                      style: TextStyle(
-                        color: Theme.of(context).iconTheme.color,
+                      _formatDate(widget.comment.createdAt),
+                      style: AppStyle.containerSubtitle.copyWith(
+                        color: AppColors.iconGrey,
                         fontSize: AppFontSize.f11,
                       ),
                     ),
                   ],
                 ),
               ),
-              // ── Edit / Delete menu ─────────────────────────
-              PopupMenuButton<String>(
-                onSelected: (value) {
-                  if (value == 'delete') _handleDelete();
-                  if (value == 'edit') _handleEdit();
-                },
-                itemBuilder: (_) => const [
-                  PopupMenuItem(value: 'edit', child: Text('Edit')),
-                  PopupMenuItem(value: 'delete', child: Text('Delete')),
-                ],
-              ),
             ],
           ),
 
           const SizedBox(height: 12),
 
-          // ── Content ───────────────────────────────────────────
+          // ── Content ───────────────────────────────────────────────
           Text(
             widget.comment.content,
-            style: AppStyle.containerSubtitle.copyWith(height: 1.4),
+            style: AppStyle.containerSubtitle.copyWith(
+              height: 1.4,
+              color: theme.textTheme.bodyMedium?.color,
+            ),
           ),
 
           const SizedBox(height: 14),
 
-          // ── Actions row ───────────────────────────────────────
+          // ── Actions row ───────────────────────────────────────────
           Row(
             children: [
-              // Like button — IconButton only, no wrapping GestureDetector
-              IconButton(
-                onPressed: _handleLike,
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                icon: Icon(
-                  widget.comment.isLiked
-                      ? Icons.favorite
-                      : Icons.favorite_border,
-                  size: 20,
-                  color: widget.comment.isLiked
-                      ? AppColors.red
-                      : AppColors.iconGrey,
+              // Likes not supported at comment level (API only has post likes)
+              // Shown as non-interactive placeholder for UI consistency
+              GestureDetector(
+                onTap: () => context.read<CommunityCommentCubit>().likeComment(
+                  widget.postId,
+                  widget.comment.commentId,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      widget.comment.isLiked
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      size: 18,
+                      color: widget.comment.isLiked
+                          ? Colors.red
+                          : AppColors.iconGrey,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      widget.comment.likeCount.toString(),
+                      style: TextStyle(
+                        color: AppColors.iconGrey,
+                        fontSize: AppFontSize.f12,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-              const SizedBox(width: 6),
-
+              const SizedBox(width: 4),
               Text(
-                widget.comment.numberOfLikes.toString(),
+                '0',
                 style: TextStyle(
-                  color: Theme.of(context).iconTheme.color,
-                  fontSize: AppFontSize.f13,
+                  color: AppColors.iconGrey,
+                  fontSize: AppFontSize.f12,
                 ),
               ),
 
               const SizedBox(width: 20),
 
-              // Reply toggle — local UI only
+              // Reply toggle
               GestureDetector(
                 onTap: () => setState(() => _showReplyField = !_showReplyField),
                 child: Text(
                   _showReplyField ? 'Cancel' : 'Reply',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                  style: const TextStyle(
+                    color: AppColors.cyanColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: AppFontSize.f13,
+                    fontSize: 13,
                   ),
                 ),
               ),
@@ -184,9 +185,10 @@ class _CommentCardState extends State<CommentCard> {
               if (widget.comment.replies.isNotEmpty) ...[
                 const SizedBox(width: 16),
                 Text(
-                  '${widget.comment.replies.length} ${widget.comment.replies.length == 1 ? 'reply' : 'replies'}',
+                  '${widget.comment.replies.length} '
+                  '${widget.comment.replies.length == 1 ? 'reply' : 'replies'}',
                   style: TextStyle(
-                    color: Theme.of(context).iconTheme.color,
+                    color: AppColors.iconGrey,
                     fontSize: AppFontSize.f12,
                   ),
                 ),
@@ -194,7 +196,7 @@ class _CommentCardState extends State<CommentCard> {
             ],
           ),
 
-          // ── Reply input field ─────────────────────────────────
+          // ── Reply input ───────────────────────────────────────────
           if (_showReplyField) ...[
             const SizedBox(height: 12),
             Row(
@@ -203,18 +205,8 @@ class _CommentCardState extends State<CommentCard> {
                   child: TextFormField(
                     controller: _replyController,
                     autofocus: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Write a reply...',
-                      filled: true,
-                      fillColor: AppColors.midGrey.withValues(alpha: 0.08),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      ),
                     ),
                   ),
                 ),
@@ -224,21 +216,17 @@ class _CommentCardState extends State<CommentCard> {
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: AppColors.cyanColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(
-                      Icons.send,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+                    child: const Icon(Icons.send, color: AppColors.white),
                   ),
                 ),
               ],
             ),
           ],
 
-          // ── Recursive replies ─────────────────────────────────
-          // Indented left — same CommentCard widget, works at any depth
+          // ── Recursive replies — indented ──────────────────────────
           if (widget.comment.replies.isNotEmpty) ...[
             const SizedBox(height: 14),
             Padding(
@@ -248,84 +236,16 @@ class _CommentCardState extends State<CommentCard> {
                     .map(
                       (reply) => Padding(
                         padding: const EdgeInsets.only(bottom: 10),
-                        child: CommentCard(comment: reply),
+                        child: CommentCard(
+                          comment: reply,
+                          postId: widget.postId,
+                        ),
                       ),
                     )
                     .toList(),
               ),
             ),
           ],
-        ],
-      ),
-    );
-  }
-
-  // ── Edit dialog ───────────────────────────────────────────────────────────
-  void _showEditDialog(BuildContext context) {
-    final controller = TextEditingController(text: widget.comment.content);
-
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(
-          'Edit Comment',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        content: TextFormField(
-          controller: controller,
-          maxLines: 3,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Theme.of(
-              context,
-            ).colorScheme.surface.withValues(alpha: 0.08),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              foregroundColor: Theme.of(context).colorScheme.surface,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            onPressed: () {
-              final text = controller.text.trim();
-              if (text.isEmpty) return;
-
-              // Use outer context which has CommunityCommentCubit in tree
-              context.read<CommunityCommentCubit>().editReply(
-                widget.comment.postId,
-                widget.comment.commentId,
-                widget.comment.commentId,
-                text,
-              );
-
-              Navigator.pop(context);
-            },
-            child: Text(
-              'Save',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.surface,
-              ),
-            ),
-          ),
         ],
       ),
     );

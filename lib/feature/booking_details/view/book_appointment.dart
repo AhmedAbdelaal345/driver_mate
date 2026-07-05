@@ -1,6 +1,6 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
-import 'package:driver_mate/core/utils/app_colors.dart';
+// import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
 // import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
@@ -55,7 +55,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
     super.initState();
     // Load vehicles when page opens
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      VehicalCubit.get(context).loadCar();
+      VehicalCubit.get(context).fetchVehicles();
     });
   }
 

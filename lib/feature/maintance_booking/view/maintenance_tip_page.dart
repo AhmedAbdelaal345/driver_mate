@@ -27,20 +27,22 @@ class MaintenanceTipPage extends StatelessWidget {
       create: (context) => MaintenanceTipCubit(MaintenanceTipRepo())..loadTip(),
 
       child: Scaffold(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.white,
-          title:  Text(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          title: Text(
             AppStrings.of(context).maintenanceTip,
-            style: AppStyle.appBarTitle,
+            style: AppStyle.appBarTitle.copyWith(
+              color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+            ),
           ),
           leading: const LeadingIcon(),
-          actions: const [
-            Icon(Icons.bookmark_border_outlined, color: AppColors.iconGrey),
+          actions:  [
+            Icon(Icons.bookmark_border_outlined, color: Theme.of(context).iconTheme.color),
             SizedBox(width: 12),
-            Icon(Icons.share, color: AppColors.iconGrey),
+            Icon(Icons.share, color: Theme.of(context).iconTheme.color),
             SizedBox(width: 12),
           ],
         ),
@@ -48,8 +50,8 @@ class MaintenanceTipPage extends StatelessWidget {
         body: BlocBuilder<MaintenanceTipCubit, MaintenanceTipState>(
           builder: (context, state) {
             if (state is MaintenanceTipLoading) {
-              return const Center(
-                child: CircularProgressIndicator(color: AppColors.blue),
+              return  Center(
+                child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
               );
             } else if (state is MaintenanceTipError) {
               return Center(child: Text(state.message));

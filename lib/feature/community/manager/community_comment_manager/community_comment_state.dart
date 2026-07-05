@@ -7,7 +7,7 @@ class CommunityCommentInitial extends CommunityCommentState {}
 class CommunityCommentLoading extends CommunityCommentState {}
 
 class CommunityCommentLoaded extends CommunityCommentState {
-  final List<CommunityCommentModel> comments;
+  final List<CommunityGetCommentModel> comments;
 
   CommunityCommentLoaded({required this.comments});
 }

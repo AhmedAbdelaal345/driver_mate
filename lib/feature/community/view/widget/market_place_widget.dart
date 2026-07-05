@@ -1,13 +1,18 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
+import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
-import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
+import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/community/data/model/community_fetch_post_model.dart';
+// import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/manager/community_comment_manager/community_comment_cubit.dart';
 import 'package:driver_mate/feature/community/view/community_comment_page.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
 import 'package:driver_mate/feature/community/view/widget/market_place_post_header.dart';
+import 'package:driver_mate/feature/community/view/widget/post_type_tag_widget.dart';
 import 'package:driver_mate/feature/saved_item/data/model/saved_item_model.dart';
 import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +27,8 @@ class MarketplaceTab extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 100),
       children: [
         MarketplacePostHeader(),
-         CommunityPostList(
-          filterType: AppStrings.of(context).marketPlace,
+        CommunityPostList(
+          filterType: AppConstants.marketPlace,
           showEmptyState: true,
         ),
       ],
@@ -33,7 +38,7 @@ class MarketplaceTab extends StatelessWidget {
 
 class MarketplaceCard extends StatefulWidget {
   const MarketplaceCard({super.key, required this.post});
-  final CommunityPostModel post;
+  final CommunityFetchPostModel post;
 
   @override
   State<MarketplaceCard> createState() => _MarketplaceCardState();
@@ -45,7 +50,7 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
   @override
   void initState() {
     super.initState();
-    _isSaved = widget.post.isSaved;
+    _isSaved = widget.post.isSaved ?? false;
   }
 
   void _handleSave() {
@@ -54,8 +59,8 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
 
     final item = SavedItemModel(
       title: widget.post.title,
-      subtitle: widget.post.description,
-      image: widget.post.imageFile?.path ?? widget.post.imageAssetPath ?? '',
+      subtitle: widget.post.content,
+      image: widget.post.imageUrls.first,
       type: SavedType.post,
     );
 
@@ -70,13 +75,29 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
     MyNavigation.navigateTo(
       BlocProvider(
         create: (_) => CommunityCommentCubit(),
-        child: CommunityCommentPage(post: widget.post),
+        child: CommunityCommentPage(
+          post: CommunityFetchPostModel(
+            authorName: widget.post.authorName,
+            commentCount: widget.post.commentCount,
+            content: widget.post.content,
+            createdAt: widget.post.createdAt.toString(),
+            id: widget.post.id,
+            likeCount: widget.post.likeCount,
+            imagesCount: widget.post.imageUrls.length,
+            isLikedByCurrentUser: widget.post.isLikedByCurrentUser,
+            postType: 3,
+            title: widget.post.title,
+            authorImageUrl: widget.post.authorImageUrl,
+          ),
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final w = SizeConfig.width(context);
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
@@ -86,33 +107,61 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
         children: [
           // ── Header ────────────────────────────────────────────
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Avatar
               CircleAvatar(
-                radius: 18,
+                radius: w * 0.05,
                 backgroundColor: const Color(0xFF1B7F9B),
-                child: Text(
-                  widget.post.authorInitials,
-                  style: const TextStyle(color: Colors.white, fontSize: 12),
-                ),
+                backgroundImage: widget.post.authorImageUrl != null
+                    ? NetworkImage(widget.post.authorImageUrl!)
+                    : null,
+                child: widget.post.authorImageUrl == null
+                    ? Text(
+                        widget.post.authorInitials,
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: w * 0.03,
+                        ),
+                      )
+                    : null,
               ),
-              const SizedBox(width: 10),
+
+              SizedBox(width: w * 0.03),
+
+              // Author + date — MUST be Expanded to prevent overflow
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.post.authorName,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                      overflow: TextOverflow.ellipsis,
+                      style: AppStyle.socialButtonTextStyle.copyWith(
+                        fontSize: AppFontSize.f14,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis, // ✅
                     ),
                     Text(
-                      widget.post.createdAt.toString().substring(0, 16),
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      widget.post.createdAt.length >= 10
+                          ? widget.post.createdAt.substring(0, 10)
+                          : widget.post.createdAt,
+                      style: TextStyle(
+                        color: AppColors.iconGrey,
+                        fontSize: AppFontSize.f11,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis, // ✅
                     ),
                   ],
                 ),
               ),
-              _buildPartTag(),
+
+              SizedBox(width: w * 0.02),
+
+              // Tag — only takes what it needs
+              PostTypeTag(label: AppConstants.question),
             ],
           ),
 
@@ -154,7 +203,7 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
           const SizedBox(height: 12),
 
           // ── Description ───────────────────────────────────────
-          Text(widget.post.description, style: AppStyle.containerSubtitle),
+          Text(widget.post.content, style: AppStyle.containerSubtitle),
 
           const SizedBox(height: 16),
 
@@ -163,7 +212,7 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
             height: 100,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: 3,
+              itemCount: widget.post.imageUrls.length,
               separatorBuilder: (_, __) => const SizedBox(width: 8),
               itemBuilder: (_, index) => ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -173,14 +222,17 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: widget.post.imageFile != null
-                      ? Image.file(widget.post.imageFile!,
-                          fit: BoxFit.cover)
-                      : widget.post.imageAssetPath != null
-                          ? Image.asset(widget.post.imageAssetPath!,
-                              fit: BoxFit.cover)
-                          : const Icon(Icons.image_outlined,
-                              color: Colors.grey),
+                  child: widget.post.imageUrls.isNotEmpty
+                      ? Image.network(
+                          widget.post.imageUrls[index],
+                          fit: BoxFit.cover,
+                        )
+                      : widget.post.imageUrls.isNotEmpty
+                      ? Image.asset(
+                          widget.post.imageUrls[index],
+                          fit: BoxFit.cover,
+                        )
+                      : const Icon(Icons.image_outlined, color: Colors.grey),
                 ),
               ),
             ),
@@ -206,8 +258,16 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
                 AppStrings.of(context).message,
                 _handleOpenComments,
               ),
-              _buildIconBtn(Icons.phone_outlined, AppStrings.of(context).call, () {}),
-              _buildIconBtn(Icons.share_outlined, AppStrings.of(context).share, () {}),
+              _buildIconBtn(
+                Icons.phone_outlined,
+                AppStrings.of(context).call,
+                () {},
+              ),
+              _buildIconBtn(
+                Icons.share_outlined,
+                AppStrings.of(context).share,
+                () {},
+              ),
             ],
           ),
 
@@ -235,21 +295,6 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
     );
   }
 
-  Widget _buildPartTag() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.cyan.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: const Text(
-        'Part',
-        style: TextStyle(
-            color: Colors.cyan, fontSize: 11, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
   Widget _buildIconBtn(
     IconData icon,
     String label,
@@ -266,9 +311,10 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
           children: [
             Icon(icon, size: 18, color: color),
             const SizedBox(width: 4),
-            Text(label,
-                style:
-                    TextStyle(color: AppColors.textGrey, fontSize: 12)),
+            Text(
+              label,
+              style: TextStyle(color: AppColors.textGrey, fontSize: 12),
+            ),
           ],
         ),
       ),

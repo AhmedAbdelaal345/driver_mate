@@ -44,6 +44,7 @@ class ServiceHistoryItem extends StatelessWidget {
                     title,
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f13,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

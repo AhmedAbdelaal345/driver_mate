@@ -13,11 +13,13 @@ class TipPostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.08),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -48,13 +50,13 @@ class TipPostCard extends StatelessWidget {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE6F7FD),
+                        color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Text(
                         item.category,
-                        style: const TextStyle(
-                          color: AppColors.cyanColor,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
@@ -63,8 +65,8 @@ class TipPostCard extends StatelessWidget {
                     const SizedBox(width: 12),
                     Text(
                       item.readTime,
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style: TextStyle(
+                        color: Theme.of(context).iconTheme.color,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
@@ -74,8 +76,8 @@ class TipPostCard extends StatelessWidget {
                 const SizedBox(height: 18),
                 Text(
                   item.title,
-                  style: const TextStyle(
-                    color: AppColors.veryDarkBlue,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
@@ -83,8 +85,8 @@ class TipPostCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Text(
                   item.excerpt,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style: TextStyle(
+                    color: Theme.of(context).iconTheme.color,
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                     height: 1.4,
@@ -102,7 +104,7 @@ class TipPostCard extends StatelessWidget {
                     );
                   },
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
@@ -116,7 +118,7 @@ class TipPostCard extends StatelessWidget {
                       SizedBox(width: 6),
                       Icon(
                         Icons.arrow_forward,
-                        color: AppColors.cyanColor,
+                        color: Theme.of(context).colorScheme.primary,
                         size: 18,
                       ),
                     ],

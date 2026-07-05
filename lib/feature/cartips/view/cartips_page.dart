@@ -1,8 +1,10 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/cartips/view/car_tip_list_page.dart';
 import 'package:driver_mate/feature/cartips/view/widget/header_image.dart';
 import 'package:driver_mate/feature/cartips/view/widget/tip_item.dart';
 import 'package:driver_mate/feature/home/view/widget/container_title.dart';
@@ -238,7 +240,9 @@ class _CarTipsPageState extends State<CarTipsPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    MyNavigation.navigateTo(CarTipsListPage());
+                  },
                   child: Text(
                     AppStrings.of(context).viewMoreTips,
                     style: AppStyle.coursalTitleTextStyle.copyWith(

@@ -33,4 +33,25 @@ abstract class ApiKeys {
   static const String severity = "severity";
   static const String confidence = "confidence";
   static const String createdAt = "createdAt";
+  // this is for community post endpoint
+  static const String title = "title";
+  static const String postType = "postType";
+  static const String images = "images";
+  //this is for community comments endpoint
+  static const String parentCommentId = "parentCommentId";
+
+  static const String authorName = "authorName";
+
+  static const String postId = "postId";
+  // this is like endpoints
+  static const String likeCount = "likeCount";
+  static const String isLikedByCurrentUser = "isLikedByCurrentUser";
+//this is endpoints for tips
+static const String category = "category";
+static const String imageUrl = "imageUrl";
+
+// this is the keys for the my cars endpoint
+static const String brandName = "brandName";
+static const String modelName = "modelName";
+
 }

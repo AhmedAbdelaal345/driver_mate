@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:driver_mate/core/utils/app_colors.dart';
+// import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_cubit.dart';
@@ -97,9 +97,10 @@ class _MarketplacePostHeaderState extends State<MarketplacePostHeader> {
   Widget build(BuildContext context) {
     return BlocConsumer<CommunityPostCubit, CommunityPostState>(
       listenWhen: (_, current) =>
-          current is CommunityPostSuccess || current is CommunityPostFailure,
+          current is CommunityCreatePostSuccess ||
+          current is CommunityPostFailure,
       listener: (context, state) {
-        if (state is CommunityPostSuccess) {
+        if (state is CommunityCreatePostSuccess) {
           _resetLocalState();
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -375,7 +376,7 @@ class _LocationSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Text(
+          Text(
             'Select Location',
             style: TextStyle(
               fontSize: 16,
@@ -393,10 +394,12 @@ class _LocationSheet extends StatelessWidget {
                     onTap: () => onSelected(loc),
                     child: Chip(
                       label: Text(loc),
-                      backgroundColor: Theme.of(context).colorScheme.secondary.withValues(
-                        alpha: 0.1,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withValues(alpha: 0.1),
+                      labelStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
-                      labelStyle:  TextStyle(color: Theme.of(context).colorScheme.secondary),
                     ),
                   ),
                 )
@@ -436,12 +439,15 @@ class _Badge extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             label,
-            style:  TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 12),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+              fontSize: 12,
+            ),
           ),
           const SizedBox(width: 4),
           GestureDetector(
             onTap: onRemove,
-            child:  Icon(
+            child: Icon(
               Icons.close,
               size: 14,
               color: Theme.of(context).colorScheme.secondary,

@@ -3,6 +3,8 @@ import 'package:driver_mate/core/service/work_manger_service.dart';
 import 'package:driver_mate/core/theme/theme.dart';
 import 'package:driver_mate/core/theme/theme_cubit.dart';
 import 'package:driver_mate/core/theme/theme_state.dart';
+import 'package:driver_mate/feature/cartips/data/repo/car_tip_list_repo.dart';
+import 'package:driver_mate/feature/cartips/manager/cubit/car_tip_list_cubit.dart';
 import 'package:driver_mate/feature/languge/manager/languge_cubit.dart';
 import 'package:driver_mate/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -24,16 +26,33 @@ import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.da
 import 'package:driver_mate/feature/splach/view/splach_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+
+import 'package:driver_mate/core/local/shared_key.dart';
+import 'package:driver_mate/core/network/api_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait([
     LocalNotificationService.initialize(),
+    Geolocator.requestPermission(),
     WorkManagerService().init(),
   ]);
+
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final cachedToken = prefs.getString(SharedKey.accessToken);
+    if (cachedToken != null && cachedToken.trim().isNotEmpty) {
+      ApiConstants.accessToken = cachedToken;
+    }
+  } catch (e) {
+    debugPrint("Error loading cached token on startup: $e");
+  }
+
   runApp(const MyApp());
 }
 
@@ -49,11 +68,15 @@ class MyApp extends StatelessWidget {
           create: (context) => ThemeCubit()..loadTheme(),
         ),
         BlocProvider(
+          create: (context) => CarTipListCubit(CarTipLsitRepo())..loadTip(),
+        ),
+        BlocProvider(
           create: (context) => EditProfileCubit(repo: EditProfileRepo()),
         ),
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(
-          create: (context) => VehicalCubit(repo: VechicleRepo())..loadCar(),
+          create: (context) =>
+              VehicalCubit(repo: VechicleRepo())..fetchVehicles(),
         ),
         BlocProvider(
           create: (context) =>
@@ -86,6 +109,7 @@ class MyApp extends StatelessWidget {
             },
             builder: (context, locale) {
               return GetMaterialApp(
+                debugShowCheckedModeBanner: false,
                 theme: context.read<ThemeCubit>().themeData,
                 darkTheme: darkMode,
                 themeMode: context.read<ThemeCubit>().themeData == lightMode

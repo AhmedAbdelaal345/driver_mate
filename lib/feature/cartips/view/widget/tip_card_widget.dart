@@ -40,7 +40,7 @@ class _TipCardState extends State<TipCard> {
           ),
           SizedBox(height: 6),
           Text(
-            widget.tip.description,
+            widget.tip.content,
             style: AppStyle.containerSubtitle.copyWith(
               color: Theme.of(context).textTheme.bodyMedium?.color,
             ),
@@ -55,13 +55,13 @@ class _TipCardState extends State<TipCard> {
               ),
               SizedBox(width: 6),
               Text(
-                "${widget.tip.minutes} min read",
+                "${widget.tip.createdAt.minute} min read",
                 style: TextStyle(
                   color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
               Spacer(),
-              if (widget.tip.isUpdated)
+              if (widget.tip.createdAt.difference(DateTime.now()).inDays > 7)
                 Text(
                   "Updated recently",
                   style: TextStyle(

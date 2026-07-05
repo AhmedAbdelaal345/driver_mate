@@ -59,6 +59,7 @@ class MyCars extends StatelessWidget {
           }
 
           if (state is ErrorVehicalState) {
+            print(" \n \n \n the vehical error is : ${state.error}");
             return Center(child: Text(state.error));
           }
 

@@ -78,14 +78,16 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
         title:  Text(
           AppStrings.of(context).emergencyAssistance,
-          style: AppStyle.appBarTitle,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color
+          ),
         ),
         leading: const LeadingIcon(),
       ),
@@ -135,7 +137,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                             AppStrings.of(context).helpOnTheWay,
                             style: AppStyle.containerSubtitle.copyWith(
                               fontSize: AppFontSize.f11,
-                              color: AppColors.iconGrey,
+                              color: Theme.of(context).iconTheme.color,
                             ),
                           ),
                         ],
@@ -151,14 +153,14 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecorationWidget.customBoxDecoration(context,
                     borderRadius: AppFontSize.f12,
-                  ).copyWith(color: AppColors.white),
+                  ).copyWith(color: Theme.of(context).scaffoldBackgroundColor),
                   child: Column(
                     children: [
                       Text(
                         AppStrings.of(context).emergencySos,
                         style: AppStyle.boldSmallText.copyWith(
                           fontSize: AppFontSize.f12,
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -179,9 +181,9 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
+                             Icon(
                               Icons.phone_in_talk,
-                              color: AppColors.white,
+                              color: Theme.of(context).textTheme.bodyLarge?.color,
                               size: 32,
                             ),
                             const SizedBox(height: 6),
@@ -189,7 +191,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                               AppStrings.of(context).sos,
                               style: AppStyle.boldSmallText.copyWith(
                                 fontSize: AppFontSize.f12,
-                                color: AppColors.white,
+                                color: Theme.of(context).textTheme.bodyLarge?.color,
                               ),
                             ),
                           ],
@@ -200,7 +202,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                         AppStrings.of(context).tapToCallEmergency,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f11,
-                          color: AppColors.iconGrey,
+                          color: Theme.of(context).iconTheme?.color,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -209,7 +211,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                         textAlign: TextAlign.center,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f10,
-                          color: AppColors.iconGrey,
+                          color:Theme.of(context).iconTheme.color,
                         ),
                       ),
                     ],
@@ -224,7 +226,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecorationWidget.customBoxDecoration(context,
                     borderRadius: AppFontSize.f12,
-                  ).copyWith(color: AppColors.white),
+                  ).copyWith(color: Theme.of(context).scaffoldBackgroundColor),
                   child: Row(
                     children: [
                       Container(
@@ -249,6 +251,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                               AppStrings.of(context).currentLocation,
                               style: AppStyle.boldSmallText.copyWith(
                                 fontSize: AppFontSize.f12,
+                                color: Theme.of(context).textTheme.bodyLarge?.color,
                               ),
                             ),
                             const SizedBox(height: 2),
@@ -256,7 +259,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                               _locationText,
                               style: AppStyle.containerSubtitle.copyWith(
                                 fontSize: AppFontSize.f11,
-                                color: AppColors.iconGrey,
+                                color: Theme.of(context).iconTheme.color,
                               ),
                             ),
                           ],
@@ -295,7 +298,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                 AppStrings.of(context).quickActions,
                 style: AppStyle.containerSubtitle.copyWith(
                   fontSize: AppFontSize.f11,
-                  color: AppColors.iconGrey,
+                  color: Theme.of(context).iconTheme.color,
                 ),
               ),
               const SizedBox(height: 10),
@@ -351,7 +354,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
   void _showTowOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(AppFontSize.f16),
@@ -368,6 +371,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                 AppStrings.of(context).towHelp,
                 style: AppStyle.boldSmallText.copyWith(
                   fontSize: AppFontSize.f14,
+                  color: Theme.of(context).textTheme.bodyLarge?.color
                 ),
               ),
               const SizedBox(height: 12),
@@ -433,7 +437,7 @@ class _QuickAction extends StatelessWidget {
             label,
             style: AppStyle.containerSubtitle.copyWith(
               fontSize: AppFontSize.f10,
-              color: AppColors.textGrey,
+              color: Theme.of(context).iconTheme.color,
             ),
           ),
         ],
@@ -465,7 +469,7 @@ class _TowOption extends StatelessWidget {
         number,
         style: AppStyle.containerSubtitle.copyWith(
           fontSize: AppFontSize.f11,
-          color: AppColors.iconGrey,
+          color: Theme.of(context).iconTheme.color,
         ),
       ),
       trailing: const Icon(Icons.call, color: AppColors.cyanColor, size: 18),

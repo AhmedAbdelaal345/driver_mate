@@ -1,145 +1,143 @@
+import 'package:driver_mate/core/network/api_helper.dart';
+import 'package:driver_mate/core/network/api_response.dart';
 import 'package:driver_mate/feature/community/data/model/community_comment_model.dart';
 
 class CommunityCommentsRepo {
-  // Private constructor to prevent external instantiation
   CommunityCommentsRepo._instance();
   static final CommunityCommentsRepo _singelTone =
       CommunityCommentsRepo._instance();
   factory CommunityCommentsRepo() => _singelTone;
 
-  List<CommunityCommentModel> comments = [
-    CommunityCommentModel(
-      commentId: 'comment-1',
-      numberOfLikes: 0,
-      postId: 'post-1',
-      authorName: 'John Doe',
-      authorInitials: 'JD',
-      content: 'This is a comment on post 1.',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
-      replies: [
-        CommunityCommentModel(
-          commentId: 'comment-1-reply-1',
-          postId: 'post-1',
-          authorName: 'Jane Smith',
-          authorInitials: 'JS',
-          content: 'This is a reply to comment 1.',
-          createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
-          numberOfLikes: 0,
-          // no replies needed — defaults to []
-        ),
-      ],
-    ),
-    CommunityCommentModel(
-      commentId: 'comment-2',
-      postId: 'post-1',
-      authorName: 'Jane Smith',
-      authorInitials: 'JS',
-      content: 'This is another comment on post 1.',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
-      numberOfLikes: 0,
-      // replies defaults to [] automatically
-    ),
-    CommunityCommentModel(
-      commentId: 'comment-3',
-      postId: 'post-2',
-      authorName: 'Alice Johnson',
-      authorInitials: 'AJ',
-      content: 'This is a comment on post 2.',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      numberOfLikes: 0,
-    ),
-  ];
-  Future<List<CommunityCommentModel>> getCommentsForPost(String postId) async {
-    // Return a list of comments for the given post ID
-    return comments.where((comment) => comment.postId == postId).toList();
-  }
-
-  Future<List<CommunityCommentModel>> getRepliesForComment(
-    String commentId,
+  /// Fetches the FLAT list of comments/replies for a post. Nesting is not
+  /// done here — the cubit groups by parentCommentId.
+  Future<List<CommunityGetCommentModel>> getCommentsForPost(
+    String postId,
   ) async {
-    // Find the comment with the given ID and return its replies
-    final comment = comments.firstWhere((c) => c.commentId == commentId);
-    return comment.replies;
-  }
-
-  void addCommentToPost(String postId, String comment) {
-    // Simulate adding a comment to the post
-    comments.add(
-      CommunityCommentModel(
-        commentId: 'comment-${comments.length + 1}',
-        postId: postId,
-        authorName: 'Current User',
-        authorInitials: 'CU',
-        content: comment,
-        createdAt: DateTime.now(),
-        numberOfLikes: 0,
-      ),
-    );
-    print("Added comment to post $postId: $comment");
-  }
-
-  void addReplyToComment(String postId, String commentId, String reply) {
-    // Simulate adding a reply to a comment
-    final comment = comments.firstWhere((c) => c.commentId == commentId);
-
-    comment.replies.add(
-      CommunityCommentModel(
-        commentId: '$commentId-reply-${comment.replies.length + 1}',
-        postId: postId,
-        authorName: 'Current User',
-        authorInitials: 'CU',
-        content: reply,
-        createdAt: DateTime.now(),
-        numberOfLikes: 0,
-      ),
-    );
-    print("Added reply to comment $commentId on post $postId: $reply");
-  }
-
-  void removeReply(String commentId, String replyId) {
-    // Simulate removing a comment
-    final comment = comments.firstWhere((c) => c.commentId == commentId);
-
-    comment.replies.removeWhere((reply) => reply.commentId == replyId);
-
-    print("Removed reply with ID: $replyId");
-  }
-
-  void editReplay(String commentId, String replyId, String newContent) {
-    // Simulate editing a comment
-    final comment = comments.firstWhere((c) => c.commentId == commentId);
-    final reply = comment.replies.firstWhere((r) => r.commentId == replyId);
-    reply.content = newContent;
-    print("Edited reply with ID: $replyId. New content: $newContent");
-  }
-
-  void likeComment(String commentId) {
-    // Simulate liking a comment
-    final comment = comments.firstWhere((c) => c.commentId == commentId);
-    comment.numberOfLikes++;
-    print(
-      "Liked comment with ID: $commentId. Total likes: ${comment.numberOfLikes}",
-    );
-  }
-
-  void likeReply(String commentId, String replyId) {
-    // Simulate liking a reply
-    final comment = comments.firstWhere((c) => c.commentId == commentId);
-    final reply = comment.replies.firstWhere((r) => r.commentId == replyId);
-    reply.numberOfLikes++;
-    print("Liked reply with ID: $replyId. Total likes: ${reply.numberOfLikes}");
-  }
-
-  // ── Recursive finder used by all repo methods ──────────────────────────
-  CommunityCommentModel? _findComment(
-    List<CommunityCommentModel> list,
-    String id,
-  ) {
-    for (final c in list) {
-      if (c.commentId == id) return c;
-      final found = _findComment(c.replies, id);
-      if (found != null) return found;
+    try {
+      final response = await ApiHelper().getRequest(
+        endpoint: 'Community/$postId/comments',
+        isAuthorized: true,
+        isForm: false,
+      );
+      if (response.statusCode != 200) {
+        throw Exception(response.message.isNotEmpty ? response.message : "Failed to load comments");
+      }
+      final data = response.data as List<dynamic>;
+      // ✅ removed: no longer appending the hardcoded mock `comments` list
+      // onto every real API response
+      return data
+          .map((e) => CommunityGetCommentModel.fromJson(json: e))
+          .toList();
+    } catch (e) {
+      print('getCommentsForPost error: $e');
+      rethrow;
     }
-    return null;
   }
+
+  /// Replies for a single comment, derived by filtering the flat list on
+  /// parentCommentId == commentId.
+  Future<List<CommunityGetCommentModel>> getRepliesForComment({
+    required String commentId,
+    required String postId,
+  }) async {
+    try {
+      final ApiResponse response = await ApiHelper().getRequest(
+        endpoint: 'Community/$postId/comments',
+        isAuthorized: true,
+        isForm: false,
+      );
+      if (response.statusCode != 200) {
+        throw Exception(response.message.isNotEmpty ? response.message : "Failed to load replies");
+      }
+      final data = response.data as List<dynamic>;
+      // ✅ map to models FIRST, then filter — previously filtered raw
+      // Map<String,dynamic> objects for a `.parentCommentId` getter that
+      // doesn't exist on a Map, which threw on every call
+      final comments = data
+          .map((e) => CommunityGetCommentModel.fromJson(json: e))
+          .toList();
+      return comments.where((c) => c.parentCommentId == commentId).toList();
+    } catch (e) {
+      print('getRepliesForComment error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> addCommentToPost({
+    required String postId,
+    required String content,
+    String? parentCommentId,
+  }) async {
+    try {
+      final response = await ApiHelper().postRequest(
+        endpoint: 'Community/$postId/comments',
+        isAuthorized: true,
+        isForm: false,
+        data: CommunityAddCommentModel(
+          content: content,
+          postId: postId,
+          parentCommentId: parentCommentId,
+        ).toJson(),
+      );
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw Exception(response.message.isNotEmpty ? response.message : "Failed to add comment");
+      }
+    } catch (e) {
+      print('addCommentToPost error: $e');
+      rethrow;
+    }
+  }
+
+  /// ✅ A reply IS a comment with parentCommentId set — this now just calls
+  /// the same endpoint as addCommentToPost, passing parentCommentId. It was
+  /// previously synchronous, never hit the network, and mutated a broken
+  /// `late final` field.
+  Future<void> addReplyToComment({
+    required String postId,
+    required String commentId,
+    required String content,
+  }) async {
+    await addCommentToPost(
+      postId: postId,
+      content: content,
+      parentCommentId: commentId,
+    );
+  }
+
+  Future<void> removeReply({
+    required String postId,
+    required String replyId,
+  }) async {
+    try {
+      final response = await ApiHelper().deleteRequest(
+        endpoint: 'Community/$postId/comments/$replyId',
+        isAuthorized: true,
+      );
+      if (response.statusCode != 200) {
+        throw Exception(response.message.isNotEmpty ? response.message : "Failed to remove reply");
+      }
+    } catch (e) {
+      print('removeReply error: $e');
+      rethrow;
+    }
+  }
+
+  // Future<Either<String, LikeModel>> likeComment(
+  //   String commentId,
+  //   String postId,
+  // ) async {
+  //   try {
+  //     final response = await ApiHelper().postRequest(
+  //       endpoint: 'api/community/$postId/like',
+  //       isAuthorized: true,
+  //       isForm: false,
+  //     );
+  //     if (response.statusCode != 200) {
+  //       return left('There is an Error occured when processing your request');
+  //     }
+  //     return Right(LikeModel.fromJson(json: response.data));
+  //   } catch (e) {
+  //     return left('There is an Error occured when processing your request');
+  //   }
+  // }
 }

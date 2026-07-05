@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
@@ -35,13 +34,13 @@ class VehicleDetailCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  car.brand,
+                  car.brandName,
                   style: AppStyle.boldTextStyle.copyWith(
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
                 Text(
-                  '${car.model} • ${car.year}',
+                  '${car.modelName} • ${car.year}',
                   style: AppStyle.hintStyle.copyWith(color: mutedText),
                 ),
                 const SizedBox(height: 8),
@@ -76,7 +75,7 @@ class VehicleDetailCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 _buildServiceInfo(
                   Icons.calendar_today,
-                  'Mileage: ${car.millAge}',
+                  'Mileage: ${car.currentMileage}',
                   color: mutedText,
                 ),
                 const SizedBox(height: 4),

@@ -1,11 +1,12 @@
 import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_strings.dart';
-// import 'package:driver_mate/core/utils/app_constants.dart';
+import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
+import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/community/view/widget/community_filter_row.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
 import 'package:driver_mate/feature/community/view/widget/review_header_widget.dart';
+import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 
 class ReviewsTab extends StatelessWidget {
@@ -21,7 +22,7 @@ class ReviewsTab extends StatelessWidget {
         ),
         SizedBox(height: 8),
         CommunityPostList(
-          filterType: AppStrings.of(context).review,
+          filterType: AppConstants.review,
           showEmptyState: true,
         ),
       ],
@@ -60,19 +61,37 @@ class _ReviewCardState extends State<ReviewCard> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardTheme.color ?? theme.colorScheme.surface;
+    final w = SizeConfig.width(context);
+    final h = SizeConfig.height(context);
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecorationWidget.customBoxDecoration(context),
+      margin: EdgeInsets.symmetric(
+        horizontal: w * 0.04,
+        vertical: h * 0.008,
+      ),
+      padding: EdgeInsets.all(w * 0.04),
+      decoration: BoxDecorationWidget.customBoxDecoration(
+        context,
+        borderRadius: AppFontSize.f14,
+      ).copyWith(color: cardColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Shop name ─────────────────────────────────────────
-          Text(widget.shopName, style: AppStyle.titleOfContainer),
+          // ── Shop name ──────────────────────────────────────────────
+          Text(
+            widget.shopName,
+            style: AppStyle.titleOfContainer.copyWith(
+              color: theme.colorScheme.onSurface,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis, // ✅
+          ),
 
-          const SizedBox(height: 8),
+          SizedBox(height: h * 0.008),
 
-          // ── Star rating — fixed overflow ───────────────────────
+          // ── Stars ──────────────────────────────────────────────────
           Row(
             children: [
               ...List.generate(
@@ -80,87 +99,112 @@ class _ReviewCardState extends State<ReviewCard> {
                 (i) => Icon(
                   i < widget.rating ? Icons.star : Icons.star_border,
                   color: Colors.amber,
-                  size: 18,
+                  size: w * 0.045,
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: w * 0.02),
               Text(
                 widget.rating.toStringAsFixed(1),
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
+                  fontSize: AppFontSize.f13,
+                ),
               ),
             ],
           ),
 
-          const SizedBox(height: 12),
+          SizedBox(height: h * 0.012),
 
-          // ── Review text ───────────────────────────────────────
-          Text(widget.reviewText, style: AppStyle.containerSubtitle),
+          // ── Review text ────────────────────────────────────────────
+          Text(
+            widget.reviewText,
+            style: AppStyle.containerSubtitle.copyWith(
+              height: 1.4,
+              color: theme.textTheme.bodyMedium?.color,
+            ),
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis, // ✅
+          ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: h * 0.015),
 
-          Divider(color: Theme.of(context).dividerColor),
+          Divider(
+            color: theme.colorScheme.outline.withValues(alpha: 0.3),
+            height: 1,
+          ),
 
-          // ── Reviewer row — overflow fixed with Flexible ────────
+          SizedBox(height: h * 0.012),
+
+          // ── Reviewer row — overflow fixed with Flexible ────────────
           Row(
             children: [
               CircleAvatar(
-                radius: 15,
-                backgroundColor: Theme.of(context).colorScheme.secondary,
+                radius: w * 0.04,
+                backgroundColor: AppColors.cyanColor,
                 child: Text(
-                  widget.reviewerInitials,
+                  widget.reviewerInitials.length >= 2
+                      ? widget.reviewerInitials.substring(0, 2)
+                      : widget.reviewerInitials,
                   style: TextStyle(
-                    fontSize: 10,
-                    color: Theme.of(context).colorScheme.surface,
+                    fontSize: w * 0.028,
+                    color: AppColors.white,
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
 
-              // Wrap in Flexible so long names don't overflow
+              SizedBox(width: w * 0.02),
+
+              // Name + time — Flexible so it doesn't push location off screen
               Flexible(
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.reviewerName,
-                      style: const TextStyle(
-                        fontSize: 12,
+                      style: TextStyle(
+                        fontSize: AppFontSize.f12,
                         fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface,
                       ),
-                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis, // ✅
                     ),
                     Text(
                       widget.timeAgo,
                       style: TextStyle(
-                        fontSize: 10,
-                        color: Theme.of(context).iconTheme.color,
+                        fontSize: AppFontSize.f10,
+                        color: AppColors.iconGrey,
                       ),
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(width: 8),
+              SizedBox(width: w * 0.02),
 
-              // Location — also Flexible to prevent overflow
+              // Location — Flexible so it shrinks if name is long
               Flexible(
+                flex: 2,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-
                   children: [
                     Icon(
                       Icons.location_on_outlined,
-                      size: 14,
-                      color: Theme.of(context).iconTheme.color,
+                      size: w * 0.035,
+                      color: AppColors.iconGrey,
                     ),
+                    SizedBox(width: w * 0.01),
                     Flexible(
                       child: Text(
-                        ' ${widget.location}',
+                        widget.location,
                         style: TextStyle(
-                          color: Theme.of(context).iconTheme.color,
-                          fontSize: 11,
+                          color: AppColors.iconGrey,
+                          fontSize: AppFontSize.f11,
                         ),
-                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis, // ✅
                       ),
                     ),
                   ],
@@ -169,47 +213,46 @@ class _ReviewCardState extends State<ReviewCard> {
             ],
           ),
 
-          const SizedBox(height: 12),
+          SizedBox(height: h * 0.01),
 
-          // ── Like + share ──────────────────────────────────────
+          // ── Helpful + share ────────────────────────────────────────
           Row(
             children: [
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isLiked = !_isLiked;
-                    _likesCount += _isLiked ? 1 : -1;
-                  });
-                },
+                onTap: () => setState(() {
+                  _isLiked = !_isLiked;
+                  _likesCount += _isLiked ? 1 : -1;
+                }),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       _isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
-                      size: 18,
+                      size: w * 0.045,
                       color: _isLiked
-                          ? Theme.of(context).colorScheme.secondary
-                          : Theme.of(context).iconTheme.color,
+                          ? AppColors.cyanColor
+                          : AppColors.iconGrey,
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: w * 0.01),
                     Text(
                       _likesCount > 0 ? '$_likesCount helpful' : 'Helpful?',
                       style: TextStyle(
                         color: _isLiked
-                            ? Theme.of(context).colorScheme.secondary
-                            : Theme.of(context).iconTheme.color,
-                        fontSize: 12,
+                            ? AppColors.cyanColor
+                            : AppColors.iconGrey,
+                        fontSize: AppFontSize.f12,
                       ),
                     ),
                   ],
                 ),
               ),
               const Spacer(),
-              IconButton(
-                onPressed: () {},
-                icon:  Icon(
+              GestureDetector(
+                onTap: () {},
+                child: Icon(
                   Icons.share_outlined,
-                  size: 18,
-                  color:Theme.of(context).iconTheme.color,
+                  size: w * 0.045,
+                  color: AppColors.iconGrey,
                 ),
               ),
             ],
@@ -219,3 +262,4 @@ class _ReviewCardState extends State<ReviewCard> {
     );
   }
 }
+

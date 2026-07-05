@@ -3,13 +3,17 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
+// import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
-import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
+import 'package:driver_mate/feature/community/data/model/community_fetch_post_model.dart';
+// import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/manager/community_comment_manager/community_comment_cubit.dart';
+import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_cubit.dart';
 import 'package:driver_mate/feature/community/view/community_comment_page.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_header.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
+import 'package:driver_mate/feature/community/view/widget/post_type_tag_widget.dart';
 import 'package:driver_mate/feature/saved_item/data/model/saved_item_model.dart';
 import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
 import 'package:flutter/material.dart';
@@ -21,45 +25,40 @@ class ProblemsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children:  [
+      children: [
         CommunityPostHeader(postType: AppConstants.problem),
         CommunityPostList(
-          filterType: AppStrings.of(context).problem,
+          filterType: AppConstants.problem,
           showEmptyState: true,
         ),
       ],
     );
   }
 }
-  
+
 class ProblemCard extends StatefulWidget {
   const ProblemCard({super.key, required this.post});
-  final CommunityPostModel post;
+  final CommunityFetchPostModel post;
 
   @override
   State<ProblemCard> createState() => _ProblemCardState();
 }
 
 class _ProblemCardState extends State<ProblemCard> {
-  late bool _isLiked;
-  late int _likesCount;
+  // late bool _isLiked;
+  // late int _likesCount;
   late bool _isSaved;
 
   @override
   void initState() {
     super.initState();
-    _isLiked = widget.post.isLiked;
-    _likesCount = widget.post.likesCount;
-    _isSaved = widget.post.isSaved;
+    // _isLiked = widget.post.isLiked;
+    // _likesCount = widget.post.likesCount;
+    _isSaved = widget.post.isSaved ?? false;
   }
 
   void _handleLike() {
-    setState(() {
-      _isLiked = !_isLiked;
-      _likesCount += _isLiked ? 1 : -1;
-    });
-    widget.post.isLiked = _isLiked;
-    widget.post.likesCount = _likesCount;
+    context.read<CommunityPostCubit>().toggleLike(postId: widget.post.id);
   }
 
   void _handleSave() {
@@ -68,8 +67,8 @@ class _ProblemCardState extends State<ProblemCard> {
 
     final item = SavedItemModel(
       title: widget.post.title,
-      subtitle: widget.post.description,
-      image: widget.post.imageFile?.path ?? widget.post.imageAssetPath ?? '',
+      subtitle: widget.post.content,
+      image: widget.post.imageUrls.first,
       type: SavedType.post,
     );
     if (_isSaved) {
@@ -83,7 +82,20 @@ class _ProblemCardState extends State<ProblemCard> {
     MyNavigation.navigateTo(
       BlocProvider(
         create: (_) => CommunityCommentCubit(),
-        child: CommunityCommentPage(post: widget.post),
+        child: CommunityCommentPage(
+          post: CommunityFetchPostModel(
+            authorName: widget.post.authorName,
+            commentCount: widget.post.commentCount,
+            content: widget.post.content,
+            createdAt: widget.post.createdAt.toString(),
+            id: widget.post.id,
+            imagesCount: 0,
+            isLikedByCurrentUser: widget.post.isLikedByCurrentUser,
+            likeCount: widget.post.likeCount,
+            postType: 4,
+            title: widget.post.title,
+          ),
+        ),
       ),
     );
   }
@@ -100,6 +112,8 @@ class _ProblemCardState extends State<ProblemCard> {
 
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.sizeOf(context).width;
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
@@ -109,52 +123,79 @@ class _ProblemCardState extends State<ProblemCard> {
         children: [
           // ── Header ────────────────────────────────────────────
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Avatar
               CircleAvatar(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                child: Text(
-                  widget.post.authorInitials,
-                  style:  TextStyle(color:Theme.of(context).colorScheme.surface, fontSize: 14),
-                ),
+                radius: w * 0.05,
+                backgroundColor: const Color(0xFF1B7F9B),
+                backgroundImage: widget.post.authorImageUrl != null
+                    ? NetworkImage(widget.post.authorImageUrl!)
+                    : null,
+                child: widget.post.authorImageUrl == null
+                    ? Text(
+                        widget.post.authorInitials,
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: w * 0.03,
+                        ),
+                      )
+                    : null,
               ),
-              const SizedBox(width: 12),
+
+              SizedBox(width: w * 0.03),
+
+              // Author + date — MUST be Expanded to prevent overflow
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.post.authorName,
-                      style: AppStyle.socialButtonTextStyle
-                          .copyWith(fontSize: 14,color: Theme.of(context).colorScheme.onSurface),
-                      overflow: TextOverflow.ellipsis,
+                      style: AppStyle.socialButtonTextStyle.copyWith(
+                        fontSize: AppFontSize.f14,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis, // ✅
                     ),
                     Text(
-                      widget.post.createdAt.toString().substring(0, 16),
-                      style:  TextStyle(
-                          color:Theme.of(context).iconTheme.color, fontSize: 11),
+                      widget.post.createdAt.length >= 10
+                          ? widget.post.createdAt.substring(0, 10)
+                          : widget.post.createdAt,
+                      style: TextStyle(
+                        color: AppColors.iconGrey,
+                        fontSize: AppFontSize.f11,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis, // ✅
                     ),
                   ],
                 ),
               ),
-              // Tags — use Flexible to prevent overflow
-              _buildTag(AppConstants.problem,
-                  Colors.red[50]!, Colors.red),
-              const SizedBox(width: 6),
-              _buildTag(AppConstants.medium,
-                  Colors.orange[50]!, Colors.orange),
+
+              SizedBox(width: w * 0.02),
+
+              // Tag — only takes what it needs
+              PostTypeTag(label: AppStrings.of(context).problem),
             ],
           ),
 
           const SizedBox(height: 12),
 
           // ── Title ─────────────────────────────────────────────
-          Text(widget.post.title, style: AppStyle.titleOfContainer.copyWith(color: Theme.of(context).colorScheme.onSurface)),
+          Text(
+            widget.post.title,
+            style: AppStyle.titleOfContainer.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
 
           const SizedBox(height: 8),
 
           // ── Description ───────────────────────────────────────
           Text(
-            widget.post.description,
+            widget.post.content,
             style: AppStyle.containerSubtitle.copyWith(
               color: Theme.of(context).iconTheme.color,
               fontSize: AppFontSize.f13,
@@ -163,16 +204,31 @@ class _ProblemCardState extends State<ProblemCard> {
           ),
 
           // ── Image ─────────────────────────────────────────────
-          if (widget.post.imageFile != null ||
-              widget.post.imageAssetPath != null) ...[
+          if (widget.post.imageUrls.isNotEmpty) ...[
             const SizedBox(height: 12),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: widget.post.imageFile != null
-                  ? Image.file(widget.post.imageFile!,
-                      width: double.infinity, height: 180, fit: BoxFit.cover)
-                  : Image.asset(widget.post.imageAssetPath!,
-                      width: double.infinity, height: 180, fit: BoxFit.cover),
+            SizedBox(
+              height: 180,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.post.imageUrls.length,
+                itemBuilder: (context, index) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      widget.post.imageUrls[index],
+                      width: 280,
+                      height: 180,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const SizedBox(
+                        width: 280,
+                        height: 180,
+                        child: Icon(Icons.broken_image, color: Colors.grey),
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(width: 12),
+              ),
             ),
           ],
 
@@ -184,21 +240,31 @@ class _ProblemCardState extends State<ProblemCard> {
             height: 45,
             child: OutlinedButton.icon(
               onPressed: _handleAiHelp,
-              icon:  Icon(Icons.auto_awesome,
-                  size: 18, color:Theme.of(context).colorScheme.secondary),
-              label:  Text('Get AI Help',
-                  style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+              icon: Icon(
+                Icons.auto_awesome,
+                size: 18,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              label: Text(
+                'Get AI Help',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: Colors.cyan, width: 1),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
           ),
 
           const SizedBox(height: 12),
 
-          Divider(color: Theme.of(context).iconTheme.color!.withValues(alpha: 0.4)),
+          Divider(
+            color: Theme.of(context).iconTheme.color!.withValues(alpha: 0.4),
+          ),
 
           // ── Footer actions ────────────────────────────────────
           Row(
@@ -209,16 +275,21 @@ class _ProblemCardState extends State<ProblemCard> {
                 child: Row(
                   children: [
                     Icon(
-                      _isLiked ? Icons.favorite : Icons.favorite_border,
+                      widget.post.isLikedByCurrentUser
+                          ? Icons.favorite
+                          : Icons.favorite_border,
                       size: 20,
-                      color: _isLiked ? Colors.red : Theme.of(context).iconTheme.color,
+                      color: widget.post.isLikedByCurrentUser
+                          ? Colors.red
+                          : Theme.of(context).iconTheme.color,
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      _likesCount.toString(),
+                      widget.post.likeCount.toString(),
                       style: TextStyle(
-                          color: Theme.of(context).iconTheme.color,
-                          fontSize: AppFontSize.f13),
+                        color: Theme.of(context).iconTheme.color,
+                        fontSize: AppFontSize.f13,
+                      ),
                     ),
                   ],
                 ),
@@ -231,14 +302,18 @@ class _ProblemCardState extends State<ProblemCard> {
                 onTap: _handleOpenComments,
                 child: Row(
                   children: [
-                     Icon(Icons.chat_bubble_outline,
-                        size: 20, color: Theme.of(context).iconTheme.color),
+                    Icon(
+                      Icons.chat_bubble_outline,
+                      size: 20,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                     const SizedBox(width: 4),
                     Text(
-                      '${widget.post.commentsCount} answers',
+                      '${widget.post.commentCount} answers',
                       style: TextStyle(
-                          color: Theme.of(context).iconTheme.color,
-                          fontSize: AppFontSize.f13),
+                        color: Theme.of(context).iconTheme.color,
+                        fontSize: AppFontSize.f13,
+                      ),
                     ),
                   ],
                 ),
@@ -249,8 +324,11 @@ class _ProblemCardState extends State<ProblemCard> {
               // Share
               IconButton(
                 onPressed: () {},
-                icon:  Icon(Icons.share_outlined,
-                    size: 20, color: Theme.of(context).iconTheme.color),
+                icon: Icon(
+                  Icons.share_outlined,
+                  size: 20,
+                  color: Theme.of(context).iconTheme.color,
+                ),
               ),
 
               // Bookmark
@@ -259,27 +337,14 @@ class _ProblemCardState extends State<ProblemCard> {
                 icon: Icon(
                   _isSaved ? Icons.bookmark : Icons.bookmark_border,
                   size: 20,
-                  color: _isSaved ? Theme.of(context).colorScheme.secondary : Theme.of(context).iconTheme.color,
+                  color: _isSaved
+                      ? Theme.of(context).colorScheme.secondary
+                      : Theme.of(context).iconTheme.color,
                 ),
               ),
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTag(String text, Color bg, Color textColor) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-            color: textColor, fontSize: 10, fontWeight: FontWeight.bold),
       ),
     );
   }

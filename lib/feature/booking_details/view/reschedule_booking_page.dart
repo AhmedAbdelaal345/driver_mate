@@ -58,7 +58,7 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      VehicalCubit.get(context).loadCar();
+      VehicalCubit.get(context).fetchVehicles();
     });
   }
 
@@ -485,7 +485,7 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                             if (mounted) {
                               setState(() {
                                 _selectedVehicle =
-                                    '${vehicles.first.brand} ${vehicles.first.model} ${vehicles.first.year}';
+                                    '${vehicles.first.brandName} ${vehicles.first.modelName} ${vehicles.first.year}';
                               });
                             }
                           });
@@ -518,7 +518,7 @@ class _RescheduleBookingPageState extends State<RescheduleBookingPage> {
                               onChanged: (val) =>
                                   setState(() => _selectedVehicle = val),
                               items: vehicles.map((v) {
-                                final label = '${v.brand} ${v.model} ${v.year}';
+                                final label = '${v.brandName} ${v.modelName} ${v.year}';
                                 return DropdownMenuItem(
                                   value: label,
                                   child: Text(label),

@@ -12,6 +12,8 @@ import 'package:driver_mate/feature/cartips/view/cartips_page.dart';
 import 'package:driver_mate/feature/cartips/view/widget/category_chip_model.dart';
 import 'package:driver_mate/feature/cartips/view/widget/filter_bottom_sheet.dart';
 import 'package:driver_mate/feature/cartips/view/widget/tip_card_widget.dart';
+import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
+import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
 import 'package:driver_mate/feature/saved_item/manager/cubit/saved_item_cubit.dart';
 import 'package:driver_mate/feature/saved_item/manager/state/saved_item_state.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +24,7 @@ class CarTipsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CarTipListCubit(CarTipLsitRepo())..loadTip(),
-      child: const _CarTipsListBody(),
-    );
+    return const _CarTipsListBody();
   }
 }
 
@@ -53,7 +52,6 @@ class _CarTipsListBodyState extends State<_CarTipsListBody> {
     ];
 
     return Scaffold(
-      // 👈 هنا مكانه الصح
       appBar: AppBar(
         title: Text(
           AppStrings.of(context).carTips,
@@ -72,27 +70,27 @@ class _CarTipsListBodyState extends State<_CarTipsListBody> {
         ],
       ),
       body: BlocBuilder<CarTipListCubit, CarTipState>(
-        builder: (context, state) {
-          if (state is CarTipLoading) {
+        builder: (context, tipState) {
+          if (tipState is CarTipLoading) {
             return Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
+                color: AppColors.cyanColor,
               ),
             );
           }
 
-          if (state is CarTipError) {
-            return Center(child: Text(state.message));
+          if (tipState is CarTipError) {
+            return Center(child: Text(tipState.message));
           }
 
-          if (state is CarTipLoaded) {
-            final tips = state.tip;
+          if (tipState is CarTipLoaded) {
+            final tips = tipState.tip;
 
             final filteredTips = selectedCategory == "All"
                 ? tips
                 : tips
-                      .where((tip) => tip.category == selectedCategory)
-                      .toList();
+                    .where((tip) => tip.category == selectedCategory)
+                    .toList();
 
             return Padding(
               padding: EdgeInsets.symmetric(
@@ -102,32 +100,8 @@ class _CarTipsListBodyState extends State<_CarTipsListBody> {
                 children: [
                   const SizedBox(height: 16),
 
-                  /// Header
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Toyota Camry 2024",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          AppStrings.of(context).carTipsSubtitle,
-                          style: TextStyle(
-                            color: Theme.of(context).iconTheme.color,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  /// Vehicle Header — reads from VehicleCubit state properly
+                  const _DailyVehicleHeader(),
 
                   const SizedBox(height: 16),
 
@@ -159,50 +133,8 @@ class _CarTipsListBodyState extends State<_CarTipsListBody> {
                     child: ListView.separated(
                       itemCount: filteredTips.length,
                       separatorBuilder: (_, __) => const SizedBox(height: 12),
-                      itemBuilder: (_, index) => InkWell(
-                        onTap: () {
-                          MyNavigation.navigateTo(
-                            BlocProvider.value(
-                              value: context.read<SavedItemCubit>(),
-                              child: CarTipsPage(
-                                labelText: filteredTips[index].title,
-                                hintText: filteredTips[index].description,
-                                imagePath: filteredTips[index].image,
-                              ),
-                            ),
-                          );
-                        },
-                        child: BlocBuilder<SavedItemCubit, SavedItemState>(
-                          builder: (context, state) {
-                            bool isSaved = false;
-                            if (state is SavedItemLoaded) {
-                              isSaved = state.items.any(
-                                (item) =>
-                                    item.title == filteredTips[index].title,
-                              );
-                            }
-                            return TipCard(
-                              tip: filteredTips[index],
-                              icon: isSaved == false
-                                  ? Icons.bookmark_border_outlined
-                                  : Icons.bookmark,
-                              onPressed: () {
-                                //TODO:Here we will added item in save List and change state for is pressed
-                                savedItemFunction(
-                                  context,
-                                  title: filteredTips[index].title,
-                                  subtitle: filteredTips[index].description,
-                                  image: filteredTips[index].image,
-                                  type: getSavedType(
-                                    filteredTips[index].category,
-                                  ),
-                                  readTime: "5 minutes",
-                                  isSaved: isSaved,
-                                );
-                              },
-                            );
-                          },
-                        ),
+                      itemBuilder: (_, index) => _TipListItem(
+                        tip: filteredTips[index],
                       ),
                     ),
                   ),
@@ -212,6 +144,105 @@ class _CarTipsListBodyState extends State<_CarTipsListBody> {
           }
 
           return const SizedBox();
+        },
+      ),
+    );
+  }
+}
+
+/// Reads the first vehicle from VehicleCubit state — no direct field access.
+class _DailyVehicleHeader extends StatelessWidget {
+  const _DailyVehicleHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<VehicalCubit, VehicalState>(
+      builder: (context, state) {
+        String headerText = "";
+
+        if (state is SuccessVehicalState && state.data.isNotEmpty) {
+          final first = state.data.first;
+          headerText = "${first.brandName} ${first.modelName}";
+        }
+
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                headerText,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                AppStrings.of(context).carTipsSubtitle,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Self-contained tip card that handles its own SavedItemCubit subscription.
+/// This prevents the whole list from rebuilding when a single save-state changes.
+class _TipListItem extends StatelessWidget {
+  const _TipListItem({required this.tip});
+
+  final dynamic tip; // keep your actual TipModel type here
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        MyNavigation.navigateTo(
+          BlocProvider.value(
+            value: context.read<SavedItemCubit>(),
+            child: CarTipsPage(
+              labelText: tip.title,
+              hintText: tip.content,
+              imagePath: tip.imageUrl,
+            ),
+          ),
+        );
+      },
+      child: BlocBuilder<SavedItemCubit, SavedItemState>(
+        builder: (context, state) {
+          bool isSaved = false;
+          if (state is SavedItemLoaded) {
+            isSaved = state.items.any(
+              (item) => item.title == tip.title,
+            );
+          }
+
+          return TipCard(
+            tip: tip,
+            icon: isSaved == false
+                ? Icons.bookmark_border_outlined
+                : Icons.bookmark,
+            onPressed: () {
+              savedItemFunction(
+                context,
+                title: tip.title,
+                subtitle: tip.content,
+                image: tip.imageUrl,
+                type: getSavedType(tip.category ?? "Maintenance"),
+                readTime: "5 minutes",
+                isSaved: isSaved,
+              );
+            },
+          );
         },
       ),
     );

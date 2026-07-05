@@ -1,5 +1,4 @@
 import 'package:driver_mate/core/helper/my_navigation.dart';
-import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
 // import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
@@ -41,7 +40,7 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
                     child: _buildSummaryCard(
                       label: AppStrings.of(context).upcoming,
                       count: upcoming.toString(),
-                      dotColor: Colors.blue,
+                      dotColor: Theme.of(context).iconTheme.color!,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -94,7 +93,12 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
           if (items.isEmpty)
             const SliverFillRemaining(
               hasScrollBody: false,
-              child: Center(child: Text("No bookings found for this filter",style: AppStyle.containerSubtitle,)),
+              child: Center(
+                child: Text(
+                  "No bookings found for this filter",
+                  style: AppStyle.containerSubtitle,
+                ),
+              ),
             )
           else
             SliverPadding(
@@ -127,12 +131,16 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB), // Light grey background from UI
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
         leading: const LeadingIcon(),
         title: Text(
           AppStrings.of(context).maintenanceHistory,
-          style: AppStyle.appBarTitle,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
         ),
         centerTitle: true,
       ),
@@ -184,9 +192,9 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,9 +205,9 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
               const SizedBox(width: 8),
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 10,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -228,11 +236,17 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
           });
         },
         child: Chip(
-          backgroundColor: isSelected ? AppColors.veryDarkBlue : Colors.white,
-          side: BorderSide(color: Colors.grey.shade100),
+          backgroundColor: isSelected
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.secondary,
+          side: BorderSide(color: Theme.of(context).colorScheme.outline),
           label: Text(
             label,
-            style: TextStyle(color: isSelected ? Colors.white : Colors.grey),
+            style: TextStyle(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).colorScheme.onSurface,
+            ),
           ),
         ),
       ),
