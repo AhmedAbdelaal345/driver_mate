@@ -14,4 +14,9 @@ abstract class ApiConstants {
   static String refreshToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhYWJkZWxhYWwxNDVAZ21haWwuY29tIiwiaWF0IjoxNzY4ODIyMjM2LCJleHAiOjE3Njk0MjcwMzZ9.rdw3Qrzxx7NL1osTDL_IPwH7MEmF-dJs-33V7dziNJY";
   static const String authorization = "Authorization";
+
+  static const String geminiBaseUrl =
+      "https://generativelanguage.googleapis.com/v1beta/";
+  static const String geminiApiKey =
+      "AQ.Ab8RN6KWoCp4eLyXm9ebdL6B1fANx1mp8pf1OsulIXPu-6M1pA";
 }
