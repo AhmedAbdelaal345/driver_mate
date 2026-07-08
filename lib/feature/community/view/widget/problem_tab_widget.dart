@@ -113,6 +113,7 @@ class _ProblemCardState extends State<ProblemCard> {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width;
+    final h = MediaQuery.sizeOf(context).height;
     final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -212,17 +213,16 @@ class _ProblemCardState extends State<ProblemCard> {
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.post.imageUrls.length,
                 itemBuilder: (context, index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      widget.post.imageUrls[index],
-                      width: 280,
-                      height: 180,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => const SizedBox(
-                        width: 280,
-                        height: 180,
-                        child: Icon(Icons.broken_image, color: Colors.grey),
+                  return SizedBox(
+                    width: w * 0.75,
+                    height: h * 0.22,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        widget.post.imageUrls[index],
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            const Icon(Icons.broken_image),
                       ),
                     ),
                   );

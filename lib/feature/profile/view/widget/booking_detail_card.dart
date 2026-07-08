@@ -1,3 +1,4 @@
+import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
 
 class BookingDetailCard extends StatelessWidget {
@@ -25,11 +26,7 @@ class BookingDetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.shade100),
-      ),
+      decoration: BoxDecorationWidget.customBoxDecoration(context),
       child: Column(
         children: [
           Row(
@@ -50,7 +47,10 @@ class BookingDetailCard extends StatelessWidget {
                     ),
                     Text(
                       service,
-                      style: const TextStyle(color: Colors.grey, fontSize: 13),
+                      style: TextStyle(
+                        color: Theme.of(context).iconTheme.color,
+                        fontSize: 13,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -59,10 +59,10 @@ class BookingDetailCard extends StatelessWidget {
               ),
               IconButton(
                 onPressed: onPressed,
-                icon: const Icon(
+                icon:  Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
-                  color: Colors.grey,
+                  color: Theme.of(context).iconTheme.color,
                 ),
               ),
             ],
@@ -88,6 +88,7 @@ class BookingDetailCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: _getStateColor().withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
+                  
                 ),
                 child: Text(
                   state,

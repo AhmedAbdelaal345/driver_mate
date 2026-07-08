@@ -3,6 +3,7 @@ import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/feature/ai/data/model/chat_request_model.dart';
 import 'package:driver_mate/feature/ai/manager/cubit/ai_chat_cubit.dart';
+import 'package:driver_mate/feature/ai/manager/cubit/ai_diagnosis_response_cubit.dart';
 import 'package:driver_mate/feature/ai/manager/state/ai_state.dart';
 import 'package:driver_mate/feature/ai/view/widget/ai_bubble_widget.dart';
 import 'package:driver_mate/feature/ai/view/widget/input_container_widget.dart';
@@ -10,8 +11,9 @@ import 'package:driver_mate/feature/ai/view/widget/user_bubble_widget.dart';
 import 'package:driver_mate/feature/ai/view/widget/vehicle_status_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
+import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/feature/ai/view/ai_voice_diagnosis_page.dart';
 
 class AiPage extends StatefulWidget {
   const AiPage({super.key});
@@ -62,8 +64,10 @@ class _AiPageState extends State<AiPage> {
 
   @override
   Widget build(BuildContext context) {
+    
+  
     return BlocProvider(
-      create: (_) => AiChatCubit()..fetchHistory(),
+      create: (_) => AiChatCubit(),
       // WHY removed the Builder wrapper:
       // Builder was needed in the original because context.read<AiChatCubit>()
       // was called inside the same build() that owns the BlocProvider — you
@@ -88,7 +92,6 @@ class _AiPageState extends State<AiPage> {
           children: [
             Expanded(
               child: BlocConsumer<AiChatCubit, AiChatState>(
-                
                 listenWhen: (_, current) =>
                     current is AiChatUpdated || current is AiChatError,
                 listener: (context, state) {
@@ -100,7 +103,7 @@ class _AiPageState extends State<AiPage> {
                     // silently swallowed.  Users never knew why messages failed.
                     AppNotifier.show(
                       context,
-                      state.message,
+                      state.error,
                       type: NotifierType.error,
                     );
                   }
@@ -121,10 +124,7 @@ class _AiPageState extends State<AiPage> {
                   // During AiChatLoading (typing indicator), we still need to
                   // show the previously visible messages.  cubit.messages holds
                   // the last known list and is safe to read here as a fallback.
-                  final List<ChatRequestModel> messages = switch (state) {
-                    AiChatUpdated() => state.messages,
-                    _ => context.read<AiChatCubit>().messages,
-                  };
+                  final List<ChatRequestModel> messages = state.messages;
 
                   // WHY two separate booleans instead of one isLoading:
                   // isInitialLoading: list is empty + loading → show a
@@ -153,7 +153,7 @@ class _AiPageState extends State<AiPage> {
 
                           // ── INITIAL LOADING ───────────────────────────
                           if (isInitialLoading)
-                             Padding(
+                            Padding(
                               padding: EdgeInsets.symmetric(vertical: 32),
                               child: Center(
                                 child: CircularProgressIndicator(
@@ -221,12 +221,18 @@ class _AiPageState extends State<AiPage> {
                 final bool isBusy = state is AiChatLoading;
                 return InputContainerWidget(
                   controller: _controller,
+                  onTapVoice: () {
+                    MyNavigation.navigateTo(const AiVoiceDiagnosisPage());
+                  },
                   onTapMessage: isBusy
                       ? null
                       : () {
                           final text = _controller.text.trim();
                           if (text.isEmpty) return;
-                          context.read<AiChatCubit>().sendMessage(text);
+                          context.read<AiChatCubit>().sendMessage(
+                            message: text,
+                            diagnosis: context.read<AiDiagnosisCubit>().lastDiagnosis,
+                          );
                           _controller.clear();
                         },
                 );

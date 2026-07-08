@@ -31,6 +31,7 @@ import 'package:driver_mate/feature/maintance_booking/manager/state/maintenance_
 import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/maintenance_tip_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
+import 'package:driver_mate/feature/maintance_history/view/maintance_history.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
 import 'package:driver_mate/feature/news/view/car_news_page.dart';
@@ -181,7 +182,7 @@ class _HomePageState extends State<HomePage> {
       ContainerIconWidget(
         icon: AppImagePath.repairIconPath,
         text: s.maintenanceHistory,
-        onTap: () => MyNavigation.navigateTo(ServiceCenterPage()),
+        onTap: () => MyNavigation.navigateTo(MaintenanceHistory()),
       ),
       ContainerIconWidget(
         icon: AppImagePath.phoneIconPath,
@@ -230,9 +231,9 @@ class _HomePageState extends State<HomePage> {
           BlocBuilder<EditProfileCubit, EditProfileState>(
             builder: (context, state) {
               EditProfileModel? profile;
-              if (state is SuccessEditProfile)
+              if (state is SuccessEditProfile) {
                 profile = state.data;
-              else if (state is UpdateProfileSuccess)
+              } else if (state is UpdateProfileSuccess)
                 profile = state.data;
 
               return SizedBox(
@@ -242,8 +243,13 @@ class _HomePageState extends State<HomePage> {
                 height: profile != null
                     ? 50
                     : SizeConfig.height(context) * 0.071,
-                child: ContainerForIcon(
-                  iconPath: profile?.image ?? AppImagePath.profileIconPath,
+                child: InkWell(
+                  onTap: () {
+                    MyNavigation.navigateTo(WrapperPage(initialIndex: 4));
+                  },
+                  child: ContainerForIcon(
+                    iconPath: profile?.image ?? AppImagePath.profileIconPath,
+                  ),
                 ),
               );
             },
@@ -311,9 +317,11 @@ class _HomePageState extends State<HomePage> {
                 child: BlocBuilder<MaintenanceCubit, MaintenanceState>(
                   builder: (context, state) {
                     if (state is MaintenanceLoading) {
-                      return  Center(
+                      return Center(
                         child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.onSurface, // ← was hardcoded AppColors.black
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface, // ← was hardcoded AppColors.black
                         ),
                       );
                     } else if (state is MaintenanceLoaded) {

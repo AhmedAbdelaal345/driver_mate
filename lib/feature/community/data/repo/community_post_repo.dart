@@ -95,6 +95,9 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
               rawList[i] as Map<String, dynamic>,
             ),
           );
+          print(
+            "\n \n \n the post sent images are :${posts.last.imageUrls}\n \n \n",
+          );
         } catch (parseError) {
           // Surface exactly which item and which field broke.
           return left(
@@ -144,17 +147,32 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
   }) async {
     final now = DateTime.now();
     try {
+      print("========================");
+      print(imageFile);
+      print(imageFile?.path);
+      print(imageFile?.existsSync());
+
+      final body = CommunityCreatePostModel(
+        title: title,
+        content: description,
+        postType: type,
+        imagePost: imageFile,
+      ).toJson();
+
+      print(body);
+
       final ApiResponse response = await ApiHelper().postRequest(
         endpoint: "community",
         isAuthorized: true,
         isForm: true,
-        data: CommunityCreatePostModel(
+        data:await CommunityCreatePostModel(
           title: title,
           content: description,
           postType: type,
           imagePost: imageFile,
         ).toJson(),
       );
+
       final post = CommunityFetchPostModel(
         id: 'post-${now.microsecondsSinceEpoch}',
         postType: 0,

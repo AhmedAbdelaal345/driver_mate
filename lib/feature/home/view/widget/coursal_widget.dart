@@ -26,7 +26,7 @@ class CoursalWidgetState extends State<CoursalWidget> {
   @override
   Widget build(BuildContext context) {
     final cardHeight = SizeConfig.height(context) * 0.23;
- final List<_CarouselItem> _items = [
+ final List<_CarouselItem> items = [
     _CarouselItem(
       badge: AppStrings.of(context).emergencyHelp,
       title: AppStrings.of(context).emergencyAssistance,
@@ -63,7 +63,7 @@ class CoursalWidgetState extends State<CoursalWidget> {
       alignment: Alignment.bottomCenter,
       children: [
         CarouselSlider(
-          items: _items
+          items: items
               .map((item) => _buildSlide(context, item, cardHeight))
               .toList(),
           options: CarouselOptions(
@@ -80,7 +80,7 @@ class CoursalWidgetState extends State<CoursalWidget> {
           bottom: 12,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: _items.asMap().entries.map((entry) {
+            children: items.asMap().entries.map((entry) {
               final bool isActive = _currentIndex == entry.key;
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 250),

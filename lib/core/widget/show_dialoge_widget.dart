@@ -2,6 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
 // import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/feature/auth/manager/auth/auth_cubit.dart';
+import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,6 @@ class ShowDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: Text(title),
       content: Text(content),
@@ -44,7 +44,12 @@ class ShowDialogWidget extends StatelessWidget {
                 backgroundColor: AppColors.blue,
                 onPressed: () {
                   Navigator.pop(context);
-                  context.read<AuthCubit>().logout(context);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    (route) => false,
+                  );
+                  context.read<AuthCubit>().logout();
                 },
                 buttonText: AppStrings.of(context).logout,
               ),

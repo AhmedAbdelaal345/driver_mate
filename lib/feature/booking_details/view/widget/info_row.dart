@@ -3,7 +3,7 @@ import 'package:driver_mate/feature/booking_details/view/widget/label_text_widge
 import 'package:flutter/material.dart';
 
 class InfoRow extends StatelessWidget {
-  const InfoRow({required this.icon, required this.label, required this.value});
+  const InfoRow({super.key, required this.icon, required this.label, required this.value});
   final IconData icon;
   final String label;
   final String value;

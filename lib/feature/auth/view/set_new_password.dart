@@ -1,12 +1,13 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
-import 'package:driver_mate/core/utils/app_colors.dart';
-import 'package:driver_mate/core/utils/app_constants.dart';
+// import 'package:driver_mate/core/utils/app_colors.dart';
+// import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
 import 'package:driver_mate/core/utils/app_regexp.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
+import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/core/widget/container_icon.dart';
 import 'package:driver_mate/feature/auth/manager/otp/otp_cubit.dart';
@@ -15,6 +16,7 @@ import 'package:driver_mate/feature/auth/view/login_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
 import 'package:driver_mate/core/widget/textformfield_widget.dart';
+import 'package:driver_mate/feature/profile/view/widget/requirement_row_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -162,20 +164,22 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                   ),
                 ),
                 SizedBox(height: 0.01 * MediaQuery.of(context).size.height),
-                Text(AppStrings.of(context).setNewPasswordHintText,style: Theme.of(context).textTheme.bodyMedium,),
+                Text(
+                  AppStrings.of(context).setNewPasswordHintText,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
                 SizedBox(height: 0.03 * MediaQuery.of(context).size.height),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     AppStrings.of(context).password,
                     style: AppStyle.labelStyle.copyWith(
-                      color: Theme.of(context).textTheme.bodyLarge?.color
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                 ),
                 SizedBox(height: 0.01 * MediaQuery.of(context).size.height),
                 TextFormFieldWidget(
-
                   hintText: AppStrings.of(context).enterYourPassword,
                   isPassword: true,
                   validator: (value) {
@@ -189,7 +193,6 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                     return null;
                   },
                   controller: _passwordController,
-
                 ),
                 SizedBox(height: 0.047 * MediaQuery.of(context).size.height),
                 Align(
@@ -197,7 +200,7 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                   child: Text(
                     AppStrings.of(context).confirmPassword,
                     style: AppStyle.labelStyle.copyWith(
-                      color: Theme.of(context).textTheme.bodyLarge?.color
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                 ),
@@ -214,6 +217,30 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                     }
                     return null;
                   },
+                ),
+                SizedBox(height: 0.03 * MediaQuery.of(context).size.height),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecorationWidget.customBoxDecoration(
+                    context,
+                    borderRadius: AppFontSize.f12,
+                  ).copyWith(color: Theme.of(context).cardTheme.color),
+                  child: Column(
+                    children: [
+                      RequirementRow(
+                        text: AppStrings.of(context).requirementLength,
+                      ),
+                      RequirementRow(
+                        text: AppStrings.of(context).requirementUppercase,
+                      ),
+                      RequirementRow(
+                        text: AppStrings.of(context).requirementLowercase,
+                      ),
+                      RequirementRow(
+                        text: AppStrings.of(context).requirementNumber,
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height: 0.03 * MediaQuery.of(context).size.height),
 
@@ -243,6 +270,13 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                         if (!mounted) return;
                         _showSuccessBottomSheet(context);
                       });
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
                     } else if (state is OtpErrorState) {
                       _successHandled = false;
                       AppNotifier.show(
@@ -256,9 +290,9 @@ class _SetNewPasswordPageState extends State<SetNewPasswordPage> {
                       previous.runtimeType != current.runtimeType,
                   builder: (context, state) {
                     if (state is ResetPasswordLoadingState) {
-                      return  Center(
+                      return Center(
                         child: CircularProgressIndicator(
-                          color:Theme.of(context).colorScheme.secondary,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       );
                     }

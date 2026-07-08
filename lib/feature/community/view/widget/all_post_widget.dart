@@ -97,10 +97,13 @@ class AllPostsList extends StatelessWidget {
         return TipCard(post: post);
       case 2:
         return ReviewCard(
+          post: post,
           shopName: post.title,
           reviewText: post.content,
           reviewerName: post.authorName,
-          timeAgo: post.createdAt.substring(0, 10),
+          timeAgo: post.createdAt.length >= 10 ? post.createdAt.substring(0, 10) : post.createdAt,
+          location: "Cairo",
+          rating: 4,
         );
       case 3:
         return MarketplaceCard(post: post);

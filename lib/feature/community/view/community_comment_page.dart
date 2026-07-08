@@ -3,7 +3,6 @@ import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/feature/community/data/model/community_fetch_post_model.dart';
-import 'package:driver_mate/feature/community/data/model/community_post_model.dart';
 import 'package:driver_mate/feature/community/manager/community_comment_manager/community_comment_cubit.dart';
 import 'package:driver_mate/feature/community/manager/community_comment_manager/community_comment_state.dart';
 import 'package:driver_mate/feature/community/view/widget/comment_card_widget.dart';

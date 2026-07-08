@@ -22,11 +22,14 @@ class LocalNotificationService {
     );
     await requestPermission(); // 👈 أهم سطر
 
-    flutterLocalNotifications.initialize(
+    await flutterLocalNotifications.initialize(
       settings,
       onDidReceiveNotificationResponse: onTap,
       onDidReceiveBackgroundNotificationResponse: onTap,
     );
+
+    // Automatically schedule the daily 9:00 AM notification
+    await dailysechudleNotificaction();
   }
 
   static Future<void> requestPermission() async {
@@ -51,16 +54,14 @@ class LocalNotificationService {
     required String title,
     required String body,
   }) async {
-    NotificationDetails notificationDetails = NotificationDetails(
+    NotificationDetails notificationDetails = const NotificationDetails(
       android: AndroidNotificationDetails(
-        notificationId,
+        "basic_channel",
         "basic channel",
         channelDescription: "basic notification",
         importance: Importance.high,
         priority: Priority.high,
-        sound: RawResourceAndroidNotificationSound(
-          "android/app/src/main/res/raw/splash.mp3".split(".").first,
-        ),
+        sound: RawResourceAndroidNotificationSound("splash"),
       ),
     );
     await flutterLocalNotifications.show(
@@ -111,12 +112,11 @@ class LocalNotificationService {
       currentTime.year,
       currentTime.month,
       currentTime.day,
-      currentTime.month,
-      currentTime.hour,
-      30,
+      9, // Hour: 9 AM
+      0, // Minute: 0
     );
     if (scheduledTime.isBefore(currentTime)) {
-      scheduledTime = scheduledTime.add(const Duration(hours: 1));
+      scheduledTime = scheduledTime.add(const Duration(days: 1));
     }
     NotificationDetails notificationDetails = const NotificationDetails(
       android: AndroidNotificationDetails(
@@ -126,25 +126,24 @@ class LocalNotificationService {
         importance: Importance.high,
         priority: Priority.high,
       ),
-      iOS: DarwinNotificationDetails(
-        subtitle: "daily scheduled notification",
-        attachments: [DarwinNotificationAttachment("", identifier: "4")],
-      ),
+      iOS: DarwinNotificationDetails(subtitle: "daily scheduled notification"),
     );
-    flutterLocalNotifications.zonedSchedule(
+    await flutterLocalNotifications.zonedSchedule(
       3,
-      "Scheduled Notification",
-      "This is a scheduled notification",
+      "Good Morning! 🚗",
+      "Check your vehicle's health check status today to keep it running smoothly.",
       scheduledTime,
       notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents:
+          DateTimeComponents.time, // repeats daily at 9:00 AM
     );
   }
 
   static Future<void> cancelAllNotifications() async {
-    flutterLocalNotifications.cancelAll();
+    await flutterLocalNotifications.cancelAll();
   }
 
   //  Todo: add the notifcation get every day in 9 clock in the morning

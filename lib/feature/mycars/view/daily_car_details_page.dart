@@ -11,6 +11,7 @@ import 'package:driver_mate/feature/emergency/view/emergency_assistance_page.dar
 import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
 import 'package:driver_mate/feature/maintance_history/view/maintance_history.dart';
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
+import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/view/add_vehicle_page.dart';
 
 import 'package:driver_mate/feature/mycars/view/widget/danger_zone_widget.dart';
@@ -19,6 +20,7 @@ import 'package:driver_mate/feature/mycars/view/widget/service_history_item.dart
 import 'package:driver_mate/feature/mycars/view/widget/service_info_card.dart';
 import 'package:driver_mate/feature/mycars/view/widget/vehical_header_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DailyCarDetailsPage extends StatelessWidget {
   const DailyCarDetailsPage({super.key, required this.vehicle});
@@ -136,7 +138,7 @@ class DailyCarDetailsPage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              // TODO: Implement remove vehicle logic
+              context.read<VehicalCubit>().deleteVehicle(vehicle: vehicle);
               Navigator.pop(context);
               Navigator.pop(context); // Go back to previous screen
             },

@@ -62,7 +62,7 @@ class _TipCardState extends State<TipCard> {
     final item = SavedItemModel(
       title: widget.post.title,
       subtitle: widget.post.content,
-      image: widget.post.imageUrls?.first ?? '',
+      image: widget.post.imageUrls.first ?? '',
       type: SavedType.post,
     );
 

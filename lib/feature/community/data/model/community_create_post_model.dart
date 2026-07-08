@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:driver_mate/core/local/api_keys.dart';
 
 class CommunityCreatePostModel {
@@ -15,12 +16,16 @@ class CommunityCreatePostModel {
     this.imagePost,
   });
 
-  Map<String, dynamic> toJson() {
+  Future<Map<String, dynamic>> toJson() async {
     return {
       ApiKeys.title: title,
       ApiKeys.content: content,
       ApiKeys.postType: postType,
-      ApiKeys.images: imagePost,
+      if (imagePost != null)
+        ApiKeys.images: await MultipartFile.fromFile(
+          imagePost!.path,
+          filename: imagePost!.path.split('/').last,
+        ),
     };
   }
 }

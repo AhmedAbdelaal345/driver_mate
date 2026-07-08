@@ -42,27 +42,55 @@ class VechicleModel {
       ApiKeys.year: year,
       ApiKeys.plateNumber: plateNumber,
       ApiKeys.currentMileage: currentMileage,
+      "status": status.name,
+      "image": image?.path,
     };
   }
 
   factory VechicleModel.fromJson(Map<String, dynamic> json) {
     return VechicleModel(
-      id: json[ApiKeys.id],
-      userId: json[ApiKeys.userId],
-
-      brandId: json[ApiKeys.brandId],
-      brandName: json[ApiKeys.brandName],
-      modelId: json[ApiKeys.modelId],
-      modelName: json[ApiKeys.modelName],
-      year: json[ApiKeys.year],
-      image: json[ApiKeys.image] != null ? File(json[ApiKeys.image]) : null,
-      plateNumber: json[ApiKeys.plateNumber],
-      currentMileage: json[ApiKeys.currentMileage],
-      
+      id: json[ApiKeys.id]?.toString() ?? "",
+      userId: json[ApiKeys.userId]?.toString() ?? "",
+      brandId: json[ApiKeys.brandId] is int ? json[ApiKeys.brandId] : int.tryParse(json[ApiKeys.brandId]?.toString() ?? "") ?? 0,
+      brandName: json[ApiKeys.brandName]?.toString() ?? "",
+      modelId: json[ApiKeys.modelId] is int ? json[ApiKeys.modelId] : int.tryParse(json[ApiKeys.modelId]?.toString() ?? "") ?? 0,
+      modelName: json[ApiKeys.modelName]?.toString() ?? "",
+      year: json[ApiKeys.year] is int ? json[ApiKeys.year] : int.tryParse(json[ApiKeys.year]?.toString() ?? "") ?? 0,
+      image: json["image"] != null ? File(json["image"]) : (json[ApiKeys.image] != null ? File(json[ApiKeys.image]) : null),
+      plateNumber: json[ApiKeys.plateNumber]?.toString() ?? "",
+      currentMileage: json[ApiKeys.currentMileage] is int ? json[ApiKeys.currentMileage] : (double.tryParse(json[ApiKeys.currentMileage]?.toString() ?? "")?.toInt() ?? 0),
       status: VehicleStatus.values.firstWhere(
         (s) => s.name == json["status"],
         orElse: () => VehicleStatus.inactive,
       ),
+    );
+  }
+
+  VechicleModel copyWith({
+    String? id,
+    String? userId,
+    int? brandId,
+    int? modelId,
+    String? brandName,
+    String? modelName,
+    int? year,
+    String? plateNumber,
+    int? currentMileage,
+    VehicleStatus? status,
+    File? image,
+  }) {
+    return VechicleModel(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      brandId: brandId ?? this.brandId,
+      modelId: modelId ?? this.modelId,
+      brandName: brandName ?? this.brandName,
+      modelName: modelName ?? this.modelName,
+      year: year ?? this.year,
+      plateNumber: plateNumber ?? this.plateNumber,
+      currentMileage: currentMileage ?? this.currentMileage,
+      status: status ?? this.status,
+      image: image ?? this.image,
     );
   }
 }

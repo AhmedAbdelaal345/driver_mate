@@ -54,27 +54,28 @@ class VehicalCubit extends Cubit<VehicalState> {
   }
 
   Future<void> addVehicle({required VechicleModel vehicle}) async {
-  emit(LoadingVehicalState());
+    emit(LoadingVehicalState());
 
-  // Check duplicates against repo
-  final currentResult = await repo.getVehicles();
-  final currentVehicles = currentResult.getOrElse(() => []);
+    // Check duplicates against repo
+    final currentResult = await repo.getVehicles();
+    final currentVehicles = currentResult.getOrElse(() => []);
 
-  if (_isDuplicate(vehicle, currentVehicles)) {
-    emit(ErrorVehicalState(error: AppConstants.duplicateCarError));
-    return;
+    if (_isDuplicate(vehicle, currentVehicles)) {
+      emit(ErrorVehicalState(error: AppConstants.duplicateCarError));
+      return;
+    }
+
+    final result = await repo.addCar(car: vehicle);
+    result.fold(
+      (error) => emit(ErrorVehicalState(error: error)),
+      (message) async {
+        final currentList = await repo.getVehicles();
+        final vehicles = currentList.getOrElse(() => []);
+        emit(AddVehicalSuccessState(vehicle: vehicle, message: message, data: vehicles));
+      },
+    );
   }
 
-  final result = await repo.addCar(car: vehicle);
-  result.fold(
-    (error) => emit(ErrorVehicalState(error: error)),
-    (message) {
-      emit(AddVehicalSuccessState(vehicle: vehicle, message: message));
-      // Refresh the list so MyCars page has latest data
-      fetchVehicles();
-    },
-  );
-}
   Future<void> updateVehicle({
     required VechicleModel oldVehicle,
     required VechicleModel updatedVehicle,
@@ -85,11 +86,12 @@ class VehicalCubit extends Cubit<VehicalState> {
       oldCar: oldVehicle,
       newCar: updatedVehicle,
     );
-    await result.fold(
-      (error) async => emit(ErrorVehicalState(error: error)),
+    result.fold(
+      (error) => emit(ErrorVehicalState(error: error)),
       (message) async {
-        await fetchVehicles();
-        emit(UpdateVehicalSuccessState(message: message));
+        final currentList = await repo.getVehicles();
+        final vehicles = currentList.getOrElse(() => []);
+        emit(UpdateVehicalSuccessState(message: message, data: vehicles));
       },
     );
   }
@@ -98,11 +100,12 @@ class VehicalCubit extends Cubit<VehicalState> {
     emit(LoadingVehicalState());
 
     final result = await repo.deleteCar(car: vehicle);
-    await result.fold(
-      (error) async => emit(ErrorVehicalState(error: error)),
+    result.fold(
+      (error) => emit(ErrorVehicalState(error: error)),
       (message) async {
-        await fetchVehicles();
-        emit(DeleteVehicalSuccessState(message: message));
+        final currentList = await repo.getVehicles();
+        final vehicles = currentList.getOrElse(() => []);
+        emit(DeleteVehicalSuccessState(message: message, data: vehicles));
       },
     );
   }
@@ -121,15 +124,15 @@ class VehicalCubit extends Cubit<VehicalState> {
     );
   }
 
-  bool _isDuplicatePlate(
-    VechicleModel newVehicle,
-    List<VechicleModel> vehicles,
-  ) {
-    if (newVehicle.plateNumber.isEmpty) return false;
-    return vehicles.any(
-      (existing) =>
-          existing.plateNumber.toLowerCase() ==
-          newVehicle.plateNumber.toLowerCase(),
-    );
-  }
+  // bool _isDuplicatePlate(
+  //   VechicleModel newVehicle,
+  //   List<VechicleModel> vehicles,
+  // ) {
+  //   if (newVehicle.plateNumber.isEmpty) return false;
+  //   return vehicles.any(
+  //     (existing) =>
+  //         existing.plateNumber.toLowerCase() ==
+  //         newVehicle.plateNumber.toLowerCase(),
+  //   );
+  // }
 }

@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:driver_mate/core/helper/my_navigation.dart';
+import 'package:driver_mate/core/service/local_notification_service.dart';
+import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 // import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
@@ -17,8 +19,22 @@ import 'package:driver_mate/feature/mycars/view/widget/vehical_detail_card.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MyCars extends StatelessWidget {
+class MyCars extends StatefulWidget {
   const MyCars({super.key});
+
+  @override
+  State<MyCars> createState() => _MyCarsState();
+}
+
+class _MyCarsState extends State<MyCars> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch vehicles when the page loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      VehicalCubit.get(context).fetchVehicles();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +63,31 @@ class MyCars extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<VehicalCubit, VehicalState>(
+      body: BlocConsumer<VehicalCubit, VehicalState>(
+        listener: (context, state) {
+          if (state is DeleteVehicalSuccessState) {
+            AppNotifier.show(context, state.message, type: NotifierType.success);
+            LocalNotificationService.basicNotification(
+              notificationId: "delete_car",
+              id: 12,
+              title: "Car Deleted 🗑️",
+              body: "Your vehicle has been deleted.",
+            );
+          }
+          if (state is UpdateVehicalSuccessState) {
+            AppNotifier.show(context, state.message, type: NotifierType.success);
+            LocalNotificationService.basicNotification(
+              notificationId: "update_car",
+              id: 11,
+              title: "Car Updated 🚗",
+              body: "Your vehicle status has been updated successfully!",
+            );
+          }
+        },
         builder: (context, state) {
           // loading
           if (state is InitialVehicalState ||
-              state is LoadingVehicalState ||
-              state is AddVehicalSuccessState) {
+              state is LoadingVehicalState) {
             return const Center(
               child: CircularProgressIndicator(color: AppColors.cyanColor),
             );
@@ -63,8 +98,21 @@ class MyCars extends StatelessWidget {
             return Center(child: Text(state.error));
           }
 
+          List<VechicleModel> cars = [];
           if (state is SuccessVehicalState) {
-            final cars = state.data; // list of cars
+            cars = state.data;
+          } else if (state is AddVehicalSuccessState) {
+            cars = state.data;
+          } else if (state is UpdateVehicalSuccessState) {
+            cars = state.data;
+          } else if (state is DeleteVehicalSuccessState) {
+            cars = state.data;
+          }
+
+          if (state is SuccessVehicalState ||
+              state is AddVehicalSuccessState ||
+              state is UpdateVehicalSuccessState ||
+              state is DeleteVehicalSuccessState) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: CustomScrollView(

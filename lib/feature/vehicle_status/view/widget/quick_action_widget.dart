@@ -9,34 +9,38 @@ class QuickAction extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.color,
+    required this.onTap,
   });
 
   final IconData icon;
   final String label;
   final Color color;
-
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 52,
-          height: 52,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.15),
-            shape: BoxShape.circle,
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: color, size: 22),
           ),
-          child: Icon(icon, color: color, size: 22),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          label,
-          style: AppStyle.containerSubtitle.copyWith(
-            fontSize: AppFontSize.f10,
-            color: AppColors.textGrey,
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: AppStyle.containerSubtitle.copyWith(
+              fontSize: AppFontSize.f10,
+              color: AppColors.textGrey,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

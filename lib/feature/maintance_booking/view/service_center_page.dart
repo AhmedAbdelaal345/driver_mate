@@ -44,14 +44,16 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: false,
-        title:  Text(
+        title: Text(
           AppStrings.of(context).serviceCenter,
-          style: AppStyle.appBarTitle,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
         ),
         leading: const LeadingIcon(),
       ),
@@ -77,6 +79,7 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f16,
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -96,6 +99,7 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                         AppConstants.rating48,
                         style: AppStyle.boldSmallText.copyWith(
                           fontSize: AppFontSize.f12,
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
                         ),
                       ),
                       const SizedBox(width: 4),
@@ -103,7 +107,7 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                         AppConstants.reviews234,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f11,
-                          color: AppColors.iconGrey,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                       ),
                     ],
@@ -123,7 +127,9 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                   // Working Hours Section
                   InfoRow(
                     icon: Icons.access_time,
-                    title: widget.workingHours ?? AppStrings.of(context).workingHours,
+                    title:
+                        widget.workingHours ??
+                        AppStrings.of(context).workingHours,
                     subtitle: "Holiday : ${widget.holiday}",
                   ),
                   SizedBox(height: SizeConfig.height(context) * 0.02),
@@ -145,6 +151,7 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f14,
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).textTheme.bodyLarge?.color
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -202,7 +209,7 @@ class _ServiceCenterPageState extends State<ServiceCenterPage> {
           vertical: SizeConfig.height(context) * 0.015,
         ),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: Theme.of(context).cardColor,
           boxShadow: [
             BoxShadow(
               color: AppColors.black.withValues(alpha: 0.05),

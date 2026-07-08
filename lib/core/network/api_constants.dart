@@ -14,6 +14,7 @@ abstract class ApiConstants {
   static String refreshToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhYWJkZWxhYWwxNDVAZ21haWwuY29tIiwiaWF0IjoxNzY4ODIyMjM2LCJleHAiOjE3Njk0MjcwMzZ9.rdw3Qrzxx7NL1osTDL_IPwH7MEmF-dJs-33V7dziNJY";
   static const String authorization = "Authorization";
+  static const String deviceHashHeader = "X-device-Hash";
 
   static const String geminiBaseUrl =
       "https://generativelanguage.googleapis.com/v1beta/";

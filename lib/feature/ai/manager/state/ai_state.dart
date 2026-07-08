@@ -1,18 +1,26 @@
 import 'package:driver_mate/feature/ai/data/model/chat_request_model.dart';
 
-abstract class AiChatState {}
-
-class AiChatInitial extends AiChatState {}
-
-class AiChatLoading extends AiChatState {}
-
-class AiChatUpdated extends AiChatState {
+abstract class AiChatState {
   final List<ChatRequestModel> messages;
 
-  AiChatUpdated(this.messages);
+  const AiChatState(this.messages);
+}
+
+
+class AiChatInitial extends AiChatState {
+  const AiChatInitial() : super(const []);
+}
+
+class AiChatLoading extends AiChatState {
+  const AiChatLoading(super.messages);
+}
+
+class AiChatUpdated extends AiChatState {
+  const AiChatUpdated(super.messages);
 }
 
 class AiChatError extends AiChatState {
-  final String message;
-  AiChatError(this.message);
+  final String error;
+
+  const AiChatError(this.error, super.messages);
 }

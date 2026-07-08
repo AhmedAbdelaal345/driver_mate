@@ -71,9 +71,14 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
         _selectedVehicle != null;
   }
 
-  void _confirmBooking() {
-    if (_canConfirmBooking) {
-      // TODO: Implement booking confirmation logic
+  Future<void> _confirmBooking() async {
+    if (!_canConfirmBooking || _isBooking) return;
+
+    setState(() {
+      _isBooking = true;
+    });
+
+    try {
       context.read<MaintenceHistoryCubit>().addItem(
         MaintanceHistoryModel(
           centerName: widget.serviceCenter.name,
@@ -89,21 +94,24 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
           phone: widget.serviceCenter.phone,
         ),
       );
+
       AppNotifier.show(
         context,
         'Booking confirmed for ${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year} at $_selectedTime',
         type: NotifierType.success,
       );
-      MyNavigation.navigateOff(WrapperPage());
-    } else {
-      AppNotifier.show(
-        context,
-        'Please select date, time, and vehicle to confirm booking',
-        type: NotifierType.warning,
-      );
+
+      MyNavigation.navigateTo(WrapperPage(initialIndex: 2));
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isBooking = false;
+        });
+      }
     }
   }
 
+  bool _isBooking = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -229,8 +237,12 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
         ),
         child: SafeArea(
           child: PrimaryElevatedButtonWidget(
-            onPressed: _canConfirmBooking ? _confirmBooking : null,
-            buttonText: AppStrings.of(context).confirmBooking,
+            onPressed: (_canConfirmBooking && !_isBooking)
+                ? _confirmBooking
+                : null,
+            buttonText: _isBooking
+                ? "Booking..."
+                : AppStrings.of(context).confirmBooking,
           ),
         ),
       ),

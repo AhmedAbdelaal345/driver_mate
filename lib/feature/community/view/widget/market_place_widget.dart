@@ -208,36 +208,37 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
           const SizedBox(height: 16),
 
           // ── Images ────────────────────────────────────────────
-          SizedBox(
-            height: 100,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.post.imageUrls.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 8),
-              itemBuilder: (_, index) => ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(12),
+          if (widget.post.imageUrls.isNotEmpty) ...[
+            SizedBox(
+              height: 100,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.post.imageUrls.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 8),
+                itemBuilder: (_, index) => ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: widget.post.imageUrls.isNotEmpty
+                        ? Image.network(
+                            widget.post.imageUrls[index],
+                            fit: BoxFit.cover,
+                          )
+                        : widget.post.imageUrls.isNotEmpty
+                        ? Image.asset(
+                            widget.post.imageUrls[index],
+                            fit: BoxFit.cover,
+                          )
+                        : const Icon(Icons.image_outlined, color: Colors.grey),
                   ),
-                  child: widget.post.imageUrls.isNotEmpty
-                      ? Image.network(
-                          widget.post.imageUrls[index],
-                          fit: BoxFit.cover,
-                        )
-                      : widget.post.imageUrls.isNotEmpty
-                      ? Image.asset(
-                          widget.post.imageUrls[index],
-                          fit: BoxFit.cover,
-                        )
-                      : const Icon(Icons.image_outlined, color: Colors.grey),
                 ),
               ),
             ),
-          ),
-
+          ],
           const SizedBox(height: 16),
 
           const Divider(),

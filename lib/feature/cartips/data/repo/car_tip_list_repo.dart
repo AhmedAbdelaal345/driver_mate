@@ -5,7 +5,7 @@ import 'package:driver_mate/feature/cartips/data/model/car_tip_list_model.dart';
 
 class CarTipLsitRepo {
   CarTipLsitRepo._sigleTone();
-  static CarTipLsitRepo _instance = CarTipLsitRepo._sigleTone();
+  static final CarTipLsitRepo _instance = CarTipLsitRepo._sigleTone();
   factory CarTipLsitRepo() => _instance;
   List<CarTipListModel> carTipListModel = [];
   Future<Either<String, List<CarTipListModel>>> getTip() async {

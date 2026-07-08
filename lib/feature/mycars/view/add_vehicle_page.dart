@@ -1,7 +1,8 @@
 import 'dart:io';
+import 'package:driver_mate/core/service/local_notification_service.dart';
 
 import 'package:driver_mate/core/helper/app_notifier.dart';
-import 'package:driver_mate/core/helper/my_navigation.dart';
+// import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/helper/open_gallary.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 // import 'package:driver_mate/core/utils/app_constants.dart';
@@ -15,6 +16,7 @@ import 'package:driver_mate/feature/community/view/widget/add_image_container_wi
 import 'package:driver_mate/feature/mycars/data/model/vechicle_model.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_cubit.dart';
 import 'package:driver_mate/feature/mycars/manager/vehical_state.dart';
+import 'package:driver_mate/feature/mycars/view/my_cars.dart';
 import 'package:driver_mate/feature/mycars/view/vehicle_added_success_page.dart';
 import 'package:driver_mate/feature/mycars/view/widget/delete_vehicle_widget.dart';
 import 'package:driver_mate/feature/mycars/view/widget/vehicle_status_card.dart';
@@ -208,21 +210,47 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
       listener: (context, state) {
         if (state is AddVehicalSuccessState) {
           AppNotifier.show(context, state.message, type: NotifierType.success);
-          MyNavigation.navigateOff(
-            VehicleAddedSuccessPage(vehicle: state.vehicle),
+          LocalNotificationService.basicNotification(
+            notificationId: "add_car",
+            id: 10,
+            title: "Car Added 🚗",
+            body: "Your vehicle ${state.vehicle.brandName} ${state.vehicle.modelName} was added successfully!",
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  VehicleAddedSuccessPage(vehicle: state.vehicle),
+            ),
           );
         }
 
         if (state is UpdateVehicalSuccessState) {
           AppNotifier.show(context, state.message, type: NotifierType.success);
-          Navigator.of(context).pop(); // pops AddVehiclePage
-          Navigator.of(context).pop(); // pops DailyCarDetailsPage
+          LocalNotificationService.basicNotification(
+            notificationId: "update_car",
+            id: 11,
+            title: "Car Updated 🚗",
+            body: "Your vehicle status has been updated successfully!",
+          );
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const MyCars()),
+            (route) => false,
+          );
         }
 
         if (state is DeleteVehicalSuccessState) {
           AppNotifier.show(context, state.message, type: NotifierType.success);
-          Navigator.of(context).pop(); // pops AddVehiclePage
-          Navigator.of(context).pop(); // pops DailyCarDetailsPage
+          LocalNotificationService.basicNotification(
+            notificationId: "delete_car",
+            id: 12,
+            title: "Car Deleted 🗑️",
+            body: "Your vehicle has been deleted.",
+          );
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const MyCars()),
+            (route) => false,
+          );
         }
 
         if (state is ErrorVehicalState) {
@@ -372,7 +400,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                             child: Text(
                               brand,
                               style: AppStyle.regularSmallText.copyWith(
-                                color: Theme.of(context).textTheme.bodyLarge?.color,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.color,
                               ),
                             ),
                           );
@@ -435,7 +465,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                             child: Text(
                               model,
                               style: AppStyle.regularSmallText.copyWith(
-                                color: Theme.of(context).textTheme.bodyLarge?.color,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.color,
                               ),
                             ),
                           );
@@ -503,7 +535,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                             child: Text(
                               year.toString(),
                               style: AppStyle.regularSmallText.copyWith(
-                                color: Theme.of(context).textTheme.bodyLarge?.color,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.color,
                               ),
                             ),
                           );
@@ -768,17 +802,26 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                             ),
                           ),
                         ),
-                        child: Text(
-                          widget.isEditPage
-                              ? AppStrings.of(context).updateVehicle
-                              : AppStrings.of(context).addVehicle,
-                          style: AppStyle.boldSmallText.copyWith(
-                            color: Theme.of(
-                              context,
-                            ).textTheme.labelLarge?.color,
-                            fontSize: AppFontSize.f13,
-                          ),
-                        ),
+                        child: state is LoadingVehicalState
+                            ? const SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                widget.isEditPage
+                                    ? AppStrings.of(context).updateVehicle
+                                    : AppStrings.of(context).addVehicle,
+                                style: AppStyle.boldSmallText.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.labelLarge?.color,
+                                  fontSize: AppFontSize.f13,
+                                ),
+                              ),
                       ),
                     ],
                   ),

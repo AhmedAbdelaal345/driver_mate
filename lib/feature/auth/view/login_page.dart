@@ -15,7 +15,7 @@ import 'package:driver_mate/feature/auth/view/register_page.dart';
 import 'package:driver_mate/feature/auth/view/widget/divider_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/footer_widget.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
-import 'package:driver_mate/feature/auth/view/widget/social_button_widget.dart';
+// import 'package:driver_mate/feature/auth/view/widget/social_button_widget.dart';
 import 'package:driver_mate/core/widget/textformfield_widget.dart';
 import 'package:driver_mate/feature/home/view/wrapper_page.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +72,9 @@ class LoginPage extends StatelessWidget {
                       children: [
                         Text(
                           AppStrings.of(context).welcomeToDriveMate,
-                          style: AppStyle.welcomeTextStyle,
+                          style: AppStyle.welcomeTextStyle.copyWith(
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
+                          ),
                         ),
                         SizedBox(height: SizeConfig.height(context) * 0.019),
                         Text(
@@ -84,7 +86,11 @@ class LoginPage extends StatelessWidget {
                           alignment: AlignmentGeometry.centerLeft,
                           child: Text(
                             AppStrings.of(context).emailAddress,
-                            style: AppStyle.labelStyle,
+                            style: AppStyle.labelStyle.copyWith(
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyLarge?.color,
+                            ),
                           ),
                         ),
                         SizedBox(height: SizeConfig.height(context) * 0.015),
@@ -112,12 +118,17 @@ class LoginPage extends StatelessWidget {
                           alignment: AlignmentGeometry.centerLeft,
                           child: Text(
                             AppStrings.of(context).password,
-                            style: AppStyle.labelStyle,
+                            style: AppStyle.labelStyle.copyWith(
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyLarge?.color,
+                            ),
                           ),
                         ),
                         SizedBox(height: SizeConfig.height(context) * 0.015),
                         TextFormFieldWidget(
                           controller: AuthCubit.get(context).passwordController,
+                          isPassword: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return AppStrings.of(
@@ -231,26 +242,26 @@ class LoginPage extends StatelessWidget {
                         ),
                         SizedBox(height: SizeConfig.height(context) * 0.042),
                         DividerWidget(),
+                        // SizedBox(height: SizeConfig.height(context) * 0.042),
+                        // SocialButtonWidget(
+                        //   textButton: AppStrings.of(context).continueWithApple,
+                        //   icon: ImageIcon(
+                        //     AssetImage(AppImagePath.applePath),
+                        //     color: Colors.black,
+                        //   ),
+                        //   onPressed: () {},
+                        // ),
                         SizedBox(height: SizeConfig.height(context) * 0.042),
-                        SocialButtonWidget(
-                          textButton: AppStrings.of(context).continueWithApple,
-                          icon: ImageIcon(
-                            AssetImage(AppImagePath.applePath),
-                            color: Colors.black,
-                          ),
-                          onPressed: () {},
-                        ),
-                        SizedBox(height: SizeConfig.height(context) * 0.042),
-                        SocialButtonWidget(
-                          textButton: AppStrings.of(context).continueWithGoogle,
-                          icon: Image.asset(
-                            AppImagePath.googlePath,
-                            width: 24, // Adjust size to match your design
-                            height: 24,
-                          ),
-                          onPressed: () {},
-                        ),
-                        SizedBox(height: SizeConfig.height(context) * 0.015),
+                        // SocialButtonWidget(
+                        //   textButton: AppStrings.of(context).continueWithGoogle,
+                        //   icon: Image.asset(
+                        //     AppImagePath.googlePath,
+                        //     width: 24, // Adjust size to match your design
+                        //     height: 24,
+                        //   ),
+                        //   onPressed: () {},
+                        // ),
+                        // SizedBox(height: SizeConfig.height(context) * 0.015),
                         FooterWidget(
                           onTap: () {
                             // Navigate to signup page

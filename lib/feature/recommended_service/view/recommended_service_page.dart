@@ -1,11 +1,14 @@
+import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
+import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
+import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/service_center_page.dart';
 import 'package:flutter/material.dart';
 
@@ -15,14 +18,16 @@ class RecommendedServicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          AppConstants.recommendedServiceTitle,
-          style: AppStyle.appBarTitle,
+        title: Text(
+          AppStrings.of(context).recommendedService,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
         ),
         leading: const LeadingIcon(),
       ),
@@ -37,9 +42,10 @@ class RecommendedServicePage extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecorationWidget.customBoxDecoration(context,
+                decoration: BoxDecorationWidget.customBoxDecoration(
+                  context,
                   borderRadius: AppFontSize.f12,
-                ).copyWith(color: AppColors.white),
+                ).copyWith(color: Theme.of(context).cardTheme.color),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -57,9 +63,10 @@ class RecommendedServicePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      AppConstants.oilChangeDue,
+                      AppStrings.of(context).oilChangeDue,
                       style: AppStyle.boldSmallText.copyWith(
                         fontSize: AppFontSize.f13,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -73,7 +80,7 @@ class RecommendedServicePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Text(
-                        AppConstants.aiBasedRecommendation,
+                        AppStrings.of(context).aiBasedRecommendation,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f10,
                           color: AppColors.purple,
@@ -83,10 +90,10 @@ class RecommendedServicePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      AppConstants.recommendedServiceNote,
+                      AppStrings.of(context).recommendedServiceNote,
                       style: AppStyle.containerSubtitle.copyWith(
                         fontSize: AppFontSize.f11,
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -129,9 +136,9 @@ class RecommendedServicePage extends StatelessWidget {
               ),
               SizedBox(height: SizeConfig.height(context) * 0.02),
               Text(
-                AppConstants.quickActions,
+                AppStrings.of(context).quickActions,
                 style: AppStyle.containerSubtitle.copyWith(
-                  color: AppColors.iconGrey,
+                  color: Theme.of(context).iconTheme.color,
                   fontSize: AppFontSize.f11,
                 ),
               ),
@@ -139,15 +146,18 @@ class RecommendedServicePage extends StatelessWidget {
               _ActionCard(
                 icon: Icons.location_on_outlined,
                 iconColor: AppColors.cyanColor,
-                title: AppConstants.findNearestCenter,
-                subtitle: AppConstants.findNearestCenterSub,
+                title: AppStrings.of(context).findNearestCenter,
+                subtitle: AppStrings.of(context).findNearestCenterSub,
+                onTap: () {
+                  MyNavigation.navigateTo(BookMaintenancePage());
+                },
               ),
               const SizedBox(height: 10),
               _ActionCard(
                 icon: Icons.calendar_month_outlined,
                 iconColor: AppColors.cyanColor,
-                title: AppConstants.bookNow,
-                subtitle: AppConstants.bookNowSub,
+                title: AppStrings.of(context).bookNow,
+                subtitle: AppStrings.of(context).bookNowSub,
                 isPrimary: true,
                 onTap: () {
                   MyNavigation.navigateTo(ServiceCenterPage());
@@ -157,8 +167,15 @@ class RecommendedServicePage extends StatelessWidget {
               _ActionCard(
                 icon: Icons.notifications_none,
                 iconColor: AppColors.orange,
-                title: AppConstants.setReminder,
-                subtitle: AppConstants.setReminderSub,
+                title: AppStrings.of(context).setReminder,
+                subtitle: AppStrings.of(context).setReminderSub,
+                onTap: () {
+                  AppNotifier.show(
+                    context,
+                    "Coming Soon",
+                    type: NotifierType.warning,
+                  );
+                },
               ),
             ],
           ),
@@ -190,9 +207,15 @@ class _ActionCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecorationWidget.customBoxDecoration(context,
-          borderRadius: AppFontSize.f12,
-        ).copyWith(color: isPrimary ? AppColors.cyanColor : AppColors.white),
+        decoration:
+            BoxDecorationWidget.customBoxDecoration(
+              context,
+              borderRadius: AppFontSize.f12,
+            ).copyWith(
+              color: isPrimary
+                  ? AppColors.cyanColor
+                  : Theme.of(context).scaffoldBackgroundColor,
+            ),
         child: Row(
           children: [
             Container(
@@ -219,7 +242,9 @@ class _ActionCard extends StatelessWidget {
                     title,
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f12,
-                      color: isPrimary ? AppColors.white : AppColors.black,
+                      color: isPrimary
+                          ? AppColors.white
+                          : Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -227,7 +252,9 @@ class _ActionCard extends StatelessWidget {
                     subtitle,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f10,
-                      color: isPrimary ? AppColors.white : AppColors.iconGrey,
+                      color: isPrimary
+                          ? AppColors.white
+                          : Theme.of(context).iconTheme.color,
                     ),
                   ),
                 ],

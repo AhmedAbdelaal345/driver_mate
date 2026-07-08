@@ -2,7 +2,7 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class PostTypeTag extends StatelessWidget {
-  const PostTypeTag({required this.label});
+  const PostTypeTag({super.key, required this.label});
   final String label;
 
   @override

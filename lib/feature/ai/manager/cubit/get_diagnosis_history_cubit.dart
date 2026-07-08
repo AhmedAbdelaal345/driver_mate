@@ -42,11 +42,13 @@ class GetDiagnosisHistoryCubit extends Cubit<GetDiagnosisHistoryState> {
     if (current is! GetDiagnosisHistorySuccess || current.isLoadingMore) return;
 
     // Emit loading-more without clearing existing items
-    emit(GetDiagnosisHistorySuccess(
-      items: List.from(_items),
-      hasMore: _hasMore,
-      isLoadingMore: true,
-    ));
+    emit(
+      GetDiagnosisHistorySuccess(
+        items: List.from(_items),
+        hasMore: _hasMore,
+        isLoadingMore: true,
+      ),
+    );
 
     try {
       _page++;
@@ -59,19 +61,25 @@ class GetDiagnosisHistoryCubit extends Cubit<GetDiagnosisHistoryState> {
       _emitSuccess();
     } catch (_) {
       _page--; // revert on failure so next attempt retries the same page
-      emit(GetDiagnosisHistorySuccess(
-        items: List.from(_items),
-        hasMore: _hasMore,
-        isLoadingMore: false,
-      ));
+      emit(
+        GetDiagnosisHistorySuccess(
+          items: List.from(_items),
+          hasMore: _hasMore,
+          isLoadingMore: false,
+        ),
+      );
     }
   }
 
   void _emitSuccess() {
-    emit(GetDiagnosisHistorySuccess(
-      items: List.from(_items),
-      hasMore: _hasMore,
-      isLoadingMore: false,
-    ));
+    emit(
+      GetDiagnosisHistorySuccess(
+        items: List.from(_items),
+        hasMore: _hasMore,
+        isLoadingMore: false,
+      ),
+    );
   }
+
+  List<GetDiagnosisHistoryModel> get items => List.unmodifiable(_items);
 }

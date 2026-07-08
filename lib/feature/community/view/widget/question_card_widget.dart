@@ -30,16 +30,10 @@ class QuestionTab extends StatelessWidget {
           filterType: AppConstants.question,
           showEmptyState: true,
         ),
-        CommunityPostList(
-          filterType: AppConstants.question,
-          showEmptyState: true,
-        ), // ❌ duplicate
       ],
     );
   }
 }
-
-
 
 class QuestionCard extends StatefulWidget {
   const QuestionCard({super.key, required this.post});
@@ -103,10 +97,7 @@ class _QuestionCardState extends State<QuestionCard> {
     final h = SizeConfig.height(context);
 
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: w * 0.04,
-        vertical: h * 0.008,
-      ),
+      margin: EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.008),
       padding: EdgeInsets.all(w * 0.04),
       decoration: BoxDecorationWidget.customBoxDecoration(
         context,
@@ -169,7 +160,7 @@ class _QuestionCardState extends State<QuestionCard> {
               ),
 
               SizedBox(width: w * 0.02),
- 
+
               // Tag — only takes what it needs
               PostTypeTag(label: AppConstants.question),
             ],
@@ -203,34 +194,32 @@ class _QuestionCardState extends State<QuestionCard> {
           ),
 
           // ── Image ─────────────────────────────────────────────────
-          if (widget.post.firstImageUrl != null) ...[
+          if (widget.post.imageUrls.isNotEmpty) ...[
             SizedBox(height: h * 0.012),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(AppFontSize.f12),
-              child: Image.network(
-                widget.post.firstImageUrl!,
-                width: double.infinity,
-                height: h * 0.22,
-                fit: BoxFit.cover,
-                loadingBuilder: (_, child, progress) => progress == null
-                    ? child
-                    : Container(
-                        width: double.infinity,
-                        height: h * 0.22,
-                        color: theme.colorScheme.surface,
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.cyanColor,
-                          ),
-                        ),
+            SizedBox(
+              height: h * 0.22,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.post.imageUrls.length,
+                itemBuilder: (context, index) => ClipRRect(
+                  borderRadius: BorderRadius.circular(AppFontSize.f12),
+                  child: SizedBox(
+                    width: w * 0.75,
+                    height: h * 0.22,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        widget.post.imageUrls[index],
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            const Icon(Icons.broken_image),
                       ),
-                errorBuilder: (_, __, ___) => Container(
-                  width: double.infinity,
-                  height: h * 0.22,
-                  color: theme.colorScheme.surface,
-                  child: const Icon(Icons.broken_image_outlined,
-                      color: AppColors.iconGrey),
+                    ),
+                  ),
                 ),
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(width: SizeConfig.width(context) * 0.01);
+                },
               ),
             ),
           ],
@@ -300,8 +289,11 @@ class _QuestionCardState extends State<QuestionCard> {
               // Share
               GestureDetector(
                 onTap: () {},
-                child: Icon(Icons.share_outlined,
-                    size: w * 0.05, color: AppColors.iconGrey),
+                child: Icon(
+                  Icons.share_outlined,
+                  size: w * 0.05,
+                  color: AppColors.iconGrey,
+                ),
               ),
 
               SizedBox(width: w * 0.03),

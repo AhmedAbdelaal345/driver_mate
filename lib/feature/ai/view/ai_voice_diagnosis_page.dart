@@ -343,7 +343,7 @@ class _AiVoiceDiagnosisPageState extends State<AiVoiceDiagnosisPage> {
                               time: item.createdAt.toString(),
                               title: item.result.message,
                               level: item.result.severity,
-                              color: _severityColor('high'),
+                              color: _severityColor(item.result.severity),
                             );
                           },
                         ),
@@ -666,7 +666,7 @@ class _DiagnosisResultCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "The Accuraccy is : ${result.confidence}%",
+                  "The Accuraccy is : ${(result.confidence)}%",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:driver_mate/core/service/local_notification_service.dart';
 import 'package:driver_mate/core/helper/open_gallary.dart';
 import 'package:driver_mate/core/utils/app_colors.dart';
 // import 'package:driver_mate/core/utils/app_constants.dart';
@@ -46,7 +47,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
   @override
   Widget build(BuildContext context) {
     final horizontal = SizeConfig.width(context) * 0.05;
-    final List<String> _postTypes = [
+    final List<String> postTypes = [
       AppStrings.of(context).question,
       AppStrings.of(context).problem,
       AppStrings.of(context).tips,
@@ -61,6 +62,12 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
         }
         if (state is CommunityCreatePostSuccess) {
           AppNotifier.show(context, state.message, type: NotifierType.success);
+          LocalNotificationService.basicNotification(
+            notificationId: "create_post",
+            id: 20,
+            title: "Post Published 📝",
+            body: "Your post has been successfully published to the community!",
+          );
           Navigator.pop(context);
         }
       },
@@ -101,8 +108,8 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                   Wrap(
                     spacing: 10,
                     runSpacing: 10,
-                    children: List.generate(_postTypes.length, (index) {
-                      final type = _postTypes[index];
+                    children: List.generate(postTypes.length, (index) {
+                      final type = postTypes[index];
                       final isSelected = _selectedType == index;
                       return ChoiceChip(
                         label: Text(type),
@@ -164,7 +171,9 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                   const SizedBox(height: 14),
                   Text(
                     AppStrings.of(context).description,
-                    style: AppStyle.labelStyle,
+                    style: AppStyle.labelStyle.copyWith(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
@@ -234,12 +243,20 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                 onPressed: _canPublish && !isLoading
                     ? () async {
                         if (_formKey.currentState?.validate() ?? false) {
-                          context.read<CommunityPostCubit>().createPost(
-                            type: _postTypes[_selectedType],
-                            title: _titleController.text.trim(),
-                            description: _descriptionController.text.trim(),
-                            image: selectedImage,
-                          );
+                          if (_selectedType == 4 && selectedImage == null) {
+                            AppNotifier.show(
+                              context,
+                              "You must add image in marketplace post",
+                              type: NotifierType.error,
+                            );
+                          } else {
+                            context.read<CommunityPostCubit>().createPost(
+                              type: postTypes[_selectedType],
+                              title: _titleController.text.trim(),
+                              description: _descriptionController.text.trim(),
+                              image: selectedImage,
+                            );
+                          }
                         }
                       }
                     : null,

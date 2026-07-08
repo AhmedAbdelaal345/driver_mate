@@ -1,4 +1,3 @@
-import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/size.dart';
 import 'package:flutter/material.dart';
 

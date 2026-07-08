@@ -13,7 +13,9 @@ class WhatYouNeedSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(AppConstants.whatYouNeed, style: AppStyle.titleOfContainer),
+        Text(AppConstants.whatYouNeed, style: AppStyle.titleOfContainer.copyWith(
+          color: Theme.of(context).textTheme.bodyLarge?.color,
+        )),
         const SizedBox(height: 12),
     
         Wrap(

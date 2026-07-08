@@ -30,19 +30,24 @@ class InfoRow extends StatelessWidget {
       onTap: showAction ? onTap : null,
       child: Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecorationWidget.customBoxDecoration(context,
+        decoration: BoxDecorationWidget.customBoxDecoration(
+          context,
           borderRadius: AppFontSize.f12,
-        ).copyWith(color: AppColors.containerGrey.withValues(alpha: 0.3)),
+        ).copyWith(color: Theme.of(context).cardColor.withValues(alpha: 0.2)),
         child: Row(
           children: [
             Container(
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: AppColors.containerGrey,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(AppFontSize.f8),
               ),
-              child: Icon(icon, color: AppColors.iconGrey, size: 20),
+              child: Icon(
+                icon,
+                color: Theme.of(context).iconTheme.color,
+                size: 20,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -54,6 +59,7 @@ class InfoRow extends StatelessWidget {
                     style: AppStyle.boldSmallText.copyWith(
                       fontSize: AppFontSize.f12,
                       fontWeight: FontWeight.w600,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -61,7 +67,7 @@ class InfoRow extends StatelessWidget {
                     subtitle,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f11,
-                      color: AppColors.iconGrey,
+                      color: Theme.of(context).iconTheme.color,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -76,7 +82,7 @@ class InfoRow extends StatelessWidget {
                   width: 32,
                   height: 32,
                   decoration: BoxDecoration(
-                    color: AppColors.cyanColor.withValues(alpha:  0.1),
+                    color: AppColors.cyanColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: Icon(actionIcon, color: AppColors.cyanColor, size: 18),
@@ -95,7 +101,7 @@ class InfoRow extends StatelessWidget {
                     actionText!,
                     style: AppStyle.containerSubtitle.copyWith(
                       fontSize: AppFontSize.f11,
-                      color: AppColors.white,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

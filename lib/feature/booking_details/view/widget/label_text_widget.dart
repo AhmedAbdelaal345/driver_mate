@@ -3,7 +3,7 @@ import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:flutter/material.dart';
 
 class LabelText extends StatelessWidget {
-  const LabelText({required this.label});
+  const LabelText({super.key, required this.label});
   final String label;
 
   @override

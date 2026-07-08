@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:driver_mate/core/service/local_notification_service.dart';
+import 'package:driver_mate/core/service/device_hash_service.dart';
 import 'package:driver_mate/core/service/work_manger_service.dart';
 import 'package:driver_mate/core/theme/theme.dart';
 import 'package:driver_mate/core/theme/theme_cubit.dart';
@@ -41,7 +44,9 @@ void main() async {
     LocalNotificationService.initialize(),
     Geolocator.requestPermission(),
     WorkManagerService().init(),
+    DeviceHashService.initialize(),
   ]);
+  
 
   try {
     final prefs = await SharedPreferences.getInstance();
@@ -54,6 +59,8 @@ void main() async {
   }
 
   runApp(const MyApp());
+    unawaited(LocalNotificationService.dailysechudleNotificaction());
+
 }
 
 class MyApp extends StatelessWidget {
@@ -127,7 +134,7 @@ class MyApp extends StatelessWidget {
                   GlobalCupertinoLocalizations.delegate,
                 ],
 
-                home: SafeArea(top: false, child: const SplachPage()),
+                 home: SafeArea(top: false, child: const SplachPage()),
               );
             },
           );

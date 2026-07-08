@@ -18,20 +18,25 @@ class AiDiagnosisResponseModel {
   factory AiDiagnosisResponseModel.fromJson({
     required Map<String, dynamic> json,
   }) {
-    final data = json[ApiKeys.data];
+    final bool isRoot =
+        json.containsKey(ApiKeys.data) && !json.containsKey(ApiKeys.result);
+    final rawData = isRoot ? json[ApiKeys.data] : json;
+    final message = isRoot ? (json[ApiKeys.message]?.toString() ?? '') : '';
 
-    if (data == null) {
-      return AiDiagnosisResponseModel(message: json[ApiKeys.message] ?? '');
+    if (rawData == null) {
+      return AiDiagnosisResponseModel(message: message);
     }
 
-    final result = data[ApiKeys.result] as Map<String, dynamic>?;
+    final dataMap = rawData is Map<String, dynamic> ? rawData : null;
+    final result = dataMap?[ApiKeys.result] as Map<String, dynamic>?;
 
     return AiDiagnosisResponseModel(
-      message: json[ApiKeys.message] ?? '',
-      audioUrl: data[ApiKeys.audioPath],
-      resultMessage: result?[ApiKeys.message],
-      severity: result?[ApiKeys.severity],
-      confidence: (result?[ApiKeys.confidence] as num?)?.toDouble(),
+      message: message,
+      audioUrl: dataMap?[ApiKeys.audioPath]?.toString(),
+      resultMessage: result?[ApiKeys.message]?.toString(),
+      severity: result?[ApiKeys.severity]?.toString(),
+      confidence:
+          ((result?[ApiKeys.confidence] as num?)?.toDouble()) ?? 0 * 100,
     );
   }
 }

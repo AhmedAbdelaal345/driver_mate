@@ -15,18 +15,23 @@ class SuccessVehicalState extends VehicalState {
 
 class DeleteVehicalSuccessState extends VehicalState {
   final String message;
-  DeleteVehicalSuccessState({required this.message});
+  final List<VechicleModel> data;
+  DeleteVehicalSuccessState({required this.message, required this.data});
 }
 
 class AddVehicalSuccessState extends VehicalState {
   final String message;
   final VechicleModel vehicle;
-  AddVehicalSuccessState({required this.vehicle, required this.message});
+  final List<VechicleModel> data;
+  AddVehicalSuccessState({required this.vehicle, required this.message, required this.data});
 }
+
 class UpdateVehicalSuccessState extends VehicalState {
   final String message;
-  UpdateVehicalSuccessState({required this.message});
+  final List<VechicleModel> data;
+  UpdateVehicalSuccessState({required this.message, required this.data});
 }
+
 class ErrorVehicalState extends VehicalState {
   final String error;
   ErrorVehicalState({required this.error});

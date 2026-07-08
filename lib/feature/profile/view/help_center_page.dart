@@ -22,13 +22,13 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
  
   @override
   Widget build(BuildContext context) {
-    final List<String> _chips =  [
+    final List<String> chips =  [
     AppStrings.of(context).all,
     AppStrings.of(context).account,
     AppStrings.of(context).maintenance,
   ];
 
-   final List<String> _questions =  [
+   final List<String> questions =  [
     AppStrings.of(context).faqAddVehicle,
     AppStrings.of(context).faqAiDiagnosis,
     AppStrings.of(context).faqBookService,
@@ -88,11 +88,11 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
               SizedBox(height: SizeConfig.height(context) * 0.015),
               Wrap(
                 spacing: 8,
-                children: List.generate(_chips.length, (index) {
+                children: List.generate(chips.length, (index) {
                   final isSelected = _selectedChip == index;
                   return ChoiceChip(
                     label: Text(
-                      _chips[index],
+                      chips[index],
                       style: AppStyle.containerSubtitle.copyWith(
                         color: isSelected ?Theme.of(context).appBarTheme.titleTextStyle?.color : Theme.of(context).textTheme.bodyMedium?.color,
                         fontSize: AppFontSize.f11,
@@ -126,13 +126,13 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
                   borderRadius: AppFontSize.f12,
                 ).copyWith(color: Theme.of(context).cardColor),
                 child: Column(
-                  children: List.generate(_questions.length, (index) {
-                    final isLast = index == _questions.length - 1;
+                  children: List.generate(questions.length, (index) {
+                    final isLast = index == questions.length - 1;
                     return Column(
                       children: [
                         ListTile(
                           title: Text(
-                            _questions[index],
+                            questions[index],
                             style: AppStyle.boldSmallText.copyWith(
                               fontSize: AppFontSize.f12,
                             ),

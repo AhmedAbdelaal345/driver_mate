@@ -1,10 +1,14 @@
+import 'package:driver_mate/core/helper/app_notifier.dart';
+import 'package:driver_mate/core/helper/my_navigation.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/feature/auth/view/widget/primary_elevated_button_widget.dart';
+import 'package:driver_mate/feature/cartips/view/car_tip_list_page.dart';
 import 'package:driver_mate/feature/home/view/widget/container_title.dart';
 import 'package:driver_mate/feature/maintance_booking/data/model/maintenance_tip_model.dart';
 import 'package:driver_mate/feature/maintance_booking/data/repo/maintenance_tip_repo.dart';
 import 'package:driver_mate/feature/maintance_booking/manager/cubit/maintenance_tip_cubit.dart';
 import 'package:driver_mate/feature/maintance_booking/manager/state/maintenance_tip_state.dart';
+import 'package:driver_mate/feature/maintance_booking/view/book_maintenance_page.dart';
 import 'package:driver_mate/feature/maintance_booking/view/widget/avoid_mistake_section.dart';
 import 'package:driver_mate/feature/maintance_booking/view/widget/how_to_step_section.dart';
 import 'package:driver_mate/feature/maintance_booking/view/widget/maintence_header_card.dart';
@@ -39,8 +43,11 @@ class MaintenanceTipPage extends StatelessWidget {
             ),
           ),
           leading: const LeadingIcon(),
-          actions:  [
-            Icon(Icons.bookmark_border_outlined, color: Theme.of(context).iconTheme.color),
+          actions: [
+            Icon(
+              Icons.bookmark_border_outlined,
+              color: Theme.of(context).iconTheme.color,
+            ),
             SizedBox(width: 12),
             Icon(Icons.share, color: Theme.of(context).iconTheme.color),
             SizedBox(width: 12),
@@ -50,8 +57,10 @@ class MaintenanceTipPage extends StatelessWidget {
         body: BlocBuilder<MaintenanceTipCubit, MaintenanceTipState>(
           builder: (context, state) {
             if (state is MaintenanceTipLoading) {
-              return  Center(
-                child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               );
             } else if (state is MaintenanceTipError) {
               return Center(child: Text(state.message));
@@ -96,16 +105,31 @@ class MaintenanceTipPage extends StatelessWidget {
                         children: [
                           PrimaryElevatedButtonWidget(
                             buttonText: AppStrings.of(context).setReminder,
-                            onPressed: () {},
+                            onPressed: () {
+                              AppNotifier.show(
+                                context,
+                                "Reminder set successfully",
+
+                                type: NotifierType.warning,
+                              );
+                            },
                           ),
                           const SizedBox(height: 12),
-                          _outlineButton(text: "Find Nearby Service Centers"),
+                          _outlineButton(
+                            text: "Find Nearby Service Centers",
+                            context: context,
+                          ),
                           const SizedBox(height: 10),
-                          Center(
-                            child: Text(
-                              "View More Tips →",
-                              style: AppStyle.viewAll.copyWith(
-                                color: AppColors.cyanColor,
+                          GestureDetector(
+                            onTap: () {
+                              MyNavigation.navigateTo(CarTipsListPage());
+                            },
+                            child: Center(
+                              child: Text(
+                                "View More Tips →",
+                                style: AppStyle.viewAll.copyWith(
+                                  color: AppColors.cyanColor,
+                                ),
                               ),
                             ),
                           ),
@@ -117,7 +141,9 @@ class MaintenanceTipPage extends StatelessWidget {
                       /// RELATED TIPS
                       ContainerTitle(
                         isAppear: true,
-                        onTap: () {},
+                        onTap: () {
+                          MyNavigation.navigateTo(CarTipsListPage());
+                        },
                         title: AppStrings.of(context).relatedTips,
                         subTitle: AppStrings.of(context).seeAll,
                       ),
@@ -128,26 +154,6 @@ class MaintenanceTipPage extends StatelessWidget {
                         time: "4 min read",
                       ),
                       const SizedBox(height: 12),
-                      const TipItem(
-                        title: "Understanding tire tread depth",
-                        tag: "Safety",
-                        time: "5 min read",
-                      ),
-
-                      /// RELATED TIPS
-                      ContainerTitle(
-                        isAppear: true,
-                        onTap: () {},
-                        title: AppStrings.of(context).relatedTips,
-                        subTitle: AppStrings.of(context).seeAll,
-                      ),
-
-                      const TipItem(
-                        title: "When to rotate your tires",
-                        tag: "Maintenance",
-                        time: "4 min read",
-                      ),
-                      SizedBox(height: 12),
                       const TipItem(
                         title: "Understanding tire tread depth",
                         tag: "Safety",
@@ -170,12 +176,19 @@ class MaintenanceTipPage extends StatelessWidget {
 
   /// buttons
 
-  Widget _outlineButton({required String text}) {
+  Widget _outlineButton({required String text, required BuildContext context}) {
     return SizedBox(
       width: double.infinity,
       child: OutlinedButton(
-        onPressed: () {},
-        child: Text(text, style: AppStyle.boldSmallText),
+        onPressed: () {
+          MyNavigation.navigateTo(BookMaintenancePage());
+        },
+        child: Text(
+          text,
+          style: AppStyle.boldSmallText.copyWith(
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+        ),
       ),
     );
   }

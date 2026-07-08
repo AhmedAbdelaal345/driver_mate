@@ -24,7 +24,7 @@ class WhyItMattersSection extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: const Color(0xffF6F7F9),
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -39,7 +39,14 @@ class WhyItMattersSection extends StatelessWidget {
                       size: 18,
                     ),
                     const SizedBox(width: 10),
-                    Expanded(child: Text(e, style: AppStyle.containerSubtitle)),
+                    Expanded(
+                      child: Text(
+                        e,
+                        style: AppStyle.containerSubtitle.copyWith(
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               );

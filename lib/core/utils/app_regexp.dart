@@ -1,7 +1,7 @@
 abstract class AppRegExp {
   //------------- Regex -------------
   static const String emailValidationPattern =
-      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
   static const String passwordValidationPattern =
-      r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$';
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$';
 }

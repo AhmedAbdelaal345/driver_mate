@@ -16,7 +16,7 @@ class AvoidMistakesSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xffFFF7E6),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.orange.shade300),
       ),
@@ -24,10 +24,12 @@ class AvoidMistakesSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: const [
+            children:  [
               Icon(Icons.warning_amber_rounded, color: Colors.orange),
               SizedBox(width: 8),
-              Text(AppConstants.avoidCommonMistakes, style: AppStyle.titleOfContainer),
+              Text(AppConstants.avoidCommonMistakes, style: AppStyle.titleOfContainer.copyWith(
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              )),
             ],
           ),
           const SizedBox(height: 12),

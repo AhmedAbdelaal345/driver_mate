@@ -7,8 +7,6 @@ import 'package:driver_mate/feature/auth/view/widget/leading_icon.dart';
 import 'package:driver_mate/feature/notification/data/model/notification_model.dart';
 import 'package:flutter/material.dart';
 
-
-
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
 
@@ -19,7 +17,7 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   NotificationCategory _selectedCategory = NotificationCategory.all;
 
-  final List<NotificationModel> _notifications =  [ 
+  final List<NotificationModel> _notifications = [
     NotificationModel(
       title: 'Oil change reminder',
       subtitle: 'Due in 500 km. Book a service now.',
@@ -106,14 +104,16 @@ class _NotificationPageState extends State<NotificationPage> {
     final grouped = _groupByTime(_filtered);
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        title:  Text(
+        title: Text(
           AppStrings.of(context).notifications,
-          style: AppStyle.appBarTitle,
+          style: AppStyle.appBarTitle.copyWith(
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+          ),
         ),
         leading: const LeadingIcon(),
         actions: [
@@ -143,7 +143,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     child: Text(
                       AppStrings.of(context).noNotification,
                       style: AppStyle.containerSubtitle.copyWith(
-                        color: AppColors.iconGrey,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                     ),
                   )
@@ -198,8 +198,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 style: AppStyle.containerSubtitle.copyWith(
                   fontSize: AppFontSize.f12,
                   color: isSelected ? AppColors.white : AppColors.textGrey,
-                  fontWeight:
-                      isSelected ? FontWeight.w600 : FontWeight.normal,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
             ),
@@ -221,7 +220,7 @@ class _NotificationPageState extends State<NotificationPage> {
         title,
         style: AppStyle.containerSubtitle.copyWith(
           fontSize: AppFontSize.f11,
-          color: AppColors.iconGrey,
+          color: Theme.of(context).iconTheme.color,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.5,
         ),
@@ -236,10 +235,7 @@ class _NotificationPageState extends State<NotificationPage> {
         vertical: 2,
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: 4,
-        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         leading: CircleAvatar(
           backgroundColor: notification.isRead
               ? AppColors.iconGrey.withValues(alpha: 0.15)
@@ -254,16 +250,14 @@ class _NotificationPageState extends State<NotificationPage> {
           notification.title,
           style: AppStyle.boldSmallText.copyWith(
             fontSize: AppFontSize.f13,
-            color: notification.isRead
-                ? AppColors.textGrey
-                : AppColors.black,
+            color: notification.isRead ? Theme.of(context).iconTheme.color : AppColors.black,
           ),
         ),
         subtitle: Text(
           notification.subtitle,
           style: AppStyle.containerSubtitle.copyWith(
             fontSize: AppFontSize.f11,
-            color: AppColors.iconGrey,
+            color: Theme.of(context).iconTheme.color,
           ),
         ),
         trailing: Column(
@@ -274,7 +268,7 @@ class _NotificationPageState extends State<NotificationPage> {
               notification.time,
               style: AppStyle.containerSubtitle.copyWith(
                 fontSize: AppFontSize.f11,
-                color: AppColors.iconGrey,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
             if (!notification.isRead) ...[

@@ -9,7 +9,7 @@ class SpecificationsGrid extends StatelessWidget {
    const SpecificationsGrid({super.key});
   @override
   Widget build(BuildContext context) {
-     final List<Map<String, String>> _specifications =  [
+     final List<Map<String, String>> specifications =  [
     {'label': AppStrings.of(context).engine, 'value': AppConstants.engineValue},
     {
       'label': AppStrings.of(context).transmission,
@@ -27,9 +27,9 @@ class SpecificationsGrid extends StatelessWidget {
         borderRadius: AppFontSize.f12,
       ),
       child: Column(
-        children: List.generate(_specifications.length, (index) {
-          final spec = _specifications[index];
-          final isLast = index == _specifications.length - 1;
+        children: List.generate(specifications.length, (index) {
+          final spec = specifications[index];
+          final isLast = index == specifications.length - 1;
 
           return Column(
             children: [

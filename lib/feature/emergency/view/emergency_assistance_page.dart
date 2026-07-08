@@ -202,7 +202,7 @@ class _EmergencyAssistancePageState extends State<EmergencyAssistancePage> {
                         AppStrings.of(context).tapToCallEmergency,
                         style: AppStyle.containerSubtitle.copyWith(
                           fontSize: AppFontSize.f11,
-                          color: Theme.of(context).iconTheme?.color,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                       ),
                       const SizedBox(height: 12),

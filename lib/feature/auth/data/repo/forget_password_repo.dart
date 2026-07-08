@@ -18,7 +18,11 @@ class ForgetPasswordRepo {
         isForm: false,
         data: ForgetPasswordModel(email: email).toMap(),
       );
-      return Right(response);
+      if(response.status == 200){
+        return Right(response);
+      }else{
+        return Left(response.message);
+      }
     } on Exception catch (e) {
       print("Error sending email: ${e.toString()}");
       return Left("An error occurred while sending the email: ${e.toString()}");

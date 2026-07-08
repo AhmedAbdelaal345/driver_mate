@@ -9,7 +9,7 @@ class MaintenanceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> _maintenanceItems = [
+    final List<Map<String, String>> maintenanceItems = [
       {
         'service': AppStrings.of(context).oilChangeDue,
         'interval': AppStrings.of(context).oilChangeInterval,
@@ -31,9 +31,9 @@ class MaintenanceList extends StatelessWidget {
         borderRadius: AppFontSize.f12,
       ),
       child: Column(
-        children: List.generate(_maintenanceItems.length, (index) {
-          final item = _maintenanceItems[index];
-          final isLast = index == _maintenanceItems.length - 1;
+        children: List.generate(maintenanceItems.length, (index) {
+          final item = maintenanceItems[index];
+          final isLast = index == maintenanceItems.length - 1;
 
           return Column(
             children: [

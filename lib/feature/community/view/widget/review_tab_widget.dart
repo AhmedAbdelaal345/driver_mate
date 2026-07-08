@@ -3,11 +3,14 @@ import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:driver_mate/core/utils/size.dart';
+import 'package:driver_mate/feature/community/data/model/community_fetch_post_model.dart';
+import 'package:driver_mate/feature/community/manager/community_post_manager/community_post_cubit.dart';
 import 'package:driver_mate/feature/community/view/widget/community_filter_row.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_list.dart';
 import 'package:driver_mate/feature/community/view/widget/review_header_widget.dart';
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReviewsTab extends StatelessWidget {
   const ReviewsTab({super.key});
@@ -33,6 +36,7 @@ class ReviewsTab extends StatelessWidget {
 class ReviewCard extends StatefulWidget {
   const ReviewCard({
     super.key,
+    required this.post, // ✅ real post — backs the like logic (id / likeCount / isLikedByCurrentUser)
     this.shopName = 'Auto Care Center',
     this.reviewerName = 'Ahmed Hassan',
     this.reviewerInitials = 'AH',
@@ -42,6 +46,8 @@ class ReviewCard extends StatefulWidget {
     this.timeAgo = '2 days ago',
     this.rating = 5,
   });
+
+  final CommunityFetchPostModel post;
 
   final String shopName;
   final String reviewerName;
@@ -56,8 +62,23 @@ class ReviewCard extends StatefulWidget {
 }
 
 class _ReviewCardState extends State<ReviewCard> {
-  bool _isLiked = false;
-  int _likesCount = 0;
+  late bool _isLiked;
+  late int _likesCount;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLiked = widget.post.isLikedByCurrentUser;
+    _likesCount = widget.post.likeCount;
+  }
+
+  void _handleLike() {
+    setState(() {
+      _isLiked = !_isLiked;
+      _likesCount += _isLiked ? 1 : -1;
+    });
+    context.read<CommunityPostCubit>().toggleLike(postId: widget.post.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +88,7 @@ class _ReviewCardState extends State<ReviewCard> {
     final h = SizeConfig.height(context);
 
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: w * 0.04,
-        vertical: h * 0.008,
-      ),
+      margin: EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.008),
       padding: EdgeInsets.all(w * 0.04),
       decoration: BoxDecorationWidget.customBoxDecoration(
         context,
@@ -146,10 +164,7 @@ class _ReviewCardState extends State<ReviewCard> {
                   widget.reviewerInitials.length >= 2
                       ? widget.reviewerInitials.substring(0, 2)
                       : widget.reviewerInitials,
-                  style: TextStyle(
-                    fontSize: w * 0.028,
-                    color: AppColors.white,
-                  ),
+                  style: TextStyle(fontSize: w * 0.028, color: AppColors.white),
                 ),
               ),
 
@@ -162,7 +177,7 @@ class _ReviewCardState extends State<ReviewCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.reviewerName,
+                      widget.post.authorName,
                       style: TextStyle(
                         fontSize: AppFontSize.f12,
                         fontWeight: FontWeight.w600,
@@ -172,7 +187,7 @@ class _ReviewCardState extends State<ReviewCard> {
                       overflow: TextOverflow.ellipsis, // ✅
                     ),
                     Text(
-                      widget.timeAgo,
+                      widget.post.createdAt,
                       style: TextStyle(
                         fontSize: AppFontSize.f10,
                         color: AppColors.iconGrey,
@@ -213,6 +228,36 @@ class _ReviewCardState extends State<ReviewCard> {
             ],
           ),
 
+          if (widget.post.imageUrls.isNotEmpty) ...[
+            SizedBox(height: h * 0.012),
+            SizedBox(
+              height: h * 0.22,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.post.imageUrls.length,
+                itemBuilder: (context, index) => ClipRRect(
+                  borderRadius: BorderRadius.circular(AppFontSize.f12),
+                  child: SizedBox(
+                    width: w * 0.75,
+                    height: h * 0.22,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        widget.post.imageUrls[index],
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            const Icon(Icons.broken_image),
+                      ),
+                    ),
+                  ),
+                ),
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(width: SizeConfig.width(context) * 0.01);
+                },
+              ),
+            ),
+          ],
+
           SizedBox(height: h * 0.01),
 
           // ── Helpful + share ────────────────────────────────────────
@@ -220,8 +265,7 @@ class _ReviewCardState extends State<ReviewCard> {
             children: [
               GestureDetector(
                 onTap: () => setState(() {
-                  _isLiked = !_isLiked;
-                  _likesCount += _isLiked ? 1 : -1;
+                  _handleLike();
                 }),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -262,4 +306,3 @@ class _ReviewCardState extends State<ReviewCard> {
     );
   }
 }
-

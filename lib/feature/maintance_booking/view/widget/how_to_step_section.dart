@@ -1,7 +1,6 @@
 import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
-import 'package:driver_mate/core/utils/app_colors.dart';
 
 class HowToStepsSection extends StatelessWidget {
   const HowToStepsSection({super.key, this.steps});
@@ -29,14 +28,14 @@ class HowToStepsSection extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: const Color(0xffF6F7F9),
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
               children: [
                 CircleAvatar(
                   radius: 16,
-                  backgroundColor: AppColors.veryDarkBlue,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                   child: Text(
                     "${e.key + 1}",
                     style: const TextStyle(color: Colors.white),
@@ -44,7 +43,12 @@ class HowToStepsSection extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(e.value, style: AppStyle.containerSubtitle),
+                  child: Text(
+                    e.value,
+                    style: AppStyle.containerSubtitle.copyWith(
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                  ),
                 ),
               ],
             ),

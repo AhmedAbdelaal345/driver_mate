@@ -76,7 +76,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
   @override
   Widget build(BuildContext context) {
     final horizontal = SizeConfig.width(context) * 0.05;
-    final List<String> _categories = [
+    final List<String> categories = [
       AppStrings.of(context).all,
       AppStrings.of(context).cars,
       AppStrings.of(context).maintenance,
@@ -84,7 +84,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
       AppStrings.of(context).community,
       AppStrings.of(context).marketPlace,
     ];
-    final List<String> _sortOptions = [
+    final List<String> sortOptions = [
       AppStrings.of(context).newest,
       AppStrings.of(context).nearest,
       AppStrings.of(context).highestRated,
@@ -133,7 +133,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
               child: Wrap(
                 spacing: 10,
                 runSpacing: 10,
-                children: _categories.map((cat) {
+                children: categories.map((cat) {
                   final isSelected = _selectedCategory == cat;
                   return ChoiceChip(
                     label: Text(cat),
@@ -301,7 +301,7 @@ class _CommunityFilterPageState extends State<CommunityFilterPage> {
             _SectionCard(
               title: AppStrings.of(context).sortBy,
               child: Column(
-                children: _sortOptions.map((option) {
+                children: sortOptions.map((option) {
                   final isSelected = _selectedSort == option;
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),

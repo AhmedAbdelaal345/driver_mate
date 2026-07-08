@@ -22,36 +22,50 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
   String selectedFilter = "All";
   @override
   Widget build(BuildContext context) {
-    Widget _buildBody(
+    Widget buildBody(
       BuildContext context,
       List<MaintanceHistoryModel> items,
       int upcoming,
       int completed,
+      int canceled,
     ) {
       return CustomScrollView(
         slivers: [
           /// Summary cards
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: _buildSummaryCard(
-                      label: AppStrings.of(context).upcoming,
-                      count: upcoming.toString(),
-                      dotColor: Theme.of(context).iconTheme.color!,
+              padding: const EdgeInsets.all(10.0),
+              child: Flexible(
+                flex: 3,
+                fit: FlexFit.loose,
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: _buildSummaryCard(
+                        label: AppStrings.of(context).upcoming,
+                        count: upcoming.toString(),
+                        dotColor: Theme.of(context).iconTheme.color!,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _buildSummaryCard(
-                      label: "COMPLETED",
-                      count: completed.toString(),
-                      dotColor: Colors.green,
+                    SizedBox(width: 10,),
+                    Flexible(
+                      child: _buildSummaryCard(
+                        label: "COMPLETED",
+                        count: completed.toString(),
+                        dotColor: Colors.green,
+                      ),
                     ),
-                  ),
-                ],
+                                      SizedBox(width: 10,),
+              
+                    Flexible(
+                      child: _buildSummaryCard(
+                        label: "CANCELED",
+                        count: canceled.toString(),
+                        dotColor: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -166,6 +180,9 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
             final completed = items
                 .where((e) => e.state.trim().toLowerCase() == "completed")
                 .length;
+            final canceled = items
+                .where((e) => e.state.trim().toLowerCase() == "canceled")
+                .length;
             final filteredItems = selectedFilter == "All"
                 ? items
                 : items
@@ -175,7 +192,14 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
                             selectedFilter.trim().toLowerCase(),
                       )
                       .toList();
-            return _buildBody(context, filteredItems, upcoming, completed);
+
+            return buildBody(
+              context,
+              filteredItems,
+              upcoming,
+              completed,
+              canceled,
+            );
           }
           return SizedBox();
         },
@@ -190,7 +214,7 @@ class _MaintenanceHistoryState extends State<MaintenanceHistory> {
     required Color dotColor,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),

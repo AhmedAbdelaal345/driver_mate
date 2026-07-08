@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:driver_mate/core/network/api_constants.dart';
 import 'package:driver_mate/core/network/api_response.dart';
+import 'package:driver_mate/core/service/device_hash_service.dart';
 
 class ApiHelper {
   ApiHelper._internal();
@@ -33,9 +34,8 @@ class ApiHelper {
           headers: {
             if (isAuthorized)
               ApiConstants.authorization: "Bearer ${ApiConstants.accessToken}",
-
+            ApiConstants.deviceHashHeader: DeviceHashService.hash,
             "Accept": "application/json",
-
             if (!isForm) "Content-Type": "application/json",
           },
         ),
@@ -83,6 +83,7 @@ class ApiHelper {
           headers: {
             if (isAuthorized)
               ApiConstants.authorization: "Bearer ${ApiConstants.accessToken}",
+            ApiConstants.deviceHashHeader: DeviceHashService.hash,
           },
         ),
         queryParameters: queryParameters,
@@ -107,6 +108,7 @@ class ApiHelper {
           headers: {
             if (isAuthorized)
               ApiConstants.authorization: "Bearer ${ApiConstants.accessToken}",
+            ApiConstants.deviceHashHeader: DeviceHashService.hash,
           },
         ),
       );
@@ -130,6 +132,7 @@ class ApiHelper {
           headers: {
             if (isAuthorized)
               ApiConstants.authorization: "Bearer ${ApiConstants.accessToken}",
+            ApiConstants.deviceHashHeader: DeviceHashService.hash,
           },
         ),
       );

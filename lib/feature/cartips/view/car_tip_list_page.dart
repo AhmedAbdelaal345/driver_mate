@@ -5,7 +5,6 @@ import 'package:driver_mate/core/utils/app_colors.dart';
 import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/core/utils/app_style.dart';
 import 'package:driver_mate/core/utils/size.dart';
-import 'package:driver_mate/feature/cartips/data/repo/car_tip_list_repo.dart';
 import 'package:driver_mate/feature/cartips/manager/cubit/car_tip_list_cubit.dart';
 import 'package:driver_mate/feature/cartips/manager/state/car_tip_list_state.dart';
 import 'package:driver_mate/feature/cartips/view/cartips_page.dart';

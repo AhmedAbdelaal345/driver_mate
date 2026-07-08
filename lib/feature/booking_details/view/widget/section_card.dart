@@ -2,7 +2,7 @@ import 'package:driver_mate/core/utils/box_decoration.dart';
 import 'package:flutter/material.dart';
 
 class SectionCard extends StatelessWidget {
-  const SectionCard({required this.child});
+  const SectionCard({super.key, required this.child});
   final Widget child;
 
   @override

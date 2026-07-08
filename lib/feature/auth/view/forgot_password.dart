@@ -1,6 +1,5 @@
 import 'package:driver_mate/core/helper/app_notifier.dart';
 import 'package:driver_mate/core/helper/my_navigation.dart';
-import 'package:driver_mate/core/utils/app_colors.dart';
 // import 'package:driver_mate/core/utils/app_constants.dart';
 import 'package:driver_mate/core/utils/app_font_size.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
@@ -117,7 +116,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               Flexible(
                 child: BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
                   listener: (context, state) {
-                    // TODO: implement listener
                     if (state is ForgetPasswordSuccessState) {
                       AppNotifier.show(
                         context,

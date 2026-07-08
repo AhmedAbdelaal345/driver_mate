@@ -55,6 +55,8 @@ class CommunityPostList extends StatelessWidget {
           timeAgo: post.createdAt.length >= 10
               ? post.createdAt.substring(0, 10)
               : post.createdAt,
+          location: "Cairo",
+          post: post,
         );
 
       case AppConstants.marketPlace:
@@ -78,6 +80,9 @@ class CommunityPostList extends StatelessWidget {
         return TipCard(post: post);
       case 2:
         return ReviewCard(
+          post: post,
+          location: "Cairo",
+          rating: 4,
           shopName: post.title,
           reviewText: post.content,
           reviewerName: post.authorName,

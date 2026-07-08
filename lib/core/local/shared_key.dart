@@ -13,4 +13,5 @@ abstract class SharedKey {
   static final String millAge = "Mill Age";
   static final String date = "date";
   static final String carsList = "Car List";
+  static final String deviceHash = "device_hash";
 }

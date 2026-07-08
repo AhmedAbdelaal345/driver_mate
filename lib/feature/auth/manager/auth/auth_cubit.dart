@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:driver_mate/core/local/api_keys.dart';
 import 'package:driver_mate/core/utils/app_image_path.dart';
-import 'package:driver_mate/core/utils/app_routes.dart';
 import 'package:driver_mate/feature/auth/data/model/auth_model.dart';
 import 'package:driver_mate/feature/auth/data/repo/auth_repo.dart';
 import 'package:driver_mate/feature/auth/manager/auth/auth_state.dart';
@@ -44,16 +43,12 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> logout(BuildContext context) async {
+  Future<void> logout() async {
     await EditProfileRepo.instance.clearProfile();
 
     clearControllers();
 
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoutes.loginPage,
-      (route) => false,
-    );
+   
   }
 
   void clearControllers() {
