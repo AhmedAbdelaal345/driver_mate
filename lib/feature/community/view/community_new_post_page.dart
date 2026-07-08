@@ -47,12 +47,13 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
   @override
   Widget build(BuildContext context) {
     final horizontal = SizeConfig.width(context) * 0.05;
+    // Order matches backend integers: 0=Question, 1=Tips, 2=Review, 3=Marketplace, 4=Problem
     final List<String> postTypes = [
-      AppStrings.of(context).question,
-      AppStrings.of(context).problem,
-      AppStrings.of(context).tips,
-      AppStrings.of(context).review,
-      AppStrings.of(context).marketPlace,
+      AppStrings.of(context).question,   // 0
+      AppStrings.of(context).tips,       // 1
+      AppStrings.of(context).review,     // 2
+      AppStrings.of(context).marketPlace,// 3
+      AppStrings.of(context).problem,    // 4
     ];
 
     return BlocConsumer<CommunityPostCubit, CommunityPostState>(
@@ -243,7 +244,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                 onPressed: _canPublish && !isLoading
                     ? () async {
                         if (_formKey.currentState?.validate() ?? false) {
-                          if (_selectedType == 4 && selectedImage == null) {
+                          if (_selectedType == 3 && selectedImage == null) {
                             AppNotifier.show(
                               context,
                               "You must add image in marketplace post",
@@ -251,7 +252,7 @@ class _CommunityNewPostPageState extends State<CommunityNewPostPage> {
                             );
                           } else {
                             context.read<CommunityPostCubit>().createPost(
-                              type: postTypes[_selectedType],
+                              type: _selectedType,
                               title: _titleController.text.trim(),
                               description: _descriptionController.text.trim(),
                               image: selectedImage,

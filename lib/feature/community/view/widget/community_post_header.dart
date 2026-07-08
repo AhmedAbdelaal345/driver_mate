@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 class CommunityPostHeader extends StatefulWidget {
   const CommunityPostHeader({super.key, required this.postType});
 
-  final String postType;
+  final int postType;
 
   @override
   State<CommunityPostHeader> createState() => _CommunityPostHeaderState();

@@ -161,7 +161,7 @@ class _MarketplaceCardState extends State<MarketplaceCard> {
               SizedBox(width: w * 0.02),
 
               // Tag — only takes what it needs
-              PostTypeTag(label: AppConstants.question),
+              PostTypeTag(label: AppConstants.marketPlace),
             ],
           ),
 

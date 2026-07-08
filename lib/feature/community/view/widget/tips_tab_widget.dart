@@ -26,7 +26,7 @@ class TipsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        CommunityPostHeader(postType: AppConstants.tips),
+        CommunityPostHeader(postType: 1),
         CommunityPostList(filterType: AppConstants.tips, showEmptyState: true),
       ],
     );

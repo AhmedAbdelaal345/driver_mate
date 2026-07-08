@@ -6,7 +6,7 @@ import 'package:driver_mate/core/local/api_keys.dart';
 class CommunityCreatePostModel {
   final String title;
   final String content;
-  final String postType;
+  final int postType;
   final File? imagePost;
 
   CommunityCreatePostModel({

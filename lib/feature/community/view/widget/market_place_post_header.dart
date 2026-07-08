@@ -77,7 +77,7 @@ class _MarketplacePostHeaderState extends State<MarketplacePostHeader> {
         '${_selectedLocation.isNotEmpty ? ' — $_selectedLocation' : ''}';
 
     context.read<CommunityPostCubit>().createPost(
-      type: AppConstants.marketPlace,
+      type: 3,
       title: text,
       description: description,
       image: _pickedImage,

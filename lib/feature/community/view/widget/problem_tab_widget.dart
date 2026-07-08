@@ -26,7 +26,7 @@ class ProblemsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        CommunityPostHeader(postType: AppConstants.problem),
+        CommunityPostHeader(postType: 4),
         CommunityPostList(
           filterType: AppConstants.problem,
           showEmptyState: true,

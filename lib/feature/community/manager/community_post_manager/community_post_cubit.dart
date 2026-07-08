@@ -28,7 +28,7 @@ class CommunityPostCubit extends Cubit<CommunityPostState> {
   }
 
   Future<void> createPost({
-    required String type,
+    required int type,
     required String title,
     required String description,
     File? image,

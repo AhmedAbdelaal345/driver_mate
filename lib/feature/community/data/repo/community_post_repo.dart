@@ -13,7 +13,7 @@ abstract class CommunityPostRepository {
     required int limit,
   });
   Future<Either<String, ApiResponse>> createPost({
-    required String type,
+    required int type,
     required String title,
     required String description,
     File? imageFile,
@@ -140,7 +140,7 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
 
   @override
   Future<Either<String, ApiResponse>> createPost({
-    required String type,
+    required int type,
     required String title,
     required String description,
     File? imageFile,
@@ -175,7 +175,7 @@ class InMemoryCommunityPostRepository implements CommunityPostRepository {
 
       final post = CommunityFetchPostModel(
         id: 'post-${now.microsecondsSinceEpoch}',
-        postType: 0,
+        postType: type,
         commentCount: 0,
         isLikedByCurrentUser: false,
         likeCount: 0,

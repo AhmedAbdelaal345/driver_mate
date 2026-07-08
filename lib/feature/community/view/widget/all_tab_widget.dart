@@ -1,5 +1,5 @@
 // feature/community/view/widget/all_tab_widget.dart
-import 'package:driver_mate/core/utils/app_constants.dart';
+// // import 'package:driver_mate/core/utils/app_constants.dart';  
 // import 'package:driver_mate/core/utils/app_strings.dart';
 import 'package:driver_mate/feature/community/view/widget/all_post_widget.dart';
 import 'package:driver_mate/feature/community/view/widget/community_post_header.dart';
@@ -16,7 +16,7 @@ class AllTab extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
-          child: CommunityPostHeader(postType: AppConstants.all),
+          child: CommunityPostHeader(postType: 0), // 0 = Question (default for All tab)
         ),
         const SliverToBoxAdapter(
           child: AllPostsList(),

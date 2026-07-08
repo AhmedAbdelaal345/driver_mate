@@ -25,7 +25,7 @@ class QuestionTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        CommunityPostHeader(postType: AppConstants.question),
+        CommunityPostHeader(postType: 0),
         CommunityPostList(
           filterType: AppConstants.question,
           showEmptyState: true,
